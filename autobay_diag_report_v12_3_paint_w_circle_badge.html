@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트 v12.3-paint-w-circle-badge</title>
+<title>오토베이 현장 매입 진단리포트 v12.4-exterior-wheel-paint-overlap</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -2813,6 +2813,50 @@ label.paint-static-touch,
   font-weight:900 !important;
 }
 
+
+/* v12.4 paint side badge overlap fix + exterior side wheel two-state */
+/* 외판진단: B-9/B-10/C-9/C-10의 3번째 상태는 사용하지 않음 */
+#secDiag .report-card-ui:nth-of-type(5) .touch-card:nth-of-type(2) .slot[data-part-code="B9"] .h3,
+#secDiag .report-card-ui:nth-of-type(5) .touch-card:nth-of-type(2) .slot[data-part-code="B10"] .h3,
+#secDiag .report-card-ui:nth-of-type(5) .touch-card:nth-of-type(2) .slot[data-part-code="C9"] .h3,
+#secDiag .report-card-ui:nth-of-type(5) .touch-card:nth-of-type(2) .slot[data-part-code="C10"] .h3{
+  display:none !important;
+}
+
+/* 도막진단: 좌/우 측면 B-4/B-3/C-3/C-4 배지 겹침 방지 */
+#paintNativeBadge_B4{
+  transform:translate(-118%,-50%) !important;
+}
+
+#paintNativeBadge_B3{
+  transform:translate(-8%,-50%) !important;
+}
+
+#paintNativeBadge_C3{
+  transform:translate(-118%,-50%) !important;
+}
+
+#paintNativeBadge_C4{
+  transform:translate(-8%,-50%) !important;
+}
+
+/* DOM 교체 후에도 동일 위치 보정 유지 */
+.paint-native-slot[data-paint-id="B4"] .paint-native-badge{
+  transform:translate(-118%,-50%) !important;
+}
+
+.paint-native-slot[data-paint-id="B3"] .paint-native-badge{
+  transform:translate(-8%,-50%) !important;
+}
+
+.paint-native-slot[data-paint-id="C3"] .paint-native-badge{
+  transform:translate(-118%,-50%) !important;
+}
+
+.paint-native-slot[data-paint-id="C4"] .paint-native-badge{
+  transform:translate(-8%,-50%) !important;
+}
+
 </style>
 </head>
 <body>
@@ -3417,201 +3461,201 @@ label.paint-static-touch,
 <input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/>
 <input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/>
 <input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/>
-<div class="slot" style="left:28.03000%;top:20.38000%">
+<div class="slot" data-part="B-9" data-part-code="B9" style="left:28.03000%;top:20.38000%">
 <label class="hit h0" for="pan2_side_B_9_1"><span></span></label>
 <label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_9_0"><span>교환</span></label>
+<label class="hit h2" for="pan2_side_B_9_0"><span>교환</span></label>
+<label class="hit h3" data-disabled-wheel-state="1" for="pan2_side_B_9_0"><span></span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_1_0" name="pan2_side_B_1" type="radio"/>
 <input class="st st1" id="pan2_side_B_1_1" name="pan2_side_B_1" type="radio"/>
 <input class="st st2" id="pan2_side_B_1_2" name="pan2_side_B_1" type="radio"/>
 <input class="st st3" id="pan2_side_B_1_3" name="pan2_side_B_1" type="radio"/>
-<div class="slot" style="left:37.56219%;top:22.19980%">
+<div class="slot" data-part="B-1" data-part-code="B1" style="left:37.56219%;top:22.19980%">
 <label class="hit h0" for="pan2_side_B_1_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_1_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_1_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_1_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_1_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_1_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_1_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_2_0" name="pan2_side_B_2" type="radio"/>
 <input class="st st1" id="pan2_side_B_2_1" name="pan2_side_B_2" type="radio"/>
 <input class="st st2" id="pan2_side_B_2_2" name="pan2_side_B_2" type="radio"/>
 <input class="st st3" id="pan2_side_B_2_3" name="pan2_side_B_2" type="radio"/>
-<div class="slot" style="left:39.80000%;top:34.00000%">
+<div class="slot" data-part="B-2" data-part-code="B2" style="left:39.80000%;top:34.00000%">
 <label class="hit h0" for="pan2_side_B_2_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_2_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_2_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_2_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_2_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_2_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_2_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_4_0" name="pan2_side_B_4" type="radio"/>
 <input class="st st1" id="pan2_side_B_4_1" name="pan2_side_B_4" type="radio"/>
 <input class="st st2" id="pan2_side_B_4_2" name="pan2_side_B_4" type="radio"/>
 <input class="st st3" id="pan2_side_B_4_3" name="pan2_side_B_4" type="radio"/>
-<div class="slot" style="left:25.20730%;top:40.86781%">
+<div class="slot" data-part="B-4" data-part-code="B4" style="left:25.20730%;top:40.86781%">
 <label class="hit h0" for="pan2_side_B_4_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_4_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_4_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_4_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_4_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_4_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_4_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_3_0" name="pan2_side_B_3" type="radio"/>
 <input class="st st1" id="pan2_side_B_3_1" name="pan2_side_B_3" type="radio"/>
 <input class="st st2" id="pan2_side_B_3_2" name="pan2_side_B_3" type="radio"/>
 <input class="st st3" id="pan2_side_B_3_3" name="pan2_side_B_3" type="radio"/>
-<div class="slot" style="left:32.17247%;top:41.97780%">
+<div class="slot" data-part="B-3" data-part-code="B3" style="left:32.17247%;top:41.97780%">
 <label class="hit h0" for="pan2_side_B_3_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_3_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_3_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_3_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_3_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_3_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_3_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_5_0" name="pan2_side_B_5" type="radio"/>
 <input class="st st1" id="pan2_side_B_5_1" name="pan2_side_B_5" type="radio"/>
 <input class="st st2" id="pan2_side_B_5_2" name="pan2_side_B_5" type="radio"/>
 <input class="st st3" id="pan2_side_B_5_3" name="pan2_side_B_5" type="radio"/>
-<div class="slot" style="left:43.03483%;top:54.18769%">
+<div class="slot" data-part="B-5" data-part-code="B5" style="left:43.03483%;top:54.18769%">
 <label class="hit h0" for="pan2_side_B_5_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_5_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_5_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_5_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_5_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_5_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_5_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_6_0" name="pan2_side_B_6" type="radio"/>
 <input class="st st1" id="pan2_side_B_6_1" name="pan2_side_B_6" type="radio"/>
 <input class="st st2" id="pan2_side_B_6_2" name="pan2_side_B_6" type="radio"/>
 <input class="st st3" id="pan2_side_B_6_3" name="pan2_side_B_6" type="radio"/>
-<div class="slot" style="left:32.17247%;top:61.55399%">
+<div class="slot" data-part="B-6" data-part-code="B6" style="left:32.17247%;top:61.55399%">
 <label class="hit h0" for="pan2_side_B_6_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_6_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_6_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_6_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_6_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_6_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_6_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_7_0" name="pan2_side_B_7" type="radio"/>
 <input class="st st1" id="pan2_side_B_7_1" name="pan2_side_B_7" type="radio"/>
 <input class="st st2" id="pan2_side_B_7_2" name="pan2_side_B_7" type="radio"/>
 <input class="st st3" id="pan2_side_B_7_3" name="pan2_side_B_7" type="radio"/>
-<div class="slot" style="left:39.71808%;top:71.84662%">
+<div class="slot" data-part="B-7" data-part-code="B7" style="left:39.71808%;top:71.84662%">
 <label class="hit h0" for="pan2_side_B_7_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_7_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_7_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_7_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_7_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_7_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_7_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/>
 <input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/>
 <input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/>
 <input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/>
-<div class="slot" style="left:28.03000%;top:76.49000%">
+<div class="slot" data-part="B-10" data-part-code="B10" style="left:28.03000%;top:76.49000%">
 <label class="hit h0" for="pan2_side_B_10_1"><span></span></label>
 <label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_10_0"><span>교환</span></label>
+<label class="hit h2" for="pan2_side_B_10_0"><span>교환</span></label>
+<label class="hit h3" data-disabled-wheel-state="1" for="pan2_side_B_10_0"><span></span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_B_8_0" name="pan2_side_B_8" type="radio"/>
 <input class="st st1" id="pan2_side_B_8_1" name="pan2_side_B_8" type="radio"/>
 <input class="st st2" id="pan2_side_B_8_2" name="pan2_side_B_8" type="radio"/>
 <input class="st st3" id="pan2_side_B_8_3" name="pan2_side_B_8" type="radio"/>
-<div class="slot" style="left:34.41128%;top:86.07467%">
+<div class="slot" data-part="B-8" data-part-code="B8" style="left:34.41128%;top:86.07467%">
 <label class="hit h0" for="pan2_side_B_8_1"><span></span></label>
-<label class="hit h1" for="pan2_side_B_8_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_B_8_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_B_8_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_B_8_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_B_8_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_B_8_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_1_0" name="pan2_side_C_1" type="radio"/>
 <input class="st st1" id="pan2_side_C_1_1" name="pan2_side_C_1" type="radio"/>
 <input class="st st2" id="pan2_side_C_1_2" name="pan2_side_C_1" type="radio"/>
 <input class="st st3" id="pan2_side_C_1_3" name="pan2_side_C_1" type="radio"/>
-<div class="slot" style="left:62.52073%;top:22.09889%">
+<div class="slot" data-part="C-1" data-part-code="C1" style="left:62.52073%;top:22.09889%">
 <label class="hit h0" for="pan2_side_C_1_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_1_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_1_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_1_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_1_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_1_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_1_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/>
 <input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/>
 <input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/>
 <input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/>
-<div class="slot" style="left:71.48000%;top:20.38000%">
+<div class="slot" data-part="C-9" data-part-code="C9" style="left:71.48000%;top:20.38000%">
 <label class="hit h0" for="pan2_side_C_9_1"><span></span></label>
 <label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_9_0"><span>교환</span></label>
+<label class="hit h2" for="pan2_side_C_9_0"><span>교환</span></label>
+<label class="hit h3" data-disabled-wheel-state="1" for="pan2_side_C_9_0"><span></span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_2_0" name="pan2_side_C_2" type="radio"/>
 <input class="st st1" id="pan2_side_C_2_1" name="pan2_side_C_2" type="radio"/>
 <input class="st st2" id="pan2_side_C_2_2" name="pan2_side_C_2" type="radio"/>
 <input class="st st3" id="pan2_side_C_2_3" name="pan2_side_C_2" type="radio"/>
-<div class="slot" style="left:60.36484%;top:33.50151%">
+<div class="slot" data-part="C-2" data-part-code="C2" style="left:60.36484%;top:33.50151%">
 <label class="hit h0" for="pan2_side_C_2_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_2_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_2_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_2_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_2_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_2_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_2_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_3_0" name="pan2_side_C_3" type="radio"/>
 <input class="st st1" id="pan2_side_C_3_1" name="pan2_side_C_3" type="radio"/>
 <input class="st st2" id="pan2_side_C_3_2" name="pan2_side_C_3" type="radio"/>
 <input class="st st3" id="pan2_side_C_3_3" name="pan2_side_C_3" type="radio"/>
-<div class="slot" style="left:66.74959%;top:41.97780%">
+<div class="slot" data-part="C-3" data-part-code="C3" style="left:66.74959%;top:41.97780%">
 <label class="hit h0" for="pan2_side_C_3_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_3_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_3_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_3_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_3_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_3_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_3_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_4_0" name="pan2_side_C_4" type="radio"/>
 <input class="st st1" id="pan2_side_C_4_1" name="pan2_side_C_4" type="radio"/>
 <input class="st st2" id="pan2_side_C_4_2" name="pan2_side_C_4" type="radio"/>
 <input class="st st3" id="pan2_side_C_4_3" name="pan2_side_C_4" type="radio"/>
-<div class="slot" style="left:74.87562%;top:40.86781%">
+<div class="slot" data-part="C-4" data-part-code="C4" style="left:74.87562%;top:40.86781%">
 <label class="hit h0" for="pan2_side_C_4_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_4_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_4_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_4_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_4_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_4_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_4_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_5_0" name="pan2_side_C_5" type="radio"/>
 <input class="st st1" id="pan2_side_C_5_1" name="pan2_side_C_5" type="radio"/>
 <input class="st st2" id="pan2_side_C_5_2" name="pan2_side_C_5" type="radio"/>
 <input class="st st3" id="pan2_side_C_5_3" name="pan2_side_C_5" type="radio"/>
-<div class="slot" style="left:55.97015%;top:54.18769%">
+<div class="slot" data-part="C-5" data-part-code="C5" style="left:55.97015%;top:54.18769%">
 <label class="hit h0" for="pan2_side_C_5_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_5_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_5_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_5_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_5_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_5_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_5_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_6_0" name="pan2_side_C_6" type="radio"/>
 <input class="st st1" id="pan2_side_C_6_1" name="pan2_side_C_6" type="radio"/>
 <input class="st st2" id="pan2_side_C_6_2" name="pan2_side_C_6" type="radio"/>
 <input class="st st3" id="pan2_side_C_6_3" name="pan2_side_C_6" type="radio"/>
-<div class="slot" style="left:66.83250%;top:61.65489%">
+<div class="slot" data-part="C-6" data-part-code="C6" style="left:66.83250%;top:61.65489%">
 <label class="hit h0" for="pan2_side_C_6_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_6_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_6_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_6_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_6_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_6_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_6_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_7_0" name="pan2_side_C_7" type="radio"/>
 <input class="st st1" id="pan2_side_C_7_1" name="pan2_side_C_7" type="radio"/>
 <input class="st st2" id="pan2_side_C_7_2" name="pan2_side_C_7" type="radio"/>
 <input class="st st3" id="pan2_side_C_7_3" name="pan2_side_C_7" type="radio"/>
-<div class="slot" style="left:60.36484%;top:71.84662%">
+<div class="slot" data-part="C-7" data-part-code="C7" style="left:60.36484%;top:71.84662%">
 <label class="hit h0" for="pan2_side_C_7_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_7_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_7_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_7_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_7_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_7_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_7_0"><span>R</span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/>
 <input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/>
 <input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/>
 <input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/>
-<div class="slot" style="left:71.48000%;top:76.49000%">
+<div class="slot" data-part="C-10" data-part-code="C10" style="left:71.48000%;top:76.49000%">
 <label class="hit h0" for="pan2_side_C_10_1"><span></span></label>
 <label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_10_0"><span>교환</span></label>
+<label class="hit h2" for="pan2_side_C_10_0"><span>교환</span></label>
+<label class="hit h3" data-disabled-wheel-state="1" for="pan2_side_C_10_0"><span></span></label>
 </div>
 <input checked="" class="st st0" id="pan2_side_C_8_0" name="pan2_side_C_8" type="radio"/>
 <input class="st st1" id="pan2_side_C_8_1" name="pan2_side_C_8" type="radio"/>
 <input class="st st2" id="pan2_side_C_8_2" name="pan2_side_C_8" type="radio"/>
 <input class="st st3" id="pan2_side_C_8_3" name="pan2_side_C_8" type="radio"/>
-<div class="slot" style="left:65.09121%;top:86.07467%">
+<div class="slot" data-part="C-8" data-part-code="C8" style="left:65.09121%;top:86.07467%">
 <label class="hit h0" for="pan2_side_C_8_1"><span></span></label>
-<label class="hit h1" for="pan2_side_C_8_2"><span>복원</span></label>
-<label class="hit h2" for="pan2_side_C_8_3"><span>교환</span></label>
-<label class="hit h3" for="pan2_side_C_8_0"><span>교환</span></label>
+<label class="hit h1" for="pan2_side_C_8_2"><span>X</span></label>
+<label class="hit h2" for="pan2_side_C_8_3"><span>W</span></label>
+<label class="hit h3" for="pan2_side_C_8_0"><span>R</span></label>
 </div></div></section>
 </div>
 <p class="hint"></p>
@@ -4294,20 +4338,6 @@ function boot(){
 boot();
 })();
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
 (function(){
   var STORE = {};
@@ -4579,6 +4609,5 @@ boot();
   window.addEventListener('load', bind, false);
 })();
 </script>
-
 </body>
 </html>

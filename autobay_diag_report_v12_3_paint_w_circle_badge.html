@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트 v12.4-exterior-wheel-paint-overlap</title>
+<title>오토베이 현장 매입 진단리포트 v13.2-paint-b4-c4-layer</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -2825,7 +2825,7 @@ label.paint-static-touch,
 
 /* 도막진단: 좌/우 측면 B-4/B-3/C-3/C-4 배지 겹침 방지 */
 #paintNativeBadge_B4{
-  transform:translate(-118%,-50%) !important;
+  transform:translate(-94%,-50%) !important;
 }
 
 #paintNativeBadge_B3{
@@ -2837,12 +2837,12 @@ label.paint-static-touch,
 }
 
 #paintNativeBadge_C4{
-  transform:translate(-8%,-50%) !important;
+  transform:translate(-13%,-50%) !important;
 }
 
 /* DOM 교체 후에도 동일 위치 보정 유지 */
 .paint-native-slot[data-paint-id="B4"] .paint-native-badge{
-  transform:translate(-118%,-50%) !important;
+  transform:translate(-94%,-50%) !important;
 }
 
 .paint-native-slot[data-paint-id="B3"] .paint-native-badge{
@@ -2854,7 +2854,46 @@ label.paint-static-touch,
 }
 
 .paint-native-slot[data-paint-id="C4"] .paint-native-badge{
-  transform:translate(-8%,-50%) !important;
+  transform:translate(-13%,-50%) !important;
+}
+
+
+/* v12.7 paint B4/C4 final inline-compatible offset */
+#paintNativeBadge_B4,
+.paint-native-slot[data-paint-id="B4"] .paint-native-badge{
+  transform:translate(-94%,-50%) !important;
+}
+
+#paintNativeBadge_C4,
+.paint-native-slot[data-paint-id="C4"] .paint-native-badge{
+  transform:translate(-13%,-50%) !important;
+}
+
+
+/* v13.2 paint label layer containment */
+#secDiag .report-card-ui:nth-of-type(3) .paint-v98-shell,
+#secDiag .report-card-ui:nth-of-type(3) section.touch-card,
+#secDiag .report-card-ui:nth-of-type(3) section.touch-card .fig{
+  overflow:hidden !important;
+}
+
+/* 도막 라벨은 도면 카드 내부 레이어로 제한 */
+.paint-native-slot{
+  z-index:300 !important;
+}
+
+.paint-native-badge{
+  z-index:320 !important;
+}
+
+/* 도막 입력패널은 도막 라벨보다 항상 위 */
+.paint-native-panel{
+  z-index:1200 !important;
+}
+
+/* 하단 고정 버튼은 도막 라벨보다 항상 위 */
+.bottom{
+  z-index:5000 !important;
 }
 
 </style>
@@ -4361,6 +4400,13 @@ boot();
   function badge(id){ return document.getElementById('paintNativeBadge_' + id); }
   function slot(id){ return document.querySelector('.paint-native-slot[data-paint-id="' + id + '"]'); }
 
+  function paintBadgeTransform(id){
+    if(id === 'B4') return 'translate(-94%,-50%)';
+    if(id === 'C4') return 'translate(-13%,-50%)';
+    return 'translate(-50%,-50%)';
+  }
+
+
   function makeBadgeNode(oldBadge, id, value, isW){
     var nb = oldBadge.cloneNode(false);
     nb.id = 'paintNativeBadge_' + id;
@@ -4378,7 +4424,7 @@ boot();
     nb.style.setProperty('display','flex','important');
     nb.style.setProperty('visibility','visible','important');
     nb.style.setProperty('opacity','1','important');
-    nb.style.setProperty('transform','translate(-50%,-50%)','important');
+    nb.style.setProperty('transform', paintBadgeTransform(id), 'important');
 
     if(isW){
       var w = document.createElement('span');

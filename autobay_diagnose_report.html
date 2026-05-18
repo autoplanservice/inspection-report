@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트 v15.8-basicinfo-wrapmemo-suffixfix</title>
+<title>오토베이 현장 매입 진단리포트 v15.9-mobile-date-scanner-platealign</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -4617,6 +4617,110 @@ button{
   text-align:center !important;
 }
 
+
+/* v15.9 mobile date touch/scanner card/plate alignment fixes */
+/* 모바일에서 달력 아이콘 터치 성공률을 높이기 위해 투명 date input 클릭영역을 우측 전체로 확장한다. */
+.date-dual-wrap{
+  position:relative !important;
+}
+.date-dual-wrap .date-text-input{
+  padding-right:58px !important;
+}
+.date-dual-wrap .bi-date-overlay{
+  position:absolute !important;
+  right:0 !important;
+  top:0 !important;
+  width:64px !important;
+  height:48px !important;
+  min-height:48px !important;
+  opacity:0 !important;
+  z-index:30 !important;
+  border:0 !important;
+  background:transparent !important;
+  color:transparent !important;
+  padding:0 !important;
+  margin:0 !important;
+  cursor:pointer !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  pointer-events:auto !important;
+}
+.date-dual-wrap .bi-date-overlay::-webkit-calendar-picker-indicator{
+  opacity:0 !important;
+  width:64px !important;
+  height:48px !important;
+  cursor:pointer !important;
+}
+/* 달력 아이콘은 배경색 없이 현재 문서의 검정/회색 라인 스타일로만 표시한다. */
+.date-dual-wrap::after{
+  content:"" !important;
+  position:absolute !important;
+  right:14px !important;
+  top:50% !important;
+  width:23px !important;
+  height:23px !important;
+  transform:translateY(-50%) !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background-color:transparent !important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='23' height='23' viewBox='0 0 24 24' fill='none'%3E%3Crect x='4' y='5.8' width='16' height='14.2' rx='2.8' stroke='%23111827' stroke-width='1.7'/%3E%3Cpath d='M7.4 3.8v4M16.6 3.8v4M4.8 10.2h14.4' stroke='%23111827' stroke-width='1.7' stroke-linecap='round'/%3E%3Cpath d='M8 14h.01M12 14h.01M16 14h.01M8 17.2h.01M12 17.2h.01' stroke='%236b7280' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:23px 23px !important;
+  box-shadow:none !important;
+  pointer-events:none !important;
+  z-index:20 !important;
+}
+
+/* 차량번호 버튼 때문에 같은 행의 차량번호 입력박스가 내려가지 않도록 라벨 영역 높이를 통일한다. */
+.basicinfo-v5-label,
+.basicinfo-v5-label-row{
+  min-height:20px !important;
+  height:20px !important;
+  display:flex !important;
+  align-items:center !important;
+  margin:0 0 5px 0 !important;
+  line-height:1 !important;
+}
+.basicinfo-v5-label-row{
+  justify-content:flex-start !important;
+}
+.plate-title-tools{
+  height:20px !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.plate-change-btn{
+  flex:0 0 20px !important;
+}
+.plate-change-badge{
+  height:20px !important;
+  min-height:20px !important;
+}
+
+/* 스캐너 시작 안내는 내부 원형 배지를 제거하고 카드 자체를 검정 배경으로 사용한다. */
+.scanner-start-card{
+  background:#111827 !important;
+  border-color:#111827 !important;
+  color:#fff !important;
+  padding:14px !important;
+}
+.scanner-start-badge{
+  min-height:0 !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:#fff !important;
+  box-shadow:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  letter-spacing:-.02em !important;
+}
+
 </style>
 </head>
 <body>
@@ -7255,6 +7359,63 @@ window.addEventListener('load',bindV155,false);
     bindV158RequestedFixes();
   }
   window.addEventListener('load', bindV158RequestedFixes, false);
+})();
+</script>
+
+
+<script>
+(function(){
+  'use strict';
+
+  /**
+   * bindV159MobileDateTouch는 모바일에서 달력 아이콘 영역을 눌렀을 때 native date picker가 안정적으로 열리도록 보정한다.
+   * 기존 날짜 저장값과 localStorage key는 변경하지 않는다.
+   */
+  function bindV159MobileDateTouch(){
+    var wraps = document.querySelectorAll('.date-dual-wrap');
+    for(var i=0;i<wraps.length;i++){
+      var wrap = wraps[i];
+      if(wrap.getAttribute('data-v159-date-touch') === '1') continue;
+      wrap.setAttribute('data-v159-date-touch','1');
+
+      var openPicker = function(event){
+        var rect = wrap.getBoundingClientRect();
+        var clientX = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : event.clientX;
+        if(typeof clientX === 'number' && clientX < rect.right - 70) return;
+
+        var picker = wrap.querySelector('.bi-date-overlay');
+        if(!picker) return;
+
+        if(event){
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
+        try{
+          if(typeof picker.showPicker === 'function'){
+            picker.showPicker();
+          }else{
+            picker.focus();
+            picker.click();
+          }
+        }catch(err){
+          picker.focus();
+          try{ picker.click(); }catch(ignore){}
+        }
+        console.log('[BASIC][DATE_ICON][v15.9]', 'open');
+      };
+
+      wrap.addEventListener('click', openPicker, false);
+      wrap.addEventListener('touchend', openPicker, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindV159MobileDateTouch, false);
+  }else{
+    bindV159MobileDateTouch();
+  }
+  window.addEventListener('load', bindV159MobileDateTouch, false);
 })();
 </script>
 

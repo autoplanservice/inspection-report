@@ -5809,6 +5809,78 @@ button{
   left:82.8%!important;
   transform:translate(-50%,-50%)!important;
 }
+
+/* v16.39 - iOS/Android 모바일 스크롤 덜덜거림 완화
+   목적: 큰 도면 이미지 + 고정 하단 버튼 + 그림자/필터 계열 repaint 충돌을 줄인다.
+   영향 범위: 모바일 스크롤 렌더링 안정화 CSS만 적용한다.
+   주의: 도면 좌표, 저장 key, 클릭마커 로직은 변경하지 않는다.
+*/
+html, body{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+}
+
+@media (max-width: 768px){
+  body{
+    overflow-x:hidden!important;
+    transform:none!important;
+    filter:none!important;
+    backface-visibility:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .report-card-ui,
+  .touch-card,
+  .fig{
+    transform:translateZ(0);
+    backface-visibility:hidden;
+    will-change:auto!important;
+    contain:layout paint;
+  }
+
+  .fig img{
+    transform:translateZ(0);
+    backface-visibility:hidden;
+    will-change:auto!important;
+  }
+
+  .diagram-corner-badge,
+  .paint-native-slot,
+  .paint-native-marker,
+  .paint-native-badge,
+  .slot,
+  .exterior-tread-wrap,
+  .exterior-sunroof-wrap{
+    backface-visibility:hidden;
+    will-change:auto!important;
+  }
+
+  .report-card-ui,
+  .touch-card{
+    box-shadow:none!important;
+  }
+
+  .diagram-corner-badge{
+    box-shadow:0 1px 4px rgba(15,23,42,.18)!important;
+  }
+
+  .bottom-actions,
+  .sticky-actions,
+  .fixed-actions,
+  .savebar,
+  .actionbar{
+    transform:translateZ(0);
+    backface-visibility:hidden;
+    will-change:transform;
+  }
+
+  input,
+  textarea,
+  select,
+  button{
+    -webkit-tap-highlight-color:transparent;
+  }
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */

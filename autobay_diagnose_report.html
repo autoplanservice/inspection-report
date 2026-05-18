@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트</title>
+<title>오토베이 현장 매입 진단리포트 v15.8-basicinfo-wrapmemo-suffixfix</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -3557,6 +3557,1066 @@ label.paint-static-touch,
   display:none !important;
 }
 
+
+/* v14.8 insurance select layout */
+.insurance-history-wrap{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:14px!important;
+}
+.insurance-select-group{
+  border:1px solid #d8dee8!important;
+  border-radius:14px!important;
+  background:#fff!important;
+  padding:12px!important;
+}
+.insurance-select-head{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.insurance-select-title{
+  flex:0 0 auto!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+  color:#111827!important;
+}
+.insurance-select{
+  flex:1 1 auto!important;
+  width:100%!important;
+  height:36px!important;
+  border-radius:10px!important;
+  border:1px solid #cfd6e1!important;
+  background:#fff!important;
+  color:#111827!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  padding:0 12px!important;
+  outline:none!important;
+}
+.insurance-select.red{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#fff!important;
+}
+.insurance-select-memo{
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:10px!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  padding:10px!important;
+  font-size:14px!important;
+  background:#fff!important;
+  color:#111827!important;
+  resize:vertical!important;
+}
+
+
+/* v14.9 insurance select width normalize */
+.insurance-select-head{
+  justify-content:space-between !important;
+}
+
+.insurance-select{
+  flex:0 0 auto !important;
+  width:180px !important;
+  min-width:180px !important;
+  max-width:180px !important;
+}
+
+@media (max-width:640px){
+  .insurance-select{
+    width:160px !important;
+    min-width:160px !important;
+    max-width:160px !important;
+  }
+}
+
+
+/* v15 basicinfo redesign */
+.basicinfo-v2-wrap{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important}
+.basicinfo-v2-field{border:1px solid #d8dee8!important;border-radius:14px!important;background:#fff!important;padding:12px!important}
+.basicinfo-v2-field.full{grid-column:1 / -1!important}
+.basicinfo-v2-label{font-size:13px!important;font-weight:1000!important;color:#111827!important;margin-bottom:8px!important}
+.bi-input,.bi-select{width:100%!important;height:38px!important;border:1px solid #cfd6e1!important;border-radius:10px!important;background:#fff!important;color:#111827!important;padding:0 12px!important;font-size:13px!important;font-weight:800!important}
+.bi-inline-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+.plate-wrap{display:flex!important;align-items:center!important;gap:8px!important}
+.plate-change-btn{width:38px!important;height:38px!important;border-radius:10px!important;border:0!important;background:#111827!important;color:#fff!important;font-size:18px!important;font-weight:1000!important}
+.plate-change-badge{height:32px!important;padding:0 12px!important;border-radius:10px!important;background:#ef4444!important;color:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:12px!important;font-weight:1000!important;white-space:nowrap!important}
+.tuning-extra{margin-top:10px!important}
+.tuning-row{display:grid!important;grid-template-columns:120px 1fr!important;gap:8px!important;margin-bottom:8px!important}
+.tuning-add-btn{width:100%!important;height:36px!important;border-radius:10px!important;border:1px dashed #94a3b8!important;background:#fff!important;color:#111827!important;font-size:13px!important;font-weight:1000!important}
+.wrap-select.red{background:#ef4444!important;border-color:#ef4444!important;color:#fff!important}
+.basicinfo-v2-notice{grid-column:1 / -1!important;border-radius:12px!important;background:#111827!important;color:#fff!important;padding:12px!important;text-align:center!important;font-size:13px!important;font-weight:1000!important}
+@media (max-width:640px){
+.basicinfo-v2-wrap{grid-template-columns:1fr!important}
+.bi-inline-grid{grid-template-columns:1fr!important}
+.tuning-row{grid-template-columns:1fr!important}
+}
+
+
+/* v15.1 font/title/plate restore */
+
+/* 1. 전체 폰트 통일 */
+html,
+body,
+input,
+textarea,
+select,
+button{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif !important;
+}
+
+/* 2. 카드 제목 이전 작은 상단 라벨 스타일로 원복 */
+.report-card-ui > h2{
+  position:relative !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  width:auto !important;
+  min-height:32px !important;
+  padding:0 12px 0 8px !important;
+  border-radius:10px !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:13px !important;
+  font-weight:1000 !important;
+  line-height:1 !important;
+  margin:0 0 12px 0 !important;
+  box-shadow:0 2px 8px rgba(15,23,42,.16) !important;
+}
+
+.report-card-ui > h2 .no{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:20px !important;
+  min-width:20px !important;
+  height:20px !important;
+  border-radius:999px !important;
+  background:#fff !important;
+  color:#111827 !important;
+  font-size:11px !important;
+  font-weight:1000 !important;
+  margin-right:7px !important;
+}
+
+/* 카드 자체는 일반 스타일 유지 */
+.report-card-ui{
+  background:#fff !important;
+}
+
+/* 3. 차량번호 입력칸 복구 */
+.plate-wrap{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  width:100% !important;
+}
+
+.plate-input{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+}
+
+.plate-change-btn{
+  flex:0 0 auto !important;
+  width:38px !important;
+  height:38px !important;
+  border-radius:10px !important;
+  border:0 !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:18px !important;
+  font-weight:1000 !important;
+}
+
+.plate-change-badge{
+  flex:0 0 auto !important;
+  height:32px !important;
+  padding:0 12px !important;
+  border-radius:10px !important;
+  background:#ef4444 !important;
+  color:#fff !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+  white-space:nowrap !important;
+}
+
+
+/* v15.2 basicinfo flat restore */
+/* 기본정보는 카드 안 카드 구조가 아니라 기존 플랫 2열 폼 구조로 복구 */
+.basicinfo-v2-wrap{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:10px 8px !important;
+  width:100% !important;
+}
+
+.basicinfo-v2-field{
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  padding:0 !important;
+  box-shadow:none !important;
+  min-width:0 !important;
+}
+
+.basicinfo-v2-field.full{
+  grid-column:1 / -1 !important;
+}
+
+.basicinfo-v2-label{
+  font-size:11px !important;
+  font-weight:900 !important;
+  color:#374151 !important;
+  margin:0 0 5px 0 !important;
+  line-height:1.25 !important;
+}
+
+.basicinfo-v2-body{
+  min-width:0 !important;
+}
+
+.basicinfo-v2-body .bi-input,
+.basicinfo-v2-body .bi-select{
+  width:100% !important;
+  height:48px !important;
+  min-height:48px !important;
+  border:1px solid #cfd6e1 !important;
+  border-radius:10px !important;
+  background:#fff !important;
+  color:#111827 !important;
+  padding:10px 9px !important;
+  font-size:14px !important;
+  font-weight:500 !important;
+  line-height:24px !important;
+  box-shadow:none !important;
+}
+
+.basicinfo-v2-body .bi-input::placeholder{
+  color:#6b7280 !important;
+  font-weight:400 !important;
+}
+
+.basicinfo-v2-body .bi-select{
+  font-weight:800 !important;
+}
+
+.basicinfo-v2-body .bi-inline-grid{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:8px !important;
+}
+
+.plate-wrap{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  width:100% !important;
+}
+
+.plate-wrap .plate-input{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+}
+
+.plate-change-btn{
+  flex:0 0 42px !important;
+  width:42px !important;
+  height:48px !important;
+  border-radius:10px !important;
+  border:0 !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:18px !important;
+  font-weight:1000 !important;
+}
+
+.plate-change-badge{
+  flex:0 0 auto !important;
+  height:34px !important;
+  padding:0 10px !important;
+  border-radius:9px !important;
+  background:#ef4444 !important;
+  color:#fff !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+  white-space:nowrap !important;
+}
+
+.basicinfo-v2-notice{
+  grid-column:1 / -1 !important;
+  border-radius:10px !important;
+  background:#111827 !important;
+  color:#fff !important;
+  padding:11px 12px !important;
+  text-align:center !important;
+  font-size:13px !important;
+  font-weight:1000 !important;
+  margin-top:2px !important;
+}
+
+.tuning-extra{
+  margin-top:8px !important;
+}
+
+.tuning-row{
+  display:grid !important;
+  grid-template-columns:92px minmax(0,1fr) !important;
+  gap:8px !important;
+  margin-bottom:8px !important;
+}
+
+.tuning-add-btn{
+  width:100% !important;
+  height:38px !important;
+  border-radius:10px !important;
+  border:1px dashed #94a3b8 !important;
+  background:#fff !important;
+  color:#111827 !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+}
+
+@media (max-width:640px){
+  .basicinfo-v2-wrap{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:10px 8px !important;
+  }
+
+  .basicinfo-v2-body .bi-inline-grid{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  }
+
+  .tuning-row{
+    grid-template-columns:92px minmax(0,1fr) !important;
+  }
+}
+
+
+/* v15.3 basicinfo detailed restore */
+.basicinfo-v3-wrap{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:10px 8px!important;
+}
+
+.basicinfo-v3-field.full{
+  grid-column:1 / -1!important;
+}
+
+.basicinfo-v3-label{
+  font-size:11px!important;
+  font-weight:900!important;
+  color:#374151!important;
+  margin:0 0 5px!important;
+}
+
+.basicinfo-v3-body .bi-input,
+.basicinfo-v3-body .bi-select,
+.wrapppf-card .bi-select{
+  width:100%!important;
+  height:48px!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#111827!important;
+  padding:0 12px!important;
+  font-size:14px!important;
+  font-weight:500!important;
+}
+
+.normal-select{
+  font-weight:500!important;
+}
+
+.bi-inline-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:8px!important;
+}
+
+.bi-four-grid{
+  display:grid!important;
+  grid-template-columns:1.3fr .7fr 1.3fr .8fr!important;
+  gap:8px!important;
+}
+
+.date-dual-wrap{
+  position:relative!important;
+}
+
+.bi-date-overlay{
+  position:absolute!important;
+  right:10px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:24px!important;
+  height:24px!important;
+  opacity:.9!important;
+  border:0!important;
+  background:transparent!important;
+}
+
+.year-input{
+  text-align:center!important;
+}
+
+.plate-wrap{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+
+.plate-input{
+  flex:1 1 auto!important;
+}
+
+.plate-change-btn{
+  width:42px!important;
+  min-width:42px!important;
+  height:48px!important;
+  border-radius:10px!important;
+  border:0!important;
+  background:#111827!important;
+  color:#fff!important;
+  font-size:18px!important;
+}
+
+.plate-change-badge{
+  height:34px!important;
+  padding:0 10px!important;
+  border-radius:9px!important;
+  background:#ef4444!important;
+  color:#fff!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:12px!important;
+  font-weight:1000!important;
+  white-space:nowrap!important;
+}
+
+.sticker-select.red,
+.condition-select.red,
+.exterior-select.red,
+.wrap-select.red{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#fff!important;
+}
+
+.condition-memo{
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  padding:10px!important;
+  font-size:14px!important;
+}
+
+.tuning-extra{
+  margin-top:8px!important;
+}
+
+.tuning-row{
+  display:grid!important;
+  grid-template-columns:120px minmax(0,1fr)!important;
+  gap:8px!important;
+  margin-bottom:8px!important;
+}
+
+.tuning-add-btn{
+  width:100%!important;
+  height:38px!important;
+  border-radius:10px!important;
+  border:1px dashed #94a3b8!important;
+  background:#fff!important;
+  font-size:13px!important;
+}
+
+.basicinfo-v3-notice{
+  grid-column:1 / -1!important;
+  border-radius:10px!important;
+  background:#111827!important;
+  color:#fff!important;
+  padding:11px 12px!important;
+  text-align:center!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+}
+
+.wrapppf-card{
+  padding-top:4px!important;
+}
+
+@media (max-width:640px){
+  .bi-four-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}
+
+
+/* v15.4 basicinfo missing input final fix */
+.basicinfo-v3-wrap{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:10px 8px !important;
+}
+.basicinfo-v3-field{
+  border:0 !important;
+  background:transparent !important;
+  padding:0 !important;
+  min-width:0 !important;
+}
+.basicinfo-v3-field.full{
+  grid-column:1 / -1 !important;
+}
+.basicinfo-v3-label{
+  font-size:11px !important;
+  font-weight:900 !important;
+  color:#374151 !important;
+  margin:0 0 5px 0 !important;
+}
+.basicinfo-v3-body .bi-input,
+.basicinfo-v3-body .bi-select,
+.wrapppf-card .bi-select{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  height:48px !important;
+  min-height:48px !important;
+  border:1px solid #cfd6e1 !important;
+  border-radius:10px !important;
+  background:#fff !important;
+  color:#111827 !important;
+  padding:0 12px !important;
+  font-size:14px !important;
+  font-weight:500 !important;
+  box-shadow:none !important;
+}
+.bi-inline-grid{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:8px !important;
+}
+.bi-four-grid{
+  display:grid !important;
+  grid-template-columns:1.3fr .7fr 1.3fr .8fr !important;
+  gap:8px !important;
+}
+.date-dual-wrap{
+  position:relative !important;
+}
+.bi-date-overlay{
+  position:absolute !important;
+  right:10px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:24px !important;
+  height:24px !important;
+  opacity:.9 !important;
+  border:0 !important;
+  background:transparent !important;
+}
+.plate-wrap{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  width:100% !important;
+}
+.plate-input{
+  flex:1 1 auto !important;
+}
+.plate-change-btn{
+  flex:0 0 42px !important;
+  width:42px !important;
+  height:48px !important;
+  border-radius:10px !important;
+  border:0 !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:18px !important;
+  font-weight:1000 !important;
+}
+.plate-change-badge{
+  height:34px !important;
+  padding:0 10px !important;
+  border-radius:9px !important;
+  background:#ef4444 !important;
+  color:#fff !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+  white-space:nowrap !important;
+}
+.sticker-select.red,
+.condition-select.red,
+.exterior-select.red,
+.wrap-select.red{
+  background:#ef4444 !important;
+  border-color:#ef4444 !important;
+  color:#fff !important;
+}
+.condition-memo{
+  width:100% !important;
+  min-height:74px !important;
+  margin-top:8px !important;
+  border:1px solid #cfd6e1 !important;
+  border-radius:10px !important;
+  padding:10px !important;
+  font-size:14px !important;
+}
+.basicinfo-v3-notice{
+  grid-column:1 / -1 !important;
+  border-radius:10px !important;
+  background:#111827 !important;
+  color:#fff !important;
+  padding:11px 12px !important;
+  text-align:center !important;
+  font-size:13px !important;
+  font-weight:1000 !important;
+}
+
+
+/* v15.5 detailed corrections */
+.basicinfo-v5-wrap{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+ gap:10px 8px!important;
+}
+.basicinfo-v5-field.full{grid-column:1/-1!important}
+.basicinfo-v5-label,
+.basicinfo-v5-label-row{
+ font-size:11px!important;
+ font-weight:900!important;
+ color:#374151!important;
+ margin:0 0 5px 0!important;
+}
+.basicinfo-v5-label-row{
+ display:flex!important;
+ align-items:center!important;
+ justify-content:space-between!important;
+}
+.basicinfo-v5-field .bi-input,
+.basicinfo-v5-field .bi-select{
+ width:100%!important;
+ height:48px!important;
+ border:1px solid #cfd6e1!important;
+ border-radius:10px!important;
+ background:#fff!important;
+ padding:0 12px!important;
+ font-size:14px!important;
+ font-weight:500!important;
+}
+.normal-select{font-weight:500!important}
+.plate-title-tools{
+ display:flex!important;
+ align-items:center!important;
+ gap:6px!important;
+}
+.plate-change-btn{
+ width:24px!important;
+ height:24px!important;
+ border-radius:6px!important;
+ border:0!important;
+ background:#111827!important;
+ color:#fff!important;
+ font-size:12px!important;
+}
+.plate-change-badge{
+ height:24px!important;
+ padding:0 8px!important;
+ border-radius:7px!important;
+ background:#ef4444!important;
+ color:#fff!important;
+ font-size:11px!important;
+ font-weight:900!important;
+ align-items:center!important;
+}
+.date-dual-wrap{position:relative!important}
+.bi-date-overlay{
+ position:absolute!important;
+ right:12px!important;
+ top:50%!important;
+ transform:translateY(-50%)!important;
+ width:22px!important;
+ height:22px!important;
+ opacity:1!important;
+ z-index:3!important;
+}
+.condition-memo{
+ width:100%!important;
+ min-height:74px!important;
+ margin-top:8px!important;
+ border:1px solid #cfd6e1!important;
+ border-radius:10px!important;
+ padding:10px!important;
+}
+.sticker-select.red,
+.cluster-select.red,
+.exterior-select.red,
+.recall-main.red{
+ background:#ef4444!important;
+ border-color:#ef4444!important;
+ color:#fff!important;
+}
+.tuning-extra{margin-top:8px!important}
+.tuning-row{
+ display:grid!important;
+ grid-template-columns:120px minmax(0,1fr) 42px!important;
+ gap:8px!important;
+ margin-bottom:8px!important;
+}
+.tuning-remove-btn{
+ border:0!important;
+ border-radius:10px!important;
+ background:#111827!important;
+ color:#fff!important;
+ font-size:18px!important;
+}
+.illegal-select.red{
+ background:#ef4444!important;
+ border-color:#ef4444!important;
+ color:#fff!important;
+}
+.basicinfo-v5-notice{
+ grid-column:1/-1!important;
+ background:#111827!important;
+ color:#fff!important;
+ border-radius:10px!important;
+ padding:12px!important;
+ text-align:center!important;
+ font-size:13px!important;
+ font-weight:900!important;
+}
+
+
+/* v15.6 basicinfo alignment/date/tuning fixes */
+
+/* 차량번호/차량이름 같은 행 세로 정렬 */
+.basicinfo-v5-field{
+  min-width:0 !important;
+}
+
+.basicinfo-v5-field .bi-input,
+.basicinfo-v5-field .bi-select{
+  box-sizing:border-box !important;
+  display:block !important;
+  width:100% !important;
+  height:48px !important;
+  min-height:48px !important;
+  line-height:24px !important;
+}
+
+.basicinfo-v5-label-row{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:7px !important;
+  min-height:16px !important;
+  margin:0 0 5px 0 !important;
+}
+
+.basicinfo-v5-label-row .basicinfo-v5-label{
+  margin:0 !important;
+  line-height:1.25 !important;
+}
+
+.plate-title-tools{
+  display:flex !important;
+  align-items:center !important;
+  gap:5px !important;
+  margin-left:0 !important;
+}
+
+.plate-change-btn{
+  width:20px !important;
+  min-width:20px !important;
+  height:20px !important;
+  min-height:20px !important;
+  border-radius:6px !important;
+  border:0 !important;
+  padding:0 !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:11px !important;
+  font-weight:1000 !important;
+  line-height:1 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+.plate-change-badge{
+  height:20px !important;
+  min-height:20px !important;
+  padding:0 7px !important;
+  border-radius:6px !important;
+  background:#ef4444 !important;
+  color:#fff !important;
+  font-size:10px !important;
+  font-weight:1000 !important;
+  line-height:1 !important;
+  align-items:center !important;
+  justify-content:center !important;
+  white-space:nowrap !important;
+}
+
+/* 등록일자/제작일자 달력 아이콘 표시 보정 */
+.date-dual-wrap{
+  position:relative !important;
+}
+
+.date-dual-wrap .date-text-input{
+  padding-right:42px !important;
+}
+
+.date-dual-wrap .bi-date-overlay{
+  position:absolute !important;
+  right:8px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:30px !important;
+  height:34px !important;
+  opacity:1 !important;
+  z-index:4 !important;
+  border:0 !important;
+  background:transparent !important;
+  padding:0 !important;
+  color:#111827 !important;
+  -webkit-appearance:auto !important;
+  appearance:auto !important;
+}
+
+/* 연식 4자리 입력 */
+.year-input{
+  text-align:center !important;
+}
+
+/* 튜닝 행: 한 번 클릭에 한 행만 보이고 제거 버튼도 각 행 우측 */
+.tuning-row{
+  display:grid !important;
+  grid-template-columns:100px minmax(0,1fr) 38px !important;
+  gap:8px !important;
+  align-items:center !important;
+  margin-bottom:8px !important;
+}
+
+.tuning-remove-btn{
+  width:38px !important;
+  height:48px !important;
+  border:0 !important;
+  border-radius:10px !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:18px !important;
+  font-weight:1000 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* 정기검사/리콜/정비이력 확인 같은 행 */
+.tri-row-field{
+  grid-column:1 / -1 !important;
+}
+
+.tri-row-grid{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) !important;
+  gap:8px !important;
+}
+
+.tri-row-item{
+  min-width:0 !important;
+}
+
+.tri-row-item .basicinfo-v5-label{
+  font-size:11px !important;
+  font-weight:900 !important;
+  color:#374151 !important;
+  margin:0 0 5px 0 !important;
+}
+
+.tri-row-item .bi-select{
+  width:100% !important;
+}
+
+@media (max-width:640px){
+  .tri-row-grid{
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) !important;
+  }
+}
+
+
+
+/* v15.7 basicinfo requested fixes: mobile calendar icon, date/mileage/plate/price */
+.date-dual-wrap{
+  position:relative !important;
+}
+
+.date-dual-wrap .date-text-input{
+  padding-right:46px !important;
+}
+
+/* 네이티브 달력 아이콘은 기기별 깨짐을 방지하기 위해 투명 클릭영역으로만 사용한다. */
+.date-dual-wrap .bi-date-overlay{
+  position:absolute !important;
+  right:0 !important;
+  top:0 !important;
+  width:46px !important;
+  height:48px !important;
+  min-height:48px !important;
+  opacity:0 !important;
+  z-index:6 !important;
+  border:0 !important;
+  background:transparent !important;
+  color:transparent !important;
+  padding:0 !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+}
+
+.date-dual-wrap .bi-date-overlay::-webkit-calendar-picker-indicator{
+  opacity:0 !important;
+  width:46px !important;
+  height:48px !important;
+  cursor:pointer !important;
+}
+
+/* 외부 이미지 없이 CSS로 그리는 달력 아이콘이다. */
+.date-dual-wrap::after{
+  content:"" !important;
+  position:absolute !important;
+  right:13px !important;
+  top:50% !important;
+  width:18px !important;
+  height:18px !important;
+  transform:translateY(-50%) !important;
+  border:2px solid #111827 !important;
+  border-radius:5px !important;
+  background:
+    linear-gradient(#111827,#111827) 0 5px/100% 2px no-repeat,
+    linear-gradient(#111827,#111827) 4px 0/2px 5px no-repeat,
+    linear-gradient(#111827,#111827) 12px 0/2px 5px no-repeat,
+    #fff !important;
+  pointer-events:none !important;
+  z-index:5 !important;
+}
+
+/* 번호판 변경예정 라벨은 버튼 클릭 시 .show 클래스가 붙은 경우에만 노출한다. */
+.plate-change-badge{
+  display:none !important;
+}
+
+.plate-change-badge.show{
+  display:flex !important;
+}
+
+/* 가격 입력은 줄바꿈이 가능한 메모형 입력으로 사용한다. */
+.basicinfo-v5-field .price-textarea{
+  height:auto !important;
+  min-height:76px !important;
+  line-height:1.45 !important;
+  padding:10px 12px !important;
+  resize:vertical !important;
+  white-space:pre-wrap !important;
+}
+
+.km-comma-input{
+  text-align:right !important;
+}
+
+
+/* v15.8 basicinfo/wrapppf/card suffix fixes */
+/* 달력 아이콘은 기존 검정 선형 아이콘 대신 현재 카드 UI와 맞는 얇은 배지형 SVG로 교체한다. */
+.date-dual-wrap::after{
+  content:"" !important;
+  position:absolute !important;
+  right:10px !important;
+  top:50% !important;
+  width:28px !important;
+  height:28px !important;
+  transform:translateY(-50%) !important;
+  border:0 !important;
+  border-radius:9px !important;
+  background-color:#f3f4f6 !important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Crect x='5' y='6.5' width='18' height='16' rx='3.2' fill='white' stroke='%23111827' stroke-width='1.6'/%3E%3Cpath d='M5.7 11.2h16.6' stroke='%23111827' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M10 4.8v3.6M18 4.8v3.6' stroke='%23111827' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='10.2' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='14' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='17.8' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='10.2' cy='19' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='14' cy='19' r='1.05' fill='%236b7280'/%3E%3C/svg%3E") !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:28px 28px !important;
+  pointer-events:none !important;
+  z-index:5 !important;
+  box-shadow:inset 0 0 0 1px #d1d5db !important;
+}
+.date-dual-wrap .date-text-input{padding-right:48px !important}
+
+/* 번호판 변경예정은 v15.8 토글 상태(data-plate-open/show)에서만 노출한다. */
+.plate-title-tools .plate-change-badge{display:none !important;}
+.plate-title-tools .plate-change-badge.show,
+.plate-title-tools .plate-change-badge[data-plate-open="1"]{display:flex !important;}
+
+/* 주행거리/연식 단위는 입력값에 직접 붙이지 않고 표시 레이어로만 제공한다. */
+.unit-suffix-wrap{position:relative !important;width:100% !important;}
+.unit-suffix-wrap .bi-input{padding-right:48px !important;}
+.unit-suffix-wrap::after{
+  position:absolute !important;
+  right:12px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  color:#6b7280 !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  pointer-events:none !important;
+}
+.km-suffix-wrap::after{content:"km" !important;}
+.year-suffix-wrap::after{content:"연식" !important;}
+.km-suffix-wrap .km-comma-input,
+.year-suffix-wrap .year-input{text-align:right !important;}
+
+/* 랩핑/PPF 메모는 있음 선택 시에만 노출한다. */
+.wrapppf-card{display:flex !important;flex-direction:column !important;gap:8px !important;}
+.wrapppf-memo{
+  width:100% !important;
+  min-height:72px !important;
+  border:1px solid #cfd6e1 !important;
+  border-radius:10px !important;
+  padding:10px 12px !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+  resize:vertical !important;
+  background:#fff !important;
+  color:#111827 !important;
+}
+
+/* 기본정보 확인 후 스캐너 진입 안내를 별도 카드 배지로 표시한다. */
+.scanner-start-card{padding:12px 14px !important;}
+.scanner-start-badge{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:38px !important;
+  padding:9px 12px !important;
+  border-radius:999px !important;
+  background:#111827 !important;
+  color:#fff !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  letter-spacing:-.02em !important;
+  text-align:center !important;
+}
+
 </style>
 </head>
 <body>
@@ -3574,18 +4634,142 @@ label.paint-static-touch,
 </div>
 </header>
 <section class="section" id="secInput">
-<article class="report-card-ui">
-<h2><span class="no">1</span> 기본정보</h2>
-<div class="grid2">
-<div class="field"><label>진단일자</label><input data-key="diagDate" type="date"/></div>
-<div class="field"><label>지역</label><input data-key="region"/></div>
-<div class="field"><label>차량이름</label><input data-key="carName"/></div>
-<div class="field"><label>연식</label><input data-key="carYear"/></div>
-<div class="field"><label>주행거리(진단 전)</label><input class="km-input" data-key="mileageBefore" inputmode="numeric" onblur="AB_KM_FORMAT(this)" onchange="AB_KM_FORMAT(this)" onfocus="AB_KM_FOCUS(this)" oninput="AB_KM_INPUT_LIVE(this)" pattern="[0-9]*" placeholder="km"/></div>
-<div class="field"><label>주행거리(진단 후)</label><input class="km-input" data-key="mileageAfter" inputmode="numeric" onblur="AB_KM_FORMAT(this)" onchange="AB_KM_FORMAT(this)" onfocus="AB_KM_FOCUS(this)" oninput="AB_KM_INPUT_LIVE(this)" pattern="[0-9]*" placeholder="km"/></div>
+<article class="report-card-ui"><h2><span class="no">1</span> 기본정보</h2>
+<div class="basicinfo-v5-wrap">
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">담당자</div>
+<input class="bi-input" placeholder="담당자 입력"/>
 </div>
-<div class="field cluster-abnormal-field"><label>계기판 이상 유무</label><textarea data-key="clusterAbnormalMemo" placeholder="계기판 경고등, 이상 표시, 주행거리 표시 이상 등을 입력"></textarea></div></article>
-<article class="report-card-ui"><h2><span class="no">2</span> 보험 이력</h2><div class="insurance-history-wrap"><div class="insurance-group" data-insurance-key="totalFlood"><div class="insurance-title">전손·침수</div><div class="insurance-options"><button class="insurance-option" data-insurance-value="없음" type="button">없음</button><button class="insurance-option" data-insurance-value="전손" data-red="1" type="button">전손</button><button class="insurance-option" data-insurance-value="침수" data-red="1" type="button">침수</button></div></div><div class="insurance-group" data-insurance-key="usage"><div class="insurance-title">용도이력</div><div class="insurance-options"><button class="insurance-option" data-insurance-value="없음" type="button">없음</button><button class="insurance-option" data-insurance-value="리스" data-red="1" type="button">리스</button><button class="insurance-option" data-insurance-value="렌트" data-red="1" type="button">렌트</button><button class="insurance-option" data-insurance-value="영업" data-red="1" type="button">영업</button><button class="insurance-option" data-insurance-value="관용" data-red="1" type="button">관용</button><button class="insurance-option" data-insurance-value="부활" data-red="1" type="button">부활</button></div></div><div class="insurance-group" data-insurance-key="pending"><div class="insurance-title">미확정여부</div><div class="insurance-options"><button class="insurance-option" data-insurance-value="없음" type="button">없음</button><button class="insurance-option" data-insurance-value="있음" data-red="1" type="button">있음</button></div><textarea class="insurance-memo" data-key="insurancePendingMemo" placeholder="미확정 관련 메모 입력" style="display:none"></textarea></div></div></article>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">진단일자</div>
+<div class="date-dual-wrap">
+<input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
+<input class="bi-date-overlay" type="date" aria-label="진단일자 달력"/>
+</div>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">지역</div>
+<input class="bi-input" placeholder="지역 입력"/>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">구매 경로</div>
+<select class="bi-select normal-select">
+<option>신차</option>
+<option>중고차</option>
+</select>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label-row">
+<div class="basicinfo-v5-label">차량번호</div>
+<div class="plate-title-tools"><button class="plate-change-btn" type="button">⇄</button><span class="plate-change-badge" style="display:none">번호판 변경예정</span></div>
+</div>
+<input class="bi-input" placeholder="차량번호 입력"/>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">차량이름</div>
+<input class="bi-input" placeholder="차량이름 입력"/>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">등록일자</div>
+<div class="date-dual-wrap">
+<input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
+<input class="bi-date-overlay" type="date" aria-label="달력 선택"/>
+</div>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">제작일자</div>
+<div class="date-dual-wrap">
+<input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
+<input class="bi-date-overlay" type="date" aria-label="달력 선택"/>
+</div>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">연식</div>
+<div class="unit-suffix-wrap year-suffix-wrap"><input class="bi-input year-input" inputmode="numeric" maxlength="4" placeholder="YYYY"/></div>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">스티커 여부</div>
+<select class="bi-select sticker-select">
+<option>있음</option>
+<option>없음</option>
+</select>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">주행거리 (전)</div>
+<div class="unit-suffix-wrap km-suffix-wrap"><input class="bi-input km-comma-input" inputmode="numeric" placeholder="주행거리 입력"/></div>
+</div>
+<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-label">주행거리 (후)</div>
+<div class="unit-suffix-wrap km-suffix-wrap"><input class="bi-input km-comma-input" inputmode="numeric" placeholder="주행거리 입력"/></div>
+</div>
+<div class="basicinfo-v5-field full">
+<div class="basicinfo-v5-label">계기판 이상확인</div>
+<select class="bi-select cluster-select">
+<option>없음</option>
+<option>있음</option>
+</select>
+<textarea class="condition-memo cluster-memo" placeholder="계기판 특이사항 입력" style="display:none"></textarea>
+</div>
+<div class="basicinfo-v5-field full">
+<div class="basicinfo-v5-label">외관색상 동일 여부</div>
+<select class="bi-select normal-select exterior-select">
+<option>동일</option>
+<option>상이</option>
+</select>
+<textarea class="condition-memo exterior-memo" placeholder="외관색상 특이사항 입력" style="display:none"></textarea>
+</div>
+<div class="basicinfo-v5-field full">
+<div class="basicinfo-v5-label">튜닝(구조변경 등)</div>
+<select class="bi-select tuning-main normal-select">
+<option>없음</option>
+<option>있음</option>
+</select>
+<div class="tuning-extra" style="display:none">
+<div class="tuning-list"></div>
+<button class="tuning-add-btn" type="button">+ 항목추가</button>
+</div>
+</div>
+<div class="basicinfo-v5-field full tri-row-field"><div class="tri-row-grid"><div class="tri-row-item">
+<div class="basicinfo-v5-label">정기검사 확인</div>
+<select class="bi-select normal-select">
+<option>정상</option>
+<option>3개월 안</option>
+<option>기간 지남</option>
+</select>
+</div><div class="tri-row-item">
+<div class="basicinfo-v5-label">리콜 확인</div>
+<select class="bi-select normal-select recall-main">
+<option>해당없음</option>
+<option>해당(이행)</option>
+<option>해당(미이행)</option>
+</select>
+</div><div class="tri-row-item">
+<div class="basicinfo-v5-label">정비이력 확인</div>
+<select class="bi-select normal-select">
+<option>확인</option>
+<option>미확인</option>
+</select>
+</div></div></div>
+
+
+<div class="basicinfo-v5-field full">
+<div class="basicinfo-v5-label">가격</div>
+<textarea class="bi-input price-textarea" placeholder="가격 입력"></textarea>
+</div>
+</div>
+</article><article class="report-card-ui"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>
+<div class="wrapppf-card">
+<select class="bi-select wrap-select">
+<option>없음</option>
+<option>있음</option>
+</select>
+<textarea class="wrapppf-memo" data-key="wrapPpfMemo" placeholder="랩핑 / PPF 관련 메모 입력" style="display:none"></textarea>
+</div>
+</article>
+<article class="report-card-ui scanner-start-card">
+<div class="scanner-start-badge">위 항목 확인 후 진단스캐너 점검을 시작합니다.</div>
+</article>
+<article class="report-card-ui"><h2><span class="no">2</span> 보험 이력</h2><div class="insurance-history-wrap"><div class="insurance-select-group" data-insurance-key="totalFlood"><div class="insurance-select-head"><div class="insurance-select-title">전손·침수</div><select class="insurance-select" data-insurance-select="totalFlood"><option value="없음">없음</option><option value="전손">전손</option><option value="침수">침수</option></select></div><textarea class="insurance-select-memo" data-insurance-memo="totalFlood" data-memo-values="전손,침수" placeholder="전손/침수 관련 메모 입력" style="display:none"></textarea></div><div class="insurance-select-group" data-insurance-key="usage"><div class="insurance-select-head"><div class="insurance-select-title">용도이력</div><select class="insurance-select" data-insurance-select="usage"><option value="없음">없음</option><option value="리스">리스</option><option value="렌트">렌트</option><option value="영업">영업</option><option value="관용">관용</option><option value="부활">부활</option></select></div><textarea class="insurance-select-memo" data-insurance-memo="usage" data-memo-values="리스,렌트,영업,관용,부활" placeholder="용도이력 관련 메모 입력" style="display:none"></textarea></div><div class="insurance-select-group" data-insurance-key="pending"><div class="insurance-select-head"><div class="insurance-select-title">미확정여부</div><select class="insurance-select" data-insurance-select="pending"><option value="없음">없음</option><option value="있음">있음</option></select></div><textarea class="insurance-select-memo" data-insurance-memo="pending" data-memo-values="있음" placeholder="미확정 관련 메모 입력" style="display:none"></textarea></div></div></article>
 <article class="report-card-ui">
 <h2><span class="no">3</span> 진단특이사항</h2>
 <div class="field"><label>외관 특이사항</label><textarea data-key="outerMemo"></textarea></div><br/>
@@ -5389,5 +6573,690 @@ boot();
   window.addEventListener('load',bindInsuranceOptions,false);
 })();
 </script>
+<script>
+(function(){
+  function bindInsuranceSelects(){
+    var redMap = {
+      totalFlood:['전손','침수'],
+      usage:['리스','렌트','영업','관용','부활'],
+      pending:['있음']
+    };
+
+    var sels = document.querySelectorAll('.insurance-select');
+
+    for(var i=0;i<sels.length;i++){
+      if(sels[i].getAttribute('data-insurance-bound')==='1') continue;
+
+      sels[i].setAttribute('data-insurance-bound','1');
+
+      var handler = function(){
+        var key = this.getAttribute('data-insurance-select');
+        var value = this.value;
+
+        this.classList.remove('red');
+
+        var reds = redMap[key] || [];
+        if(reds.indexOf(value)!==-1){
+          this.classList.add('red');
+        }
+
+        var group = this.closest('.insurance-select-group');
+        var memo = group ? group.querySelector('.insurance-select-memo') : null;
+
+        if(memo){
+          var vals = (memo.getAttribute('data-memo-values') || '').split(',');
+          memo.style.display = vals.indexOf(value)!==-1 ? 'block' : 'none';
+        }
+
+        console.log('[INSURANCE][STATUS]', key, value);
+      };
+
+      sels[i].addEventListener('change', handler, false);
+      handler.call(sels[i]);
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', bindInsuranceSelects, false);
+  }else{
+    bindInsuranceSelects();
+  }
+
+  window.addEventListener('load', bindInsuranceSelects, false);
+})();
+</script>
+<script>
+(function(){
+function bindBasicInfo(){
+var plateBtn=document.querySelector('.plate-change-btn');
+if(plateBtn&&plateBtn.getAttribute('data-bound')!=='1'){
+plateBtn.setAttribute('data-bound','1');
+plateBtn.addEventListener('click',function(){
+var badge=document.querySelector('.plate-change-badge');
+if(!badge)return;
+badge.style.display=badge.style.display==='none'?'flex':'none';
+console.log('[BASIC][PLATE_CHANGE]',badge.style.display);
+},false);
+}
+
+var tuningMain=document.querySelector('.tuning-main');
+if(tuningMain&&tuningMain.getAttribute('data-bound')!=='1'){
+tuningMain.setAttribute('data-bound','1');
+tuningMain.addEventListener('change',function(){
+var extra=document.querySelector('.tuning-extra');
+if(extra)extra.style.display=this.value==='있음'?'block':'none';
+},false);
+}
+
+var addBtn=document.querySelector('.tuning-add-btn');
+if(addBtn&&addBtn.getAttribute('data-bound')!=='1'){
+addBtn.setAttribute('data-bound','1');
+addBtn.addEventListener('click',function(){
+var list=document.querySelector('.tuning-list');
+if(!list)return;
+var row=document.createElement('div');
+row.className='tuning-row';
+row.innerHTML='<select class="bi-select"><option>적법</option><option>불법</option></select><input class="bi-input" placeholder="튜닝 항목 입력">';
+list.appendChild(row);
+console.log('[BASIC][TUNING_ADD]');
+},false);
+}
+
+var recall=document.querySelector('.recall-main');
+if(recall&&recall.getAttribute('data-bound')!=='1'){
+recall.setAttribute('data-bound','1');
+recall.addEventListener('change',function(){
+var sub=document.querySelector('.recall-sub');
+if(sub)sub.style.display=this.value==='해당'?'block':'none';
+},false);
+}
+
+var wrapSel=document.querySelector('.wrap-select');
+if(wrapSel&&wrapSel.getAttribute('data-bound')!=='1'){
+wrapSel.setAttribute('data-bound','1');
+var update=function(){wrapSel.classList.toggle('red',wrapSel.value==='있음');};
+wrapSel.addEventListener('change',update,false);
+update();
+}
+}
+
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded',bindBasicInfo,false);
+}else{
+bindBasicInfo();
+}
+window.addEventListener('load',bindBasicInfo,false);
+})();
+</script>
+<script>
+(function(){
+
+function bindV153(){
+
+  // 번호판 변경예정
+  var btn=document.querySelector('.plate-change-btn');
+  if(btn && btn.getAttribute('data-v153')!=='1'){
+    btn.setAttribute('data-v153','1');
+
+    btn.addEventListener('click', function(){
+      var badge=document.querySelector('.plate-change-badge');
+      if(!badge)return;
+
+      badge.style.display = badge.style.display==='none' ? 'flex' : 'none';
+
+      console.log('[BASIC][PLATE_CHANGE]', badge.style.display);
+    }, false);
+  }
+
+  // 스티커
+  var sticker=document.querySelector('.sticker-select');
+  if(sticker){
+    var updateSticker=function(){
+      sticker.classList.toggle('red', sticker.value==='없음');
+    };
+    sticker.addEventListener('change', updateSticker, false);
+    updateSticker();
+  }
+
+  // 계기판
+  var cluster=document.querySelector('.cluster-select');
+  if(cluster){
+    var updateCluster=function(){
+      var memo=document.querySelector('.cluster-memo');
+      cluster.classList.toggle('red', cluster.value==='있음');
+      if(memo) memo.style.display = cluster.value==='있음' ? 'block' : 'none';
+    };
+    cluster.addEventListener('change', updateCluster, false);
+    updateCluster();
+  }
+
+  // 외관색상
+  var ext=document.querySelector('.exterior-select');
+  if(ext){
+    var updateExt=function(){
+      var memo=document.querySelector('.exterior-memo');
+      ext.classList.toggle('red', ext.value==='상이');
+      if(memo) memo.style.display = ext.value==='상이' ? 'block' : 'none';
+    };
+    ext.addEventListener('change', updateExt, false);
+    updateExt();
+  }
+
+  // 튜닝
+  var tuning=document.querySelector('.tuning-main');
+  if(tuning){
+    var updateTuning=function(){
+      var extra=document.querySelector('.tuning-extra');
+      if(extra) extra.style.display = tuning.value==='있음' ? 'block' : 'none';
+    };
+    tuning.addEventListener('change', updateTuning, false);
+    updateTuning();
+  }
+
+  var add=document.querySelector('.tuning-add-btn');
+  if(add && add.getAttribute('data-v153')!=='1'){
+    add.setAttribute('data-v153','1');
+
+    add.addEventListener('click', function(){
+      var list=document.querySelector('.tuning-list');
+      if(!list)return;
+
+      var row=document.createElement('div');
+      row.className='tuning-row';
+
+      row.innerHTML=
+      '<select class="bi-select normal-select"><option>적법</option><option>불법</option></select>'+
+      '<input class="bi-input" placeholder="튜닝 항목 입력">';
+
+      list.appendChild(row);
+
+      console.log('[BASIC][TUNING_ADD]');
+    }, false);
+  }
+
+  // 리콜
+  var recall=document.querySelector('.recall-main');
+  if(recall){
+    var updateRecall=function(){
+      var sub=document.querySelector('.recall-sub');
+      if(sub) sub.style.display = recall.value==='해당' ? 'block' : 'none';
+    };
+    recall.addEventListener('change', updateRecall, false);
+    updateRecall();
+  }
+
+  // 랩핑/PPF
+  var wrap=document.querySelector('.wrap-select');
+  if(wrap){
+    var updateWrap=function(){
+      wrap.classList.toggle('red', wrap.value==='있음');
+    };
+    wrap.addEventListener('change', updateWrap, false);
+    updateWrap();
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', bindV153, false);
+}else{
+  bindV153();
+}
+
+window.addEventListener('load', bindV153, false);
+
+})();
+</script>
+<script>
+(function(){
+function bindV155(){
+
+const plateBtn=document.querySelector('.plate-change-btn');
+if(plateBtn&&!plateBtn.dataset.bind){
+ plateBtn.dataset.bind='1';
+ plateBtn.addEventListener('click',function(){
+   const badge=document.querySelector('.plate-change-badge');
+   if(!badge)return;
+   badge.style.display=badge.style.display==='none'?'flex':'none';
+ });
+}
+
+function bindRed(sel, val, memoSel){
+ const el=document.querySelector(sel);
+ if(!el)return;
+ const update=function(){
+   el.classList.toggle('red', el.value===val);
+   if(memoSel){
+     const memo=document.querySelector(memoSel);
+     if(memo) memo.style.display=el.value===val?'block':'none';
+   }
+ };
+ el.addEventListener('change',update,false);
+ update();
+}
+
+bindRed('.sticker-select','없음');
+bindRed('.cluster-select','있음','.cluster-memo');
+bindRed('.exterior-select','상이','.exterior-memo');
+bindRed('.recall-main','해당(미이행)');
+
+const tuning=document.querySelector('.tuning-main');
+if(tuning){
+ const update=function(){
+   const extra=document.querySelector('.tuning-extra');
+   if(extra) extra.style.display=tuning.value==='있음'?'block':'none';
+ };
+ tuning.addEventListener('change',update,false);
+ update();
+}
+
+const add=document.querySelector('.tuning-add-btn');
+if(add&&!add.dataset.bind){
+ add.dataset.bind='1';
+ add.addEventListener('click',function(){
+   const list=document.querySelector('.tuning-list');
+   if(!list)return;
+
+   const row=document.createElement('div');
+   row.className='tuning-row';
+   row.innerHTML=
+   '<select class="bi-select illegal-select"><option>적법</option><option>불법</option></select>'+
+   '<input class="bi-input" placeholder="튜닝 항목 입력">'+
+   '<button type="button" class="tuning-remove-btn">−</button>';
+
+   list.appendChild(row);
+
+   const sel=row.querySelector('.illegal-select');
+   const sync=function(){
+     sel.classList.toggle('red', sel.value==='불법');
+   };
+   sel.addEventListener('change',sync,false);
+   sync();
+
+   row.querySelector('.tuning-remove-btn').addEventListener('click',function(){
+     row.remove();
+   },false);
+ });
+}
+}
+if(document.readyState==='loading'){
+ document.addEventListener('DOMContentLoaded',bindV155,false);
+}else{
+ bindV155();
+}
+window.addEventListener('load',bindV155,false);
+})();
+</script>
+
+<script>
+(function(){
+  function bindV156BasicFixes(){
+
+    /* plate badge: 버튼 옆 제목줄에서만 표시 */
+    var plateBtn = document.querySelector('.plate-change-btn');
+    if(plateBtn && plateBtn.getAttribute('data-v156-plate') !== '1'){
+      plateBtn.setAttribute('data-v156-plate','1');
+      plateBtn.addEventListener('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+        var row = this.closest ? this.closest('.basicinfo-v5-label-row') : this.parentNode;
+        var badge = row ? row.querySelector('.plate-change-badge') : document.querySelector('.plate-change-badge');
+        if(!badge) return false;
+        badge.style.display = (badge.style.display === 'none' || !badge.style.display) ? 'flex' : 'none';
+        console.log('[BASIC][PLATE_CHANGE]', badge.style.display);
+        return false;
+      }, true);
+    }
+
+    /* date overlay: 달력 선택값을 텍스트 입력칸에 반영 */
+    var dateWraps = document.querySelectorAll('.date-dual-wrap');
+    for(var i=0;i<dateWraps.length;i++){
+      var dateInput = dateWraps[i].querySelector('.bi-date-overlay');
+      var textInput = dateWraps[i].querySelector('.date-text-input');
+      if(dateInput && textInput && dateInput.getAttribute('data-v156-date') !== '1'){
+        dateInput.setAttribute('data-v156-date','1');
+        dateInput.addEventListener('change', function(){
+          var wrap = this.closest('.date-dual-wrap');
+          var text = wrap ? wrap.querySelector('.date-text-input') : null;
+          if(text) text.value = this.value;
+        }, false);
+      }
+    }
+
+    /* year: 4자리 숫자만 */
+    var years = document.querySelectorAll('.year-input');
+    for(var y=0;y<years.length;y++){
+      if(years[y].getAttribute('data-v156-year') === '1') continue;
+      years[y].setAttribute('data-v156-year','1');
+      years[y].addEventListener('input', function(){
+        this.value = String(this.value || '').replace(/\D/g,'').slice(0,4);
+      }, false);
+    }
+
+    /* tuning: 기존 중복 add 이벤트 차단 후 단일 행 생성 */
+    var add = document.querySelector('.tuning-add-btn');
+    if(add && add.getAttribute('data-v156-tuning') !== '1'){
+      add.setAttribute('data-v156-tuning','1');
+      add.addEventListener('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+
+        var list = document.querySelector('.tuning-list');
+        if(!list) return false;
+
+        var row = document.createElement('div');
+        row.className = 'tuning-row';
+        row.innerHTML =
+          '<select class="bi-select illegal-select"><option>적법</option><option>불법</option></select>' +
+          '<input class="bi-input" placeholder="튜닝 항목 입력">' +
+          '<button type="button" class="tuning-remove-btn">−</button>';
+
+        list.appendChild(row);
+
+        var sel = row.querySelector('.illegal-select');
+        var sync = function(){
+          sel.classList.toggle('red', sel.value === '불법');
+        };
+        sel.addEventListener('change', sync, false);
+        sync();
+
+        row.querySelector('.tuning-remove-btn').addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          row.remove();
+          return false;
+        }, false);
+
+        console.log('[BASIC][TUNING_ADD]');
+        return false;
+      }, true);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindV156BasicFixes, false);
+  }else{
+    bindV156BasicFixes();
+  }
+  window.addEventListener('load', bindV156BasicFixes, false);
+})();
+</script>
+
+
+<script>
+(function(){
+  'use strict';
+
+  /**
+   * bindV157BasicFixes는 v15.7 기본정보 요청사항만 보정한다.
+   * 기존 도면, 저장 key, 보험/점검 카드 로직에는 접근하지 않는다.
+   */
+  function bindV157BasicFixes(){
+
+    /** plateBtn은 차량번호 제목 우측 체인지 버튼이다. */
+    var plateBtn = document.querySelector('.plate-change-btn');
+
+    /** plateBadge는 번호판 변경예정 표시 배지이다. */
+    var plateBadge = document.querySelector('.plate-change-badge');
+
+    if(plateBadge){
+      plateBadge.classList.remove('show');
+      plateBadge.style.display = '';
+    }
+
+    if(plateBtn && plateBtn.getAttribute('data-v157-plate') !== '1'){
+      plateBtn.setAttribute('data-v157-plate','1');
+      plateBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        /** labelRow는 차량번호 라벨과 버튼이 들어있는 제목 행이다. */
+        var labelRow = this.closest ? this.closest('.basicinfo-v5-label-row') : this.parentNode;
+
+        /** targetBadge는 현재 제목 행 내부의 번호판 변경예정 배지이다. */
+        var targetBadge = labelRow ? labelRow.querySelector('.plate-change-badge') : document.querySelector('.plate-change-badge');
+
+        if(!targetBadge) return false;
+        targetBadge.classList.toggle('show');
+        targetBadge.style.display = '';
+        console.log('[BASIC][PLATE_CHANGE]', targetBadge.classList.contains('show') ? 'show' : 'hide');
+        return false;
+      }, true);
+    }
+
+    /**
+     * formatDateText는 숫자만 추출해 YYYY-MM-DD 형태로 자동 보정한다.
+     * 월/일 범위 보정은 하지 않고 입력 형식 제한만 담당한다.
+     */
+    function formatDateText(value){
+      /** digits는 입력값에서 숫자만 남긴 값이다. */
+      var digits = String(value || '').replace(/\D/g, '').slice(0, 8);
+      if(digits.length <= 4) return digits;
+      if(digits.length <= 6) return digits.slice(0, 4) + '-' + digits.slice(4);
+      return digits.slice(0, 4) + '-' + digits.slice(4, 6) + '-' + digits.slice(6);
+    }
+
+    /** dateInputs는 진단일자/등록일자/제작일자의 직접 입력칸이다. */
+    var dateInputs = document.querySelectorAll('.date-ymd-input');
+    for(var i = 0; i < dateInputs.length; i++){
+      if(dateInputs[i].getAttribute('data-v157-date-text') === '1') continue;
+      dateInputs[i].setAttribute('data-v157-date-text','1');
+      dateInputs[i].setAttribute('maxlength','10');
+      dateInputs[i].setAttribute('inputmode','numeric');
+      dateInputs[i].addEventListener('input', function(){
+        this.value = formatDateText(this.value);
+
+        /** wrap은 텍스트 입력과 실제 date input을 묶는 wrapper이다. */
+        var wrap = this.closest ? this.closest('.date-dual-wrap') : this.parentNode;
+
+        /** nativeDate는 클릭 시 달력을 여는 실제 date input이다. */
+        var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
+        if(nativeDate && /^\d{4}-\d{2}-\d{2}$/.test(this.value)){
+          nativeDate.value = this.value;
+        }
+      }, false);
+      dateInputs[i].addEventListener('blur', function(){
+        this.value = formatDateText(this.value);
+      }, false);
+    }
+
+    /** dateOverlays는 모바일 달력 팝업을 여는 투명 date input이다. */
+    var dateOverlays = document.querySelectorAll('.date-dual-wrap .bi-date-overlay');
+    for(var d = 0; d < dateOverlays.length; d++){
+      if(dateOverlays[d].getAttribute('data-v157-date-overlay') === '1') continue;
+      dateOverlays[d].setAttribute('data-v157-date-overlay','1');
+      dateOverlays[d].addEventListener('change', function(){
+        /** wrap은 date overlay와 표시용 텍스트 입력을 묶는 wrapper이다. */
+        var wrap = this.closest ? this.closest('.date-dual-wrap') : this.parentNode;
+
+        /** textInput은 사용자에게 보이는 YYYY-MM-DD 입력칸이다. */
+        var textInput = wrap ? wrap.querySelector('.date-ymd-input') : null;
+        if(textInput) textInput.value = this.value || '';
+        console.log('[BASIC][DATE_SELECT]', this.value || '');
+      }, false);
+    }
+
+    /** mileageInputs는 주행거리 전/후 입력칸이다. */
+    var mileageInputs = document.querySelectorAll('.km-comma-input');
+    for(var m = 0; m < mileageInputs.length; m++){
+      if(mileageInputs[m].getAttribute('data-v157-km') === '1') continue;
+      mileageInputs[m].setAttribute('data-v157-km','1');
+      mileageInputs[m].addEventListener('input', function(){
+        /** digits는 주행거리 입력값에서 숫자만 남긴 값이다. */
+        var digits = String(this.value || '').replace(/\D/g, '');
+        this.value = digits ? Number(digits).toLocaleString('ko-KR') : '';
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindV157BasicFixes, false);
+  }else{
+    bindV157BasicFixes();
+  }
+  window.addEventListener('load', bindV157BasicFixes, false);
+})();
+</script>
+
+
+<script>
+(function(){
+  'use strict';
+
+  /**
+   * bindV158RequestedFixes는 v15.8 요청사항만 처리한다.
+   * 기존 도면 좌표, 보험 카드, localStorage key, 저장 구조는 변경하지 않는다.
+   */
+  function bindV158RequestedFixes(){
+    bindPlateChangeBadge();
+    bindWrapPpfMemo();
+    bindNumericSuffixInputs();
+    overrideKmHelpers();
+  }
+
+  /**
+   * onlyDigits는 입력값에서 숫자만 추출해 저장/표시 보정의 기준값으로 사용한다.
+   */
+  function onlyDigits(value){
+    return String(value || '').replace(/\D/g, '');
+  }
+
+  /**
+   * formatComma는 숫자 문자열을 천 단위 콤마 표시로 변환한다.
+   */
+  function formatComma(digits){
+    return digits ? Number(digits).toLocaleString('ko-KR') : '';
+  }
+
+  /**
+   * bindPlateChangeBadge는 기존 누적 이벤트를 제거하기 위해 버튼만 복제 후 단일 이벤트로 다시 바인딩한다.
+   */
+  function bindPlateChangeBadge(){
+    var oldBtn = document.querySelector('.plate-change-btn');
+    if(!oldBtn) return;
+
+    var badge = document.querySelector('.plate-title-tools .plate-change-badge');
+    if(badge){
+      badge.classList.remove('show');
+      badge.removeAttribute('data-plate-open');
+      badge.style.display = 'none';
+    }
+
+    if(oldBtn.getAttribute('data-v158-plate') === '1') return;
+
+    var btn = oldBtn.cloneNode(true);
+    btn.setAttribute('data-v158-plate','1');
+    oldBtn.parentNode.replaceChild(btn, oldBtn);
+
+    btn.addEventListener('click', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+
+      var row = this.closest ? this.closest('.basicinfo-v5-label-row') : this.parentNode;
+      var targetBadge = row ? row.querySelector('.plate-change-badge') : document.querySelector('.plate-change-badge');
+      if(!targetBadge) return false;
+
+      var isOpen = targetBadge.getAttribute('data-plate-open') === '1';
+      if(isOpen){
+        targetBadge.classList.remove('show');
+        targetBadge.removeAttribute('data-plate-open');
+        targetBadge.style.display = 'none';
+      }else{
+        targetBadge.classList.add('show');
+        targetBadge.setAttribute('data-plate-open','1');
+        targetBadge.style.display = 'flex';
+      }
+
+      console.log('[BASIC][PLATE_CHANGE][v15.8]', isOpen ? 'hide' : 'show');
+      return false;
+    }, false);
+  }
+
+  /**
+   * bindWrapPpfMemo는 랩핑/PPF 값이 있음일 때만 메모 입력박스를 표시한다.
+   */
+  function bindWrapPpfMemo(){
+    var select = document.querySelector('.wrap-select');
+    if(!select || select.getAttribute('data-v158-wrap') === '1') return;
+    select.setAttribute('data-v158-wrap','1');
+
+    var sync = function(){
+      var memo = document.querySelector('.wrapppf-memo');
+      var active = select.value === '있음';
+      select.classList.toggle('red', active);
+      if(memo) memo.style.display = active ? 'block' : 'none';
+      console.log('[BASIC][WRAP_PPF][v15.8]', active ? 'memo-show' : 'memo-hide');
+    };
+
+    select.addEventListener('change', sync, false);
+    sync();
+  }
+
+  /**
+   * bindNumericSuffixInputs는 km/연식 단위를 실제 value에 넣지 않고 CSS suffix로만 표시한다.
+   * km 입력값은 화면에서 콤마 표시를 유지하고, data-save-value에는 숫자만 보관한다.
+   */
+  function bindNumericSuffixInputs(){
+    var kmInputs = document.querySelectorAll('.km-comma-input');
+    for(var i=0;i<kmInputs.length;i++){
+      if(kmInputs[i].getAttribute('data-v158-km') === '1') continue;
+      kmInputs[i].setAttribute('data-v158-km','1');
+      kmInputs[i].setAttribute('inputmode','numeric');
+      kmInputs[i].addEventListener('input', function(){
+        var digits = onlyDigits(this.value);
+        this.setAttribute('data-save-value', digits);
+        this.value = formatComma(digits);
+      }, false);
+      kmInputs[i].addEventListener('blur', function(){
+        var digits = onlyDigits(this.value);
+        this.setAttribute('data-save-value', digits);
+        this.value = formatComma(digits);
+      }, false);
+    }
+
+    var yearInputs = document.querySelectorAll('.year-input');
+    for(var y=0;y<yearInputs.length;y++){
+      if(yearInputs[y].getAttribute('data-v158-year') === '1') continue;
+      yearInputs[y].setAttribute('data-v158-year','1');
+      yearInputs[y].setAttribute('inputmode','numeric');
+      yearInputs[y].setAttribute('maxlength','4');
+      yearInputs[y].addEventListener('input', function(){
+        var digits = onlyDigits(this.value).slice(0, 4);
+        this.setAttribute('data-save-value', digits);
+        this.value = digits;
+      }, false);
+      yearInputs[y].addEventListener('blur', function(){
+        var digits = onlyDigits(this.value).slice(0, 4);
+        this.setAttribute('data-save-value', digits);
+        this.value = digits;
+      }, false);
+    }
+  }
+
+  /**
+   * overrideKmHelpers는 과거 전역 km helper가 value에 ' km'를 붙이는 동작을 차단한다.
+   */
+  function overrideKmHelpers(){
+    window.AB_KM_FORMAT = function(input){
+      var digits = onlyDigits(input && input.value);
+      if(input){
+        input.setAttribute('data-save-value', digits);
+        input.value = formatComma(digits);
+      }
+    };
+    window.AB_KM_BLUR = window.AB_KM_FORMAT;
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindV158RequestedFixes, false);
+  }else{
+    bindV158RequestedFixes();
+  }
+  window.addEventListener('load', bindV158RequestedFixes, false);
+})();
+</script>
+
 </body>
 </html>

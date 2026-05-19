@@ -7068,6 +7068,139 @@ select.ab-direct-bold-active option:checked{
 #secCheck input[type="radio"].ab-check-radio:checked + label.ab-choice{
   font-weight:900!important;
 }
+
+/* v16.72 - 코멘트 카드 검수자 코멘트 폰트 사이즈 통일
+   목적:
+   - 검수자 코멘트 라벨 폰트 사이즈를 고객 코멘트 라벨과 동일하게 맞춘다.
+   - 검수자 코멘트 입력박스 폰트 사이즈를 고객 코멘트 입력박스와 동일하게 맞춘다.
+   영향 범위: 점검 탭 20 코멘트 카드의 고객 코멘트/검수자 코멘트 영역만 적용한다.
+   주의: data-key, 저장 로직, localStorage key, 점검/진단 카드 구조는 변경하지 않는다.
+*/
+#secCheck .report-card-ui h2 + .field label,
+#secCheck .report-card-ui .customer-talk-title{
+  font-size:13px!important;
+}
+
+#secCheck .report-card-ui textarea[data-key="customerCommentMemo"],
+#secCheck .report-card-ui textarea[data-key="inspectorCommentMemo"],
+#secCheck .report-card-ui .customer-talk-memo{
+  font-size:13px!important;
+  line-height:1.45!important;
+}
+
+/* v16.73 - 전체 항목 제목 폰트 사이즈 기본정보 기준 통일
+   목적:
+   - 점검/진단/코멘트/장점/보험·특수 이력 등 각 항목 제목 폰트 사이즈가 제각각인 문제를 정리한다.
+   - 기준은 기본정보 탭 .basicinfo-v5-label의 폰트 사이즈(11px)로 한다.
+   영향 범위: 항목 제목/라벨 텍스트의 font-size만 적용한다.
+   주의: 카드 제목 h2, 번호 배지, 도면 라벨, 선택 버튼, 입력값, 저장 key, localStorage key는 변경하지 않는다.
+*/
+:root{
+  --ab-item-title-font-size:11px;
+}
+
+/* 기본정보 항목 제목 기준값 명시 */
+#secInput .basicinfo-v5-label{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 일반 field 라벨 */
+#secInput .field > label,
+#secDiag .field > label,
+#secCheck .field > label{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 점검 탭 항목 제목 */
+#secCheck .check-title,
+#secCheck .ab-check-title,
+#secCheck .engine-func-subtitle{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 점검 탭 그룹 라벨: 소음 여부 / 떨림 여부 */
+#secCheck .engine-func-note-label,
+#secCheck .engine-func-group-title{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 보험·특수 이력 항목 제목 */
+#secDiag .insurance-select-title,
+#secDiag .insurance-basic-label,
+#secDiag .insurance-label,
+#secDiag .ins-label{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 고객/검수자 코멘트 라벨 */
+#secCheck .customer-talk-title,
+#secCheck .customer-talk-head span,
+#secCheck textarea[data-key="customerCommentMemo"] ~ label{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 장점 카드 및 보유/멀티미디어 등 일반 라벨 보정 */
+#secCheck .report-card-ui label,
+#secDiag .report-card-ui label,
+#secInput .report-card-ui label{
+  font-size:var(--ab-item-title-font-size)!important;
+}
+
+/* 예외: 선택 버튼/마커/도면 배지/카드 제목은 항목 제목이 아니므로 기존 스타일 유지 */
+#secCheck .check-choice,
+#secCheck .ab-choice,
+#secDiag .diagram-corner-badge,
+#secDiag .glass-status-badge,
+#secDiag .exterior-sunroof-badge,
+#secDiag .slot label,
+#secDiag .hit,
+#secInput .tuning-add-btn,
+#secCheck .pros-add-btn,
+#secCheck .pros-tuning-minus,
+.report-card-ui > h2,
+.report-card-ui > h2 .no{
+  font-size:revert-layer;
+}
+
+/* v16.74 - 코멘트 카드 고객/검수자 코멘트 라벨 폰트사이즈 직접 통일
+   목적:
+   - 고객 코멘트 라벨과 검수자 코멘트 라벨을 기본정보 탭 항목 제목 폰트 사이즈(11px)와 동일하게 고정한다.
+   - v16.73의 범용 selector가 .customer-talk-title 구조에 충분히 먹지 않는 문제를 직접 selector/class로 보정한다.
+   영향 범위: 점검 탭 20 코멘트 카드의 라벨 폰트 사이즈만 적용한다.
+   주의: 저장 key, textarea, 점검/진단 카드 구조, localStorage key는 변경하지 않는다.
+*/
+#secCheck .comment-card-v1674 .comment-item-title-v1674,
+#secCheck .comment-card-v1674 label.comment-item-title-v1674,
+#secCheck .comment-card-v1674 span.comment-item-title-v1674,
+#secCheck .comment-card-v1674 .customer-talk-title.comment-item-title-v1674{
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+
+/* 코멘트 카드 헤더 안의 다른 보조 텍스트가 라벨보다 커지지 않도록 보정 */
+#secCheck .comment-card-v1674 .customer-talk-time{
+  font-size:11px!important;
+}
+
+/* v16.75 - 코멘트 카드 고객 코멘트 라벨 폰트사이즈 최종 보정
+   목적:
+   - 고객 코멘트 라벨이 범용 field/label CSS에 밀려 적용되지 않는 문제를 해결한다.
+   - 기본정보 탭 항목 제목 폰트 사이즈(11px)와 동일하게 inline + 최후단 CSS로 고정한다.
+   영향 범위: 점검 탭 20 코멘트 카드의 고객 코멘트/검수자 코멘트 라벨만 적용한다.
+   주의: 저장 key, textarea, localStorage key, 점검/진단 카드 구조는 변경하지 않는다.
+*/
+html body #secCheck .comment-card-v1675 label.customer-comment-label-v1675,
+html body #secCheck .comment-card-v1675 .customer-comment-label-v1675,
+html body #secCheck .comment-card-v1675 .field > label.customer-comment-label-v1675{
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+
+html body #secCheck .comment-card-v1675 .customer-talk-title.inspector-comment-label-v1675,
+html body #secCheck .comment-card-v1675 .inspector-comment-label-v1675{
+  font-size:11px!important;
+  line-height:1.35!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -8251,10 +8384,10 @@ select.ab-direct-bold-active option:checked{
 <label class="check-choice bad" for="owned_5_bad">이상</label>
 <input class="memo" data-key="owned_5_memo" placeholder="이상 메모 입력"/>
 </div>
-</article><article class="report-card-ui" data-check-card="pros"><h2><span class="no">19</span> 장점</h2><div class="field"><label>보증연장</label><input data-key="prosWarranty" placeholder="보증연장 내용 입력"/></div><div class="field pros-tuning-wrap"><label>추가장착(튜닝)</label><div class="pros-tuning-rows" data-pros-tuning-rows="1"><div class="pros-tuning-row"><input data-key="prosTuning_0" placeholder="추가장착/튜닝 항목 입력"/></div></div><button class="pros-add-btn" data-pros-add-tuning="1" type="button">+ 항목추가</button></div><div class="field"><label>관리 상태확인(내역서보유의 경우)</label><textarea data-key="prosMaintenanceMemo" placeholder="소모품, 차량 정비·관리 등 관리 장점 입력"></textarea></div></article><article class="report-card-ui">
+</article><article class="report-card-ui" data-check-card="pros"><h2><span class="no">19</span> 장점</h2><div class="field"><label>보증연장</label><input data-key="prosWarranty" placeholder="보증연장 내용 입력"/></div><div class="field pros-tuning-wrap"><label>추가장착(튜닝)</label><div class="pros-tuning-rows" data-pros-tuning-rows="1"><div class="pros-tuning-row"><input data-key="prosTuning_0" placeholder="추가장착/튜닝 항목 입력"/></div></div><button class="pros-add-btn" data-pros-add-tuning="1" type="button">+ 항목추가</button></div><div class="field"><label>관리 상태확인(내역서보유의 경우)</label><textarea data-key="prosMaintenanceMemo" placeholder="소모품, 차량 정비·관리 등 관리 장점 입력"></textarea></div></article><article class="report-card-ui comment-card-v1674 comment-card-v1675">
 <h2><span class="no">20</span> 코멘트</h2>
-<div class="field"><label>고객 코멘트</label><textarea data-key="customerCommentMemo" placeholder="고객에게 질문한 주행 이슈, 기타 특이사항, 고객의 전달사항 입력"></textarea></div>
-<div class="field customer-talk-field"><div class="customer-talk-head"><span class="customer-talk-title">검수자 코멘트</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle" data-talk-level="0" type="button">선택</button><span class="customer-talk-time">일정시간</span></div><textarea class="customer-talk-memo" data-key="inspectorCommentMemo" placeholder="고객도 같이 보는 관점의 검수자 코멘트를 입력"></textarea></div>
+<div class="field"><label class="comment-item-title-v1674 customer-comment-label-v1675" style="font-size:11px!important;line-height:1.35!important">고객 코멘트</label><textarea data-key="customerCommentMemo" placeholder="고객에게 질문한 주행 이슈, 기타 특이사항, 고객의 전달사항 입력"></textarea></div>
+<div class="field customer-talk-field"><div class="customer-talk-head"><span class="customer-talk-title comment-item-title-v1674 inspector-comment-label-v1675" style="font-size:11px!important;line-height:1.35!important">검수자 코멘트</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle" data-talk-level="0" type="button">선택</button><span class="customer-talk-time">일정시간</span></div><textarea class="customer-talk-memo" data-key="inspectorCommentMemo" placeholder="고객도 같이 보는 관점의 검수자 코멘트를 입력"></textarea></div>
 </article></section>
 </div>
 <script>

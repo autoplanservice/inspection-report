@@ -7042,6 +7042,32 @@ select.ab-direct-bold-active option:checked{
 #secDiag .insurance-basic-card select.ab-ins-bold-select-v1670:not(.ab-ins-bold-active-v1670){
   font-weight:400!important;
 }
+
+/* v16.71 - 점검 탭 선택박스 클릭 전/후 폰트 굵기 분리
+   목적:
+   - 정상/이상/양호/부족/미세누유/누유 등 점검 탭 선택박스는 클릭 전 일반 굵기 유지.
+   - 클릭 후 선택된 버튼만 볼드체 적용.
+   영향 범위: 점검 탭(#secCheck)의 check-choice / ab-choice 선택 상태만 적용한다.
+   주의: 선택 색상, 저장 key, localStorage key, 도면/마커 로직은 변경하지 않는다.
+*/
+
+/* 클릭 전: 일반 굵기 */
+#secCheck .check-radio:not(:checked) + .check-choice,
+#secCheck .ab-check-radio:not(:checked) + .ab-choice{
+  font-weight:400!important;
+}
+
+/* 클릭 후 선택된 값: 볼드체 */
+#secCheck .check-radio:checked + .check-choice,
+#secCheck .ab-check-radio:checked + .ab-choice{
+  font-weight:900!important;
+}
+
+/* 기존 v16.66의 선택 상태 font-weight:400 override를 최후단에서 다시 덮는다. */
+#secCheck input[type="radio"].check-radio:checked + label.check-choice,
+#secCheck input[type="radio"].ab-check-radio:checked + label.ab-choice{
+  font-weight:900!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */

@@ -6873,6 +6873,175 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
   margin-top:6px!important;
   padding:10px 0!important;
 }
+
+/* v16.63 - 엔진룸 기능점검 소음/떨림 라벨 볼드 적용
+   목적: 소음 여부, 떨림 여부 라벨만 볼드체로 표시한다.
+   영향 범위: 점검 탭 13 엔진룸 기능점검의 그룹 라벨(.engine-func-note-label)만 적용한다.
+   주의: engine_func_0~6 저장 key, 양호/이상 선택 로직, 메모 로직은 변경하지 않는다.
+*/
+#secCheck [data-check-card="engine_func"] .engine-func-note-label{
+  font-weight:900!important;
+}
+
+/* v16.64 - 기본정보 위험 선택값 색상 처리
+   목적:
+   - 튜닝(구조변경 등): 있음 선택 시 빨강/흰색
+   - 정기검사 확인: 기간 지남 선택 시 빨강/흰색
+   - 정비이력 확인: 미확인 선택 시 빨강/흰색
+   영향 범위: 기본정보 탭의 지정 select 3개만 적용한다.
+   주의: 저장 key, localStorage key, 다른 카드/도면/점검 탭 로직은 변경하지 않는다.
+*/
+#secInput select.basic-danger-active{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:900!important;
+}
+
+#secInput select.basic-danger-active option{
+  background:#ffffff!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+}
+
+/* v16.65 - 기본정보 위험 선택값 중 일부 폰트 볼드 제거
+   목적:
+   - 튜닝(구조변경 등) '있음' 선택 시 빨강/흰색은 유지하되 폰트 볼드체를 제거한다.
+   - 정비이력 확인 '미확인' 선택 시 빨강/흰색은 유지하되 폰트 볼드체를 제거한다.
+   영향 범위: 기본정보 탭의 튜닝 select, 정비이력 확인 select만 적용한다.
+   주의: 정기검사 확인 '기간 지남' 스타일, 저장 key, localStorage key, 다른 카드 로직은 변경하지 않는다.
+*/
+#secInput select.basic-danger-active.danger-when-tuning,
+#secInput select.basic-danger-active.danger-when-maint-unchecked{
+  font-weight:400!important;
+}
+
+/* v16.66 - 기본정보 정기검사 위험값 볼드 제거 + 점검 탭 클릭 전 선택박스 볼드 제거
+   목적:
+   1) 정기검사 확인 '기간 지남' 선택 시 빨강/흰색은 유지하되 폰트 볼드체를 제거한다.
+   2) 점검 탭의 정상/이상/양호/부족/미세누유/누유 등 클릭 전 기본 선택박스의 폰트 볼드체를 제거한다.
+   영향 범위: 기본정보 탭 지정 select 1개와 점검 탭 선택박스 기본 상태만 적용한다.
+   주의: 저장 key, localStorage key, 선택 후 색상 로직, 도면/마커 로직은 변경하지 않는다.
+*/
+
+/* 정기검사 확인 > 기간 지남 선택 시 폰트 볼드 제거 */
+#secInput select.basic-danger-active.danger-when-inspection-expired{
+  font-weight:400!important;
+}
+
+/* 점검 탭 클릭 전 기본 선택박스 폰트 볼드 제거 */
+#secCheck .check-radio:not(:checked) + .check-choice,
+#secCheck .ab-check-radio:not(:checked) + .ab-choice{
+  font-weight:400!important;
+}
+
+/* 점검 탭 클릭 후 선택된 선택박스도 과한 볼드가 남지 않도록 기본 굵기 유지 */
+#secCheck .check-radio:checked + .check-choice,
+#secCheck .ab-check-radio:checked + .ab-choice{
+  font-weight:400!important;
+}
+
+/* v16.67 - 지정 위험/주의 선택값 폰트 볼드체 적용
+   목적:
+   - 기본정보/랩핑PPF/보험특수이력의 지정 선택값에 대해 폰트 볼드체를 적용한다.
+   - 기존 색상 조건은 유지하고, font-weight만 최종 상태 기준으로 보정한다.
+   영향 범위: 지정 select/button 상태 표시만 적용한다.
+   주의: 저장 key, localStorage key, 도면 좌표, 점검 탭 구조는 변경하지 않는다.
+*/
+#secInput select.ab-bold-state,
+#secDiag select.ab-bold-state,
+#secCheck select.ab-bold-state,
+select.ab-bold-state,
+button.ab-bold-state,
+.insurance-option.ab-bold-state,
+.insurance-choice.ab-bold-state{
+  font-weight:900!important;
+}
+
+/* 기존 v16.65~v16.66에서 일부 위험 select를 400으로 낮춘 규칙보다 뒤에서 다시 덮는다. */
+#secInput select.basic-danger-active.ab-bold-state,
+#secInput select.basic-danger-active.danger-when-tuning.ab-bold-state,
+#secInput select.basic-danger-active.danger-when-inspection-expired.ab-bold-state,
+#secInput select.basic-danger-active.danger-when-maint-unchecked.ab-bold-state{
+  font-weight:900!important;
+}
+
+/* 미확정 여부/보험 이력 계열 active 버튼도 볼드 보정 */
+#secDiag .ab-bold-state,
+#secInput .ab-bold-state{
+  font-weight:900!important;
+}
+
+/* v16.68 - 랩핑/보험·특수 이력 버튼형 선택값 볼드 보정
+   목적:
+   - 랩핑/PPF 여부 > 있음 선택 시 볼드
+   - 전손·침수·전소 > 전손/침수/전소 선택 시 볼드
+   - 용도이력 > 리스/렌트/영업/관용/부활 선택 시 볼드
+   - 미확정 여부 > 있음 선택 시 볼드
+   영향 범위: 랩핑/PPF 카드와 보험·특수 이력 카드의 선택 UI만 적용한다.
+   주의: 색상 로직, 저장 key, localStorage key, 도면/점검 탭 구조는 변경하지 않는다.
+*/
+.ab-bold-btn-active,
+.ab-bold-btn-active *,
+.ab-bold-state,
+.ab-bold-state *{
+  font-weight:900!important;
+}
+
+/* active 클래스가 직접 붙는 버튼/라벨 구조 보정 */
+.insurance-option.active,
+.insurance-choice.active,
+.wrapping-option.active,
+.ppf-option.active,
+button.active.ab-bold-btn-watch,
+label.active.ab-bold-btn-watch{
+  font-weight:900!important;
+}
+
+/* v16.69 - 랩핑/보험·특수 이력 select 직접 볼드 보정
+   목적:
+   - 랩핑/PPF 여부: 있음 선택 시 볼드
+   - 전손·침수·전소: 전손/침수/전소 선택 시 볼드
+   - 용도이력: 리스/렌트/영업/관용/부활 선택 시 볼드
+   - 미확정 여부: 있음 선택 시 볼드
+   원인:
+   - 기존 v16.67~v16.68은 문맥 탐색 기반이라 .insurance-select-title 형제 구조를 안정적으로 잡지 못했다.
+   조치:
+   - 대상 select에 data-bold-values를 직접 부여하고 값 기준으로 ab-direct-bold-active class를 토글한다.
+*/
+select.ab-direct-bold-active,
+select.ab-direct-bold-active option:checked{
+  font-weight:900!important;
+}
+
+.ab-direct-bold-button.ab-direct-bold-active,
+.ab-direct-bold-button.ab-direct-bold-active *{
+  font-weight:900!important;
+}
+
+/* 보험 select는 기존 select 스타일보다 뒤에서 확실히 덮는다. */
+#secDiag .insurance-select.ab-direct-bold-active,
+#secInput .ab-direct-bold-select.ab-direct-bold-active{
+  font-weight:900!important;
+}
+
+/* v16.70 - 진단 탭 보험·특수 이력 select 볼드 최종 보정
+   목적:
+   - 전손·침수·전소: 전손/침수/전소 선택 시 폰트 볼드체
+   - 용도이력: 리스/렌트/영업/관용/부활 선택 시 폰트 볼드체
+   - 미확정여부 -> 미확정 여부 문구 수정 후 있음 선택 시 폰트 볼드체
+   영향 범위: 진단 탭 보험·특수 이력 카드의 select.insurance-select 3개만 적용한다.
+   주의: 저장 key, localStorage key, 색상 로직, 도면/점검 탭 구조는 변경하지 않는다.
+*/
+#secDiag .insurance-basic-card select.ab-ins-bold-select-v1670.ab-ins-bold-active-v1670,
+#secDiag .insurance-basic-card select.ab-ins-bold-select-v1670.ab-ins-bold-active-v1670 option:checked{
+  font-weight:900!important;
+}
+
+#secDiag .insurance-basic-card select.ab-ins-bold-select-v1670:not(.ab-ins-bold-active-v1670){
+  font-weight:400!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -6993,7 +7162,7 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 </div>
 <div class="basicinfo-v5-field full">
 <div class="basicinfo-v5-label">튜닝(구조변경 등)</div>
-<select class="bi-select tuning-main normal-select">
+<select class="bi-select tuning-main normal-select basic-danger-watch danger-when-tuning" data-danger-value="있음">
 <option>없음</option>
 <option>있음</option>
 </select>
@@ -7004,7 +7173,7 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 </div>
 <div class="basicinfo-v5-field full tri-row-field"><div class="tri-row-grid"><div class="tri-row-item">
 <div class="basicinfo-v5-label">정기검사 확인</div>
-<select class="bi-select normal-select">
+<select class="bi-select normal-select basic-danger-watch danger-when-inspection-expired" data-danger-value="기간 지남">
 <option>정상</option>
 <option>3개월 안</option>
 <option>기간 지남</option>
@@ -7018,7 +7187,7 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 </select>
 </div><div class="tri-row-item">
 <div class="basicinfo-v5-label">정비이력 확인</div>
-<select class="bi-select normal-select">
+<select class="bi-select normal-select basic-danger-watch danger-when-maint-unchecked" data-danger-value="미확인">
 <option>확인</option>
 <option>미확인</option>
 </select>
@@ -7030,7 +7199,7 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 </div>
 </article><article class="report-card-ui"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>
 <div class="wrapppf-card">
-<select class="bi-select wrap-select">
+<select class="bi-select wrap-select ab-direct-bold-select" data-bold-values="있음">
 <option>없음</option>
 <option>있음</option>
 </select>
@@ -7048,7 +7217,7 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 <div class="insurance-select-group" data-insurance-key="totalFlood">
 <div class="insurance-select-head">
 <div class="insurance-select-title">전손·침수·전소</div>
-<select class="insurance-select" data-insurance-select="totalFlood" data-key="insuranceTotalFlood">
+<select class="insurance-select ab-direct-bold-select ab-ins-bold-select-v1670" data-bold-values="전손|침수|전소" data-ins-bold-values="전손|침수|전소" data-insurance-select="totalFlood" data-key="insuranceTotalFlood">
 <option value="없음">없음</option>
 <option value="전손">전손</option>
 <option value="침수">침수</option>
@@ -7070,7 +7239,7 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 <div class="insurance-select-group" data-insurance-key="usage">
 <div class="insurance-select-head">
 <div class="insurance-select-title">용도이력</div>
-<select class="insurance-select" data-insurance-select="usage" data-key="insuranceUsage">
+<select class="insurance-select ab-direct-bold-select ab-ins-bold-select-v1670" data-bold-values="리스|렌트|영업|관용|부활" data-ins-bold-values="리스|렌트|영업|관용|부활" data-insurance-select="usage" data-key="insuranceUsage">
 <option value="없음">없음</option>
 <option value="리스">리스</option>
 <option value="렌트">렌트</option>
@@ -7083,8 +7252,8 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 </div>
 <div class="insurance-select-group" data-insurance-key="pending">
 <div class="insurance-select-head">
-<div class="insurance-select-title">미확정여부</div>
-<select class="insurance-select" data-insurance-select="pending" data-key="insurancePending">
+<div class="insurance-select-title">미확정 여부</div>
+<select class="insurance-select ab-direct-bold-select ab-ins-bold-select-v1670" data-bold-values="있음" data-ins-bold-values="있음" data-insurance-select="pending" data-key="insurancePending">
 <option value="없음">없음</option>
 <option value="있음">있음</option>
 </select>
@@ -10046,6 +10215,359 @@ window.addEventListener('load',bindV155,false);
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindProsTuningSingle, false);
   else bindProsTuningSingle();
   window.addEventListener('load', bindProsTuningSingle, false);
+})();
+</script><script>
+/* v16.64 - 기본정보 위험 선택값 class 토글 */
+(function(){
+  function applyBasicDangerSelect(select){
+    if(!select) return;
+    var dangerValue = select.getAttribute('data-danger-value') || '';
+    var currentValue = select.value || '';
+    if(currentValue === dangerValue){
+      select.classList.add('basic-danger-active');
+    }else{
+      select.classList.remove('basic-danger-active');
+    }
+  }
+
+  function bindBasicDangerSelects(){
+    var selects = document.querySelectorAll('#secInput select.basic-danger-watch');
+    for(var i=0;i<selects.length;i++){
+      var sel = selects[i];
+      applyBasicDangerSelect(sel);
+
+      if(sel.getAttribute('data-basic-danger-bound-v1664') === '1') continue;
+      sel.setAttribute('data-basic-danger-bound-v1664', '1');
+
+      sel.addEventListener('change', function(){
+        applyBasicDangerSelect(this);
+      }, false);
+
+      sel.addEventListener('input', function(){
+        applyBasicDangerSelect(this);
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindBasicDangerSelects, false);
+  }else{
+    bindBasicDangerSelects();
+  }
+  window.addEventListener('load', bindBasicDangerSelects, false);
+  window.addEventListener('pageshow', bindBasicDangerSelects, false);
+})();
+</script><script>
+/* v16.67 - 지정 선택값 볼드체 토글 */
+(function(){
+  function getFieldLabelText(el){
+    var node = el;
+    while(node && node !== document){
+      var label = node.querySelector ? node.querySelector('.basicinfo-v5-label, label, .insurance-label, .insurance-basic-label, .ins-label') : null;
+      if(label && label.textContent) return label.textContent.replace(/\s+/g,' ').trim();
+      node = node.parentNode;
+    }
+    return '';
+  }
+
+  function normalizeText(text){
+    return (text || '').replace(/\s+/g,'').trim();
+  }
+
+  function shouldBoldSelect(sel){
+    var value = (sel.value || '').trim();
+    var label = getFieldLabelText(sel);
+    var nLabel = normalizeText(label);
+
+    if(nLabel.indexOf('스티커여부') >= 0 && value === '없음') return true;
+    if(nLabel.indexOf('계기판이상확인') >= 0 && value === '있음') return true;
+    if(nLabel.indexOf('외관색상동일여부') >= 0 && value === '상이') return true;
+    if(nLabel.indexOf('튜닝') >= 0 && nLabel.indexOf('구조변경') >= 0 && value === '있음') return true;
+    if(nLabel.indexOf('정기검사확인') >= 0 && (value === '기간 지남' || value === '기간지남')) return true;
+    if(nLabel.indexOf('리콜확인') >= 0 && value === '해당(미이행)') return true;
+    if(nLabel.indexOf('정비이력확인') >= 0 && value === '미확인') return true;
+    if(nLabel.indexOf('랩핑') >= 0 && nLabel.indexOf('PPF') >= 0 && value === '있음') return true;
+    if(nLabel.indexOf('전손') >= 0 && nLabel.indexOf('침수') >= 0 && nLabel.indexOf('전소') >= 0 && (value === '전손' || value === '침수' || value === '전소')) return true;
+    if(nLabel.indexOf('용도이력') >= 0 && (value === '리스' || value === '렌트' || value === '영업' || value === '관용' || value === '부활')) return true;
+    if(nLabel.indexOf('미확정여부') >= 0 || nLabel.indexOf('미확정여부') >= 0 || nLabel.indexOf('미확정') >= 0){
+      if(value === '있음') return true;
+    }
+
+    return false;
+  }
+
+  function updateSelect(sel){
+    if(shouldBoldSelect(sel)) sel.classList.add('ab-bold-state');
+    else sel.classList.remove('ab-bold-state');
+  }
+
+  function updateButtonGroup(btn){
+    if(!btn) return;
+    var txt = (btn.textContent || '').replace(/\s+/g,' ').trim();
+    var container = btn.parentNode;
+    var label = getFieldLabelText(btn);
+    var nLabel = normalizeText(label);
+
+    var active = btn.classList.contains('active') || btn.getAttribute('aria-pressed') === 'true' || btn.checked;
+
+    var bold = false;
+    if(active){
+      if(nLabel.indexOf('랩핑') >= 0 && nLabel.indexOf('PPF') >= 0 && txt === '있음') bold = true;
+      if(nLabel.indexOf('전손') >= 0 && nLabel.indexOf('침수') >= 0 && nLabel.indexOf('전소') >= 0 && (txt === '전손' || txt === '침수' || txt === '전소')) bold = true;
+      if(nLabel.indexOf('용도이력') >= 0 && (txt === '리스' || txt === '렌트' || txt === '영업' || txt === '관용' || txt === '부활')) bold = true;
+      if(nLabel.indexOf('미확정') >= 0 && txt === '있음') bold = true;
+    }
+
+    if(bold) btn.classList.add('ab-bold-state');
+    else btn.classList.remove('ab-bold-state');
+  }
+
+  function updateAllBoldStates(){
+    var selects = document.querySelectorAll('select');
+    for(var i=0;i<selects.length;i++){
+      updateSelect(selects[i]);
+      if(selects[i].getAttribute('data-ab-bold-bound-v1667') !== '1'){
+        selects[i].setAttribute('data-ab-bold-bound-v1667','1');
+        selects[i].addEventListener('change', function(){ updateSelect(this); }, false);
+        selects[i].addEventListener('input', function(){ updateSelect(this); }, false);
+      }
+    }
+
+    var buttons = document.querySelectorAll('.insurance-option, .insurance-choice, button');
+    for(var j=0;j<buttons.length;j++){
+      updateButtonGroup(buttons[j]);
+      if(buttons[j].getAttribute('data-ab-bold-btn-bound-v1667') !== '1'){
+        buttons[j].setAttribute('data-ab-bold-btn-bound-v1667','1');
+        buttons[j].addEventListener('click', function(){
+          var self = this;
+          setTimeout(function(){ updateAllBoldStates(); }, 0);
+          setTimeout(function(){ updateAllBoldStates(); }, 30);
+        }, false);
+      }
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', updateAllBoldStates, false);
+  }else{
+    updateAllBoldStates();
+  }
+  window.addEventListener('load', updateAllBoldStates, false);
+  window.addEventListener('pageshow', updateAllBoldStates, false);
+})();
+</script><script>
+/* v16.68 - 랩핑/보험·특수 이력 버튼형 선택값 볼드 재적용 */
+(function(){
+  function norm(s){
+    return (s || '').replace(/\s+/g,'').trim();
+  }
+
+  function closestTextContext(el){
+    var node = el;
+    var depth = 0;
+    var out = '';
+    while(node && node !== document && depth < 7){
+      out += ' ' + (node.textContent || '');
+      node = node.parentNode;
+      depth++;
+    }
+    return norm(out);
+  }
+
+  function isActiveControl(el){
+    if(!el) return false;
+    if(el.classList && (el.classList.contains('active') || el.classList.contains('selected') || el.classList.contains('on'))) return true;
+    if(el.getAttribute && (el.getAttribute('aria-pressed') === 'true' || el.getAttribute('aria-selected') === 'true')) return true;
+
+    var forId = el.getAttribute ? el.getAttribute('for') : '';
+    if(forId){
+      var input = document.getElementById(forId);
+      if(input && input.checked) return true;
+    }
+
+    if(el.matches && el.matches('input[type="radio"], input[type="checkbox"]') && el.checked) return true;
+    return false;
+  }
+
+  function shouldBoldButton(el){
+    var text = (el.textContent || el.value || '').replace(/\s+/g,' ').trim();
+    var nText = norm(text);
+    var ctx = closestTextContext(el);
+
+    if(nText === '있음' && ctx.indexOf('랩핑') >= 0 && ctx.indexOf('PPF') >= 0) return true;
+    if((nText === '전손' || nText === '침수' || nText === '전소') && ctx.indexOf('전손') >= 0 && ctx.indexOf('침수') >= 0) return true;
+    if((nText === '리스' || nText === '렌트' || nText === '영업' || nText === '관용' || nText === '부활') && ctx.indexOf('용도이력') >= 0) return true;
+    if(nText === '있음' && ctx.indexOf('미확정') >= 0) return true;
+
+    return false;
+  }
+
+  function updateBoldButtons(){
+    var controls = document.querySelectorAll('button, label, .insurance-option, .insurance-choice, .wrapping-option, .ppf-option');
+    for(var i=0;i<controls.length;i++){
+      var el = controls[i];
+      var target = shouldBoldButton(el) && isActiveControl(el);
+      if(target) el.classList.add('ab-bold-btn-active');
+      else el.classList.remove('ab-bold-btn-active');
+
+      if(el.getAttribute('data-ab-bold-button-bound-v1668') !== '1'){
+        el.setAttribute('data-ab-bold-button-bound-v1668','1');
+        el.addEventListener('click', function(){
+          setTimeout(updateBoldButtons, 0);
+          setTimeout(updateBoldButtons, 60);
+        }, false);
+        el.addEventListener('change', function(){
+          setTimeout(updateBoldButtons, 0);
+          setTimeout(updateBoldButtons, 60);
+        }, false);
+      }
+    }
+
+    var inputs = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+    for(var j=0;j<inputs.length;j++){
+      var inp = inputs[j];
+      if(inp.getAttribute('data-ab-bold-input-bound-v1668') !== '1'){
+        inp.setAttribute('data-ab-bold-input-bound-v1668','1');
+        inp.addEventListener('change', function(){
+          setTimeout(updateBoldButtons, 0);
+          setTimeout(updateBoldButtons, 60);
+        }, false);
+      }
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', updateBoldButtons, false);
+  }else{
+    updateBoldButtons();
+  }
+  window.addEventListener('load', updateBoldButtons, false);
+  window.addEventListener('pageshow', updateBoldButtons, false);
+})();
+</script><script>
+/* v16.69 - data-bold-values 기반 직접 볼드 토글 */
+(function(){
+  function splitValues(text){
+    return (text || '').split('|').map(function(v){ return v.trim(); }).filter(Boolean);
+  }
+
+  function applyDirectBoldSelect(sel){
+    if(!sel) return;
+    var values = splitValues(sel.getAttribute('data-bold-values') || '');
+    var current = (sel.value || '').trim();
+    var hit = values.indexOf(current) >= 0;
+    if(hit) sel.classList.add('ab-direct-bold-active');
+    else sel.classList.remove('ab-direct-bold-active');
+  }
+
+  function isButtonActive(el){
+    if(!el) return false;
+    if(el.classList.contains('active') || el.classList.contains('selected') || el.classList.contains('on')) return true;
+    if(el.getAttribute('aria-pressed') === 'true' || el.getAttribute('aria-selected') === 'true') return true;
+    var forId = el.getAttribute('for');
+    if(forId){
+      var input = document.getElementById(forId);
+      if(input && input.checked) return true;
+    }
+    return false;
+  }
+
+  function applyDirectBoldButton(el){
+    if(!el) return;
+    var values = splitValues(el.getAttribute('data-bold-values') || '');
+    var text = (el.textContent || '').replace(/\\s+/g,' ').trim();
+    var hit = values.indexOf(text) >= 0 && isButtonActive(el);
+    if(hit) el.classList.add('ab-direct-bold-active');
+    else el.classList.remove('ab-direct-bold-active');
+  }
+
+  function bindDirectBold(){
+    var selects = document.querySelectorAll('select.ab-direct-bold-select');
+    for(var i=0;i<selects.length;i++){
+      applyDirectBoldSelect(selects[i]);
+      if(selects[i].getAttribute('data-direct-bold-bound-v1669') === '1') continue;
+      selects[i].setAttribute('data-direct-bold-bound-v1669','1');
+      selects[i].addEventListener('change', function(){ applyDirectBoldSelect(this); }, false);
+      selects[i].addEventListener('input', function(){ applyDirectBoldSelect(this); }, false);
+    }
+
+    var buttons = document.querySelectorAll('.ab-direct-bold-button');
+    for(var j=0;j<buttons.length;j++){
+      applyDirectBoldButton(buttons[j]);
+      if(buttons[j].getAttribute('data-direct-bold-btn-bound-v1669') === '1') continue;
+      buttons[j].setAttribute('data-direct-bold-btn-bound-v1669','1');
+      buttons[j].addEventListener('click', function(){
+        var self = this;
+        setTimeout(function(){
+          var all = document.querySelectorAll('.ab-direct-bold-button');
+          for(var k=0;k<all.length;k++) applyDirectBoldButton(all[k]);
+        }, 0);
+        setTimeout(function(){
+          var all = document.querySelectorAll('.ab-direct-bold-button');
+          for(var k=0;k<all.length;k++) applyDirectBoldButton(all[k]);
+        }, 60);
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindDirectBold, false);
+  else bindDirectBold();
+  window.addEventListener('load', bindDirectBold, false);
+  window.addEventListener('pageshow', bindDirectBold, false);
+})();
+</script><script>
+/* v16.70 - 보험·특수 이력 select 직접 볼드 토글 */
+(function(){
+  function splitValues(text){
+    return (text || '').split('|').map(function(v){ return v.trim(); }).filter(Boolean);
+  }
+
+  function applyInsuranceBold(sel){
+    if(!sel) return;
+    var values = splitValues(sel.getAttribute('data-ins-bold-values') || '');
+    var current = (sel.value || '').trim();
+    var hit = values.indexOf(current) >= 0;
+
+    if(hit){
+      sel.classList.add('ab-ins-bold-active-v1670');
+      sel.style.fontWeight = '900';
+    }else{
+      sel.classList.remove('ab-ins-bold-active-v1670');
+      sel.style.fontWeight = '400';
+    }
+  }
+
+  function bindInsuranceBold(){
+    var selects = document.querySelectorAll('#secDiag .insurance-basic-card select.ab-ins-bold-select-v1670');
+    for(var i=0;i<selects.length;i++){
+      var sel = selects[i];
+      applyInsuranceBold(sel);
+
+      if(sel.getAttribute('data-ins-bold-bound-v1670') === '1') continue;
+      sel.setAttribute('data-ins-bold-bound-v1670','1');
+
+      sel.addEventListener('change', function(){
+        applyInsuranceBold(this);
+      }, false);
+
+      sel.addEventListener('input', function(){
+        applyInsuranceBold(this);
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindInsuranceBold, false);
+  }else{
+    bindInsuranceBold();
+  }
+
+  window.addEventListener('load', bindInsuranceBold, false);
+  window.addEventListener('pageshow', bindInsuranceBold, false);
+
+  /* 기존 저장값 복원 스크립트가 뒤늦게 값을 넣는 경우를 대비한다. */
+  setTimeout(bindInsuranceBold, 100);
+  setTimeout(bindInsuranceBold, 300);
 })();
 </script></body>
 </html>

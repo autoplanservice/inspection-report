@@ -7474,6 +7474,40 @@ select,
 button{
   /* font-size는 각 요소 기존 규칙을 따른다. */
 }
+
+/* v16.85 - 전체 입력박스 안내문구 placeholder 폰트사이즈 45% 축소
+   목적:
+   - 모든 input/textarea 안내문구 placeholder 폰트사이즈를 현재 기준 18px에서 약 45% 줄인 9.9px로 조정한다.
+   - 실제 입력값 폰트, 항목 제목 폰트, 카드 구조, 저장 key는 변경하지 않는다.
+*/
+:root{
+  --ab-placeholder-font-size:9.9px!important;
+}
+
+input::placeholder,
+textarea::placeholder{
+  font-size:9.9px!important;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder{
+  font-size:9.9px!important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder{
+  font-size:9.9px!important;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder{
+  font-size:9.9px!important;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder{
+  font-size:9.9px!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */

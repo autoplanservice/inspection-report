@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트</title>
+<title>오토베이 현장 매입 진단리포트 v16.17-wheel-mask-top-paint-fix</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -7316,6 +7316,98 @@ html body #secCheck [data-check-card="engine_func"] .engine-func-note-label.no-t
 #secCheck [data-check-card="engine_func"] .engine-func-note-label{
   margin-left:0!important;
 }
+
+/* v16.79 - 점검 탭 선택버튼 반응속도 개선
+   목적:
+   - 점검 탭 정상/이상/양호/부족/미세누유/누유 라벨 클릭 시 불필요한 전역 repaint 부담을 줄인다.
+   - 클릭 전/후 색상 및 볼드 상태는 기존 CSS 방식 그대로 유지한다.
+   영향 범위: 점검 탭(#secCheck)의 선택 label 렌더링 안정화만 적용한다.
+   주의: 저장 key, localStorage key, radio 선택 구조, 메모 표시 구조는 변경하지 않는다.
+*/
+#secCheck .check-choice,
+#secCheck .ab-choice{
+  transition:none!important;
+  animation:none!important;
+  will-change:auto!important;
+}
+
+#secCheck .checkline,
+#secCheck .ab-checkline{
+  contain:layout paint!important;
+}
+
+/* v16.81 - 보유확인 카드 입력박스 표시 조건 정리
+   목적:
+   - 옵션표: 보유 선택 시 입력박스 표시
+   - 구성품: 보유 선택 시 입력박스 표시
+   - 보수키트/스페어타이어/소화기: 보유·미보유 모두 입력박스 미표시
+   영향 범위: 점검 탭 > 보유확인 카드의 지정 항목 메모 표시 조건만 적용한다.
+   주의: data-check-key, radio name/id, 저장 key, localStorage key는 변경하지 않는다.
+*/
+
+/* 기존 이상 선택 시 메모 표시 규칙보다 뒤에서 보유확인 전용 표시 조건을 재정의 */
+#secCheck [data-check-card="owned"] .checkline[data-owned-memo-mode="ok_only"] .memo,
+#secCheck [data-check-card="owned"] .ab-checkline[data-owned-memo-mode="ok_only"] .ab-check-memo{
+  display:none!important;
+  grid-column:1 / -1!important;
+}
+
+#secCheck [data-check-card="owned"] .checkline[data-owned-memo-mode="ok_only"] input.owned-show-memo:checked ~ .memo,
+#secCheck [data-check-card="owned"] .ab-checkline[data-owned-memo-mode="ok_only"] input.owned-show-memo:checked ~ .ab-check-memo{
+  display:block!important;
+}
+
+#secCheck [data-check-card="owned"] .checkline[data-owned-memo-mode="none"] .memo,
+#secCheck [data-check-card="owned"] .ab-checkline[data-owned-memo-mode="none"] .ab-check-memo{
+  display:none!important;
+}
+
+/* v16.82 - 보유확인 옵션표 입력박스 미표시
+   목적:
+   - 옵션표 항목은 보유/미보유 어느 쪽을 선택해도 입력박스가 열리지 않도록 한다.
+   영향 범위: 점검 탭 > 보유확인 > 옵션표 행의 메모 표시 조건만 적용한다.
+   주의: data-check-key, radio name/id, 저장 key, localStorage key, 선택 색상/볼드 로직은 변경하지 않는다.
+*/
+#secCheck [data-check-card="owned"] .checkline[data-check-key][data-owned-memo-mode="none"] .memo,
+#secCheck [data-check-card="owned"] .ab-checkline[data-check-key][data-owned-memo-mode="none"] .ab-check-memo{
+  display:none!important;
+}
+
+/* v16.83 - 전체 입력박스 안내문구 폰트사이즈 통일
+   목적:
+   - 담당자 항목 입력박스 안내문구 placeholder의 폰트사이즈를 기준으로 전체 입력박스 안내문구를 통일한다.
+   - 입력값 자체의 폰트사이즈는 변경하지 않고 placeholder만 보정한다.
+   영향 범위: input/textarea placeholder 표시 폰트사이즈만 적용한다.
+   주의: 저장 key, localStorage key, 카드 구조, 선택 로직, 도면 좌표는 변경하지 않는다.
+*/
+:root{
+  --ab-placeholder-font-size:18px;
+}
+
+input::placeholder,
+textarea::placeholder{
+  font-size:var(--ab-placeholder-font-size)!important;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder{
+  font-size:var(--ab-placeholder-font-size)!important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder{
+  font-size:var(--ab-placeholder-font-size)!important;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder{
+  font-size:var(--ab-placeholder-font-size)!important;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder{
+  font-size:var(--ab-placeholder-font-size)!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -8451,53 +8543,53 @@ html body #secCheck [data-check-card="engine_func"] .engine-func-note-label.no-t
 </div>
 </article><article class="report-card-ui" data-check-card="interior_memo"><h2><span class="no">17</span> 실내 특이사항</h2><div class="field"><label>점검항목에 없는 실내 특이사항이 있는 경우 작성합니다.</label><textarea data-key="interiorSpecialMemo" placeholder="항목에 없는 실내 특이사항을 입력"></textarea></div></article><article class="report-card-ui" data-check-card="owned">
 <h2><span class="no">18</span> 보유확인</h2>
-<div class="checkline" data-check-key="owned_0">
+<div class="checkline" data-check-key="owned_0" data-owned-memo-mode="none">
 <div class="check-title">옵션표</div>
 <input class="check-radio ok" data-check="ok" id="owned_0_ok" name="owned_0_state" type="radio"/>
-<label class="check-choice ok" for="owned_0_ok">양호</label>
+<label class="check-choice ok" for="owned_0_ok">보유</label>
 <input class="check-radio bad" data-check="bad" id="owned_0_bad" name="owned_0_state" type="radio"/>
-<label class="check-choice bad" for="owned_0_bad">이상</label>
-<input class="memo" data-key="owned_0_memo" placeholder="이상 메모 입력"/>
+<label class="check-choice bad" for="owned_0_bad">미보유</label>
+<input class="memo" data-key="owned_0_memo" placeholder="이상 메모 입력" style="display:none!important;"/>
 </div>
 <div class="checkline" data-check-key="owned_1">
 <div class="check-title">키 개수</div>
 <input class="check-radio ok" data-check="ok" id="owned_1_ok" name="owned_1_state" type="radio"/>
-<label class="check-choice ok" for="owned_1_ok">양호</label>
+<label class="check-choice ok" for="owned_1_ok">2개 이상</label>
 <input class="check-radio bad" data-check="bad" id="owned_1_bad" name="owned_1_state" type="radio"/>
-<label class="check-choice bad" for="owned_1_bad">이상</label>
+<label class="check-choice bad" for="owned_1_bad">1개</label>
 <input class="memo" data-key="owned_1_memo" placeholder="이상 메모 입력"/>
 </div>
-<div class="checkline" data-check-key="owned_2">
+<div class="checkline" data-check-key="owned_2" data-owned-memo-mode="ok_only">
 <div class="check-title">구성품</div>
-<input class="check-radio ok" data-check="ok" id="owned_2_ok" name="owned_2_state" type="radio"/>
-<label class="check-choice ok" for="owned_2_ok">양호</label>
+<input class="check-radio ok owned-show-memo" data-check="ok" id="owned_2_ok" name="owned_2_state" type="radio"/>
+<label class="check-choice ok" for="owned_2_ok">보유</label>
 <input class="check-radio bad" data-check="bad" id="owned_2_bad" name="owned_2_state" type="radio"/>
-<label class="check-choice bad" for="owned_2_bad">이상</label>
-<input class="memo" data-key="owned_2_memo" placeholder="이상 메모 입력"/>
+<label class="check-choice bad" for="owned_2_bad">미보유</label>
+<input class="memo" data-key="owned_2_memo" placeholder="이상 메모 입력" style=""/>
 </div>
-<div class="checkline" data-check-key="owned_3">
+<div class="checkline" data-check-key="owned_3" data-owned-memo-mode="none">
 <div class="check-title">보수키트</div>
 <input class="check-radio ok" data-check="ok" id="owned_3_ok" name="owned_3_state" type="radio"/>
-<label class="check-choice ok" for="owned_3_ok">양호</label>
+<label class="check-choice ok" for="owned_3_ok">보유</label>
 <input class="check-radio bad" data-check="bad" id="owned_3_bad" name="owned_3_state" type="radio"/>
-<label class="check-choice bad" for="owned_3_bad">이상</label>
-<input class="memo" data-key="owned_3_memo" placeholder="이상 메모 입력"/>
+<label class="check-choice bad" for="owned_3_bad">미보유</label>
+<input class="memo" data-key="owned_3_memo" placeholder="이상 메모 입력" style="display:none!important;"/>
 </div>
-<div class="checkline" data-check-key="owned_4">
+<div class="checkline" data-check-key="owned_4" data-owned-memo-mode="none">
 <div class="check-title">스페어타이어</div>
 <input class="check-radio ok" data-check="ok" id="owned_4_ok" name="owned_4_state" type="radio"/>
-<label class="check-choice ok" for="owned_4_ok">양호</label>
+<label class="check-choice ok" for="owned_4_ok">보유</label>
 <input class="check-radio bad" data-check="bad" id="owned_4_bad" name="owned_4_state" type="radio"/>
-<label class="check-choice bad" for="owned_4_bad">이상</label>
-<input class="memo" data-key="owned_4_memo" placeholder="이상 메모 입력"/>
+<label class="check-choice bad" for="owned_4_bad">미보유</label>
+<input class="memo" data-key="owned_4_memo" placeholder="이상 메모 입력" style="display:none!important;"/>
 </div>
-<div class="checkline" data-check-key="owned_5">
+<div class="checkline" data-check-key="owned_5" data-owned-memo-mode="none">
 <div class="check-title">소화기</div>
 <input class="check-radio ok" data-check="ok" id="owned_5_ok" name="owned_5_state" type="radio"/>
-<label class="check-choice ok" for="owned_5_ok">양호</label>
+<label class="check-choice ok" for="owned_5_ok">보유</label>
 <input class="check-radio bad" data-check="bad" id="owned_5_bad" name="owned_5_state" type="radio"/>
-<label class="check-choice bad" for="owned_5_bad">이상</label>
-<input class="memo" data-key="owned_5_memo" placeholder="이상 메모 입력"/>
+<label class="check-choice bad" for="owned_5_bad">미보유</label>
+<input class="memo" data-key="owned_5_memo" placeholder="이상 메모 입력" style="display:none!important;"/>
 </div>
 </article><article class="report-card-ui pros-card-v1677" data-check-card="pros"><h2><span class="no">19</span> 장점</h2><div class="field"><label class="pros-warranty-label-v1677" style="font-size:11px!important;line-height:1.35!important">보증연장</label><input data-key="prosWarranty" placeholder="보증연장 내용 입력"/></div><div class="field pros-tuning-wrap"><label>추가장착(튜닝)</label><div class="pros-tuning-rows" data-pros-tuning-rows="1"><div class="pros-tuning-row"><input data-key="prosTuning_0" placeholder="추가장착/튜닝 항목 입력"/></div></div><button class="pros-add-btn" data-pros-add-tuning="1" type="button">+ 항목추가</button></div><div class="field"><label>관리 상태확인(내역서보유의 경우)</label><textarea data-key="prosMaintenanceMemo" placeholder="소모품, 차량 정비·관리 등 관리 장점 입력"></textarea></div></article><article class="report-card-ui comment-card-v1674 comment-card-v1675">
 <h2><span class="no">20</span> 코멘트</h2>
@@ -10842,6 +10934,42 @@ window.addEventListener('load',bindV155,false);
   /* 기존 저장값 복원 스크립트가 뒤늦게 값을 넣는 경우를 대비한다. */
   setTimeout(bindInsuranceBold, 100);
   setTimeout(bindInsuranceBold, 300);
+})();
+</script><script>
+/* v16.79 - 점검 탭 선택버튼 클릭 시 전역 볼드 스캔 차단
+   원인:
+   - v16.67/v16.68 계열의 전역 click 핸들러가 모든 button/label/input을 반복 스캔한다.
+   - 점검 탭 선택지는 label 기반이라 이상/누유 클릭 때마다 전역 스캔 + setTimeout 재스캔이 발생한다.
+   조치:
+   - #secCheck 내부의 선택 label 클릭 이벤트가 전역 click 핸들러로 전파되지 않게 차단한다.
+   - preventDefault는 사용하지 않으므로 label의 radio 체크 기본 동작은 유지된다.
+   - change/input 이벤트는 차단하지 않아 저장/복원 흐름과 CSS :checked 반영은 유지된다.
+*/
+(function(){
+  function bindCheckFastClick(){
+    var sec = document.getElementById('secCheck');
+    if(!sec || sec.getAttribute('data-check-fast-bound-v1679') === '1') return;
+    sec.setAttribute('data-check-fast-bound-v1679', '1');
+
+    sec.addEventListener('click', function(ev){
+      var target = ev.target;
+      if(!target || !target.closest) return;
+
+      var choice = target.closest('.check-choice, .ab-choice');
+      if(!choice || !sec.contains(choice)) return;
+
+      /* 기본 radio 선택은 유지하고, 전역 click listener로만 올라가지 않게 한다. */
+      ev.stopPropagation();
+      if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+    }, true);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindCheckFastClick, false);
+  }else{
+    bindCheckFastClick();
+  }
+  window.addEventListener('load', bindCheckFastClick, false);
 })();
 </script></body>
 </html>

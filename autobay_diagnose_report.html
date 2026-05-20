@@ -10022,6 +10022,36 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   font-size:13px!important;
   font-weight:900!important;
 }
+
+/* v17.21 - 차량번호 변경예정 배지 문구/스타일 보정
+   목적:
+   - 차량번호 체인지아이콘 클릭 시 표시되는 문구를 '번호 변경예정'으로 변경한다.
+   - 배지는 알약형이 아니라 사각 라운드 배지형으로 고정한다.
+   영향 범위: #secInput .plate-change-badge만 적용한다.
+*/
+#secInput .plate-change-badge{
+  min-height:24px!important;
+  height:24px!important;
+  padding:0 8px!important;
+  border-radius:6px!important;
+  background:#ef4444!important;
+  border:1px solid #ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  display:none;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:nowrap!important;
+  box-sizing:border-box!important;
+}
+
+#secInput .plate-change-badge.plate-change-show-v1720,
+#secInput .plate-change-badge.plate-change-show-v1721{
+  display:inline-flex!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10083,7 +10113,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label-row">
 <div class="basicinfo-v5-label">차량번호</div>
-<div class="plate-title-tools"><button class="plate-change-btn" type="button">⇄</button><span class="plate-change-badge" style="display:none">번호판 변경예정</span></div>
+<div class="plate-title-tools"><button class="plate-change-btn" type="button">⇄</button><span class="plate-change-badge" style="display:none">번호 변경예정</span></div>
 </div>
 <input class="bi-input" placeholder="차량번호 입력"/>
 </div>
@@ -12969,7 +12999,7 @@ boot();
 /* v17.10 - 기본정보/번호판/날짜 단일 핸들러
    목적:
    - v15.3~v15.9 계열의 중복 기본정보 핸들러를 제거하고 필요한 기능만 단일화한다.
-   - 번호판 변경예정 토글, YY-MM-DD 날짜 입력, 연식 YY 입력, km 입력 보조를 유지한다.
+   - 번호 변경예정 토글, YY-MM-DD 날짜 입력, 연식 YY 입력, km 입력 보조를 유지한다.
    영향 범위: #secInput 내부 기본정보 입력 보조만 적용한다.
    주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key는 변경하지 않는다.
 */
@@ -13414,7 +13444,7 @@ boot();
       lines.push('원천주민번호(해당시작성) : ' + getByKey('order_withholding_rrn'));
     }
 
-    return lines.join('\\n');
+    return lines.join('\n');
   }
 
   function bindOrderV1717(){
@@ -13873,6 +13903,57 @@ boot();
       disableAccA4A7();
     }, 50);
   }, false);
+})();
+</script><script>
+/* v17.21 - 번호 변경예정 배지 문구 최종 보정 */
+(function(){
+  function fixPlateBadgeText(){
+    var badge = document.querySelector('#secInput .plate-change-badge');
+    if(!badge) return;
+    badge.textContent = '번호 변경예정';
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', fixPlateBadgeText, false);
+  }else{
+    fixPlateBadgeText();
+  }
+  window.addEventListener('load', fixPlateBadgeText, false);
+})();
+</script><script>
+/* v17.22 - 매입오더 제출 출력 줄바꿈 보정
+   목적:
+   - 제출하기 후 복사 텍스트에 문자 그대로 \n 이 출력되는 문제를 방지한다.
+   - 최종 textarea 값에 포함된 backslash+n 문자열을 실제 줄바꿈으로 변환한다.
+   영향 범위: #secOrder #orderCopyOutput 출력값만 적용한다.
+*/
+(function(){
+  function normalizeOrderOutputNewlines(){
+    var output = document.getElementById('orderCopyOutput');
+    if(!output || !output.value) return;
+    if(output.value.indexOf('\\n') >= 0){
+      output.value = output.value.replace(/\\n/g, '\n');
+    }
+  }
+
+  function bindOrderNewlineFixV1722(){
+    var submit = document.getElementById('orderSubmitBtn');
+    var output = document.getElementById('orderCopyOutput');
+    if(!submit || !output || submit.getAttribute('data-newline-fix-v1722') === '1') return;
+    submit.setAttribute('data-newline-fix-v1722', '1');
+
+    submit.addEventListener('click', function(){
+      setTimeout(normalizeOrderOutputNewlines, 0);
+      setTimeout(normalizeOrderOutputNewlines, 30);
+    }, true);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindOrderNewlineFixV1722, false);
+  }else{
+    bindOrderNewlineFixV1722();
+  }
+  window.addEventListener('load', bindOrderNewlineFixV1722, false);
 })();
 </script></body>
 </html>

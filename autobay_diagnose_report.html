@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트 v16.17-wheel-mask-top-paint-fix</title>
+<title>오토베이 현장 매입 진단리포트</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -10388,6 +10388,66 @@ textarea.tread-input-fix-v1724,
 #secDiag input.tread-input-fix-v1724,
 #secDiag input.exterior-tread-input{
   align-self:center!important;
+}
+
+/* v17.27 - 외관 좌/우 측면진단 트레드 안내문구 크기 재조정
+   목적:
+   - v17.26에서 트레드 안내문구까지 입력값과 동일하게 커진 문제를 보정한다.
+   - 안내문구 placeholder는 원래 기준에 가깝게 작게 표시한다.
+   - 실제 입력값은 기존처럼 큰 글자/볼드/가운데 정렬을 유지한다.
+   - % 표시는 기존처럼 볼드체를 유지한다.
+   영향 범위: 외관 좌/우 측면진단 트레드 입력 placeholder만 적용한다.
+   주의: 도면 좌표, 마커 좌표, data-key, 저장 key는 변경하지 않는다.
+*/
+
+/* 입력값은 기존처럼 크게 유지 */
+#secDiag input.tread-align-v1726,
+#secDiag input.tread-input-fix-v1724,
+#secDiag input.exterior-tread-input,
+#secDiag input[data-key^="exterior_tread_"]{
+  font-size:17px!important;
+  font-weight:900!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  line-height:34px!important;
+}
+
+/* 안내문구 placeholder만 작게 복구 */
+#secDiag input.tread-align-v1726::placeholder,
+#secDiag input.tread-input-fix-v1724::placeholder,
+#secDiag input.exterior-tread-input::placeholder,
+#secDiag input[data-key^="exterior_tread_"]::placeholder,
+#secDiag input[placeholder*="트레드"]::placeholder{
+  font-size:12px!important;
+  font-weight:500!important;
+  line-height:34px!important;
+  text-align:center!important;
+  color:#6b7280!important;
+  opacity:1!important;
+}
+
+/* iOS/Safari placeholder 별도 보정 */
+#secDiag input.tread-align-v1726::-webkit-input-placeholder,
+#secDiag input.tread-input-fix-v1724::-webkit-input-placeholder,
+#secDiag input.exterior-tread-input::-webkit-input-placeholder,
+#secDiag input[data-key^="exterior_tread_"]::-webkit-input-placeholder,
+#secDiag input[placeholder*="트레드"]::-webkit-input-placeholder{
+  font-size:12px!important;
+  font-weight:500!important;
+  line-height:34px!important;
+  text-align:center!important;
+  color:#6b7280!important;
+  opacity:1!important;
+}
+
+/* % 표시는 볼드 유지 */
+#secDiag .tread-percent-v1726,
+#secDiag .exterior-tread-unit,
+#secDiag [class*="tread-unit"],
+#secDiag input.tread-align-v1726 + span,
+#secDiag input.tread-input-fix-v1724 + span,
+#secDiag input.exterior-tread-input + span{
+  font-weight:900!important;
 }
 </style>
 <style>

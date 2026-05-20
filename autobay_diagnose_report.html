@@ -9271,6 +9271,576 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   transition:none!important;
   animation:none!important;
 }
+
+/* v17.13 - 도막 좌/우 측면진단 선택점 상승 재보정 + 계약금/잔금 단위버튼 크기 강제 통일
+   목적:
+   1) 도막 좌/우 측면진단에서 도막수치 입력 후 선택점/배지가 위로 올라가는 현상을 방지한다.
+      - CSS만으로 부족한 경우가 있어 JS에서 inline style까지 재고정한다.
+      - 좌표값(left/top %) 자체는 변경하지 않는다.
+   2) 계약금/잔금의 만원·원 버튼 크기를 실매입금액 버튼과 동일하게 통일한다.
+   영향 범위: 도막 native badge/marker 표시 위치, #secOrder 계약금/잔금 단위버튼만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key는 변경하지 않는다.
+*/
+
+/* 도막 좌/우 측면진단 slot 기준 좌표 고정 */
+#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"],
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"],
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"]{
+  position:absolute!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center center!important;
+  line-height:0!important;
+  vertical-align:top!important;
+  box-sizing:border-box!important;
+}
+
+/* 선택점 자체는 항상 slot 중앙 */
+#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"] .paint-native-marker,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"] .paint-native-marker,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"] .paint-native-marker{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:22px!important;
+  height:22px!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center center!important;
+  margin:0!important;
+  line-height:1!important;
+}
+
+/* 값 입력 후 배지도 slot 중앙 기준. 단 B3/B4/C3/C4의 겹침 방지 예외는 아래에서 다시 지정 */
+#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"] .paint-native-badge,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"] .paint-native-badge,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"] .paint-native-badge{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  bottom:auto!important;
+  right:auto!important;
+  margin:0!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center center!important;
+  z-index:2147483005!important;
+}
+
+/* 기존 좌/우 측면진단 겹침 방지 보정값 유지 */
+#secDiag .diag-paint-card #paintNativeBadge_B4,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id="B4"] .paint-native-badge{
+  transform:translate(-94%,-50%)!important;
+}
+
+#secDiag .diag-paint-card #paintNativeBadge_B3,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id="B3"] .paint-native-badge{
+  transform:translate(-8%,-50%)!important;
+}
+
+#secDiag .diag-paint-card #paintNativeBadge_C3,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id="C3"] .paint-native-badge{
+  transform:translate(-118%,-50%)!important;
+}
+
+#secDiag .diag-paint-card #paintNativeBadge_C4,
+#secDiag .diag-paint-card .paint-native-slot[data-paint-id="C4"] .paint-native-badge{
+  transform:translate(-14%,-50%)!important;
+}
+
+/* has-value 상태에서도 선택점이 다른 위치 규칙을 타지 않게 최후단 방어 */
+#secDiag .diag-paint-card .paint-native-slot.has-value .paint-native-marker{
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+/* 계약금/잔금: 실매입금액 단위버튼과 동일한 2버튼 크기 */
+#secOrder .order-money-date-compact-v1713{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 88px!important;
+  column-gap:6px!important;
+  row-gap:6px!important;
+  align-items:center!important;
+}
+
+#secOrder .order-money-date-compact-v1713 > input.order-comma-number{
+  grid-column:1!important;
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  box-sizing:border-box!important;
+}
+
+#secOrder .order-money-date-compact-v1713 > .order-small-unit-fixed-v1713{
+  grid-column:2!important;
+  width:88px!important;
+  min-width:88px!important;
+  max-width:88px!important;
+  height:36px!important;
+  min-height:36px!important;
+  display:grid!important;
+  grid-template-columns:44px 44px!important;
+  gap:0!important;
+  align-items:stretch!important;
+}
+
+#secOrder .order-money-date-compact-v1713 > .order-month-day{
+  grid-column:1 / -1!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:6px!important;
+}
+
+/* 계약금/잔금과 실매입금액/차주송금금액의 버튼 최종 크기 통일 */
+#secOrder .order-unit-btn-fixed-v1713,
+#secOrder .order-money-date-compact-v1713 .order-unit-btn,
+#secOrder .order-money-unit-ref-v1713 .order-unit-btn{
+  width:44px!important;
+  min-width:44px!important;
+  max-width:44px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+/* 실매입금액 계열 grid 폭도 버튼 2개가 같은 크기로 보이게 고정 */
+#secOrder .order-money-unit-ref-v1713{
+  grid-template-columns:minmax(0,1fr) 44px 44px!important;
+  column-gap:0!important;
+}
+
+@media (max-width:420px){
+  #secOrder .order-money-date-compact-v1713{
+    grid-template-columns:minmax(0,1fr) 88px!important;
+  }
+  #secOrder .order-money-date-compact-v1713 > .order-small-unit-fixed-v1713{
+    grid-column:2!important;
+  }
+  #secOrder .order-money-date-compact-v1713 > .order-month-day{
+    grid-column:1 / -1!important;
+  }
+}
+
+/* v17.14 - 점검 탭 선택 이벤트 위임화 보조 */
+#secCheck .check-choice,
+#secCheck .check-radio,
+#secCheck .memo{
+  transition:none!important;
+  animation:none!important;
+  touch-action:manipulation!important;
+}
+
+/* v17.15 - 매입오더 금액 단위버튼 간격/사이즈 재조정
+   목적:
+   - 이미지 기준으로 만원/원 버튼 사이 간격을 줄이고 버튼 크기를 통일한다.
+   - 차주송금금액/실매입금액/계약금/잔금/반환금액/계산서금액/알선수익금 단위버튼을 동일 기준으로 맞춘다.
+   - 계약금/잔금은 [금액 입력박스][만원][원] / [월][일] 구조를 유지한다.
+   영향 범위: #secOrder 금액 단위버튼 UI만 적용한다.
+   주의: 제출 출력 템플릿, order_* data-key, 도면 좌표, 마커 좌표, localStorage key는 변경하지 않는다.
+*/
+
+/* 일반 금액 입력: [입력][만원][원] */
+#secOrder .order-money-unit-tight-v1715,
+#secOrder .order-money-unit-ref-v1715{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 42px 42px!important;
+  column-gap:3px!important;
+  align-items:center!important;
+}
+
+#secOrder .order-money-unit-tight-v1715 > input.order-comma-number,
+#secOrder .order-money-unit-ref-v1715 > input.order-comma-number{
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  box-sizing:border-box!important;
+}
+
+/* 계약금/잔금: [입력][만원][원] / [월][일] */
+#secOrder .order-money-date-tight-v1715{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 87px!important;
+  column-gap:3px!important;
+  row-gap:6px!important;
+  align-items:center!important;
+}
+
+#secOrder .order-money-date-tight-v1715 > input.order-comma-number{
+  grid-column:1!important;
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  box-sizing:border-box!important;
+}
+
+#secOrder .order-money-date-tight-v1715 > .order-small-unit-tight-v1715{
+  grid-column:2!important;
+  width:87px!important;
+  min-width:87px!important;
+  max-width:87px!important;
+  height:36px!important;
+  min-height:36px!important;
+  display:grid!important;
+  grid-template-columns:42px 42px!important;
+  column-gap:3px!important;
+  row-gap:0!important;
+  align-items:center!important;
+  justify-content:start!important;
+}
+
+#secOrder .order-money-date-tight-v1715 > .order-month-day{
+  grid-column:1 / -1!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  column-gap:6px!important;
+}
+
+/* 만원/원 버튼 최종 공통 기준 */
+#secOrder .order-unit-btn-tight-v1715,
+#secOrder .order-money-unit-tight-v1715 .order-unit-btn,
+#secOrder .order-money-unit-ref-v1715 .order-unit-btn,
+#secOrder .order-money-date-tight-v1715 .order-unit-btn{
+  width:42px!important;
+  min-width:42px!important;
+  max-width:42px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+/* 활성 버튼 색상은 기존 검정 유지 */
+#secOrder .order-unit-btn-tight-v1715.active,
+#secOrder .order-money-unit-tight-v1715 .order-unit-btn.active,
+#secOrder .order-money-unit-ref-v1715 .order-unit-btn.active,
+#secOrder .order-money-date-tight-v1715 .order-unit-btn.active{
+  background:#111827!important;
+  color:#ffffff!important;
+  border-color:#111827!important;
+}
+
+/* 비활성 원 버튼은 실매입금액 계열과 동일한 흰색 버튼 */
+#secOrder .order-unit-btn-tight-v1715:not(.active),
+#secOrder .order-money-unit-tight-v1715 .order-unit-btn:not(.active),
+#secOrder .order-money-unit-ref-v1715 .order-unit-btn:not(.active),
+#secOrder .order-money-date-tight-v1715 .order-unit-btn:not(.active){
+  background:#ffffff!important;
+  color:#111827!important;
+  border:1px solid #cbd5e1!important;
+}
+
+/* 모바일에서도 같은 구조 유지 */
+@media (max-width:420px){
+  #secOrder .order-money-unit-tight-v1715,
+  #secOrder .order-money-unit-ref-v1715{
+    grid-template-columns:minmax(0,1fr) 42px 42px!important;
+    column-gap:3px!important;
+  }
+
+  #secOrder .order-money-date-tight-v1715{
+    grid-template-columns:minmax(0,1fr) 87px!important;
+    column-gap:3px!important;
+  }
+
+  #secOrder .order-money-date-tight-v1715 > .order-small-unit-tight-v1715{
+    grid-column:2!important;
+  }
+
+  #secOrder .order-money-date-tight-v1715 > .order-month-day{
+    grid-column:1 / -1!important;
+  }
+}
+
+/* v17.15 - small cycle 단일 위임 후 클릭 반응 보정 */
+.wheel-status-btn,
+.wheel-cycle-badge,
+.customer-dot,
+.customer-talk-cycle{
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+  transition:none!important;
+  animation:none!important;
+}
+
+/* v17.16 - 매입오더 금액 단위 단일 토글 및 계약금/잔금 MM-DD 입력
+   목적:
+   1) 모든 매입오더 금액 단위는 원 버튼을 제거하고 '만원' 단일 버튼으로 표시한다.
+   2) 단일 버튼 클릭 시 만원 ↔ 원으로 토글한다.
+   3) 계약금/잔금은 월·일 select를 제거하고 MM-DD 형식 입력박스를 같은 행에 배치한다.
+   4) 제출 출력값에는 현재 단위값이 만원/원으로 반영된다.
+   영향 범위: #secOrder 금액 입력 UI와 제출 텍스트만 적용한다.
+   주의: order_* data-key, 도면 좌표, 마커 좌표, localStorage key는 변경하지 않는다.
+*/
+
+/* 일반 금액: [입력][단위토글] */
+#secOrder .order-money-unit-onebtn-v1716{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 52px!important;
+  column-gap:6px!important;
+  align-items:center!important;
+}
+
+#secOrder .order-money-unit-onebtn-v1716 > input.order-comma-number{
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  box-sizing:border-box!important;
+}
+
+/* 계약금/잔금: [입력][단위토글][MM-DD] 한 행 */
+#secOrder .order-money-date-one-row-v1716{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 52px 76px!important;
+  column-gap:6px!important;
+  row-gap:0!important;
+  align-items:center!important;
+}
+
+#secOrder .order-money-date-one-row-v1716 > input.order-comma-number{
+  grid-column:1!important;
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  box-sizing:border-box!important;
+}
+
+#secOrder .order-money-date-one-row-v1716 > .order-small-unit-onebtn-v1716{
+  grid-column:2!important;
+  width:52px!important;
+  min-width:52px!important;
+  max-width:52px!important;
+  height:36px!important;
+  min-height:36px!important;
+  display:block!important;
+}
+
+#secOrder .order-money-date-one-row-v1716 > .order-mmdd-input-v1716{
+  grid-column:3!important;
+  width:76px!important;
+  min-width:76px!important;
+  max-width:76px!important;
+  height:36px!important;
+  min-height:36px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:10px!important;
+  padding:0 8px!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  box-sizing:border-box!important;
+  text-align:center!important;
+}
+
+/* 단일 토글 버튼 */
+#secOrder .order-unit-toggle-v1716,
+#secOrder .order-money-unit-onebtn-v1716 .order-unit-btn,
+#secOrder .order-money-date-one-row-v1716 .order-unit-btn{
+  width:52px!important;
+  min-width:52px!important;
+  max-width:52px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  border:1px solid #111827!important;
+}
+
+/* 숨겨진 기존 월일 select가 남아 있으면 표시 차단 */
+#secOrder .order-money-date-one-row-v1716 .order-month-day{
+  display:none!important;
+}
+
+/* 모바일에서도 한 행 유지 */
+@media (max-width:420px){
+  #secOrder .order-money-date-one-row-v1716{
+    grid-template-columns:minmax(0,1fr) 52px 76px!important;
+    column-gap:6px!important;
+  }
+}
+
+/* v17.17 - 매입오더 사고/외판/수리 0~10개 선택 구조
+   목적:
+   - 사고/외판/수리의 O/X 선택을 0 개~10 개 선택으로 변경한다.
+   - 0 개 선택 시 출력값은 X로 처리한다.
+   - 1 개 이상 선택 시 메모 입력박스를 표시한다.
+   - 기존 개수 직접 입력박스는 제거한다.
+   영향 범위: #secOrder 사고/외판/수리 입력 UI와 제출 출력 템플릿만 적용한다.
+   주의: 도면 좌표, 마커 좌표, localStorage key, 기타 order_* data-key는 변경하지 않는다.
+*/
+
+#secOrder .order-count-detail-v1717{
+  display:grid!important;
+  grid-template-columns:74px minmax(0,1fr)!important;
+  gap:6px!important;
+  align-items:start!important;
+  width:100%!important;
+}
+
+#secOrder .order-count-detail-v1717 .order-count-select-v1717{
+  width:74px!important;
+  min-width:74px!important;
+  height:36px!important;
+  min-height:36px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:10px!important;
+  background:#ffffff!important;
+  color:#111827!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  padding:0 8px!important;
+  box-sizing:border-box!important;
+}
+
+#secOrder .order-count-detail-v1717 .order-count-memo-v1717{
+  width:100%!important;
+  min-width:0!important;
+  min-height:36px!important;
+  height:36px!important;
+  max-height:80px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:10px!important;
+  background:#ffffff!important;
+  color:#111827!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  padding:8px 10px!important;
+  box-sizing:border-box!important;
+  resize:vertical!important;
+  display:none!important;
+}
+
+#secOrder .order-count-detail-v1717[data-open="1"] .order-count-memo-v1717{
+  display:block!important;
+}
+
+@media (max-width:420px){
+  #secOrder .order-count-detail-v1717{
+    grid-template-columns:72px minmax(0,1fr)!important;
+  }
+  #secOrder .order-count-detail-v1717 .order-count-select-v1717{
+    width:72px!important;
+    min-width:72px!important;
+  }
+}
+
+/* v17.18 - 마커 첫 클릭 흔들림 보정 + 금액 단위 버튼 연한회색
+   목적:
+   1) 마커 첫 클릭 시 label -> hidden radio 기본 포커스/스크롤 앵커 반응으로 도면이 살짝 흔들리는 현상을 줄인다.
+   2) 도면/마커/패널 영역의 scroll anchoring을 해제해 첫 클릭 레이아웃 재계산 시 화면 위치가 튀지 않도록 한다.
+   3) 매입오더 금액 단위 토글 버튼의 배경색을 검정에서 연한회색으로 변경한다.
+   영향 범위: #secDiag 마커 클릭 안정화, #secOrder 금액 단위 버튼 색상만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key, 제출 출력 템플릿은 변경하지 않는다.
+*/
+
+/* 도면/마커 첫 클릭 시 브라우저 scroll-anchor 개입 차단 */
+#secDiag,
+#secDiag .report-card-ui,
+#secDiag .touch-card,
+#secDiag .touch-card .fig,
+#secDiag .paint-fig,
+#secDiag .paint-fig-bent,
+#secDiag .paint-native-slot,
+#secDiag .paint-native-hit,
+#secDiag .slot,
+#secDiag .hit,
+#secDiag .paint-native-panel{
+  overflow-anchor:none!important;
+  scroll-margin-top:0!important;
+  transition:none!important;
+  animation:none!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+
+/* hidden radio가 클릭/포커스 과정에서 화면을 끌어올리는 현상 방지 */
+#secDiag input[type="radio"].paint-native-radio,
+#secDiag .touch-card input[type="radio"],
+#secDiag input[type="radio"].st{
+  position:absolute!important;
+  left:-9999px!important;
+  top:auto!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+}
+
+/* 마커 표시 요소는 레이아웃 참여를 하지 않도록 명시 */
+#secDiag .paint-native-marker,
+#secDiag .paint-native-badge,
+#secDiag .slot .hit,
+#secDiag .slot .hit span{
+  will-change:auto!important;
+  backface-visibility:hidden!important;
+  transform-style:flat!important;
+}
+
+/* 매입오더 금액 단위 버튼: 연한회색 바탕 + 검정 폰트 */
+#secOrder .order-unit-toggle-v1716,
+#secOrder .order-money-unit-onebtn-v1716 .order-unit-btn,
+#secOrder .order-money-date-one-row-v1716 .order-unit-btn,
+#secOrder .order-unit-btn-tight-v1715,
+#secOrder .order-money-unit-tight-v1715 .order-unit-btn,
+#secOrder .order-money-unit-ref-v1715 .order-unit-btn,
+#secOrder .order-money-date-tight-v1715 .order-unit-btn{
+  background:#e5e7eb!important;
+  color:#111827!important;
+  border:1px solid #cbd5e1!important;
+  -webkit-text-fill-color:#111827!important;
+}
+
+/* active 상태도 검정으로 되돌아가지 않도록 최후단에서 고정 */
+#secOrder .order-unit-toggle-v1716.active,
+#secOrder .order-money-unit-onebtn-v1716 .order-unit-btn.active,
+#secOrder .order-money-date-one-row-v1716 .order-unit-btn.active,
+#secOrder .order-unit-btn-tight-v1715.active,
+#secOrder .order-money-unit-tight-v1715 .order-unit-btn.active,
+#secOrder .order-money-unit-ref-v1715 .order-unit-btn.active,
+#secOrder .order-money-date-tight-v1715 .order-unit-btn.active{
+  background:#e5e7eb!important;
+  color:#111827!important;
+  border:1px solid #cbd5e1!important;
+  -webkit-text-fill-color:#111827!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10441,7 +11011,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <h2><span class="no">20</span> 코멘트</h2>
 <div class="field"><label class="comment-item-title-v1674 customer-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">고객 코멘트</label><textarea data-key="customerCommentMemo" placeholder="고객에게 질문한 주행 이슈, 기타 특이사항, 고객의 전달사항 입력"></textarea></div>
 <div class="field customer-talk-field"><div class="customer-talk-head"><span class="customer-talk-title comment-item-title-v1674 inspector-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">검수자 코멘트</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle" data-talk-level="0" type="button">선택</button><span class="customer-talk-time">일정시간</span></div><textarea class="customer-talk-memo" data-key="inspectorCommentMemo" placeholder="고객도 같이 보는 관점의 검수자 코멘트를 입력"></textarea></div>
-</article></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>탁송,온라인 매입</label><select class="order-select" data-key="order_online_delivery"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-ox-detail"><select class="order-select" data-key="order_accident_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><div class="order-count-textarea order-ox-detail-body" data-ox-detail-body="order_accident"><input class="order-count-number" data-key="order_accident_count_num" inputmode="numeric" placeholder="개수"/><textarea data-key="order_accident_memo" placeholder="사고 내용 입력"></textarea></div></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-ox-detail"><select class="order-select" data-key="order_outer_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><div class="order-count-textarea order-ox-detail-body" data-ox-detail-body="order_outer"><input class="order-count-number" data-key="order_outer_count_num" inputmode="numeric" placeholder="개수"/><textarea data-key="order_outer_memo" placeholder="외판 내용 입력"></textarea></div></div></div><div class="order-field full"><label>수리</label><div class="order-ox-detail"><select class="order-select" data-key="order_repair_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><div class="order-count-textarea order-ox-detail-body" data-ox-detail-body="order_repair"><input class="order-count-number" data-key="order_repair_count_num" inputmode="numeric" placeholder="개수"/><textarea data-key="order_repair_memo" placeholder="수리 내용 입력"></textarea></div></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit"><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_deposit_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_deposit_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit"><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_balance_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_balance_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div></div><div class="order-field"><label>인수일</label><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_takeover_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_takeover_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active" data-unit="만원" type="button">만원</button><button class="order-unit-btn" data-unit="원" type="button">원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section>
+</article></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>탁송,온라인 매입</label><select class="order-select" data-key="order_online_delivery"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-count-detail-v1717" data-count-prefix="order_accident"><select class="order-select order-count-select-v1717" data-key="order_accident_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_accident_memo" placeholder="사고 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-count-detail-v1717" data-count-prefix="order_outer"><select class="order-select order-count-select-v1717" data-key="order_outer_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_outer_memo" placeholder="외판 내용 입력" rows="2"></textarea></div></div><div class="order-field full"><label>수리</label><div class="order-count-detail-v1717" data-count-prefix="order_repair"><select class="order-select order-count-select-v1717" data-key="order_repair_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_repair_memo" placeholder="수리 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_deposit_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_balance_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>인수일</label><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_takeover_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_takeover_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section>
 </div>
 <script>
 
@@ -10480,30 +11050,35 @@ var qsa = (selector, root=document) => Array.from(root.querySelectorAll(selector
  * JS는 로그와 복원 상태 보정만 담당한다.
  */
 function bindCheckButtons(){
-  qsa('.checkline').forEach(function(row){
+  var root = document.getElementById('secCheck');
+  if(!root || root.getAttribute('data-check-bound-v1714') === '1') return;
+  root.setAttribute('data-check-bound-v1714', '1');
+
+  function syncRow(row){
+    if(!row) return;
     var okRadio = qs('.check-radio.ok', row);
     var badRadio = qs('.check-radio.bad', row);
     var memo = qs('.memo', row);
+    if(memo) memo.classList.toggle('show', !!(badRadio && badRadio.checked));
+  }
 
-    var sync = function(){
-      if(memo) memo.classList.toggle('show', !!badRadio.checked);
-      var state = badRadio.checked ? 'bad' : (okRadio.checked ? 'ok' : '');
-      console.info('[AB_DIAG][CHECK_SELECT]', {key:row.dataset.checkKey, state});
-    };
+  qsa('.checkline', root).forEach(syncRow);
 
-    [okRadio, badRadio].forEach(function(input){
-      if(!input) return;
-      input.addEventListener('change', sync);
-      input.addEventListener('input', sync);
-      input.addEventListener('click', () => setTimeout(sync, 0));
-      input.addEventListener('touchend', () => setTimeout(sync, 30), {passive:true});
+  root.addEventListener('change', function(ev){
+    var target = ev.target;
+    if(!target || !target.classList || !target.classList.contains('check-radio')) return;
+    syncRow(target.closest('.checkline'));
+  }, true);
+
+  root.addEventListener('click', function(ev){
+    var target = ev.target;
+    if(!target || !target.closest) return;
+    var label = target.closest('.check-choice');
+    if(!label || !root.contains(label)) return;
+    requestAnimationFrame(function(){
+      syncRow(label.closest('.checkline'));
     });
-
-    qsa('.check-choice', row).forEach(function(label){
-      label.addEventListener('touchend', () => setTimeout(sync, 60), {passive:true});
-      label.addEventListener('click', () => setTimeout(sync, 0));
-    });
-  });
+  }, true);
 }
 
 /**
@@ -10947,143 +11522,6 @@ boot();
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, false);
   else bind();
   window.addEventListener('load', bind, false);
-})();
-</script>
-<script>
-(function(){
-  function bindWheelStatus(){
-    var buttons = document.querySelectorAll('.wheel-status-btn');
-    for(var i=0;i<buttons.length;i++){
-      if(buttons[i].getAttribute('data-wheel-bound') === '1') continue;
-      buttons[i].setAttribute('data-wheel-bound','1');
-      buttons[i].addEventListener('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        var group = this.parentNode;
-        if(!group) return false;
-        var peers = group.querySelectorAll('.wheel-status-btn');
-        for(var j=0;j<peers.length;j++) peers[j].classList.remove('active');
-        this.classList.add('active');
-        console.log('[WHEEL][STATUS]', group.getAttribute('data-wheel-pos'), this.getAttribute('data-wheel-status'));
-        return false;
-      }, false);
-    }
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindWheelStatus, false);
-  else bindWheelStatus();
-  window.addEventListener('load', bindWheelStatus, false);
-})();
-</script>
-<script>
-(function(){
-  function bindWheelCycle(){
-    var badges = document.querySelectorAll('.wheel-cycle-badge');
-    var nextMap = {
-      none: ['restore', '복원'],
-      restore: ['replace', '교체'],
-      replace: ['keep', '유지'],
-      keep: ['none', '상태']
-    };
-
-    for(var i=0;i<badges.length;i++){
-      if(badges[i].getAttribute('data-cycle-bound') === '1') continue;
-      badges[i].setAttribute('data-cycle-bound','1');
-      badges[i].addEventListener('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-
-        var cur = this.getAttribute('data-wheel-state') || 'none';
-        var next = nextMap[cur] || nextMap.none;
-
-        this.setAttribute('data-wheel-state', next[0]);
-        this.textContent = next[1];
-
-        console.log('[WHEEL][CYCLE]', this.getAttribute('data-wheel-pos'), next[1]);
-        return false;
-      }, false);
-    }
-  }
-
-  function bindTirePercent(){
-    var inputs = document.querySelectorAll('.tire-percent-input');
-    for(var i=0;i<inputs.length;i++){
-      if(inputs[i].getAttribute('data-tire-bound') === '1') continue;
-      inputs[i].setAttribute('data-tire-bound','1');
-      inputs[i].addEventListener('input', function(){
-        var v = String(this.value || '').replace(/[^0-9.]/g, '');
-        if(v !== this.value) this.value = v;
-        var wrap = this.closest ? this.closest('.tire-percent-wrap') : this.parentNode;
-        console.log('[TIRE][PERCENT]', wrap ? wrap.getAttribute('data-tire-pos') : '', v);
-      }, false);
-    }
-  }
-
-  function bindAll(){
-    bindWheelCycle();
-    bindTirePercent();
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindAll, false);
-  else bindAll();
-  window.addEventListener('load', bindAll, false);
-})();
-</script>
-<script>
-(function(){
-  function bindCustomerTalkDots(){
-    var buttons = document.querySelectorAll('.customer-dot');
-    for(var i=0;i<buttons.length;i++){
-      if(buttons[i].getAttribute('data-talk-bound') === '1') continue;
-      buttons[i].setAttribute('data-talk-bound','1');
-      buttons[i].addEventListener('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        var wrap = this.parentNode;
-        if(wrap){
-          var peers = wrap.querySelectorAll('.customer-dot');
-          for(var j=0;j<peers.length;j++) peers[j].classList.remove('active');
-        }
-        this.classList.add('active');
-        console.log('[CUSTOMER_TALK][LEVEL]', this.getAttribute('data-talk-level'));
-        return false;
-      }, false);
-    }
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindCustomerTalkDots, false);
-  else bindCustomerTalkDots();
-  window.addEventListener('load', bindCustomerTalkDots, false);
-})();
-</script>
-<script>
-(function(){
-  function bindCustomerTalkCycle(){
-    var items = document.querySelectorAll('.customer-talk-cycle');
-    var labels = {
-      "0":"선택",
-      "1":"1",
-      "2":"2",
-      "3":"3",
-      "4":"4",
-      "5":"5"
-    };
-    for(var i=0;i<items.length;i++){
-      if(items[i].getAttribute('data-cycle-bound') === '1') continue;
-      items[i].setAttribute('data-cycle-bound','1');
-      items[i].addEventListener('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        var cur = parseInt(this.getAttribute('data-talk-level') || '0', 10);
-        var next = cur >= 5 ? 0 : cur + 1;
-        this.setAttribute('data-talk-level', String(next));
-        this.textContent = labels[String(next)] || '선택';
-        console.log('[CUSTOMER_TALK][CYCLE]', next);
-        return false;
-      }, false);
-    }
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindCustomerTalkCycle, false);
-  else bindCustomerTalkCycle();
-  window.addEventListener('load', bindCustomerTalkCycle, false);
 })();
 </script>
 <script>
@@ -12213,323 +12651,6 @@ boot();
   window.addEventListener('load', bindAccA4A7Off, false);
 })();
 </script><script>
-/* v17.06 - 매입오더 반환금액/캐피탈계좌 미입력 시 X 출력
-   목적:
-   - 반환금액 미작성 시 제출 출력값을 X로 표시한다.
-   - 캐피탈계좌(압류) 미작성 시 제출 출력값을 X로 표시한다.
-   - 기존 화면 입력 구조와 order_* data-key는 변경하지 않는다.
-*/
-(function(){
-  function getByKey(key){
-    var el = document.querySelector('#secOrder [data-key="' + key + '"]');
-    if(!el) return '';
-    return (el.value || '').trim();
-  }
-
-  function dateSlash(key){
-    var value = getByKey(key);
-    if(!value) return '';
-    var m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if(!m) return value;
-    return String(parseInt(m[2],10)) + '/' + String(parseInt(m[3],10));
-  }
-
-  function monthDayKorean(prefix){
-    var m = getByKey(prefix + '_month');
-    var d = getByKey(prefix + '_day');
-    if(!m && !d) return '';
-    if(m && d) return m + '월 ' + d + '일';
-    if(m) return m + '월';
-    return d + '일';
-  }
-
-  function getYear(){
-    var reg = getByKey('order_year_reg_ym');
-    var model = getByKey('order_year_model_yy');
-
-    var regText = '';
-    if(reg){
-      var parts = reg.split('-');
-      if(parts.length === 2 && parts[0] && parts[1]){
-        regText = parts[0] + '년 ' + parts[1] + '월 (등록)';
-      }else{
-        regText = reg + ' (등록)';
-      }
-    }
-
-    var modelText = model ? model + ' 년형' : '';
-    if(regText && modelText) return regText + ' / ' + modelText;
-    return regText || modelText || '';
-  }
-
-  function getSelectPlus(selectKey, inputKey){
-    var s = getByKey(selectKey);
-    var i = getByKey(inputKey);
-    if(s && i) return s + ' ' + i;
-    return s || i || '';
-  }
-
-  function getMoney(prefix, appendFee){
-    var amount = getByKey(prefix + '_amount');
-    var unit = getByKey(prefix + '_unit') || '';
-    if(!amount) return '';
-    var out = unit ? (amount + ' ' + unit) : amount;
-    if(appendFee) out += '+수수료';
-    return out;
-  }
-
-  function getMoneyOrX(prefix, appendFee){
-    return getMoney(prefix, appendFee) || 'X';
-  }
-
-  function getMoneyDate(prefix){
-    var amount = getByKey(prefix + '_amount');
-    var unit = getByKey(prefix + '_unit') || '만원';
-    var md = monthDayKorean(prefix + '_date');
-    if(!amount && !md) return '';
-    if(amount && md) return amount + ' ' + unit + '/' + md;
-    if(amount) return amount + ' ' + unit;
-    return md;
-  }
-
-  function getAccount(prefix){
-    var bank = getByKey(prefix + '_bank');
-    var number = getByKey(prefix + '_number');
-    var holder = getByKey(prefix + '_holder');
-    var arr = [];
-    if(bank) arr.push(bank);
-    if(number) arr.push(number);
-    if(holder) arr.push(holder);
-    return arr.join(' ');
-  }
-
-  function getOxCountMemo(prefix, suffix){
-    var yn = getByKey(prefix + '_yn');
-    if(yn !== 'O') return yn || '';
-    var count = getByKey(prefix + '_count_num');
-    var memo = getByKey(prefix + '_memo');
-    var detail = '';
-    if(count) detail += count + (suffix || '');
-    if(memo) detail += (detail ? '/' : '') + memo;
-    return detail || 'O';
-  }
-
-  function profitIsOpen(){
-    var btn = document.getElementById('orderProfitToggle');
-    return !!(btn && btn.getAttribute('data-open') === '1');
-  }
-
-  function dealerIsEncar(){
-    return getByKey('order_dealer').replace(/\s+/g,'') === '엔카';
-  }
-
-  function buildOrderTextV1706(){
-    var fee = dealerIsEncar();
-    var lines = [];
-
-    lines.push('★바로지시사항');
-    lines.push('=▶ ' + getByKey('order_direct_instruction'));
-    lines.push('■■■ 매 입 ■■■');
-    lines.push('■ 차량정보 ■');
-    lines.push('▷날짜 : ' + dateSlash('order_date'));
-    lines.push('▷담당딜러 : ' + getByKey('order_dealer'));
-    lines.push('▷검 수 자  : ' + getByKey('order_inspector'));
-    lines.push('▷견적(가훈/현우/대표님) : ' + getByKey('order_estimator'));
-    lines.push('▷경로(낙찰,디비,대차,지인) : ' + getByKey('order_route'));
-    lines.push('▷탁송,온라인 매입(O/X) : ' + getByKey('order_online_delivery'));
-    lines.push('▷차량이름 : ' + getByKey('order_car_name'));
-    lines.push('▷차량번호 : ' + getByKey('order_car_no'));
-    lines.push('▷연식 : ' + (getYear() || '년 월(등록) / 년형'));
-    lines.push('▷등급 : ' + getByKey('order_grade'));
-    lines.push('▷연료 : ' + getByKey('order_fuel'));
-    lines.push('▷배기량 : ' + (getByKey('order_displacement') ? getByKey('order_displacement') + ' CC' : ' CC'));
-    lines.push('▷주행 : ' + (getByKey('order_mileage') ? getByKey('order_mileage') + ' KM' : '  KM'));
-    lines.push('▷사고 : ' + (getOxCountMemo('order_accident', '개') || ' 개'));
-    lines.push('▷미확정(O/X) : ' + getByKey('order_unconfirmed'));
-    lines.push('▷전손/침수/직수/계기판/ : ' + getByKey('order_special_history'));
-    lines.push('▷외판 : ' + (getOxCountMemo('order_outer', '개') || ' 개'));
-    lines.push('▷수리 : ' + getOxCountMemo('order_repair', '개'));
-    lines.push('▷스페어키 여부/위치 : ' + getSelectPlus('order_spare_key_yn', 'order_spare_key_location'));
-    lines.push('■ 금액,송금,위험요소 ■');
-    lines.push('▷서류발송일 : ' + dateSlash('order_doc_send_date'));
-    lines.push('▷서류위치 : ' + getByKey('order_doc_location'));
-    lines.push('▷사업자여부/종류 : ' + getSelectPlus('order_business_yn', 'order_business_type'));
-    lines.push('▷현금,캐피탈,리스,렌트 : ' + getByKey('order_payment_type'));
-    lines.push('▷압류(특수) : ' + (getByKey('order_seizure') || 'X'));
-    lines.push('▶차주송금금액◀(제시금액) : ' + getMoney('order_owner_transfer', fee));
-    lines.push('▶실매입금액◀ : ' + getMoney('order_real_buy', fee));
-    lines.push('▷계약금 : ' + (getMoneyDate('order_deposit') || '원  월 / 일'));
-    lines.push('▷잔   금 : ' + (getMoneyDate('order_balance') || '원  월 / 일'));
-    lines.push('▷인수일 : ' + (monthDayKorean('order_takeover_date') || '월 / 일'));
-    lines.push('▷반환금액 : ' + getMoneyOrX('order_return', false));
-    lines.push('▷계산서금액 : ' + getMoney('order_invoice', false));
-    lines.push('▷이름 : ' + getByKey('order_account_name'));
-    lines.push('▷계좌/예금주 : ' + getAccount('order_account'));
-    lines.push('▷캐피탈계좌(압류) : ' + (getByKey('order_capital_account') || 'X'));
-    lines.push('▷차주번호 : ' + (fee ? 'X' : (getByKey('order_owner_phone') || 'x')));
-
-    if(profitIsOpen()){
-      lines.push('');
-      lines.push('---수익금 있을때만---');
-      lines.push('알선수익금(소개비) : ' + getMoney('order_referral_profit', false));
-      lines.push('소개비이름 : ' + getByKey('order_referral_name'));
-      lines.push('소개비계좌 : ' + getAccount('order_referral_account'));
-      lines.push('원천주민번호(해당시작성) : ' + getByKey('order_withholding_rrn'));
-    }
-
-    return lines.join('\n');
-  }
-
-  function bindOrderTemplateV1706(){
-    var submit = document.getElementById('orderSubmitBtn');
-    var output = document.getElementById('orderCopyOutput');
-    var outputCard = document.querySelector('#secOrder .order-output-card');
-
-    if(!submit || submit.getAttribute('data-order-template-bound-v1706') === '1') return;
-    submit.setAttribute('data-order-template-bound-v1706', '1');
-
-    submit.addEventListener('click', function(){
-      setTimeout(function(){
-        if(!output) return;
-        output.value = buildOrderTextV1706();
-        if(outputCard) outputCard.classList.add('active');
-        output.focus();
-        output.select();
-      }, 0);
-    }, false);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindOrderTemplateV1706, false);
-  }else{
-    bindOrderTemplateV1706();
-  }
-  window.addEventListener('load', bindOrderTemplateV1706, false);
-})();
-</script><script>
-/* v17.07 - clean phase1 입력 보조 단일화
-   목적:
-   - 과거 매입오더 입력 보조 스크립트 제거 후 필요한 입력 기능만 단일 핸들러로 유지한다.
-   - 금액 콤마, 전화번호, 주민번호, 연식 YY-MM/YY, 수익금 토글, 금액 단위 버튼, O/X 상세영역 표시를 담당한다.
-   영향 범위: #secOrder 내부 입력 보조만 적용한다.
-*/
-(function(){
-  function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
-
-  function commaNumber(value){
-    var digits = onlyDigits(value);
-    if(!digits) return '';
-    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-
-  function formatPhone(value){
-    var d = onlyDigits(value).slice(0, 11);
-    if(!d) return '';
-    if(d.length <= 3) return d;
-    if(d.length <= 7) return d.slice(0,3) + '-' + d.slice(3);
-    return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
-  }
-
-  function formatRrn(value){
-    var d = onlyDigits(value).slice(0, 13);
-    if(d.length <= 6) return d;
-    return d.slice(0,6) + '-' + d.slice(6);
-  }
-
-  function formatYYMM(value){
-    var d = onlyDigits(value).slice(0, 4);
-    if(d.length <= 2) return d;
-    return d.slice(0,2) + '-' + d.slice(2);
-  }
-
-  function refreshOxDetail(wrap){
-    var sel = wrap ? wrap.querySelector('select') : null;
-    var open = sel && sel.value === 'O';
-    if(wrap) wrap.setAttribute('data-open', open ? '1' : '0');
-  }
-
-  function bindCleanOrderInputV1707(){
-    var sec = document.getElementById('secOrder');
-    if(!sec || sec.getAttribute('data-clean-order-input-bound-v1707') === '1') return;
-    sec.setAttribute('data-clean-order-input-bound-v1707','1');
-
-    var oxWraps = sec.querySelectorAll('.order-ox-detail');
-    for(var i=0;i<oxWraps.length;i++) refreshOxDetail(oxWraps[i]);
-
-    sec.addEventListener('input', function(ev){
-      var t = ev.target;
-      if(!t || !t.classList) return;
-
-      if(t.classList.contains('order-comma-number') || t.classList.contains('order-count-number')){
-        t.value = commaNumber(t.value);
-      }
-
-      if(t.classList.contains('order-phone')){
-        t.value = formatPhone(t.value);
-      }
-
-      if(t.classList.contains('order-rrn')){
-        t.value = formatRrn(t.value);
-      }
-
-      if(t.classList.contains('order-yy-month-input')){
-        t.value = formatYYMM(t.value);
-      }
-
-      if(t.classList.contains('order-year-model-yy-input')){
-        t.value = onlyDigits(t.value).slice(0,2);
-      }
-    }, false);
-
-    sec.addEventListener('change', function(ev){
-      var t = ev.target;
-      if(!t || !t.closest) return;
-
-      var ox = t.closest('.order-ox-detail');
-      if(ox) refreshOxDetail(ox);
-    }, false);
-
-    sec.addEventListener('click', function(ev){
-      var t = ev.target;
-      if(!t || !t.closest) return;
-
-      var unitBtn = t.closest('.order-unit-btn');
-      if(unitBtn && sec.contains(unitBtn)){
-        ev.preventDefault();
-        var wrap = unitBtn.closest('.order-money-unit, .order-money-date');
-        if(!wrap) return false;
-
-        var buttons = wrap.querySelectorAll('.order-unit-btn');
-        for(var i=0;i<buttons.length;i++) buttons[i].classList.remove('active');
-        unitBtn.classList.add('active');
-
-        var hidden = wrap.querySelector('input[type="hidden"][data-key]');
-        if(hidden) hidden.value = unitBtn.getAttribute('data-unit') || unitBtn.textContent.trim();
-        return false;
-      }
-
-      var profitBtn = t.closest('#orderProfitToggle');
-      if(profitBtn && sec.contains(profitBtn)){
-        ev.preventDefault();
-        var open = profitBtn.getAttribute('data-open') === '1';
-        profitBtn.setAttribute('data-open', open ? '0' : '1');
-        profitBtn.textContent = open ? '▷' : '▶';
-
-        var grid = document.querySelector('#secOrder .order-profit-grid');
-        if(grid) grid.setAttribute('data-profit-open', open ? '0' : '1');
-        return false;
-      }
-    }, false);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindCleanOrderInputV1707, false);
-  }else{
-    bindCleanOrderInputV1707();
-  }
-  window.addEventListener('load', bindCleanOrderInputV1707, false);
-})();
-</script><script>
 /* v17.09 - 선택값 볼드 처리 단일 위임 핸들러
    목적:
    - v16.67/v16.68/v16.69/v16.70의 전역 재스캔 방식 제거 후 필요한 볼드 기능만 유지한다.
@@ -12852,6 +12973,590 @@ boot();
     bindSunroofUnifiedV1712();
   }
   window.addEventListener('load', bindSunroofUnifiedV1712, false);
+})();
+</script><script>
+/* v17.13 - 도막 좌/우 측면진단 badge/marker inline 위치 재고정
+   목적:
+   - paint badge가 cloneNode로 교체될 때 CSS만으로 위치가 흔들리는 것을 방지한다.
+   - 좌표값(left/top %)은 그대로 두고, slot 내부 marker/badge의 기준점만 중앙에 고정한다.
+*/
+(function(){
+  function sideTransform(id){
+    if(id === 'B4') return 'translate(-94%,-50%)';
+    if(id === 'B3') return 'translate(-8%,-50%)';
+    if(id === 'C3') return 'translate(-118%,-50%)';
+    if(id === 'C4') return 'translate(-14%,-50%)';
+    return 'translate(-50%,-50%)';
+  }
+
+  function stabilizePaintSideNode(node){
+    if(!node || !node.closest) return;
+
+    var slot = node.closest('#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"]');
+    if(!slot) return;
+
+    var id = slot.getAttribute('data-paint-id') || '';
+
+    slot.style.setProperty('position','absolute','important');
+    slot.style.setProperty('width','44px','important');
+    slot.style.setProperty('height','44px','important');
+    slot.style.setProperty('transform','translate(-50%,-50%)','important');
+    slot.style.setProperty('line-height','0','important');
+
+    var marker = slot.querySelector('.paint-native-marker');
+    if(marker){
+      marker.style.setProperty('position','absolute','important');
+      marker.style.setProperty('left','50%','important');
+      marker.style.setProperty('top','50%','important');
+      marker.style.setProperty('transform','translate(-50%,-50%)','important');
+      marker.style.setProperty('margin','0','important');
+    }
+
+    var badge = slot.querySelector('.paint-native-badge');
+    if(badge){
+      badge.style.setProperty('position','absolute','important');
+      badge.style.setProperty('left','50%','important');
+      badge.style.setProperty('top','50%','important');
+      badge.style.setProperty('bottom','auto','important');
+      badge.style.setProperty('right','auto','important');
+      badge.style.setProperty('margin','0','important');
+      badge.style.setProperty('line-height','1','important');
+      badge.style.setProperty('transform', sideTransform(id), 'important');
+    }
+  }
+
+  function stabilizeAllPaintSide(){
+    var nodes = document.querySelectorAll('#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"]');
+    for(var i=0;i<nodes.length;i++) stabilizePaintSideNode(nodes[i]);
+  }
+
+  function bindPaintSideStabilizerV1713(){
+    var card = document.querySelector('#secDiag .diag-paint-card');
+    if(!card || card.getAttribute('data-paint-side-stable-v1713') === '1') return;
+    card.setAttribute('data-paint-side-stable-v1713','1');
+
+    stabilizeAllPaintSide();
+
+    card.addEventListener('input', function(ev){
+      var target = ev.target;
+      if(!target || !target.classList || !target.classList.contains('paint-native-input')) return;
+      if(target.getAttribute('data-paint-role') !== 'side') return;
+      requestAnimationFrame(function(){
+        var id = target.getAttribute('data-paint-id');
+        var slot = document.querySelector('#secDiag .diag-paint-card .paint-native-slot[data-paint-id="' + id + '"]');
+        stabilizePaintSideNode(slot);
+      });
+    }, true);
+
+    card.addEventListener('change', function(ev){
+      var target = ev.target;
+      if(!target || !target.classList || !target.classList.contains('paint-native-radio')) return;
+      if(String(target.getAttribute('data-paint-id') || '').match(/^[BC]/)){
+        requestAnimationFrame(stabilizeAllPaintSide);
+      }
+    }, true);
+
+    if(window.MutationObserver){
+      var mo = new MutationObserver(function(records){
+        var need = false;
+        for(var i=0;i<records.length;i++){
+          if(records[i].target && records[i].target.closest && records[i].target.closest('#secDiag .diag-paint-card')){
+            need = true;
+            break;
+          }
+        }
+        if(need) requestAnimationFrame(stabilizeAllPaintSide);
+      });
+      mo.observe(card, {subtree:true, childList:true, attributes:true, attributeFilter:['class','style']});
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindPaintSideStabilizerV1713, false);
+  }else{
+    bindPaintSideStabilizerV1713();
+  }
+  window.addEventListener('load', bindPaintSideStabilizerV1713, false);
+})();
+</script><script>
+/* v17.15 - wheel/customer-talk 계열 단일 위임 핸들러
+   목적:
+   - wheel status/cycle 및 customer-talk dot/cycle 계열의 개별 버튼 바인딩을 단일 위임으로 정리한다.
+   - 기존 data-state / data-value / textContent 기반 표시 흐름은 유지한다.
+   영향 범위: wheel-status-btn, wheel-cycle-badge, customer-dot, customer-talk-cycle만 적용한다.
+   주의: 저장 key, 도면 좌표, 마커 좌표, 매입오더 출력 템플릿은 변경하지 않는다.
+*/
+(function(){
+  function cycleValue(current, order){
+    var idx = order.indexOf(current);
+    if(idx < 0) idx = 0;
+    return order[(idx + 1) % order.length];
+  }
+
+  function bindSmallCycleV1715(){
+    if(document.body.getAttribute('data-small-cycle-bound-v1715') === '1') return;
+    document.body.setAttribute('data-small-cycle-bound-v1715','1');
+
+    document.addEventListener('click', function(ev){
+      var target = ev.target;
+      if(!target || !target.closest) return;
+
+      var wheelStatus = target.closest('.wheel-status-btn');
+      if(wheelStatus){
+        ev.preventDefault();
+        var cur = wheelStatus.getAttribute('data-state') || 'none';
+        var next = cycleValue(cur, ['none','good','bad']);
+        wheelStatus.setAttribute('data-state', next);
+        wheelStatus.textContent = next === 'good' ? '양호' : (next === 'bad' ? '이상' : '선택');
+        return false;
+      }
+
+      var wheelCycle = target.closest('.wheel-cycle-badge');
+      if(wheelCycle){
+        ev.preventDefault();
+        var cur2 = wheelCycle.getAttribute('data-state') || 'none';
+        var next2 = cycleValue(cur2, ['none','restore','replace']);
+        wheelCycle.setAttribute('data-state', next2);
+        wheelCycle.textContent = next2 === 'restore' ? '복원' : (next2 === 'replace' ? '교환' : '상태');
+        return false;
+      }
+
+      var dot = target.closest('.customer-dot');
+      if(dot){
+        ev.preventDefault();
+        dot.classList.toggle('active');
+        dot.setAttribute('data-active', dot.classList.contains('active') ? '1' : '0');
+        return false;
+      }
+
+      var talk = target.closest('.customer-talk-cycle');
+      if(talk){
+        ev.preventDefault();
+        var val = talk.getAttribute('data-value') || '0';
+        var nextVal = cycleValue(val, ['0','1','2','3']);
+        var labels = {"0":"선택","1":"1","2":"2","3":"3"};
+        talk.setAttribute('data-value', nextVal);
+        talk.textContent = labels[nextVal] || '선택';
+        return false;
+      }
+    }, true);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindSmallCycleV1715, false);
+  }else{
+    bindSmallCycleV1715();
+  }
+  window.addEventListener('load', bindSmallCycleV1715, false);
+})();
+</script><script>
+/* v17.17 - 매입오더 count select + money toggle 통합 핸들러 */
+(function(){
+  function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
+
+  function commaNumber(value){
+    var digits = onlyDigits(value);
+    if(!digits) return '';
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function formatPhone(value){
+    var d = onlyDigits(value).slice(0, 11);
+    if(!d) return '';
+    if(d.length <= 3) return d;
+    if(d.length <= 7) return d.slice(0,3) + '-' + d.slice(3);
+    return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
+  }
+
+  function formatRrn(value){
+    var d = onlyDigits(value).slice(0, 13);
+    if(d.length <= 6) return d;
+    return d.slice(0,6) + '-' + d.slice(6);
+  }
+
+  function formatYYMM(value){
+    var d = onlyDigits(value).slice(0, 4);
+    if(d.length <= 2) return d;
+    return d.slice(0,2) + '-' + d.slice(2);
+  }
+
+  function formatMMDD(value){
+    var d = onlyDigits(value).slice(0, 4);
+    if(d.length <= 2) return d;
+    return d.slice(0,2) + '-' + d.slice(2);
+  }
+
+  function mmddKorean(value){
+    value = String(value || '').trim();
+    if(!value) return '';
+    var m = value.match(/^(\d{1,2})-(\d{1,2})$/);
+    if(!m) return value;
+    return String(parseInt(m[1],10)) + '월 ' + String(parseInt(m[2],10)) + '일';
+  }
+
+  function getByKey(key){
+    var el = document.querySelector('#secOrder [data-key="' + key + '"]');
+    if(!el) return '';
+    return (el.value || '').trim();
+  }
+
+  function dateSlash(key){
+    var value = getByKey(key);
+    if(!value) return '';
+    var m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(!m) return value;
+    return String(parseInt(m[2],10)) + '/' + String(parseInt(m[3],10));
+  }
+
+  function getYear(){
+    var reg = getByKey('order_year_reg_ym');
+    var model = getByKey('order_year_model_yy');
+
+    var regText = '';
+    if(reg){
+      var parts = reg.split('-');
+      if(parts.length === 2 && parts[0] && parts[1]){
+        regText = parts[0] + '년 ' + parts[1] + '월 (등록)';
+      }else{
+        regText = reg + ' (등록)';
+      }
+    }
+
+    var modelText = model ? model + ' 년형' : '';
+    if(regText && modelText) return regText + ' / ' + modelText;
+    return regText || modelText || '';
+  }
+
+  function getSelectPlus(selectKey, inputKey){
+    var s = getByKey(selectKey);
+    var i = getByKey(inputKey);
+    if(s && i) return s + ' ' + i;
+    return s || i || '';
+  }
+
+  function getMoney(prefix, appendFee){
+    var amount = getByKey(prefix + '_amount');
+    var unit = getByKey(prefix + '_unit') || '만원';
+    if(!amount) return '';
+    var out = amount + ' ' + unit;
+    if(appendFee) out += '+수수료';
+    return out;
+  }
+
+  function getMoneyOrX(prefix, appendFee){
+    return getMoney(prefix, appendFee) || 'X';
+  }
+
+  function getMoneyDate(prefix){
+    var amount = getByKey(prefix + '_amount');
+    var unit = getByKey(prefix + '_unit') || '만원';
+    var mmdd = mmddKorean(getByKey(prefix + '_date_mmdd'));
+    if(!amount && !mmdd) return '';
+    if(amount && mmdd) return amount + ' ' + unit + '/' + mmdd;
+    if(amount) return amount + ' ' + unit;
+    return mmdd;
+  }
+
+  function getAccount(prefix){
+    var bank = getByKey(prefix + '_bank');
+    var number = getByKey(prefix + '_number');
+    var holder = getByKey(prefix + '_holder');
+    var arr = [];
+    if(bank) arr.push(bank);
+    if(number) arr.push(number);
+    if(holder) arr.push(holder);
+    return arr.join(' ');
+  }
+
+  function getCountMemo(prefix){
+    var count = parseInt(getByKey(prefix + '_count_select') || '0', 10);
+    if(!count || count <= 0) return 'X';
+
+    var memo = getByKey(prefix + '_memo');
+    var base = String(count) + '개';
+    return memo ? (base + '/' + memo) : base;
+  }
+
+  function profitIsOpen(){
+    var btn = document.getElementById('orderProfitToggle');
+    return !!(btn && btn.getAttribute('data-open') === '1');
+  }
+
+  function dealerIsEncar(){
+    return getByKey('order_dealer').replace(/\s+/g,'') === '엔카';
+  }
+
+  function refreshCountDetail(wrap){
+    var select = wrap ? wrap.querySelector('.order-count-select-v1717') : null;
+    var count = select ? parseInt(select.value || '0', 10) : 0;
+    if(wrap) wrap.setAttribute('data-open', count > 0 ? '1' : '0');
+  }
+
+  function syncUnitButton(btn, hidden){
+    if(!btn || !hidden) return;
+    var unit = hidden.value || btn.getAttribute('data-unit') || '만원';
+    btn.textContent = unit;
+    btn.setAttribute('data-unit', unit);
+    btn.classList.add('active');
+  }
+
+  function toggleUnit(btn){
+    if(!btn) return;
+    var wrap = btn.closest('.order-money-unit, .order-money-date');
+    if(!wrap) return;
+    var hidden = wrap.querySelector('input[type="hidden"][data-key$="_unit"]');
+    if(!hidden) return;
+
+    var current = hidden.value || btn.getAttribute('data-unit') || '만원';
+    var next = current === '만원' ? '원' : '만원';
+    hidden.value = next;
+    syncUnitButton(btn, hidden);
+  }
+
+  function buildOrderTextV1717(){
+    var fee = dealerIsEncar();
+    var lines = [];
+
+    lines.push('★바로지시사항');
+    lines.push('=▶ ' + getByKey('order_direct_instruction'));
+    lines.push('■■■ 매 입 ■■■');
+    lines.push('■ 차량정보 ■');
+    lines.push('▷날짜 : ' + dateSlash('order_date'));
+    lines.push('▷담당딜러 : ' + getByKey('order_dealer'));
+    lines.push('▷검 수 자  : ' + getByKey('order_inspector'));
+    lines.push('▷견적(가훈/현우/대표님) : ' + getByKey('order_estimator'));
+    lines.push('▷경로(낙찰,디비,대차,지인) : ' + getByKey('order_route'));
+    lines.push('▷탁송,온라인 매입(O/X) : ' + getByKey('order_online_delivery'));
+    lines.push('▷차량이름 : ' + getByKey('order_car_name'));
+    lines.push('▷차량번호 : ' + getByKey('order_car_no'));
+    lines.push('▷연식 : ' + (getYear() || '년 월(등록) / 년형'));
+    lines.push('▷등급 : ' + getByKey('order_grade'));
+    lines.push('▷연료 : ' + getByKey('order_fuel'));
+    lines.push('▷배기량 : ' + (getByKey('order_displacement') ? getByKey('order_displacement') + ' CC' : ' CC'));
+    lines.push('▷주행 : ' + (getByKey('order_mileage') ? getByKey('order_mileage') + ' KM' : '  KM'));
+    lines.push('▷사고 : ' + getCountMemo('order_accident'));
+    lines.push('▷미확정(O/X) : ' + getByKey('order_unconfirmed'));
+    lines.push('▷전손/침수/직수/계기판/ : ' + getByKey('order_special_history'));
+    lines.push('▷외판 : ' + getCountMemo('order_outer'));
+    lines.push('▷수리 : ' + getCountMemo('order_repair'));
+    lines.push('▷스페어키 여부/위치 : ' + getSelectPlus('order_spare_key_yn', 'order_spare_key_location'));
+    lines.push('■ 금액,송금,위험요소 ■');
+    lines.push('▷서류발송일 : ' + dateSlash('order_doc_send_date'));
+    lines.push('▷서류위치 : ' + getByKey('order_doc_location'));
+    lines.push('▷사업자여부/종류 : ' + getSelectPlus('order_business_yn', 'order_business_type'));
+    lines.push('▷현금,캐피탈,리스,렌트 : ' + getByKey('order_payment_type'));
+    lines.push('▷압류(특수) : ' + (getByKey('order_seizure') || 'X'));
+    lines.push('▶차주송금금액◀(제시금액) : ' + getMoney('order_owner_transfer', fee));
+    lines.push('▶실매입금액◀ : ' + getMoney('order_real_buy', fee));
+    lines.push('▷계약금 : ' + (getMoneyDate('order_deposit') || '원  월 / 일'));
+    lines.push('▷잔   금 : ' + (getMoneyDate('order_balance') || '원  월 / 일'));
+    lines.push('▷인수일 : ' + (mmddKorean(getByKey('order_takeover_date_mmdd')) || '월 / 일'));
+    lines.push('▷반환금액 : ' + getMoneyOrX('order_return', false));
+    lines.push('▷계산서금액 : ' + getMoney('order_invoice', false));
+    lines.push('▷이름 : ' + getByKey('order_account_name'));
+    lines.push('▷계좌/예금주 : ' + getAccount('order_account'));
+    lines.push('▷캐피탈계좌(압류) : ' + (getByKey('order_capital_account') || 'X'));
+    lines.push('▷차주번호 : ' + (fee ? 'X' : (getByKey('order_owner_phone') || 'x')));
+
+    if(profitIsOpen()){
+      lines.push('');
+      lines.push('---수익금 있을때만---');
+      lines.push('알선수익금(소개비) : ' + getMoney('order_referral_profit', false));
+      lines.push('소개비이름 : ' + getByKey('order_referral_name'));
+      lines.push('소개비계좌 : ' + getAccount('order_referral_account'));
+      lines.push('원천주민번호(해당시작성) : ' + getByKey('order_withholding_rrn'));
+    }
+
+    return lines.join('\\n');
+  }
+
+  function bindOrderV1717(){
+    var sec = document.getElementById('secOrder');
+    if(!sec || sec.getAttribute('data-order-bound-v1717') === '1') return;
+    sec.setAttribute('data-order-bound-v1717','1');
+
+    var countWraps = sec.querySelectorAll('.order-count-detail-v1717');
+    for(var c=0;c<countWraps.length;c++) refreshCountDetail(countWraps[c]);
+
+    var unitBtns = sec.querySelectorAll('.order-unit-toggle-v1716, .order-unit-btn');
+    for(var j=0;j<unitBtns.length;j++){
+      var wrap = unitBtns[j].closest('.order-money-unit, .order-money-date');
+      var hidden = wrap ? wrap.querySelector('input[type="hidden"][data-key$="_unit"]') : null;
+      if(hidden && unitBtns[j].closest('#secOrder')) syncUnitButton(unitBtns[j], hidden);
+    }
+
+    sec.addEventListener('input', function(ev){
+      var t = ev.target;
+      if(!t || !t.classList) return;
+
+      if(t.classList.contains('order-comma-number') || t.classList.contains('order-count-number')){
+        t.value = commaNumber(t.value);
+      }
+      if(t.classList.contains('order-phone')){
+        t.value = formatPhone(t.value);
+      }
+      if(t.classList.contains('order-rrn')){
+        t.value = formatRrn(t.value);
+      }
+      if(t.classList.contains('order-yy-month-input')){
+        t.value = formatYYMM(t.value);
+      }
+      if(t.classList.contains('order-year-model-yy-input')){
+        t.value = onlyDigits(t.value).slice(0,2);
+      }
+      if(t.classList.contains('order-mmdd-input-v1716')){
+        t.value = formatMMDD(t.value);
+      }
+    }, false);
+
+    sec.addEventListener('change', function(ev){
+      var t = ev.target;
+      if(!t || !t.closest) return;
+
+      var countWrap = t.closest('.order-count-detail-v1717');
+      if(countWrap) refreshCountDetail(countWrap);
+    }, false);
+
+    sec.addEventListener('click', function(ev){
+      var t = ev.target;
+      if(!t || !t.closest) return;
+
+      var unitBtn = t.closest('.order-unit-toggle-v1716, .order-unit-btn');
+      if(unitBtn && sec.contains(unitBtn) && unitBtn.closest('.order-money-unit, .order-money-date')){
+        ev.preventDefault();
+        toggleUnit(unitBtn);
+        return false;
+      }
+
+      var profitBtn = t.closest('#orderProfitToggle');
+      if(profitBtn && sec.contains(profitBtn)){
+        ev.preventDefault();
+        var open = profitBtn.getAttribute('data-open') === '1';
+        profitBtn.setAttribute('data-open', open ? '0' : '1');
+        profitBtn.textContent = open ? '▷' : '▶';
+        var grid = document.querySelector('#secOrder .order-profit-grid');
+        if(grid) grid.setAttribute('data-profit-open', open ? '0' : '1');
+        return false;
+      }
+    }, false);
+
+    var submit = document.getElementById('orderSubmitBtn');
+    var output = document.getElementById('orderCopyOutput');
+    var outputCard = document.querySelector('#secOrder .order-output-card');
+    if(submit && submit.getAttribute('data-order-template-bound-v1717') !== '1'){
+      submit.setAttribute('data-order-template-bound-v1717', '1');
+      submit.addEventListener('click', function(){
+        setTimeout(function(){
+          if(!output) return;
+          output.value = buildOrderTextV1717();
+          if(outputCard) outputCard.classList.add('active');
+          output.focus();
+          output.select();
+        }, 0);
+      }, false);
+    }
+
+    var copyBtn = document.getElementById('orderCopyBtn');
+    if(copyBtn && copyBtn.getAttribute('data-copy-bound-v1717') !== '1'){
+      copyBtn.setAttribute('data-copy-bound-v1717','1');
+      copyBtn.addEventListener('click', function(){
+        if(!output) return;
+        output.focus();
+        output.select();
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(output.value).then(function(){
+            copyBtn.textContent = '복사완료';
+            setTimeout(function(){ copyBtn.textContent = '전체 복사'; }, 1200);
+          }).catch(function(){});
+        }else{
+          try{ document.execCommand('copy'); }catch(e){}
+          copyBtn.textContent = '복사완료';
+          setTimeout(function(){ copyBtn.textContent = '전체 복사'; }, 1200);
+        }
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindOrderV1717, false);
+  }else{
+    bindOrderV1717();
+  }
+  window.addEventListener('load', bindOrderV1717, false);
+})();
+</script><script>
+/* v17.18 - 마커 label 기본 포커스/스크롤 방지
+   목적:
+   - 마커 label 클릭 시 브라우저가 hidden radio로 포커스를 이동하면서 첫 클릭에 도면/스크롤이 흔들리는 현상을 방지한다.
+   - label 기본동작은 차단하고, radio checked 및 input/change 이벤트만 수동으로 발생시킨다.
+   - radio id/name 및 기존 CSS checked 구조는 그대로 유지한다.
+*/
+(function(){
+  function setRadioByLabel(label){
+    if(!label) return false;
+
+    var forId = label.getAttribute('for');
+    if(!forId) return false;
+
+    var radio = document.getElementById(forId);
+    if(!radio || radio.type !== 'radio') return false;
+
+    if(!radio.checked){
+      radio.checked = true;
+      try{
+        radio.dispatchEvent(new Event('input', {bubbles:true}));
+        radio.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+
+    return true;
+  }
+
+  function isDiagramMarkerLabel(label){
+    if(!label || !label.closest) return false;
+    if(!label.closest('#secDiag')) return false;
+
+    return (
+      label.classList.contains('paint-native-hit') ||
+      label.classList.contains('hit') ||
+      !!label.closest('.touch-card') ||
+      !!label.closest('.paint-fig') ||
+      !!label.closest('.paint-fig-bent')
+    );
+  }
+
+  function bindMarkerStableV1718(){
+    var root = document.getElementById('secDiag');
+    if(!root || root.getAttribute('data-marker-stable-bound-v1718') === '1') return;
+    root.setAttribute('data-marker-stable-bound-v1718','1');
+
+    root.addEventListener('click', function(ev){
+      var label = ev.target && ev.target.closest ? ev.target.closest('label[for]') : null;
+      if(!label || !isDiagramMarkerLabel(label)) return;
+
+      if(setRadioByLabel(label)){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        return false;
+      }
+    }, true);
+
+    root.addEventListener('pointerdown', function(ev){
+      var label = ev.target && ev.target.closest ? ev.target.closest('label[for]') : null;
+      if(!label || !isDiagramMarkerLabel(label)) return;
+
+      /* pointerdown 단계에서 포커스 이동만 차단하고 실제 checked 처리는 click에서 수행 */
+      ev.preventDefault();
+    }, true);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindMarkerStableV1718, false);
+  }else{
+    bindMarkerStableV1718();
+  }
+  window.addEventListener('load', bindMarkerStableV1718, false);
 })();
 </script></body>
 </html>

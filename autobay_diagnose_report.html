@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
-<title>오토베이 현장 매입 진단리포트</title>
+<title>오토베이 현장 매입 진단리포트 v16.17-wheel-mask-top-paint-fix</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -10449,6 +10449,247 @@ textarea.tread-input-fix-v1724,
 #secDiag input.exterior-tread-input + span{
   font-weight:900!important;
 }
+
+/* v17.28 - 진단일자 자체 날짜 패널 완전 제거
+   목적:
+   - v17.25에서 추가된 자체 날짜 선택 박스 잔재를 표시하지 않는다.
+   - 기존 진단일자 입력박스와 기존 미니달력 구조만 유지한다.
+   - 새 아이콘/새 패널/별도 박스는 사용하지 않는다.
+   영향 범위: 진단일자 달력 패널 잔재 제거만 적용한다.
+*/
+#secInput .diag-date-panel-v1725,
+#secInput .diag-date-panel-v1725[data-open="1"],
+#secInput .diag-date-year-v1725,
+#secInput .diag-date-month-v1725,
+#secInput .diag-date-day-v1725,
+#secInput .diag-date-apply-v1725,
+#secInput .diag-date-close-v1725{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+/* 기존 진단일자 입력 구조만 유지 */
+#secInput .date-dual-wrap{
+  position:relative!important;
+}
+
+#secInput .date-dual-wrap .date-text-input.date-ymd-input{
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding-right:46px!important;
+}
+
+/* 기존 미니 달력 input만 남김 */
+#secInput .date-dual-wrap input[type="date"].bi-date-overlay{
+  display:block!important;
+  visibility:visible!important;
+  position:absolute!important;
+  right:4px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:40px!important;
+  height:32px!important;
+  z-index:30!important;
+  pointer-events:auto!important;
+}
+
+/* v17.29 - 진단일자 달력 이전 작동 방식 복구
+   기준:
+   - v15.9~v16.54 계열의 date-dual-wrap + bi-date-overlay 방식으로 되돌린다.
+   - 자체 날짜 패널, 추가 아이콘, iOS 전용 class는 사용하지 않는다.
+   영향 범위: 진단일자/기존 date-dual-wrap 달력 입력 동기화만 적용한다.
+*/
+#secInput .date-dual-wrap{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .date-dual-wrap .date-text-input.date-ymd-input{
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding-right:46px!important;
+}
+
+/* 이전 작동 코드 기준: 실제 date input이 우측 미니달력 영역에 보이면서 직접 터치됨 */
+#secInput .date-dual-wrap .bi-date-overlay{
+  position:absolute!important;
+  right:8px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:30px!important;
+  height:34px!important;
+  opacity:1!important;
+  z-index:4!important;
+  border:0!important;
+  background:transparent!important;
+  padding:0!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  pointer-events:auto!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+  cursor:pointer!important;
+}
+
+/* 삭제 대상 잔재는 무조건 숨김 */
+#secInput .diag-date-panel-v1725,
+#secInput .ios-date-visual-btn-v1723,
+#secInput .diag-date-year-v1725,
+#secInput .diag-date-month-v1725,
+#secInput .diag-date-day-v1725,
+#secInput .diag-date-apply-v1725,
+#secInput .diag-date-close-v1725{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* v17.30 - 진단일자 표시 깨짐 복구 + 트레드 입력박스 타이어 상태확인 스타일화
+   목적:
+   1) 진단일자 우측 date input에서 '월' 등 네이티브 날짜 텍스트가 삐져나오는 현상을 제거한다.
+   2) 추가 아이콘/자체 패널 없이 기존 bi-date-overlay만 사용한다.
+   3) 외관 좌/우 측면진단 트레드 입력박스를 타이어 상태확인 입력박스와 같은 계열의 카드형 입력 스타일로 맞춘다.
+   영향 범위: 진단일자 date-dual-wrap, exterior_tread_* 입력박스만 적용한다.
+   주의: 도면 좌표, 마커 좌표, data-key, localStorage key, 매입오더 출력은 변경하지 않는다.
+*/
+
+/* 진단일자 기존 구조 유지 */
+#secInput .date-old-stable-v1730{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .date-old-stable-v1730 .date-text-input.date-ymd-input{
+  width:100%!important;
+  min-height:38px!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+/* 기존 미니달력 input만 사용하되, 날짜 텍스트가 보이지 않도록 정리 */
+#secInput .date-old-stable-v1730 .bi-date-overlay.date-native-clean-v1730,
+#secInput .date-old-stable-v1730 input[type="date"].bi-date-overlay{
+  position:absolute!important;
+  right:8px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:30px!important;
+  min-width:30px!important;
+  max-width:30px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  opacity:1!important;
+  z-index:40!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-indent:0!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+  cursor:pointer!important;
+}
+
+/* picker indicator만 미니 아이콘처럼 표시 */
+#secInput .date-old-stable-v1730 .bi-date-overlay.date-native-clean-v1730::-webkit-calendar-picker-indicator,
+#secInput .date-old-stable-v1730 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator{
+  opacity:1!important;
+  display:block!important;
+  width:30px!important;
+  height:30px!important;
+  margin:0!important;
+  padding:0!important;
+  cursor:pointer!important;
+}
+
+/* 자체 날짜 패널/추가 아이콘 잔재 완전 차단 */
+#secInput .diag-date-panel-v1725,
+#secInput .ios-date-visual-btn-v1723,
+#secInput .diag-date-year-v1725,
+#secInput .diag-date-month-v1725,
+#secInput .diag-date-day-v1725,
+#secInput .diag-date-apply-v1725,
+#secInput .diag-date-close-v1725{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+/* 외관 좌/우 측면진단 트레드 input: 타이어 상태확인 입력박스 계열 스타일로 통일 */
+#secDiag input.tread-as-tire-v1730,
+#secDiag input.exterior-tread-input,
+#secDiag input[data-key^="exterior_tread_"]{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:38px!important;
+  min-height:38px!important;
+  max-height:38px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:10px!important;
+  background:#ffffff!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  line-height:38px!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  padding:0 8px!important;
+  box-sizing:border-box!important;
+  box-shadow:none!important;
+}
+
+/* 트레드 placeholder는 타이어 상태확인 입력박스 기준처럼 작고 중앙정렬 */
+#secDiag input.tread-as-tire-v1730::placeholder,
+#secDiag input.exterior-tread-input::placeholder,
+#secDiag input[data-key^="exterior_tread_"]::placeholder{
+  color:#9ca3af!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  text-align:center!important;
+  line-height:38px!important;
+}
+
+#secDiag input.tread-as-tire-v1730::-webkit-input-placeholder,
+#secDiag input.exterior-tread-input::-webkit-input-placeholder,
+#secDiag input[data-key^="exterior_tread_"]::-webkit-input-placeholder{
+  color:#9ca3af!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  text-align:center!important;
+  line-height:38px!important;
+}
+
+/* % 표시 볼드 유지하되 입력박스 기준 높이에 맞춤 */
+#secDiag .tread-percent-v1726,
+#secDiag .exterior-tread-unit,
+#secDiag input.tread-as-tire-v1730 + span,
+#secDiag input.exterior-tread-input + span,
+#secDiag input[data-key^="exterior_tread_"] + span{
+  font-weight:900!important;
+  font-size:14px!important;
+  line-height:38px!important;
+  height:38px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10491,10 +10732,10 @@ textarea.tread-input-fix-v1724,
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap diag-date-ios-fix-v1723 diag-date-panel-wrap-v1725">
-<input autocomplete="off" class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
-<input aria-label="진단일자 달력" class="bi-date-overlay diag-date-native-ios-v1723 diag-date-native-ios-v1725" type="date"/>
-<div class="diag-date-panel-v1725" data-open="0"><input class="diag-date-year-v1725" inputmode="numeric" maxlength="4" placeholder="YYYY"/><select class="diag-date-month-v1725"><option value="01">1월</option><option value="02">2월</option><option value="03">3월</option><option value="04">4월</option><option value="05">5월</option><option value="06">6월</option><option value="07">7월</option><option value="08">8월</option><option value="09">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="diag-date-day-v1725"><option value="01">1일</option><option value="02">2일</option><option value="03">3일</option><option value="04">4일</option><option value="05">5일</option><option value="06">6일</option><option value="07">7일</option><option value="08">8일</option><option value="09">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select><button class="diag-date-apply-v1725" type="button">적용</button><button class="diag-date-close-v1725" type="button">닫기</button></div></div>
+<div class="date-dual-wrap date-old-stable-v1730">
+<input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
+<input aria-label="진단일자 달력" class="bi-date-overlay date-native-clean-v1730" type="date"/>
+</div>
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">지역</div>
@@ -11286,7 +11527,7 @@ textarea.tread-input-fix-v1724,
 <label class="hit h1" for="pan2_side_C_8_2"><span>X</span></label>
 <label class="hit h2" for="pan2_side_C_8_3"><span>W</span></label>
 <label class="hit h3" for="pan2_side_C_8_4"><span>R</span></label>
-<label class="hit h4" for="pan2_side_C_8_0"><span>L</span></label></div><div class="exterior-tread-wrap left" data-v165-tread="B-9" style="left:17.20000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_b9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap left" data-v165-tread="B-10" style="left:17.20000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_b10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-9" style="left:82.80000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_c9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-10" style="left:82.80000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_c10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><input checked="" class="st st0" id="pan2_side_B_9_0" name="pan2_side_B_9" type="radio"/><input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/><input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/><input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/><input class="st st4" id="pan2_side_B_9_4" name="pan2_side_B_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-9" data-part-code="B9" data-v165-wheel="1" style="left:31.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_B_9_1"><span></span></label><label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/><input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/><input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/><input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/><input class="st st4" id="pan2_side_B_10_4" name="pan2_side_B_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-10" data-part-code="B10" data-v165-wheel="1" style="left:31.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_B_10_1"><span></span></label><label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_10_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/><input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/><input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/><input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/><input class="st st4" id="pan2_side_C_9_4" name="pan2_side_C_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-9" data-part-code="C9" data-v165-wheel="1" style="left:69.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_C_9_1"><span></span></label><label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/><input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/><input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/><input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/><input class="st st4" id="pan2_side_C_10_4" name="pan2_side_C_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-10" data-part-code="C10" data-v165-wheel="1" style="left:69.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_C_10_1"><span></span></label><label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_10_0"><span></span></label></div></div></section>
+<label class="hit h4" for="pan2_side_C_8_0"><span>L</span></label></div><div class="exterior-tread-wrap left" data-v165-tread="B-9" style="left:17.20000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_b9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap left" data-v165-tread="B-10" style="left:17.20000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_b10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-9" style="left:82.80000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_c9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-10" style="left:82.80000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_c10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><input checked="" class="st st0" id="pan2_side_B_9_0" name="pan2_side_B_9" type="radio"/><input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/><input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/><input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/><input class="st st4" id="pan2_side_B_9_4" name="pan2_side_B_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-9" data-part-code="B9" data-v165-wheel="1" style="left:31.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_B_9_1"><span></span></label><label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/><input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/><input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/><input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/><input class="st st4" id="pan2_side_B_10_4" name="pan2_side_B_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-10" data-part-code="B10" data-v165-wheel="1" style="left:31.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_B_10_1"><span></span></label><label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_10_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/><input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/><input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/><input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/><input class="st st4" id="pan2_side_C_9_4" name="pan2_side_C_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-9" data-part-code="C9" data-v165-wheel="1" style="left:69.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_C_9_1"><span></span></label><label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/><input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/><input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/><input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/><input class="st st4" id="pan2_side_C_10_4" name="pan2_side_C_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-10" data-part-code="C10" data-v165-wheel="1" style="left:69.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_C_10_1"><span></span></label><label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_10_0"><span></span></label></div></div></section>
 </div>
 <div class="customer-note-block"><div class="customer-note-title customer-note-dot-title">외관 고객기재</div><textarea data-key="exteriorCustomerMemo" placeholder="외관 관련 고객 고지/기재 내용을 입력"></textarea></div>
 <p class="hint"></p>
@@ -14353,87 +14594,6 @@ boot();
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
 })();
 </script><script>
-/* v17.23 - 기존 진단일자 미니달력 iOS 보조 */
-(function(){
-  function onlyDigits(value){
-    return String(value || '').replace(/[^\d]/g, '');
-  }
-
-  function formatYMD(value){
-    var d = onlyDigits(value).slice(0, 8);
-    if(d.length <= 4) return d;
-    if(d.length <= 6) return d.slice(0,4) + '-' + d.slice(4);
-    return d.slice(0,4) + '-' + d.slice(4,6) + '-' + d.slice(6);
-  }
-
-  function syncDate(dateInput){
-    if(!dateInput) return;
-    var wrap = dateInput.closest('.diag-date-ios-fix-v1723, .date-dual-wrap');
-    var text = wrap ? wrap.querySelector('.date-text-input.date-ymd-input') : null;
-    if(text && dateInput.value){
-      text.value = dateInput.value;
-      try{
-        text.dispatchEvent(new Event('input', {bubbles:true}));
-        text.dispatchEvent(new Event('change', {bubbles:true}));
-      }catch(e){}
-    }
-  }
-
-  function openNativeDate(dateInput){
-    if(!dateInput) return;
-
-    try{
-      if(typeof dateInput.showPicker === 'function'){
-        dateInput.showPicker();
-        return;
-      }
-    }catch(e){}
-
-    try{ dateInput.focus(); }catch(e){}
-    try{ dateInput.click(); }catch(e){}
-  }
-
-  function bindDiagDateIosFixV1723(){
-    var wrap = document.querySelector('#secInput .diag-date-ios-fix-v1723');
-    if(!wrap || wrap.getAttribute('data-diag-date-ios-bound-v1723') === '1') return;
-    wrap.setAttribute('data-diag-date-ios-bound-v1723', '1');
-
-    var dateInput = wrap.querySelector('input[type="date"].diag-date-native-ios-v1723, input[type="date"].bi-date-overlay');
-    var textInput = wrap.querySelector('.date-text-input.date-ymd-input');
-
-    if(dateInput){
-      dateInput.addEventListener('input', function(){ syncDate(dateInput); }, false);
-      dateInput.addEventListener('change', function(){ syncDate(dateInput); }, false);
-      dateInput.addEventListener('touchend', function(){
-        setTimeout(function(){ syncDate(dateInput); }, 250);
-      }, {passive:true});
-    }
-
-    if(textInput){
-      textInput.addEventListener('input', function(){
-        textInput.value = formatYMD(textInput.value);
-      }, false);
-    }
-
-    /* 우측 기존 미니달력 영역을 누른 경우만 보조 호출. 새 아이콘은 생성하지 않는다. */
-    wrap.addEventListener('click', function(ev){
-      if(ev.target === dateInput) return;
-      var rect = wrap.getBoundingClientRect();
-      if(ev.clientX >= rect.right - 50){
-        ev.preventDefault();
-        openNativeDate(dateInput);
-      }
-    }, false);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindDiagDateIosFixV1723, false);
-  }else{
-    bindDiagDateIosFixV1723();
-  }
-  window.addEventListener('load', bindDiagDateIosFixV1723, false);
-})();
-</script><script>
 /* v17.24 - 랩핑/PPF 메모 표시 및 트레드 입력박스 런타임 보강 */
 (function(){
   function norm(value){
@@ -14533,164 +14693,6 @@ boot();
   }
 })();
 </script><script>
-/* v17.25 - 진단일자 iOS 자체 날짜 패널 */
-(function(){
-  function onlyDigits(value){
-    return String(value || '').replace(/[^\d]/g, '');
-  }
-
-  function formatYMD(value){
-    var d = onlyDigits(value).slice(0, 8);
-    if(d.length <= 4) return d;
-    if(d.length <= 6) return d.slice(0,4) + '-' + d.slice(4);
-    return d.slice(0,4) + '-' + d.slice(4,6) + '-' + d.slice(6);
-  }
-
-  function todayParts(){
-    var d = new Date();
-    return {
-      y: String(d.getFullYear()),
-      m: String(d.getMonth() + 1).padStart(2, '0'),
-      day: String(d.getDate()).padStart(2, '0')
-    };
-  }
-
-  function parseTextDate(textInput){
-    var v = textInput ? String(textInput.value || '').trim() : '';
-    var m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if(m) return {y:m[1], m:m[2], day:m[3]};
-    return todayParts();
-  }
-
-  function setPanelValues(wrap){
-    var text = wrap.querySelector('.date-text-input.date-ymd-input');
-    var parts = parseTextDate(text);
-    var y = wrap.querySelector('.diag-date-year-v1725');
-    var m = wrap.querySelector('.diag-date-month-v1725');
-    var d = wrap.querySelector('.diag-date-day-v1725');
-    if(y) y.value = parts.y;
-    if(m) m.value = parts.m;
-    if(d) d.value = parts.day;
-  }
-
-  function openPanel(wrap){
-    var panel = wrap.querySelector('.diag-date-panel-v1725');
-    if(!panel) return;
-    setPanelValues(wrap);
-    panel.setAttribute('data-open', '1');
-  }
-
-  function closePanel(wrap){
-    var panel = wrap.querySelector('.diag-date-panel-v1725');
-    if(panel) panel.setAttribute('data-open', '0');
-  }
-
-  function applyPanel(wrap){
-    var y = wrap.querySelector('.diag-date-year-v1725');
-    var m = wrap.querySelector('.diag-date-month-v1725');
-    var d = wrap.querySelector('.diag-date-day-v1725');
-    var text = wrap.querySelector('.date-text-input.date-ymd-input');
-    var nativeDate = wrap.querySelector('input[type="date"]');
-
-    var yy = onlyDigits(y && y.value).slice(0,4);
-    if(yy.length !== 4){
-      yy = String(new Date().getFullYear());
-    }
-
-    var value = yy + '-' + (m ? m.value : '01') + '-' + (d ? d.value : '01');
-
-    if(text){
-      text.value = value;
-      try{
-        text.dispatchEvent(new Event('input', {bubbles:true}));
-        text.dispatchEvent(new Event('change', {bubbles:true}));
-      }catch(e){}
-    }
-
-    if(nativeDate){
-      nativeDate.value = value;
-      try{
-        nativeDate.dispatchEvent(new Event('input', {bubbles:true}));
-        nativeDate.dispatchEvent(new Event('change', {bubbles:true}));
-      }catch(e){}
-    }
-
-    closePanel(wrap);
-  }
-
-  function syncNativeDate(nativeDate){
-    if(!nativeDate || !nativeDate.value) return;
-    var wrap = nativeDate.closest('.diag-date-panel-wrap-v1725, .date-dual-wrap');
-    var text = wrap ? wrap.querySelector('.date-text-input.date-ymd-input') : null;
-    if(text){
-      text.value = nativeDate.value;
-      try{
-        text.dispatchEvent(new Event('input', {bubbles:true}));
-        text.dispatchEvent(new Event('change', {bubbles:true}));
-      }catch(e){}
-    }
-  }
-
-  function bindDiagDatePanelV1725(){
-    var wrap = document.querySelector('#secInput .diag-date-panel-wrap-v1725');
-    if(!wrap || wrap.getAttribute('data-diag-date-panel-bound-v1725') === '1') return;
-    wrap.setAttribute('data-diag-date-panel-bound-v1725','1');
-
-    var nativeDate = wrap.querySelector('input[type="date"]');
-    var text = wrap.querySelector('.date-text-input.date-ymd-input');
-
-    if(text){
-      text.addEventListener('input', function(){
-        text.value = formatYMD(text.value);
-      }, false);
-    }
-
-    if(nativeDate){
-      nativeDate.addEventListener('input', function(){ syncNativeDate(nativeDate); }, false);
-      nativeDate.addEventListener('change', function(){ syncNativeDate(nativeDate); }, false);
-    }
-
-    wrap.addEventListener('click', function(ev){
-      var target = ev.target;
-
-      if(target && target.classList && target.classList.contains('diag-date-apply-v1725')){
-        ev.preventDefault();
-        applyPanel(wrap);
-        return false;
-      }
-
-      if(target && target.classList && target.classList.contains('diag-date-close-v1725')){
-        ev.preventDefault();
-        closePanel(wrap);
-        return false;
-      }
-
-      /* 기존 우측 미니달력 영역을 누르면 자체 패널을 연다. 새 아이콘은 사용하지 않는다. */
-      var rect = wrap.getBoundingClientRect();
-      var isRightCalendarZone = ev.clientX >= rect.right - 50;
-      if(isRightCalendarZone){
-        ev.preventDefault();
-        ev.stopPropagation();
-        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-        openPanel(wrap);
-        return false;
-      }
-    }, true);
-
-    document.addEventListener('click', function(ev){
-      if(!wrap.contains(ev.target)){
-        closePanel(wrap);
-      }
-    }, false);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindDiagDatePanelV1725, false);
-  }else{
-    bindDiagDatePanelV1725();
-  }
-})();
-</script><script>
 /* v17.26 - 트레드 입력박스 중앙정렬 런타임 보정 */
 (function(){
   function isTreadInput(el){
@@ -14763,6 +14765,160 @@ boot();
   }else{
     bindTreadAlignV1726();
   }
+})();
+</script><script>
+/* v17.29 - 진단일자 달력 이전 작동 핸들러 복구 */
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function formatDateText(value){
+    var digits = onlyDigits(value).slice(0, 8);
+    if(digits.length <= 4) return digits;
+    if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
+    return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
+  }
+
+  function syncTextToNative(textInput){
+    var wrap = textInput.closest ? textInput.closest('.date-dual-wrap') : textInput.parentNode;
+    var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
+    if(nativeDate && /^\d{4}-\d{2}-\d{2}$/.test(textInput.value)){
+      nativeDate.value = textInput.value;
+    }
+  }
+
+  function syncNativeToText(dateInput){
+    var wrap = dateInput.closest ? dateInput.closest('.date-dual-wrap') : dateInput.parentNode;
+    var textInput = wrap ? wrap.querySelector('.date-ymd-input') : null;
+    if(textInput){
+      textInput.value = dateInput.value || '';
+      try{
+        textInput.dispatchEvent(new Event('input', {bubbles:true}));
+        textInput.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+
+  function openNativeDate(wrap){
+    var picker = wrap ? wrap.querySelector('.bi-date-overlay') : null;
+    if(!picker) return;
+
+    try{
+      if(typeof picker.showPicker === 'function'){
+        picker.showPicker();
+      }else{
+        picker.focus();
+        picker.click();
+      }
+    }catch(error){
+      try{ picker.focus(); }catch(e){}
+      try{ picker.click(); }catch(e){}
+    }
+  }
+
+  function bindDateOldRestoreV1729(){
+    if(document.body.getAttribute('data-date-old-restore-v1729') === '1') return;
+    document.body.setAttribute('data-date-old-restore-v1729', '1');
+
+    var dateInputs = document.querySelectorAll('#secInput .date-ymd-input');
+    for(var i=0;i<dateInputs.length;i++){
+      if(dateInputs[i].getAttribute('data-v1729-date-text') === '1') continue;
+      dateInputs[i].setAttribute('data-v1729-date-text','1');
+      dateInputs[i].setAttribute('maxlength','10');
+      dateInputs[i].setAttribute('inputmode','numeric');
+
+      dateInputs[i].addEventListener('input', function(){
+        this.value = formatDateText(this.value);
+        syncTextToNative(this);
+      }, false);
+
+      dateInputs[i].addEventListener('blur', function(){
+        this.value = formatDateText(this.value);
+        syncTextToNative(this);
+      }, false);
+    }
+
+    var dateOverlays = document.querySelectorAll('#secInput .date-dual-wrap .bi-date-overlay');
+    for(var d=0; d<dateOverlays.length; d++){
+      if(dateOverlays[d].getAttribute('data-v1729-date-overlay') === '1') continue;
+      dateOverlays[d].setAttribute('data-v1729-date-overlay','1');
+
+      dateOverlays[d].addEventListener('input', function(){
+        syncNativeToText(this);
+      }, false);
+
+      dateOverlays[d].addEventListener('change', function(){
+        syncNativeToText(this);
+      }, false);
+    }
+
+    var wraps = document.querySelectorAll('#secInput .date-dual-wrap');
+    for(var w=0; w<wraps.length; w++){
+      (function(wrap){
+        if(wrap.getAttribute('data-v1729-date-touch') === '1') return;
+        wrap.setAttribute('data-v1729-date-touch','1');
+
+        var handler = function(event){
+          var rect = wrap.getBoundingClientRect();
+          var point = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0] : event;
+          var clientX = point && typeof point.clientX === 'number' ? point.clientX : rect.right;
+
+          /* 기존 작동 코드 기준: 우측 미니달력 영역만 반응 */
+          if(clientX < rect.right - 86) return;
+
+          if(event){
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          openNativeDate(wrap);
+        };
+
+        wrap.addEventListener('click', handler, true);
+        wrap.addEventListener('touchend', handler, true);
+      })(wraps[w]);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDateOldRestoreV1729, false);
+  }else{
+    bindDateOldRestoreV1729();
+  }
+  window.addEventListener('load', bindDateOldRestoreV1729, false);
+})();
+</script><script>
+/* v17.30 - 진단일자 표시 깨짐 방지 보조 */
+(function(){
+  function bindDateCleanV1730(){
+    var wrap = document.querySelector('#secInput .date-old-stable-v1730');
+    if(!wrap || wrap.getAttribute('data-date-clean-bound-v1730') === '1') return;
+    wrap.setAttribute('data-date-clean-bound-v1730', '1');
+
+    var date = wrap.querySelector('input[type="date"].bi-date-overlay');
+    var text = wrap.querySelector('.date-text-input.date-ymd-input');
+
+    if(date){
+      date.classList.add('date-native-clean-v1730');
+      date.addEventListener('change', function(){
+        if(text && date.value){
+          text.value = date.value;
+          try{
+            text.dispatchEvent(new Event('input', {bubbles:true}));
+            text.dispatchEvent(new Event('change', {bubbles:true}));
+          }catch(e){}
+        }
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDateCleanV1730, false);
+  }else{
+    bindDateCleanV1730();
+  }
+  window.addEventListener('load', bindDateCleanV1730, false);
 })();
 </script></body>
 </html>

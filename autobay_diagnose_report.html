@@ -9161,6 +9161,20 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   animation:none!important;
   touch-action:manipulation!important;
 }
+
+/* v17.10 - 기본정보 중복 핸들러 제거 후 입력 보정 */
+#secInput .basic-yy-date-field-v1694 .date-dual-wrap,
+#secInput .basic-yy-date-field-v1694 input[type="date"],
+#secInput .basic-yy-date-field-v1694 .bi-date-overlay,
+#secInput .basic-yy-date-field-v1694 .date-picker-btn,
+#secInput .basic-yy-date-field-v1694 .calendar-btn{
+  display:none!important;
+}
+
+#secInput .basic-yy-date-input-v1694{
+  width:100%!important;
+  padding-right:10px!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -11102,688 +11116,13 @@ boot();
   window.addEventListener('load', bindInsuranceSelects, false);
 })();
 </script>
-<script>
-(function(){
-function bindBasicInfo(){
-var plateBtn=document.querySelector('.plate-change-btn');
-if(plateBtn&&plateBtn.getAttribute('data-bound')!=='1'){
-plateBtn.setAttribute('data-bound','1');
-plateBtn.addEventListener('click',function(){
-var badge=document.querySelector('.plate-change-badge');
-if(!badge)return;
-badge.style.display=badge.style.display==='none'?'flex':'none';
-console.log('[BASIC][PLATE_CHANGE]',badge.style.display);
-},false);
-}
 
-var tuningMain=document.querySelector('.tuning-main');
-if(tuningMain&&tuningMain.getAttribute('data-bound')!=='1'){
-tuningMain.setAttribute('data-bound','1');
-tuningMain.addEventListener('change',function(){
-var extra=document.querySelector('.tuning-extra');
-if(extra)extra.style.display=this.value==='있음'?'block':'none';
-},false);
-}
 
-var addBtn=document.querySelector('.tuning-add-btn');
-if(addBtn&&addBtn.getAttribute('data-bound')!=='1'){
-addBtn.setAttribute('data-bound','1');
-addBtn.addEventListener('click',function(){
-var list=document.querySelector('.tuning-list');
-if(!list)return;
-var row=document.createElement('div');
-row.className='tuning-row';
-row.innerHTML='<select class="bi-select"><option>적법</option><option>불법</option></select><input class="bi-input" placeholder="튜닝 항목 입력">';
-list.appendChild(row);
-console.log('[BASIC][TUNING_ADD]');
-},false);
-}
 
-var recall=document.querySelector('.recall-main');
-if(recall&&recall.getAttribute('data-bound')!=='1'){
-recall.setAttribute('data-bound','1');
-recall.addEventListener('change',function(){
-var sub=document.querySelector('.recall-sub');
-if(sub)sub.style.display=this.value==='해당'?'block':'none';
-},false);
-}
 
-var wrapSel=document.querySelector('.wrap-select');
-if(wrapSel&&wrapSel.getAttribute('data-bound')!=='1'){
-wrapSel.setAttribute('data-bound','1');
-var update=function(){wrapSel.classList.toggle('red',wrapSel.value==='있음');};
-wrapSel.addEventListener('change',update,false);
-update();
-}
-}
 
-if(document.readyState==='loading'){
-document.addEventListener('DOMContentLoaded',bindBasicInfo,false);
-}else{
-bindBasicInfo();
-}
-window.addEventListener('load',bindBasicInfo,false);
-})();
-</script>
-<script>
-(function(){
 
-function bindV153(){
 
-  // 번호판 변경예정
-  var btn=document.querySelector('.plate-change-btn');
-  if(btn && btn.getAttribute('data-v153')!=='1'){
-    btn.setAttribute('data-v153','1');
-
-    btn.addEventListener('click', function(){
-      var badge=document.querySelector('.plate-change-badge');
-      if(!badge)return;
-
-      badge.style.display = badge.style.display==='none' ? 'flex' : 'none';
-
-      console.log('[BASIC][PLATE_CHANGE]', badge.style.display);
-    }, false);
-  }
-
-  // 스티커
-  var sticker=document.querySelector('.sticker-select');
-  if(sticker){
-    var updateSticker=function(){
-      sticker.classList.toggle('red', sticker.value==='없음');
-    };
-    sticker.addEventListener('change', updateSticker, false);
-    updateSticker();
-  }
-
-  // 계기판
-  var cluster=document.querySelector('.cluster-select');
-  if(cluster){
-    var updateCluster=function(){
-      var memo=document.querySelector('.cluster-memo');
-      cluster.classList.toggle('red', cluster.value==='있음');
-      if(memo) memo.style.display = cluster.value==='있음' ? 'block' : 'none';
-    };
-    cluster.addEventListener('change', updateCluster, false);
-    updateCluster();
-  }
-
-  // 외관색상
-  var ext=document.querySelector('.exterior-select');
-  if(ext){
-    var updateExt=function(){
-      var memo=document.querySelector('.exterior-memo');
-      ext.classList.toggle('red', ext.value==='상이');
-      if(memo) memo.style.display = ext.value==='상이' ? 'block' : 'none';
-    };
-    ext.addEventListener('change', updateExt, false);
-    updateExt();
-  }
-
-  // 튜닝
-  var tuning=document.querySelector('.tuning-main');
-  if(tuning){
-    var updateTuning=function(){
-      var extra=document.querySelector('.tuning-extra');
-      if(extra) extra.style.display = tuning.value==='있음' ? 'block' : 'none';
-    };
-    tuning.addEventListener('change', updateTuning, false);
-    updateTuning();
-  }
-
-  var add=document.querySelector('.tuning-add-btn');
-  if(add && add.getAttribute('data-v153')!=='1'){
-    add.setAttribute('data-v153','1');
-
-    add.addEventListener('click', function(){
-      var list=document.querySelector('.tuning-list');
-      if(!list)return;
-
-      var row=document.createElement('div');
-      row.className='tuning-row';
-
-      row.innerHTML=
-      '<select class="bi-select normal-select"><option>적법</option><option>불법</option></select>'+
-      '<input class="bi-input" placeholder="튜닝 항목 입력">';
-
-      list.appendChild(row);
-
-      console.log('[BASIC][TUNING_ADD]');
-    }, false);
-  }
-
-  // 리콜
-  var recall=document.querySelector('.recall-main');
-  if(recall){
-    var updateRecall=function(){
-      var sub=document.querySelector('.recall-sub');
-      if(sub) sub.style.display = recall.value==='해당' ? 'block' : 'none';
-    };
-    recall.addEventListener('change', updateRecall, false);
-    updateRecall();
-  }
-
-  // 랩핑/PPF
-  var wrap=document.querySelector('.wrap-select');
-  if(wrap){
-    var updateWrap=function(){
-      wrap.classList.toggle('red', wrap.value==='있음');
-    };
-    wrap.addEventListener('change', updateWrap, false);
-    updateWrap();
-  }
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', bindV153, false);
-}else{
-  bindV153();
-}
-
-window.addEventListener('load', bindV153, false);
-
-})();
-</script>
-<script>
-(function(){
-function bindV155(){
-
-const plateBtn=document.querySelector('.plate-change-btn');
-if(plateBtn&&!plateBtn.dataset.bind){
- plateBtn.dataset.bind='1';
- plateBtn.addEventListener('click',function(){
-   const badge=document.querySelector('.plate-change-badge');
-   if(!badge)return;
-   badge.style.display=badge.style.display==='none'?'flex':'none';
- });
-}
-
-function bindRed(sel, val, memoSel){
- const el=document.querySelector(sel);
- if(!el)return;
- const update=function(){
-   el.classList.toggle('red', el.value===val);
-   if(memoSel){
-     const memo=document.querySelector(memoSel);
-     if(memo) memo.style.display=el.value===val?'block':'none';
-   }
- };
- el.addEventListener('change',update,false);
- update();
-}
-
-bindRed('.sticker-select','없음');
-bindRed('.cluster-select','있음','.cluster-memo');
-bindRed('.exterior-select','상이','.exterior-memo');
-bindRed('.recall-main','해당(미이행)');
-
-const tuning=document.querySelector('.tuning-main');
-if(tuning){
- const update=function(){
-   const extra=document.querySelector('.tuning-extra');
-   if(extra) extra.style.display=tuning.value==='있음'?'block':'none';
- };
- tuning.addEventListener('change',update,false);
- update();
-}
-
-const add=document.querySelector('.tuning-add-btn');
-if(add&&!add.dataset.bind){
- add.dataset.bind='1';
- add.addEventListener('click',function(){
-   const list=document.querySelector('.tuning-list');
-   if(!list)return;
-
-   const row=document.createElement('div');
-   row.className='tuning-row';
-   row.innerHTML=
-   '<select class="bi-select illegal-select"><option>적법</option><option>불법</option></select>'+
-   '<input class="bi-input" placeholder="튜닝 항목 입력">'+
-   '<button type="button" class="tuning-remove-btn">−</button>';
-
-   list.appendChild(row);
-
-   const sel=row.querySelector('.illegal-select');
-   const sync=function(){
-     sel.classList.toggle('red', sel.value==='불법');
-   };
-   sel.addEventListener('change',sync,false);
-   sync();
-
-   row.querySelector('.tuning-remove-btn').addEventListener('click',function(){
-     row.remove();
-   },false);
- });
-}
-}
-if(document.readyState==='loading'){
- document.addEventListener('DOMContentLoaded',bindV155,false);
-}else{
- bindV155();
-}
-window.addEventListener('load',bindV155,false);
-})();
-</script>
-<script>
-(function(){
-  function bindV156BasicFixes(){
-
-    /* plate badge: 버튼 옆 제목줄에서만 표시 */
-    var plateBtn = document.querySelector('.plate-change-btn');
-    if(plateBtn && plateBtn.getAttribute('data-v156-plate') !== '1'){
-      plateBtn.setAttribute('data-v156-plate','1');
-      plateBtn.addEventListener('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        ev.stopImmediatePropagation();
-        var row = this.closest ? this.closest('.basicinfo-v5-label-row') : this.parentNode;
-        var badge = row ? row.querySelector('.plate-change-badge') : document.querySelector('.plate-change-badge');
-        if(!badge) return false;
-        badge.style.display = (badge.style.display === 'none' || !badge.style.display) ? 'flex' : 'none';
-        console.log('[BASIC][PLATE_CHANGE]', badge.style.display);
-        return false;
-      }, true);
-    }
-
-    /* date overlay: 달력 선택값을 텍스트 입력칸에 반영 */
-    var dateWraps = document.querySelectorAll('.date-dual-wrap');
-    for(var i=0;i<dateWraps.length;i++){
-      var dateInput = dateWraps[i].querySelector('.bi-date-overlay');
-      var textInput = dateWraps[i].querySelector('.date-text-input');
-      if(dateInput && textInput && dateInput.getAttribute('data-v156-date') !== '1'){
-        dateInput.setAttribute('data-v156-date','1');
-        dateInput.addEventListener('change', function(){
-          var wrap = this.closest('.date-dual-wrap');
-          var text = wrap ? wrap.querySelector('.date-text-input') : null;
-          if(text) text.value = this.value;
-        }, false);
-      }
-    }
-
-    /* year: 4자리 숫자만 */
-    var years = document.querySelectorAll('.year-input');
-    for(var y=0;y<years.length;y++){
-      if(years[y].getAttribute('data-v156-year') === '1') continue;
-      years[y].setAttribute('data-v156-year','1');
-      years[y].addEventListener('input', function(){
-        this.value = String(this.value || '').replace(/\D/g,'').slice(0,4);
-      }, false);
-    }
-
-    /* tuning: 기존 중복 add 이벤트 차단 후 단일 행 생성 */
-    var add = document.querySelector('.tuning-add-btn');
-    if(add && add.getAttribute('data-v156-tuning') !== '1'){
-      add.setAttribute('data-v156-tuning','1');
-      add.addEventListener('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        ev.stopImmediatePropagation();
-
-        var list = document.querySelector('.tuning-list');
-        if(!list) return false;
-
-        var row = document.createElement('div');
-        row.className = 'tuning-row';
-        row.innerHTML =
-          '<select class="bi-select illegal-select"><option>적법</option><option>불법</option></select>' +
-          '<input class="bi-input" placeholder="튜닝 항목 입력">' +
-          '<button type="button" class="tuning-remove-btn">−</button>';
-
-        list.appendChild(row);
-
-        var sel = row.querySelector('.illegal-select');
-        var sync = function(){
-          sel.classList.toggle('red', sel.value === '불법');
-        };
-        sel.addEventListener('change', sync, false);
-        sync();
-
-        row.querySelector('.tuning-remove-btn').addEventListener('click', function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          row.remove();
-          return false;
-        }, false);
-
-        console.log('[BASIC][TUNING_ADD]');
-        return false;
-      }, true);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindV156BasicFixes, false);
-  }else{
-    bindV156BasicFixes();
-  }
-  window.addEventListener('load', bindV156BasicFixes, false);
-})();
-</script>
-<script>
-(function(){
-  'use strict';
-
-  /**
-   * bindV157BasicFixes는 v15.7 기본정보 요청사항만 보정한다.
-   * 기존 도면, 저장 key, 보험/점검 카드 로직에는 접근하지 않는다.
-   */
-  function bindV157BasicFixes(){
-
-    /** plateBtn은 차량번호 제목 우측 체인지 버튼이다. */
-    var plateBtn = document.querySelector('.plate-change-btn');
-
-    /** plateBadge는 번호판 변경예정 표시 배지이다. */
-    var plateBadge = document.querySelector('.plate-change-badge');
-
-    if(plateBadge){
-      plateBadge.classList.remove('show');
-      plateBadge.style.display = '';
-    }
-
-    if(plateBtn && plateBtn.getAttribute('data-v157-plate') !== '1'){
-      plateBtn.setAttribute('data-v157-plate','1');
-      plateBtn.addEventListener('click', function(event){
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        /** labelRow는 차량번호 라벨과 버튼이 들어있는 제목 행이다. */
-        var labelRow = this.closest ? this.closest('.basicinfo-v5-label-row') : this.parentNode;
-
-        /** targetBadge는 현재 제목 행 내부의 번호판 변경예정 배지이다. */
-        var targetBadge = labelRow ? labelRow.querySelector('.plate-change-badge') : document.querySelector('.plate-change-badge');
-
-        if(!targetBadge) return false;
-        targetBadge.classList.toggle('show');
-        targetBadge.style.display = '';
-        console.log('[BASIC][PLATE_CHANGE]', targetBadge.classList.contains('show') ? 'show' : 'hide');
-        return false;
-      }, true);
-    }
-
-    /**
-     * formatDateText는 숫자만 추출해 YYYY-MM-DD 형태로 자동 보정한다.
-     * 월/일 범위 보정은 하지 않고 입력 형식 제한만 담당한다.
-     */
-    function formatDateText(value){
-      /** digits는 입력값에서 숫자만 남긴 값이다. */
-      var digits = String(value || '').replace(/\D/g, '').slice(0, 8);
-      if(digits.length <= 4) return digits;
-      if(digits.length <= 6) return digits.slice(0, 4) + '-' + digits.slice(4);
-      return digits.slice(0, 4) + '-' + digits.slice(4, 6) + '-' + digits.slice(6);
-    }
-
-    /** dateInputs는 진단일자/등록일자/제작일자의 직접 입력칸이다. */
-    var dateInputs = document.querySelectorAll('.date-ymd-input');
-    for(var i = 0; i < dateInputs.length; i++){
-      if(dateInputs[i].getAttribute('data-v157-date-text') === '1') continue;
-      dateInputs[i].setAttribute('data-v157-date-text','1');
-      dateInputs[i].setAttribute('maxlength','10');
-      dateInputs[i].setAttribute('inputmode','numeric');
-      dateInputs[i].addEventListener('input', function(){
-        this.value = formatDateText(this.value);
-
-        /** wrap은 텍스트 입력과 실제 date input을 묶는 wrapper이다. */
-        var wrap = this.closest ? this.closest('.date-dual-wrap') : this.parentNode;
-
-        /** nativeDate는 클릭 시 달력을 여는 실제 date input이다. */
-        var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
-        if(nativeDate && /^\d{4}-\d{2}-\d{2}$/.test(this.value)){
-          nativeDate.value = this.value;
-        }
-      }, false);
-      dateInputs[i].addEventListener('blur', function(){
-        this.value = formatDateText(this.value);
-      }, false);
-    }
-
-    /** dateOverlays는 모바일 달력 팝업을 여는 투명 date input이다. */
-    var dateOverlays = document.querySelectorAll('.date-dual-wrap .bi-date-overlay');
-    for(var d = 0; d < dateOverlays.length; d++){
-      if(dateOverlays[d].getAttribute('data-v157-date-overlay') === '1') continue;
-      dateOverlays[d].setAttribute('data-v157-date-overlay','1');
-      dateOverlays[d].addEventListener('change', function(){
-        /** wrap은 date overlay와 표시용 텍스트 입력을 묶는 wrapper이다. */
-        var wrap = this.closest ? this.closest('.date-dual-wrap') : this.parentNode;
-
-        /** textInput은 사용자에게 보이는 YYYY-MM-DD 입력칸이다. */
-        var textInput = wrap ? wrap.querySelector('.date-ymd-input') : null;
-        if(textInput) textInput.value = this.value || '';
-        console.log('[BASIC][DATE_SELECT]', this.value || '');
-      }, false);
-    }
-
-    /** mileageInputs는 주행거리 전/후 입력칸이다. */
-    var mileageInputs = document.querySelectorAll('.km-comma-input');
-    for(var m = 0; m < mileageInputs.length; m++){
-      if(mileageInputs[m].getAttribute('data-v157-km') === '1') continue;
-      mileageInputs[m].setAttribute('data-v157-km','1');
-      mileageInputs[m].addEventListener('input', function(){
-        /** digits는 주행거리 입력값에서 숫자만 남긴 값이다. */
-        var digits = String(this.value || '').replace(/\D/g, '');
-        this.value = digits ? Number(digits).toLocaleString('ko-KR') : '';
-      }, false);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindV157BasicFixes, false);
-  }else{
-    bindV157BasicFixes();
-  }
-  window.addEventListener('load', bindV157BasicFixes, false);
-})();
-</script>
-<script>
-(function(){
-  'use strict';
-
-  /**
-   * bindV158RequestedFixes는 v15.8 요청사항만 처리한다.
-   * 기존 도면 좌표, 보험 카드, localStorage key, 저장 구조는 변경하지 않는다.
-   */
-  function bindV158RequestedFixes(){
-    bindPlateChangeBadge();
-    bindWrapPpfMemo();
-    bindNumericSuffixInputs();
-    overrideKmHelpers();
-  }
-
-  /**
-   * onlyDigits는 입력값에서 숫자만 추출해 저장/표시 보정의 기준값으로 사용한다.
-   */
-  function onlyDigits(value){
-    return String(value || '').replace(/\D/g, '');
-  }
-
-  /**
-   * formatComma는 숫자 문자열을 천 단위 콤마 표시로 변환한다.
-   */
-  function formatComma(digits){
-    return digits ? Number(digits).toLocaleString('ko-KR') : '';
-  }
-
-  /**
-   * bindPlateChangeBadge는 기존 누적 이벤트를 제거하기 위해 버튼만 복제 후 단일 이벤트로 다시 바인딩한다.
-   */
-  function bindPlateChangeBadge(){
-    var oldBtn = document.querySelector('.plate-change-btn');
-    if(!oldBtn) return;
-
-    var badge = document.querySelector('.plate-title-tools .plate-change-badge');
-    if(badge){
-      badge.classList.remove('show');
-      badge.removeAttribute('data-plate-open');
-      badge.style.display = 'none';
-    }
-
-    if(oldBtn.getAttribute('data-v158-plate') === '1') return;
-
-    var btn = oldBtn.cloneNode(true);
-    btn.setAttribute('data-v158-plate','1');
-    oldBtn.parentNode.replaceChild(btn, oldBtn);
-
-    btn.addEventListener('click', function(event){
-      event.preventDefault();
-      event.stopPropagation();
-
-      var row = this.closest ? this.closest('.basicinfo-v5-label-row') : this.parentNode;
-      var targetBadge = row ? row.querySelector('.plate-change-badge') : document.querySelector('.plate-change-badge');
-      if(!targetBadge) return false;
-
-      var isOpen = targetBadge.getAttribute('data-plate-open') === '1';
-      if(isOpen){
-        targetBadge.classList.remove('show');
-        targetBadge.removeAttribute('data-plate-open');
-        targetBadge.style.display = 'none';
-      }else{
-        targetBadge.classList.add('show');
-        targetBadge.setAttribute('data-plate-open','1');
-        targetBadge.style.display = 'flex';
-      }
-
-      console.log('[BASIC][PLATE_CHANGE][v15.8]', isOpen ? 'hide' : 'show');
-      return false;
-    }, false);
-  }
-
-  /**
-   * bindWrapPpfMemo는 랩핑/PPF 값이 있음일 때만 메모 입력박스를 표시한다.
-   */
-  function bindWrapPpfMemo(){
-    var select = document.querySelector('.wrap-select');
-    if(!select || select.getAttribute('data-v158-wrap') === '1') return;
-    select.setAttribute('data-v158-wrap','1');
-
-    var sync = function(){
-      var memo = document.querySelector('.wrapppf-memo');
-      var active = select.value === '있음';
-      select.classList.toggle('red', active);
-      if(memo) memo.style.display = active ? 'block' : 'none';
-      console.log('[BASIC][WRAP_PPF][v15.8]', active ? 'memo-show' : 'memo-hide');
-    };
-
-    select.addEventListener('change', sync, false);
-    sync();
-  }
-
-  /**
-   * bindNumericSuffixInputs는 km/연식 단위를 실제 value에 넣지 않고 CSS suffix로만 표시한다.
-   * km 입력값은 화면에서 콤마 표시를 유지하고, data-save-value에는 숫자만 보관한다.
-   */
-  function bindNumericSuffixInputs(){
-    var kmInputs = document.querySelectorAll('.km-comma-input');
-    for(var i=0;i<kmInputs.length;i++){
-      if(kmInputs[i].getAttribute('data-v158-km') === '1') continue;
-      kmInputs[i].setAttribute('data-v158-km','1');
-      kmInputs[i].setAttribute('inputmode','numeric');
-      kmInputs[i].addEventListener('input', function(){
-        var digits = onlyDigits(this.value);
-        this.setAttribute('data-save-value', digits);
-        this.value = formatComma(digits);
-      }, false);
-      kmInputs[i].addEventListener('blur', function(){
-        var digits = onlyDigits(this.value);
-        this.setAttribute('data-save-value', digits);
-        this.value = formatComma(digits);
-      }, false);
-    }
-
-    var yearInputs = document.querySelectorAll('.year-input');
-    for(var y=0;y<yearInputs.length;y++){
-      if(yearInputs[y].getAttribute('data-v158-year') === '1') continue;
-      yearInputs[y].setAttribute('data-v158-year','1');
-      yearInputs[y].setAttribute('inputmode','numeric');
-      yearInputs[y].setAttribute('maxlength','4');
-      yearInputs[y].addEventListener('input', function(){
-        var digits = onlyDigits(this.value).slice(0, 4);
-        this.setAttribute('data-save-value', digits);
-        this.value = digits;
-      }, false);
-      yearInputs[y].addEventListener('blur', function(){
-        var digits = onlyDigits(this.value).slice(0, 4);
-        this.setAttribute('data-save-value', digits);
-        this.value = digits;
-      }, false);
-    }
-  }
-
-  /**
-   * overrideKmHelpers는 과거 전역 km helper가 value에 ' km'를 붙이는 동작을 차단한다.
-   */
-  function overrideKmHelpers(){
-    window.AB_KM_FORMAT = function(input){
-      var digits = onlyDigits(input && input.value);
-      if(input){
-        input.setAttribute('data-save-value', digits);
-        input.value = formatComma(digits);
-      }
-    };
-    window.AB_KM_BLUR = window.AB_KM_FORMAT;
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindV158RequestedFixes, false);
-  }else{
-    bindV158RequestedFixes();
-  }
-  window.addEventListener('load', bindV158RequestedFixes, false);
-})();
-</script>
-<script>
-(function(){
-  'use strict';
-
-  /**
-   * bindV159MobileDateTouch는 모바일에서 달력 아이콘 영역을 눌렀을 때 native date picker가 안정적으로 열리도록 보정한다.
-   * 기존 날짜 저장값과 localStorage key는 변경하지 않는다.
-   */
-  function bindV159MobileDateTouch(){
-    var wraps = document.querySelectorAll('.date-dual-wrap');
-    for(var i=0;i<wraps.length;i++){
-      var wrap = wraps[i];
-      if(wrap.getAttribute('data-v159-date-touch') === '1') continue;
-      wrap.setAttribute('data-v159-date-touch','1');
-
-      var openPicker = function(event){
-        var rect = wrap.getBoundingClientRect();
-        var clientX = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0].clientX : event.clientX;
-        if(typeof clientX === 'number' && clientX < rect.right - 70) return;
-
-        var picker = wrap.querySelector('.bi-date-overlay');
-        if(!picker) return;
-
-        if(event){
-          event.preventDefault();
-          event.stopPropagation();
-        }
-
-        try{
-          if(typeof picker.showPicker === 'function'){
-            picker.showPicker();
-          }else{
-            picker.focus();
-            picker.click();
-          }
-        }catch(err){
-          picker.focus();
-          try{ picker.click(); }catch(ignore){}
-        }
-        console.log('[BASIC][DATE_ICON][v15.9]', 'open');
-      };
-
-      wrap.addEventListener('click', openPicker, false);
-      wrap.addEventListener('touchend', openPicker, false);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindV159MobileDateTouch, false);
-  }else{
-    bindV159MobileDateTouch();
-  }
-  window.addEventListener('load', bindV159MobileDateTouch, false);
-})();
-</script>
 <script>
 (function(){
   'use strict';
@@ -13348,6 +12687,133 @@ window.addEventListener('load',bindV155,false);
     bindUnifiedBoldV1709();
   }
   window.addEventListener('load', bindUnifiedBoldV1709, false);
+})();
+</script><script>
+/* v17.10 - 기본정보/번호판/날짜 단일 핸들러
+   목적:
+   - v15.3~v15.9 계열의 중복 기본정보 핸들러를 제거하고 필요한 기능만 단일화한다.
+   - 번호판 변경예정 토글, YY-MM-DD 날짜 입력, 연식 YY 입력, km 입력 보조를 유지한다.
+   영향 범위: #secInput 내부 기본정보 입력 보조만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key는 변경하지 않는다.
+*/
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function formatYYMMDD(value){
+    var d = onlyDigits(value).slice(0, 6);
+    if(d.length <= 2) return d;
+    if(d.length <= 4) return d.slice(0,2) + '-' + d.slice(2);
+    return d.slice(0,2) + '-' + d.slice(2,4) + '-' + d.slice(4);
+  }
+
+  function kmLive(input){
+    input.value = onlyDigits(input.value);
+  }
+
+  function kmFormat(input){
+    var digits = onlyDigits(input.value);
+    input.value = digits ? Number(digits).toLocaleString('ko-KR') + ' km' : '';
+  }
+
+  function togglePlateBadge(){
+    var badge = document.querySelector('.plate-change-badge');
+    if(!badge) return;
+    var nowHidden = badge.style.display === 'none' || !badge.style.display;
+    badge.style.display = nowHidden ? 'inline-flex' : 'none';
+  }
+
+  function cleanupDateCalendar(){
+    var fields = document.querySelectorAll('#secInput .basicinfo-v5-field');
+    for(var i=0;i<fields.length;i++){
+      var label = fields[i].querySelector('.basicinfo-v5-label');
+      var text = label ? label.textContent.replace(/\s+/g,'').trim() : '';
+      if(text !== '등록일자' && text !== '제작일자') continue;
+
+      fields[i].classList.add('basic-yy-date-field-v1694');
+
+      var old = fields[i].querySelectorAll('.date-dual-wrap, input[type="date"], .bi-date-overlay, .date-picker-btn, .calendar-btn');
+      for(var j=0;j<old.length;j++){
+        if(old[j].parentNode) old[j].parentNode.removeChild(old[j]);
+      }
+
+      var input = fields[i].querySelector('input.basic-yy-date-input-v1694');
+      if(!input){
+        input = document.createElement('input');
+        input.className = 'bi-input basic-yy-date-input-v1694';
+        input.setAttribute('inputmode','numeric');
+        input.setAttribute('maxlength','8');
+        input.setAttribute('placeholder','YY-MM-DD');
+        fields[i].appendChild(input);
+      }
+    }
+  }
+
+  function bindBasicV1710(){
+    var sec = document.getElementById('secInput');
+    if(!sec || sec.getAttribute('data-basic-bound-v1710') === '1') return;
+    sec.setAttribute('data-basic-bound-v1710', '1');
+
+    cleanupDateCalendar();
+
+    sec.addEventListener('input', function(ev){
+      var t = ev.target;
+      if(!t || !t.classList) return;
+
+      if(t.classList.contains('basic-yy-date-input-v1694') || t.classList.contains('date-yy-input')){
+        t.value = formatYYMMDD(t.value);
+      }
+
+      if(t.classList.contains('year-yy-input')){
+        t.value = onlyDigits(t.value).slice(0, 2);
+      }
+
+      if(t.classList.contains('km-input')){
+        kmLive(t);
+      }
+    }, false);
+
+    sec.addEventListener('focusin', function(ev){
+      var t = ev.target;
+      if(t && t.classList && t.classList.contains('km-input')){
+        t.value = onlyDigits(t.value);
+      }
+    }, false);
+
+    sec.addEventListener('change', function(ev){
+      var t = ev.target;
+      if(t && t.classList && t.classList.contains('km-input')){
+        kmFormat(t);
+      }
+    }, false);
+
+    sec.addEventListener('focusout', function(ev){
+      var t = ev.target;
+      if(t && t.classList && t.classList.contains('km-input')){
+        kmFormat(t);
+      }
+    }, false);
+
+    sec.addEventListener('click', function(ev){
+      var btn = ev.target && ev.target.closest ? ev.target.closest('.plate-change-btn') : null;
+      if(btn && sec.contains(btn)){
+        ev.preventDefault();
+        togglePlateBadge();
+        return false;
+      }
+    }, false);
+
+    setTimeout(cleanupDateCalendar, 50);
+    setTimeout(cleanupDateCalendar, 200);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindBasicV1710, false);
+  }else{
+    bindBasicV1710();
+  }
+  window.addEventListener('load', bindBasicV1710, false);
 })();
 </script></body>
 </html>

@@ -10959,6 +10959,35 @@ textarea.tread-input-fix-v1724,
   padding:0 22px 0 8px!important;
   line-height:34px!important;
 }
+
+/* v17.40 - 외관 좌/우 측면진단 트레드 인풋박스 가로 사이즈 25% 축소
+   기준:
+   - v17.39 현재 wrapper width 74px
+   - 25% 축소 후 55.5px
+   - 실사용 고정값 56px 적용
+   영향 범위:
+   - exterior_tread_b9/b10/c9/c10 wrapper 가로폭만 적용한다.
+   - 높이, 폰트, %, 좌표, data-key는 변경하지 않는다.
+*/
+
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739{
+  width:56px!important;
+  min-width:56px!important;
+  max-width:56px!important;
+}
+
+/* input은 wrapper 기준 100% 유지 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739 input.exterior-tread-final-v1739,
+#secDiag input.exterior-tread-final-v1739{
+  width:100%!important;
+  min-width:100%!important;
+  max-width:100%!important;
+}
+
+/* % 단위 위치는 축소된 폭에서도 기존 우측 기준 유지 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739 .exterior-tread-unit.exterior-tread-final-unit-v1739{
+  right:7px!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */

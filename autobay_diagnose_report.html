@@ -10052,6 +10052,69 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 #secInput .plate-change-badge.plate-change-show-v1721{
   display:inline-flex!important;
 }
+
+/* v17.23 - iPhone Safari 진단일자 기존 미니달력 터치 복구
+   목적:
+   - 기존 진단일자 미니 달력 input(.bi-date-overlay)을 그대로 사용한다.
+   - 별도 달력 아이콘은 추가하지 않는다.
+   - iPhone Safari에서 실제 input[type=date]가 직접 터치되도록 터치 영역만 복구한다.
+   영향 범위: #secInput 진단일자 .date-dual-wrap 내부만 적용한다.
+   주의: 등록일자/제작일자, 도면, 매입오더 출력은 변경하지 않는다.
+*/
+
+#secInput .diag-date-ios-fix-v1723{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .diag-date-ios-fix-v1723 .date-text-input.date-ymd-input{
+  width:100%!important;
+  min-height:38px!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+/* 기존 미니달력 input 자체를 우측 버튼 영역으로 복구 */
+#secInput .diag-date-ios-fix-v1723 .bi-date-overlay.diag-date-native-ios-v1723,
+#secInput .diag-date-ios-fix-v1723 input[type="date"].diag-date-native-ios-v1723{
+  display:block!important;
+  visibility:visible!important;
+  opacity:0.001!important;
+  pointer-events:auto!important;
+  position:absolute!important;
+  right:4px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:40px!important;
+  min-width:40px!important;
+  height:32px!important;
+  min-height:32px!important;
+  z-index:40!important;
+  cursor:pointer!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+}
+
+/* Safari/Chrome iOS 계열에서 calendar indicator 터치 영역 확보 */
+#secInput .diag-date-ios-fix-v1723 .diag-date-native-ios-v1723::-webkit-calendar-picker-indicator{
+  opacity:1!important;
+  display:block!important;
+  width:40px!important;
+  height:32px!important;
+  cursor:pointer!important;
+}
+
+/* 기존 미니 달력 아이콘이 CSS 배경/브라우저 indicator로 보이도록 별도 버튼은 만들지 않는다 */
+#secInput .diag-date-ios-fix-v1723 .ios-date-visual-btn-v1723{
+  display:none!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10094,9 +10157,9 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap">
-<input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
-<input aria-label="진단일자 달력" class="bi-date-overlay" type="date"/>
+<div class="date-dual-wrap diag-date-ios-fix-v1723">
+<input autocomplete="off" class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
+<input aria-label="진단일자 달력" class="bi-date-overlay diag-date-native-ios-v1723" type="date"/>
 </div>
 </div>
 <div class="basicinfo-v5-field">
@@ -13954,6 +14017,87 @@ boot();
     bindOrderNewlineFixV1722();
   }
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
+})();
+</script><script>
+/* v17.23 - 기존 진단일자 미니달력 iOS 보조 */
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function formatYMD(value){
+    var d = onlyDigits(value).slice(0, 8);
+    if(d.length <= 4) return d;
+    if(d.length <= 6) return d.slice(0,4) + '-' + d.slice(4);
+    return d.slice(0,4) + '-' + d.slice(4,6) + '-' + d.slice(6);
+  }
+
+  function syncDate(dateInput){
+    if(!dateInput) return;
+    var wrap = dateInput.closest('.diag-date-ios-fix-v1723, .date-dual-wrap');
+    var text = wrap ? wrap.querySelector('.date-text-input.date-ymd-input') : null;
+    if(text && dateInput.value){
+      text.value = dateInput.value;
+      try{
+        text.dispatchEvent(new Event('input', {bubbles:true}));
+        text.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+
+  function openNativeDate(dateInput){
+    if(!dateInput) return;
+
+    try{
+      if(typeof dateInput.showPicker === 'function'){
+        dateInput.showPicker();
+        return;
+      }
+    }catch(e){}
+
+    try{ dateInput.focus(); }catch(e){}
+    try{ dateInput.click(); }catch(e){}
+  }
+
+  function bindDiagDateIosFixV1723(){
+    var wrap = document.querySelector('#secInput .diag-date-ios-fix-v1723');
+    if(!wrap || wrap.getAttribute('data-diag-date-ios-bound-v1723') === '1') return;
+    wrap.setAttribute('data-diag-date-ios-bound-v1723', '1');
+
+    var dateInput = wrap.querySelector('input[type="date"].diag-date-native-ios-v1723, input[type="date"].bi-date-overlay');
+    var textInput = wrap.querySelector('.date-text-input.date-ymd-input');
+
+    if(dateInput){
+      dateInput.addEventListener('input', function(){ syncDate(dateInput); }, false);
+      dateInput.addEventListener('change', function(){ syncDate(dateInput); }, false);
+      dateInput.addEventListener('touchend', function(){
+        setTimeout(function(){ syncDate(dateInput); }, 250);
+      }, {passive:true});
+    }
+
+    if(textInput){
+      textInput.addEventListener('input', function(){
+        textInput.value = formatYMD(textInput.value);
+      }, false);
+    }
+
+    /* 우측 기존 미니달력 영역을 누른 경우만 보조 호출. 새 아이콘은 생성하지 않는다. */
+    wrap.addEventListener('click', function(ev){
+      if(ev.target === dateInput) return;
+      var rect = wrap.getBoundingClientRect();
+      if(ev.clientX >= rect.right - 50){
+        ev.preventDefault();
+        openNativeDate(dateInput);
+      }
+    }, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDiagDateIosFixV1723, false);
+  }else{
+    bindDiagDateIosFixV1723();
+  }
+  window.addEventListener('load', bindDiagDateIosFixV1723, false);
 })();
 </script></body>
 </html>

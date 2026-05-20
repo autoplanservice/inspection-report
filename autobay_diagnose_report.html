@@ -10690,6 +10690,103 @@ textarea.tread-input-fix-v1724,
   align-items:center!important;
   justify-content:center!important;
 }
+
+/* v17.31 - 진단일자 웹 달력 아이콘 깨짐 정리
+   목적:
+   - input[type=date]의 브라우저 기본 날짜 텍스트/검정 아이콘 노출을 차단한다.
+   - 기존 bi-date-overlay는 클릭 영역으로만 유지한다.
+   - 화면에는 CSS 배경으로 정리된 미니 달력 1개만 표시한다.
+   - 새 DOM 아이콘/자체 패널은 추가하지 않는다.
+   영향 범위: 진단일자 .date-dual-wrap 내부만 적용한다.
+*/
+
+#secInput .date-icon-clean-v1731{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .date-icon-clean-v1731 .date-text-input.date-ymd-input{
+  width:100%!important;
+  min-height:38px!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+/* 화면에 보이는 달력 아이콘은 wrap 배경으로 1개만 표시 */
+#secInput .date-icon-clean-v1731::after{
+  content:""!important;
+  position:absolute!important;
+  right:14px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:18px!important;
+  height:18px!important;
+  z-index:20!important;
+  pointer-events:none!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:18px 18px!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E")!important;
+}
+
+/* 실제 date input은 클릭 영역만 담당. 날짜 텍스트/기본 indicator는 보이지 않게 처리 */
+#secInput .date-icon-clean-v1731 input[type="date"].bi-date-overlay,
+#secInput .date-icon-clean-v1731 .bi-date-overlay.date-native-clean-v1731{
+  position:absolute!important;
+  right:6px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:40px!important;
+  min-width:40px!important;
+  max-width:40px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  z-index:30!important;
+  opacity:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
+
+/* 크롬/사파리 기본 캘린더 indicator도 숨김. 클릭은 input 영역이 담당 */
+#secInput .date-icon-clean-v1731 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator,
+#secInput .date-icon-clean-v1731 .bi-date-overlay.date-native-clean-v1731::-webkit-calendar-picker-indicator{
+  opacity:0!important;
+  display:block!important;
+  width:40px!important;
+  height:34px!important;
+  margin:0!important;
+  padding:0!important;
+  cursor:pointer!important;
+}
+
+/* 잔재 패널/추가 아이콘 차단 */
+#secInput .diag-date-panel-v1725,
+#secInput .ios-date-visual-btn-v1723,
+#secInput .diag-date-year-v1725,
+#secInput .diag-date-month-v1725,
+#secInput .diag-date-day-v1725,
+#secInput .diag-date-apply-v1725,
+#secInput .diag-date-close-v1725{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10732,9 +10829,9 @@ textarea.tread-input-fix-v1724,
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap date-old-stable-v1730">
+<div class="date-dual-wrap date-old-stable-v1730 date-icon-clean-v1731">
 <input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
-<input aria-label="진단일자 달력" class="bi-date-overlay date-native-clean-v1730" type="date"/>
+<input aria-label="진단일자 달력" class="bi-date-overlay date-native-clean-v1731" type="date"/>
 </div>
 </div>
 <div class="basicinfo-v5-field">
@@ -14919,6 +15016,29 @@ boot();
     bindDateCleanV1730();
   }
   window.addEventListener('load', bindDateCleanV1730, false);
+})();
+</script><script>
+/* v17.31 - 진단일자 date input 표시 정리 보조 */
+(function(){
+  function bindDateIconCleanV1731(){
+    var wrap = document.querySelector('#secInput .date-icon-clean-v1731, #secInput .date-old-stable-v1730');
+    if(!wrap || wrap.getAttribute('data-date-icon-clean-v1731') === '1') return;
+    wrap.setAttribute('data-date-icon-clean-v1731', '1');
+    wrap.classList.add('date-icon-clean-v1731');
+
+    var date = wrap.querySelector('input[type="date"].bi-date-overlay');
+    if(date){
+      date.className = 'bi-date-overlay date-native-clean-v1731';
+      date.removeAttribute('style');
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDateIconCleanV1731, false);
+  }else{
+    bindDateIconCleanV1731();
+  }
+  window.addEventListener('load', bindDateIconCleanV1731, false);
 })();
 </script></body>
 </html>

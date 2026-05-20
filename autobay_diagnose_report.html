@@ -10115,6 +10115,280 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 #secInput .diag-date-ios-fix-v1723 .ios-date-visual-btn-v1723{
   display:none!important;
 }
+
+/* v17.24 - 랩핑/PPF 메모 표시 복구 + 외관 좌우 측면진단 트레드 입력박스 조정
+   목적:
+   1) 랩핑/PPF 여부에서 '있음' 선택 시 메모박스가 표시되지 않는 문제를 복구한다.
+   2) 외관 좌/우 측면진단의 트레드 입력박스 가로폭을 줄이고, 폰트 볼드 및 크기 확대를 적용한다.
+   영향 범위: 랩핑/PPF 카드, 트레드 입력박스 UI만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key, 매입오더 출력 템플릿은 변경하지 않는다.
+*/
+
+/* 랩핑/PPF 메모박스 기본은 숨김 */
+#secDiag .wrapppf-card .wrapppf-memo,
+#secDiag .wrapppf-memo-fix-v1724,
+.wrapppf-memo-fix-v1724{
+  display:none!important;
+}
+
+/* 있음 선택 시 JS가 붙이는 class로 강제 표시 */
+#secDiag .wrapppf-card .wrapppf-memo.wrapppf-show-v1724,
+#secDiag .wrapppf-memo-fix-v1724.wrapppf-show-v1724,
+.wrapppf-memo-fix-v1724.wrapppf-show-v1724{
+  display:block!important;
+  width:100%!important;
+  min-height:56px!important;
+  margin-top:8px!important;
+}
+
+/* 랩핑/PPF 있음 선택 시 빨간바탕/흰색볼드 유지 */
+#secDiag .wrap-select.wrap-danger-active-v1724,
+.wrap-select.wrap-danger-active-v1724{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:900!important;
+}
+
+/* 외관 좌/우 측면진단 트레드 입력박스: 폭 축소 + 폰트 확대/볼드 */
+#secDiag input.tread-input-fix-v1724,
+#secDiag textarea.tread-input-fix-v1724,
+input.tread-input-fix-v1724,
+textarea.tread-input-fix-v1724,
+#secDiag input[class*="tread"],
+#secDiag input[class*="Tread"],
+#secDiag input[data-key*="tread"],
+#secDiag input[data-key*="Tread"],
+#secDiag input[placeholder*="트레드"],
+#secDiag input[aria-label*="트레드"]{
+  width:50%!important;
+  max-width:92px!important;
+  min-width:54px!important;
+  height:34px!important;
+  min-height:34px!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  text-align:center!important;
+  padding:0 6px!important;
+  box-sizing:border-box!important;
+  line-height:1!important;
+}
+
+/* 트레드 입력 주변 셀/행이 입력박스 폭을 강제로 늘리는 경우 방어 */
+#secDiag .tread-input-fix-v1724{
+  flex:0 0 auto!important;
+}
+
+/* v17.25 - iPhone Safari 진단일자 자체 날짜 패널
+   목적:
+   - iPhone Safari에서 네이티브 input[type=date] 클릭이 계속 무반응인 문제를 우회한다.
+   - 기존 진단일자 우측 미니 달력 영역을 그대로 사용하고, 새 아이콘은 추가하지 않는다.
+   - 우측 영역 클릭 시 자체 날짜 선택 패널을 표시한다.
+   영향 범위: #secInput 진단일자 .date-dual-wrap 내부만 적용한다.
+   주의: 등록일자/제작일자, 도면, 매입오더 출력, localStorage key는 변경하지 않는다.
+*/
+
+#secInput .diag-date-panel-wrap-v1725{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .diag-date-panel-wrap-v1725 .date-text-input.date-ymd-input{
+  width:100%!important;
+  min-height:38px!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+/* 기존 date input은 유지하되, iPhone에서 클릭이 안될 경우 자체 패널이 우선 동작 */
+#secInput .diag-date-panel-wrap-v1725 .diag-date-native-ios-v1725,
+#secInput .diag-date-panel-wrap-v1725 input[type="date"].bi-date-overlay{
+  display:block!important;
+  visibility:visible!important;
+  opacity:0.001!important;
+  pointer-events:auto!important;
+  position:absolute!important;
+  right:4px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:40px!important;
+  min-width:40px!important;
+  height:32px!important;
+  min-height:32px!important;
+  z-index:30!important;
+  cursor:pointer!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+}
+
+/* 자체 날짜 패널 */
+#secInput .diag-date-panel-v1725{
+  display:none!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:calc(100% + 6px)!important;
+  z-index:9999!important;
+  grid-template-columns:1fr 72px 72px 52px 52px!important;
+  gap:6px!important;
+  padding:8px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:12px!important;
+  background:#ffffff!important;
+  box-shadow:0 8px 24px rgba(15,23,42,.18)!important;
+  box-sizing:border-box!important;
+}
+
+#secInput .diag-date-panel-v1725[data-open="1"]{
+  display:grid!important;
+}
+
+#secInput .diag-date-panel-v1725 input,
+#secInput .diag-date-panel-v1725 select,
+#secInput .diag-date-panel-v1725 button{
+  height:34px!important;
+  min-height:34px!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:9px!important;
+  background:#ffffff!important;
+  color:#111827!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  box-sizing:border-box!important;
+  padding:0 8px!important;
+}
+
+#secInput .diag-date-panel-v1725 button{
+  padding:0!important;
+  font-weight:900!important;
+}
+
+#secInput .diag-date-panel-v1725 .diag-date-apply-v1725{
+  background:#111827!important;
+  border-color:#111827!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+
+@media (max-width:420px){
+  #secInput .diag-date-panel-v1725{
+    grid-template-columns:1fr 64px 64px 48px 48px!important;
+    gap:5px!important;
+    padding:7px!important;
+  }
+}
+
+/* v17.26 - 외관 좌/우 측면진단 트레드 입력/안내문구/% 정렬 보정
+   목적:
+   - 트레드 입력박스의 안내 문구가 가로/세로 가운데 정렬되도록 한다.
+   - 입력값도 가로/세로 가운데 정렬되도록 한다.
+   - % 표시를 볼드체로 적용한다.
+   영향 범위: 외관 좌/우 측면진단 트레드 입력 UI만 적용한다.
+   주의: 도면 좌표, 마커 좌표, data-key, 저장 key는 변경하지 않는다.
+*/
+
+/* 트레드 입력박스: 값/placeholder 모두 중앙 정렬 */
+#secDiag input.tread-align-v1726,
+#secDiag textarea.tread-align-v1726,
+#secDiag input.tread-input-fix-v1724,
+#secDiag textarea.tread-input-fix-v1724,
+#secDiag input.exterior-tread-input,
+#secDiag input[data-key^="exterior_tread_"],
+#secDiag input[placeholder*="트레드"]{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:50%!important;
+  max-width:92px!important;
+  min-width:54px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  line-height:34px!important;
+  padding:0 6px!important;
+  margin:0!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  vertical-align:middle!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  box-sizing:border-box!important;
+}
+
+/* placeholder 중앙 정렬 및 볼드/확대 유지 */
+#secDiag input.tread-align-v1726::placeholder,
+#secDiag textarea.tread-align-v1726::placeholder,
+#secDiag input.tread-input-fix-v1724::placeholder,
+#secDiag textarea.tread-input-fix-v1724::placeholder,
+#secDiag input.exterior-tread-input::placeholder,
+#secDiag input[data-key^="exterior_tread_"]::placeholder,
+#secDiag input[placeholder*="트레드"]::placeholder{
+  text-align:center!important;
+  line-height:34px!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  color:#6b7280!important;
+  opacity:1!important;
+}
+
+/* Safari/iOS placeholder 세로정렬 보조 */
+#secDiag input.tread-align-v1726::-webkit-input-placeholder,
+#secDiag input.tread-input-fix-v1724::-webkit-input-placeholder,
+#secDiag input.exterior-tread-input::-webkit-input-placeholder,
+#secDiag input[data-key^="exterior_tread_"]::-webkit-input-placeholder{
+  text-align:center!important;
+  line-height:34px!important;
+  font-size:17px!important;
+  font-weight:900!important;
+}
+
+/* % 단위 표시 볼드체 */
+#secDiag .tread-percent-v1726,
+#secDiag .exterior-tread-unit,
+#secDiag [class*="tread-unit"],
+#secDiag [class*="TreadUnit"]{
+  font-weight:900!important;
+  font-size:17px!important;
+  line-height:34px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  vertical-align:middle!important;
+}
+
+/* input 바로 뒤 % 텍스트가 span/em/label 등으로 구성된 경우 방어 */
+#secDiag input.tread-align-v1726 + span,
+#secDiag input.tread-align-v1726 + em,
+#secDiag input.tread-align-v1726 + label,
+#secDiag input.tread-input-fix-v1724 + span,
+#secDiag input.tread-input-fix-v1724 + em,
+#secDiag input.tread-input-fix-v1724 + label,
+#secDiag input.exterior-tread-input + span,
+#secDiag input.exterior-tread-input + em,
+#secDiag input.exterior-tread-input + label{
+  font-weight:900!important;
+  font-size:17px!important;
+  line-height:34px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  vertical-align:middle!important;
+}
+
+/* 부모가 flex/grid인 경우에도 입력박스와 %가 높이 중앙에 오도록 보조 */
+#secDiag input.tread-align-v1726,
+#secDiag input.tread-input-fix-v1724,
+#secDiag input.exterior-tread-input{
+  align-self:center!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10157,10 +10431,10 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap diag-date-ios-fix-v1723">
+<div class="date-dual-wrap diag-date-ios-fix-v1723 diag-date-panel-wrap-v1725">
 <input autocomplete="off" class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
-<input aria-label="진단일자 달력" class="bi-date-overlay diag-date-native-ios-v1723" type="date"/>
-</div>
+<input aria-label="진단일자 달력" class="bi-date-overlay diag-date-native-ios-v1723 diag-date-native-ios-v1725" type="date"/>
+<div class="diag-date-panel-v1725" data-open="0"><input class="diag-date-year-v1725" inputmode="numeric" maxlength="4" placeholder="YYYY"/><select class="diag-date-month-v1725"><option value="01">1월</option><option value="02">2월</option><option value="03">3월</option><option value="04">4월</option><option value="05">5월</option><option value="06">6월</option><option value="07">7월</option><option value="08">8월</option><option value="09">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="diag-date-day-v1725"><option value="01">1일</option><option value="02">2일</option><option value="03">3일</option><option value="04">4일</option><option value="05">5일</option><option value="06">6일</option><option value="07">7일</option><option value="08">8일</option><option value="09">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select><button class="diag-date-apply-v1725" type="button">적용</button><button class="diag-date-close-v1725" type="button">닫기</button></div></div>
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">지역</div>
@@ -10255,13 +10529,13 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <textarea class="bi-input price-textarea" placeholder="가격 입력"></textarea>
 </div>
 </div>
-</article><article class="report-card-ui"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>
+</article><article class="report-card-ui wrapppf-card-fix-v1724"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>
 <div class="wrapppf-card">
-<select class="bi-select wrap-select ab-direct-bold-select" data-bold-values="있음">
+<select class="bi-select wrap-select ab-direct-bold-select wrap-select-fix-v1724" data-bold-values="있음">
 <option>없음</option>
 <option>있음</option>
 </select>
-<textarea class="wrapppf-memo" data-key="wrapPpfMemo" placeholder="랩핑 / PPF 관련 메모 입력" style="display:none"></textarea>
+<textarea class="wrapppf-memo wrapppf-memo-fix-v1724" data-key="wrapPpfMemo" placeholder="랩핑 / PPF 관련 메모 입력" style="display:none"></textarea>
 </div>
 </article>
 <article class="report-card-ui scanner-start-card">
@@ -10952,7 +11226,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <label class="hit h1" for="pan2_side_C_8_2"><span>X</span></label>
 <label class="hit h2" for="pan2_side_C_8_3"><span>W</span></label>
 <label class="hit h3" for="pan2_side_C_8_4"><span>R</span></label>
-<label class="hit h4" for="pan2_side_C_8_0"><span>L</span></label></div><div class="exterior-tread-wrap left" data-v165-tread="B-9" style="left:17.20000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input" data-key="exterior_tread_b9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit">%</span></div><div class="exterior-tread-wrap left" data-v165-tread="B-10" style="left:17.20000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input" data-key="exterior_tread_b10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-9" style="left:82.80000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input" data-key="exterior_tread_c9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-10" style="left:82.80000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input" data-key="exterior_tread_c10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit">%</span></div><input checked="" class="st st0" id="pan2_side_B_9_0" name="pan2_side_B_9" type="radio"/><input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/><input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/><input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/><input class="st st4" id="pan2_side_B_9_4" name="pan2_side_B_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-9" data-part-code="B9" data-v165-wheel="1" style="left:31.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_B_9_1"><span></span></label><label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/><input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/><input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/><input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/><input class="st st4" id="pan2_side_B_10_4" name="pan2_side_B_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-10" data-part-code="B10" data-v165-wheel="1" style="left:31.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_B_10_1"><span></span></label><label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_10_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/><input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/><input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/><input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/><input class="st st4" id="pan2_side_C_9_4" name="pan2_side_C_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-9" data-part-code="C9" data-v165-wheel="1" style="left:69.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_C_9_1"><span></span></label><label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/><input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/><input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/><input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/><input class="st st4" id="pan2_side_C_10_4" name="pan2_side_C_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-10" data-part-code="C10" data-v165-wheel="1" style="left:69.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_C_10_1"><span></span></label><label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_10_0"><span></span></label></div></div></section>
+<label class="hit h4" for="pan2_side_C_8_0"><span>L</span></label></div><div class="exterior-tread-wrap left" data-v165-tread="B-9" style="left:17.20000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_b9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap left" data-v165-tread="B-10" style="left:17.20000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_b10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-9" style="left:82.80000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_c9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-10" style="left:82.80000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726" data-key="exterior_tread_c10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><input checked="" class="st st0" id="pan2_side_B_9_0" name="pan2_side_B_9" type="radio"/><input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/><input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/><input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/><input class="st st4" id="pan2_side_B_9_4" name="pan2_side_B_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-9" data-part-code="B9" data-v165-wheel="1" style="left:31.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_B_9_1"><span></span></label><label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/><input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/><input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/><input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/><input class="st st4" id="pan2_side_B_10_4" name="pan2_side_B_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-10" data-part-code="B10" data-v165-wheel="1" style="left:31.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_B_10_1"><span></span></label><label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_10_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/><input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/><input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/><input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/><input class="st st4" id="pan2_side_C_9_4" name="pan2_side_C_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-9" data-part-code="C9" data-v165-wheel="1" style="left:69.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_C_9_1"><span></span></label><label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/><input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/><input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/><input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/><input class="st st4" id="pan2_side_C_10_4" name="pan2_side_C_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-10" data-part-code="C10" data-v165-wheel="1" style="left:69.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_C_10_1"><span></span></label><label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_10_0"><span></span></label></div></div></section>
 </div>
 <div class="customer-note-block"><div class="customer-note-title customer-note-dot-title">외관 고객기재</div><textarea data-key="exteriorCustomerMemo" placeholder="외관 관련 고객 고지/기재 내용을 입력"></textarea></div>
 <p class="hint"></p>
@@ -14098,6 +14372,337 @@ boot();
     bindDiagDateIosFixV1723();
   }
   window.addEventListener('load', bindDiagDateIosFixV1723, false);
+})();
+</script><script>
+/* v17.24 - 랩핑/PPF 메모 표시 및 트레드 입력박스 런타임 보강 */
+(function(){
+  function norm(value){
+    return String(value || '').replace(/\s+/g,'').trim();
+  }
+
+  function applyWrapPpfV1724(){
+    var select = document.querySelector('#secDiag .wrap-select, .wrap-select');
+    var memo = document.querySelector('#secDiag .wrapppf-memo, .wrapppf-memo');
+
+    if(!select || !memo) return;
+
+    var active = norm(select.value) === '있음';
+
+    select.classList.toggle('wrap-danger-active-v1724', active);
+    memo.classList.toggle('wrapppf-show-v1724', active);
+
+    if(active){
+      memo.style.setProperty('display', 'block', 'important');
+      select.style.setProperty('background-color', '#ef4444', 'important');
+      select.style.setProperty('border-color', '#ef4444', 'important');
+      select.style.setProperty('color', '#ffffff', 'important');
+      select.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
+      select.style.setProperty('font-weight', '900', 'important');
+    }else{
+      memo.style.setProperty('display', 'none', 'important');
+      select.style.removeProperty('background-color');
+      select.style.removeProperty('border-color');
+      select.style.removeProperty('color');
+      select.style.removeProperty('-webkit-text-fill-color');
+      select.style.removeProperty('font-weight');
+    }
+  }
+
+  function applyTreadInputsV1724(){
+    var list = document.querySelectorAll([
+      '#secDiag input[class*="tread"]',
+      '#secDiag input[class*="Tread"]',
+      '#secDiag input[data-key*="tread"]',
+      '#secDiag input[data-key*="Tread"]',
+      '#secDiag input[placeholder*="트레드"]',
+      '#secDiag input[aria-label*="트레드"]',
+      '#secDiag textarea[placeholder*="트레드"]'
+    ].join(','));
+
+    for(var i=0;i<list.length;i++){
+      var el = list[i];
+      el.classList.add('tread-input-fix-v1724');
+      el.style.setProperty('width', '50%', 'important');
+      el.style.setProperty('max-width', '92px', 'important');
+      el.style.setProperty('min-width', '54px', 'important');
+      el.style.setProperty('height', '34px', 'important');
+      el.style.setProperty('font-size', '17px', 'important');
+      el.style.setProperty('font-weight', '900', 'important');
+      el.style.setProperty('text-align', 'center', 'important');
+      el.style.setProperty('padding', '0 6px', 'important');
+      el.style.setProperty('box-sizing', 'border-box', 'important');
+    }
+  }
+
+  function bindV1724(){
+    if(document.body.getAttribute('data-v1724-wrap-tread-bound') === '1') return;
+    document.body.setAttribute('data-v1724-wrap-tread-bound','1');
+
+    applyWrapPpfV1724();
+    applyTreadInputsV1724();
+
+    document.addEventListener('change', function(ev){
+      var target = ev.target;
+      if(target && target.matches && target.matches('#secDiag .wrap-select, .wrap-select')){
+        applyWrapPpfV1724();
+      }
+    }, true);
+
+    document.addEventListener('input', function(ev){
+      var target = ev.target;
+      if(target && target.matches && target.matches('#secDiag .wrap-select, .wrap-select')){
+        applyWrapPpfV1724();
+      }
+    }, true);
+
+    window.addEventListener('load', function(){
+      applyWrapPpfV1724();
+      applyTreadInputsV1724();
+    }, false);
+
+    setTimeout(function(){
+      applyWrapPpfV1724();
+      applyTreadInputsV1724();
+    }, 100);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindV1724, false);
+  }else{
+    bindV1724();
+  }
+})();
+</script><script>
+/* v17.25 - 진단일자 iOS 자체 날짜 패널 */
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function formatYMD(value){
+    var d = onlyDigits(value).slice(0, 8);
+    if(d.length <= 4) return d;
+    if(d.length <= 6) return d.slice(0,4) + '-' + d.slice(4);
+    return d.slice(0,4) + '-' + d.slice(4,6) + '-' + d.slice(6);
+  }
+
+  function todayParts(){
+    var d = new Date();
+    return {
+      y: String(d.getFullYear()),
+      m: String(d.getMonth() + 1).padStart(2, '0'),
+      day: String(d.getDate()).padStart(2, '0')
+    };
+  }
+
+  function parseTextDate(textInput){
+    var v = textInput ? String(textInput.value || '').trim() : '';
+    var m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(m) return {y:m[1], m:m[2], day:m[3]};
+    return todayParts();
+  }
+
+  function setPanelValues(wrap){
+    var text = wrap.querySelector('.date-text-input.date-ymd-input');
+    var parts = parseTextDate(text);
+    var y = wrap.querySelector('.diag-date-year-v1725');
+    var m = wrap.querySelector('.diag-date-month-v1725');
+    var d = wrap.querySelector('.diag-date-day-v1725');
+    if(y) y.value = parts.y;
+    if(m) m.value = parts.m;
+    if(d) d.value = parts.day;
+  }
+
+  function openPanel(wrap){
+    var panel = wrap.querySelector('.diag-date-panel-v1725');
+    if(!panel) return;
+    setPanelValues(wrap);
+    panel.setAttribute('data-open', '1');
+  }
+
+  function closePanel(wrap){
+    var panel = wrap.querySelector('.diag-date-panel-v1725');
+    if(panel) panel.setAttribute('data-open', '0');
+  }
+
+  function applyPanel(wrap){
+    var y = wrap.querySelector('.diag-date-year-v1725');
+    var m = wrap.querySelector('.diag-date-month-v1725');
+    var d = wrap.querySelector('.diag-date-day-v1725');
+    var text = wrap.querySelector('.date-text-input.date-ymd-input');
+    var nativeDate = wrap.querySelector('input[type="date"]');
+
+    var yy = onlyDigits(y && y.value).slice(0,4);
+    if(yy.length !== 4){
+      yy = String(new Date().getFullYear());
+    }
+
+    var value = yy + '-' + (m ? m.value : '01') + '-' + (d ? d.value : '01');
+
+    if(text){
+      text.value = value;
+      try{
+        text.dispatchEvent(new Event('input', {bubbles:true}));
+        text.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+
+    if(nativeDate){
+      nativeDate.value = value;
+      try{
+        nativeDate.dispatchEvent(new Event('input', {bubbles:true}));
+        nativeDate.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+
+    closePanel(wrap);
+  }
+
+  function syncNativeDate(nativeDate){
+    if(!nativeDate || !nativeDate.value) return;
+    var wrap = nativeDate.closest('.diag-date-panel-wrap-v1725, .date-dual-wrap');
+    var text = wrap ? wrap.querySelector('.date-text-input.date-ymd-input') : null;
+    if(text){
+      text.value = nativeDate.value;
+      try{
+        text.dispatchEvent(new Event('input', {bubbles:true}));
+        text.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+
+  function bindDiagDatePanelV1725(){
+    var wrap = document.querySelector('#secInput .diag-date-panel-wrap-v1725');
+    if(!wrap || wrap.getAttribute('data-diag-date-panel-bound-v1725') === '1') return;
+    wrap.setAttribute('data-diag-date-panel-bound-v1725','1');
+
+    var nativeDate = wrap.querySelector('input[type="date"]');
+    var text = wrap.querySelector('.date-text-input.date-ymd-input');
+
+    if(text){
+      text.addEventListener('input', function(){
+        text.value = formatYMD(text.value);
+      }, false);
+    }
+
+    if(nativeDate){
+      nativeDate.addEventListener('input', function(){ syncNativeDate(nativeDate); }, false);
+      nativeDate.addEventListener('change', function(){ syncNativeDate(nativeDate); }, false);
+    }
+
+    wrap.addEventListener('click', function(ev){
+      var target = ev.target;
+
+      if(target && target.classList && target.classList.contains('diag-date-apply-v1725')){
+        ev.preventDefault();
+        applyPanel(wrap);
+        return false;
+      }
+
+      if(target && target.classList && target.classList.contains('diag-date-close-v1725')){
+        ev.preventDefault();
+        closePanel(wrap);
+        return false;
+      }
+
+      /* 기존 우측 미니달력 영역을 누르면 자체 패널을 연다. 새 아이콘은 사용하지 않는다. */
+      var rect = wrap.getBoundingClientRect();
+      var isRightCalendarZone = ev.clientX >= rect.right - 50;
+      if(isRightCalendarZone){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        openPanel(wrap);
+        return false;
+      }
+    }, true);
+
+    document.addEventListener('click', function(ev){
+      if(!wrap.contains(ev.target)){
+        closePanel(wrap);
+      }
+    }, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDiagDatePanelV1725, false);
+  }else{
+    bindDiagDatePanelV1725();
+  }
+})();
+</script><script>
+/* v17.26 - 트레드 입력박스 중앙정렬 런타임 보정 */
+(function(){
+  function isTreadInput(el){
+    if(!el || !el.matches) return false;
+    var attrs = [
+      el.className,
+      el.getAttribute('data-key'),
+      el.getAttribute('id'),
+      el.getAttribute('placeholder'),
+      el.getAttribute('aria-label'),
+      el.getAttribute('name')
+    ].join(' ');
+    return /트레드|tread|TREAD/.test(attrs);
+  }
+
+  function applyTreadAlign(el){
+    if(!isTreadInput(el)) return;
+
+    el.classList.add('tread-align-v1726');
+    el.style.setProperty('text-align','center','important');
+    el.style.setProperty('text-align-last','center','important');
+    el.style.setProperty('line-height','34px','important');
+    el.style.setProperty('height','34px','important');
+    el.style.setProperty('font-size','17px','important');
+    el.style.setProperty('font-weight','900','important');
+    el.style.setProperty('padding','0 6px','important');
+    el.style.setProperty('box-sizing','border-box','important');
+
+    var parent = el.parentElement;
+    if(parent){
+      var nodes = parent.querySelectorAll('span,em,label,strong,b,i,small');
+      for(var i=0;i<nodes.length;i++){
+        var txt = (nodes[i].textContent || '').trim();
+        if(txt.indexOf('%') >= 0){
+          nodes[i].classList.add('tread-percent-v1726');
+          nodes[i].style.setProperty('font-weight','900','important');
+          nodes[i].style.setProperty('font-size','17px','important');
+          nodes[i].style.setProperty('line-height','34px','important');
+          nodes[i].style.setProperty('display','inline-flex','important');
+          nodes[i].style.setProperty('align-items','center','important');
+          nodes[i].style.setProperty('justify-content','center','important');
+        }
+      }
+    }
+  }
+
+  function applyAllTreadAlign(){
+    var list = document.querySelectorAll('#secDiag input, #secDiag textarea');
+    for(var i=0;i<list.length;i++){
+      applyTreadAlign(list[i]);
+    }
+  }
+
+  function bindTreadAlignV1726(){
+    if(document.body.getAttribute('data-tread-align-bound-v1726') === '1') return;
+    document.body.setAttribute('data-tread-align-bound-v1726','1');
+
+    applyAllTreadAlign();
+
+    document.addEventListener('input', function(ev){
+      applyTreadAlign(ev.target);
+    }, true);
+
+    window.addEventListener('load', applyAllTreadAlign, false);
+    setTimeout(applyAllTreadAlign, 100);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindTreadAlignV1726, false);
+  }else{
+    bindTreadAlignV1726();
+  }
 })();
 </script></body>
 </html>

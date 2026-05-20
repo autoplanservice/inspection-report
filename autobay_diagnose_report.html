@@ -9841,6 +9841,187 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   border:1px solid #cbd5e1!important;
   -webkit-text-fill-color:#111827!important;
 }
+
+/* v17.19 - 기능 복구 + clean phase10
+   목적:
+   - 진단일자 달력 클릭/복사 동기화 복구
+   - 번호판 변경예정 배지 스타일/토글 복구
+   - 주행거리 전/후 콤마 포맷 복구
+   - 기본정보 위험 선택값 빨간바탕/흰색볼드 복구
+   - 사고 상부 A-4/A-7 클릭 차단 재고정
+   - 외관 상부 선루프 선택값을 점검 단일값으로 제한
+   - 검수자 코멘트 선택값을 선택,1,2,3,4,5로 확장
+   - 외관 탭 라벨을 외관/수리로 변경
+   영향 범위: secInput 기본정보, secDiag 사고/외관 일부, customer-talk-cycle, header tab label만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key, 매입오더 출력 템플릿은 변경하지 않는다.
+*/
+
+/* 진단일자: 달력 input이 클릭 가능하도록 복구 */
+#secInput .date-dual-wrap{
+  position:relative!important;
+  display:block!important;
+}
+
+#secInput .date-dual-wrap .date-text-input.date-ymd-input{
+  width:100%!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+#secInput .date-dual-wrap .bi-date-overlay{
+  display:block!important;
+  visibility:visible!important;
+  opacity:.001!important;
+  pointer-events:auto!important;
+  position:absolute!important;
+  right:0!important;
+  top:0!important;
+  width:44px!important;
+  min-width:44px!important;
+  height:100%!important;
+  min-height:36px!important;
+  z-index:20!important;
+  cursor:pointer!important;
+  color-scheme:light!important;
+}
+
+/* 번호판 변경예정 배지 복구 */
+#secInput .plate-change-badge{
+  display:none;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:24px!important;
+  padding:0 8px!important;
+  border-radius:999px!important;
+  background:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+
+/* 기본정보 위험 선택값 강조 */
+#secInput select.basic-danger-active-v1719,
+#secInput select.ab-direct-danger-active-v1719,
+#secDiag select.ab-direct-danger-active-v1719{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:900!important;
+}
+
+/* 사고 상부 A-4/A-7 클릭 완전 차단 */
+#secDiag .acc-card-a4a7-off-v1698 .acc-a4a7-hard-off-v1719,
+#secDiag .acc-card-a4a7-off-v1698 .acc-a4a7-hard-off-v1719 *,
+#secDiag .acc-card-a4a7-off-v1698 [data-disabled-marker-v1719="1"],
+#secDiag .acc-card-a4a7-off-v1698 [data-disabled-marker-v1719="1"] *{
+  pointer-events:none!important;
+  cursor:default!important;
+}
+
+/* 선루프는 점검 단일 선택값만 사용 */
+#secDiag .exterior-sunroof-badge{
+  background:#e5e7eb!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  border:1px solid #cbd5e1!important;
+  font-weight:900!important;
+}
+
+/* v17.20 - 복구 2차: plate/memo/danger/sunroof/customer/A4A7 */
+#secInput .plate-change-badge{
+  display:none;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:24px!important;
+  padding:0 8px!important;
+  border-radius:999px!important;
+  background:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+
+#secInput .plate-change-badge.plate-change-show-v1720{
+  display:inline-flex!important;
+}
+
+/* 조건 메모 표시 */
+#secInput .condition-memo.memo-show-v1720,
+#secDiag .wrapppf-memo.memo-show-v1720{
+  display:block!important;
+}
+
+/* 위험 선택값: 빨간바탕/흰색/볼드 강제 */
+#secInput select.danger-active-v1720,
+#secDiag select.danger-active-v1720{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:900!important;
+}
+
+/* 사고 A-4/A-7 완전 제거 */
+#secDiag .acc-card-a4a7-off-v1720 .acc-a4a7-hard-off-v1720,
+#secDiag .acc-card-a4a7-off-v1720 .acc-a4a7-hard-off-v1720 *,
+#secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"],
+#secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"] *{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  cursor:default!important;
+}
+
+/* 선루프 기본 라벨: 기존 크기 회복 */
+#secDiag .exterior-sunroof-badge{
+  min-width:52px!important;
+  min-height:26px!important;
+  height:26px!important;
+  padding:0 10px!important;
+  border-radius:9px!important;
+  font-size:13px!important;
+  line-height:1!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+}
+
+/* 선루프 기본값 */
+#secDiag .exterior-sunroof-badge:not(.sunroof-check-active-v1720){
+  background:#e5e7eb!important;
+  border:1px solid #cbd5e1!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-weight:900!important;
+}
+
+/* 선루프 점검값: 경고 빨강 */
+#secDiag .exterior-sunroof-badge.sunroof-check-active-v1720,
+#secDiag .exterior-sunroof-badge[data-state="점검"]{
+  background:#ef4444!important;
+  border-color:#ef4444!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  font-weight:900!important;
+}
+
+/* 검수자 코멘트 버튼 기본 크기 유지 */
+.customer-talk-cycle{
+  min-width:44px!important;
+  height:28px!important;
+  border-radius:9px!important;
+  font-size:13px!important;
+  font-weight:900!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -9870,7 +10051,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <p>현장 매입 진단리포트</p>
 <div class="tabs">
 <label for="tabInput">기본</label>
-<label for="tabDiag">사고</label><label for="tabExterior">외관</label>
+<label for="tabDiag">사고</label><label for="tabExterior">외관/수리</label>
 <label for="tabCheck">점검</label>
 </div>
 <div class="menu-panel"><label class="menu-item menu-order-link" data-menu-close="1" for="tabOrder">매입오더 작성</label></div></header>
@@ -10046,7 +10227,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 </div>
 </div>
 </article>
-<article class="report-card-ui diag-accident-card diag-accident-tab-card-v1696 diag-accident-tab-card-v1697 acc-card-a4a7-off-v1698">
+<article class="report-card-ui diag-accident-card diag-accident-tab-card-v1696 diag-accident-tab-card-v1697 acc-card-a4a7-off-v1698 acc-card-a4a7-off-v1720">
 <h2><span class="no">4</span> 사고 진단확인</h2>
 <div class="touch-diagram-shell" data-diagram-role="accident">
 <div class="touch-diagram-subtitle">상부 진단</div>
@@ -10055,7 +10236,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <input class="st st1" id="acc1_top_A_4_1" name="acc1_top_A_4" type="radio"/>
 <input class="st st2" id="acc1_top_A_4_2" name="acc1_top_A_4" type="radio"/>
 <input class="st st3" id="acc1_top_A_4_3" name="acc1_top_A_4" type="radio"/>
-<input class="st st4" id="acc1_top_A_4_4" name="acc1_top_A_4" type="radio"/><div class="slot acc-disabled-marker-v1698" data-disabled-marker-v1698="1" data-part="A-4" data-part-code="A4" style="left:50.08292%;top:6.33803%">
+<input class="st st4" id="acc1_top_A_4_4" name="acc1_top_A_4" type="radio"/><div class="slot acc-disabled-marker-v1698 acc-a4a7-hard-off-v1719 acc-a4a7-hard-off-v1720" data-disabled-marker-v1698="1" data-disabled-marker-v1719="1" data-disabled-marker-v1720="1" data-part="A-4" data-part-code="A4" style="left:50.08292%;top:6.33803%;display:none!important;visibility:hidden!important;pointer-events:none!important">
 <label class="hit h0" for="acc1_top_A_4_1"><span></span></label>
 <label class="hit h1" for="acc1_top_A_4_2"><span>X</span></label>
 <label class="hit h2" for="acc1_top_A_4_3"><span>W</span></label>
@@ -10095,7 +10276,7 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 <input class="st st1" id="acc1_top_A_7_1" name="acc1_top_A_7" type="radio"/>
 <input class="st st2" id="acc1_top_A_7_2" name="acc1_top_A_7" type="radio"/>
 <input class="st st3" id="acc1_top_A_7_3" name="acc1_top_A_7" type="radio"/>
-<input class="st st4" id="acc1_top_A_7_4" name="acc1_top_A_7" type="radio"/><div class="slot acc-disabled-marker-v1698" data-disabled-marker-v1698="1" data-part="A-7" data-part-code="A7" style="left:50.00000%;top:95.07042%">
+<input class="st st4" id="acc1_top_A_7_4" name="acc1_top_A_7" type="radio"/><div class="slot acc-disabled-marker-v1698 acc-a4a7-hard-off-v1719 acc-a4a7-hard-off-v1720" data-disabled-marker-v1698="1" data-disabled-marker-v1719="1" data-disabled-marker-v1720="1" data-part="A-7" data-part-code="A7" style="left:50.00000%;top:95.07042%;display:none!important;visibility:hidden!important;pointer-events:none!important">
 <label class="hit h0" for="acc1_top_A_7_1"><span></span></label>
 <label class="hit h1" for="acc1_top_A_7_2"><span>X</span></label>
 <label class="hit h2" for="acc1_top_A_7_3"><span>W</span></label>
@@ -12911,70 +13092,7 @@ boot();
   }
   window.addEventListener('load', bindBasicV1710, false);
 })();
-</script><script>
-/* v17.12 - 선루프/외관 상태 단일 핸들러
-   목적:
-   - syncExteriorSunroof / bindSunroofCycleV1622 / bindSunroofCycleV1624 중복 핸들러를 제거하고 단일 핸들러로 유지한다.
-   - 선루프 badge 클릭 시 기존 상태 순환과 hidden field 동기화를 유지한다.
-   영향 범위: .exterior-sunroof-wrap / .exterior-sunroof-badge / [data-key="exteriorSunroofState"]만 적용한다.
-   주의: 도면 좌표, 마커 좌표, radio id/name, 저장 key는 변경하지 않는다.
-*/
-(function(){
-  function syncSunroofValue(value){
-    var field = document.querySelector('[data-key="exteriorSunroofState"]');
-    var badge = document.querySelector('.exterior-sunroof-badge');
-    if(!badge) return;
-
-    value = String(value || '').trim();
-
-    if(field && field.value !== value){
-      field.value = value;
-      try{
-        field.dispatchEvent(new Event('input', {bubbles:true}));
-        field.dispatchEvent(new Event('change', {bubbles:true}));
-      }catch(e){}
-    }
-
-    badge.setAttribute('data-state', value);
-    badge.textContent = value || '선루프';
-  }
-
-  function nextSunroofValue(current){
-    var order = ['', '점검', '깨짐(금감)', '스톤칩', '선팅불량'];
-    var idx = order.indexOf(String(current || '').trim());
-    if(idx < 0) idx = 0;
-    return order[(idx + 1) % order.length];
-  }
-
-  function bindSunroofUnifiedV1712(){
-    var wrap = document.querySelector('.exterior-sunroof-wrap');
-    var badge = document.querySelector('.exterior-sunroof-badge');
-    var field = document.querySelector('[data-key="exteriorSunroofState"]');
-
-    if(!wrap || !badge || wrap.getAttribute('data-sunroof-bound-v1712') === '1') return;
-    wrap.setAttribute('data-sunroof-bound-v1712', '1');
-
-    syncSunroofValue(field ? field.value : (badge.getAttribute('data-state') || ''));
-
-    wrap.addEventListener('click', function(ev){
-      var targetBadge = ev.target && ev.target.closest ? ev.target.closest('.exterior-sunroof-badge') : null;
-      if(!targetBadge || !wrap.contains(targetBadge)) return;
-
-      ev.preventDefault();
-      var current = field ? field.value : targetBadge.getAttribute('data-state');
-      syncSunroofValue(nextSunroofValue(current));
-      return false;
-    }, false);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindSunroofUnifiedV1712, false);
-  }else{
-    bindSunroofUnifiedV1712();
-  }
-  window.addEventListener('load', bindSunroofUnifiedV1712, false);
-})();
-</script><script>
+</script><script>/* v17.19 disabled previous sunroof multi-cycle handler */</script><script>
 /* v17.13 - 도막 좌/우 측면진단 badge/marker inline 위치 재고정
    목적:
    - paint badge가 cloneNode로 교체될 때 CSS만으로 위치가 흔들리는 것을 방지한다.
@@ -13078,78 +13196,7 @@ boot();
   }
   window.addEventListener('load', bindPaintSideStabilizerV1713, false);
 })();
-</script><script>
-/* v17.15 - wheel/customer-talk 계열 단일 위임 핸들러
-   목적:
-   - wheel status/cycle 및 customer-talk dot/cycle 계열의 개별 버튼 바인딩을 단일 위임으로 정리한다.
-   - 기존 data-state / data-value / textContent 기반 표시 흐름은 유지한다.
-   영향 범위: wheel-status-btn, wheel-cycle-badge, customer-dot, customer-talk-cycle만 적용한다.
-   주의: 저장 key, 도면 좌표, 마커 좌표, 매입오더 출력 템플릿은 변경하지 않는다.
-*/
-(function(){
-  function cycleValue(current, order){
-    var idx = order.indexOf(current);
-    if(idx < 0) idx = 0;
-    return order[(idx + 1) % order.length];
-  }
-
-  function bindSmallCycleV1715(){
-    if(document.body.getAttribute('data-small-cycle-bound-v1715') === '1') return;
-    document.body.setAttribute('data-small-cycle-bound-v1715','1');
-
-    document.addEventListener('click', function(ev){
-      var target = ev.target;
-      if(!target || !target.closest) return;
-
-      var wheelStatus = target.closest('.wheel-status-btn');
-      if(wheelStatus){
-        ev.preventDefault();
-        var cur = wheelStatus.getAttribute('data-state') || 'none';
-        var next = cycleValue(cur, ['none','good','bad']);
-        wheelStatus.setAttribute('data-state', next);
-        wheelStatus.textContent = next === 'good' ? '양호' : (next === 'bad' ? '이상' : '선택');
-        return false;
-      }
-
-      var wheelCycle = target.closest('.wheel-cycle-badge');
-      if(wheelCycle){
-        ev.preventDefault();
-        var cur2 = wheelCycle.getAttribute('data-state') || 'none';
-        var next2 = cycleValue(cur2, ['none','restore','replace']);
-        wheelCycle.setAttribute('data-state', next2);
-        wheelCycle.textContent = next2 === 'restore' ? '복원' : (next2 === 'replace' ? '교환' : '상태');
-        return false;
-      }
-
-      var dot = target.closest('.customer-dot');
-      if(dot){
-        ev.preventDefault();
-        dot.classList.toggle('active');
-        dot.setAttribute('data-active', dot.classList.contains('active') ? '1' : '0');
-        return false;
-      }
-
-      var talk = target.closest('.customer-talk-cycle');
-      if(talk){
-        ev.preventDefault();
-        var val = talk.getAttribute('data-value') || '0';
-        var nextVal = cycleValue(val, ['0','1','2','3']);
-        var labels = {"0":"선택","1":"1","2":"2","3":"3"};
-        talk.setAttribute('data-value', nextVal);
-        talk.textContent = labels[nextVal] || '선택';
-        return false;
-      }
-    }, true);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindSmallCycleV1715, false);
-  }else{
-    bindSmallCycleV1715();
-  }
-  window.addEventListener('load', bindSmallCycleV1715, false);
-})();
-</script><script>
+</script><script>/* v17.20 disabled conflicting handler: v17.15 - wheel/customer-talk 계열 단일 위임 핸들러 */</script><script>
 /* v17.17 - 매입오더 count select + money toggle 통합 핸들러 */
 (function(){
   function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
@@ -13557,6 +13604,275 @@ boot();
     bindMarkerStableV1718();
   }
   window.addEventListener('load', bindMarkerStableV1718, false);
+})();
+</script><script>/* v17.20 disabled conflicting handler: v17.19 - 기본 기능 복구 및 충돌 차단 핸들러 */</script><script>
+/* v17.20 - 복구 2차 단일 핸들러 */
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function commaNumber(value){
+    var digits = onlyDigits(value);
+    if(!digits) return '';
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function formatYMD(value){
+    var d = onlyDigits(value).slice(0,8);
+    if(d.length <= 4) return d;
+    if(d.length <= 6) return d.slice(0,4) + '-' + d.slice(4);
+    return d.slice(0,4) + '-' + d.slice(4,6) + '-' + d.slice(6);
+  }
+
+  function norm(v){
+    return String(v || '').replace(/\s+/g,'').trim();
+  }
+
+  function dangerValue(select){
+    if(!select) return null;
+    if(select.classList.contains('sticker-select')) return '없음';
+    if(select.classList.contains('cluster-select')) return '있음';
+    if(select.classList.contains('exterior-select')) return '상이';
+    if(select.classList.contains('danger-when-inspection-expired')) return '기간지남';
+    if(select.classList.contains('recall-main')) return '해당(미이행)';
+    if(select.classList.contains('danger-when-maint-unchecked')) return '미확인';
+    if(select.classList.contains('wrap-select')) return '있음';
+    if(select.classList.contains('tuning-main')) return '불법';
+    var explicit = select.getAttribute('data-danger-value');
+    return explicit ? norm(explicit) : null;
+  }
+
+  function applyDanger(select){
+    var danger = dangerValue(select);
+    if(!danger) return;
+    var active = norm(select.value) === danger;
+    select.classList.toggle('danger-active-v1720', active);
+
+    if(active){
+      select.style.setProperty('background-color', '#ef4444', 'important');
+      select.style.setProperty('border-color', '#ef4444', 'important');
+      select.style.setProperty('color', '#ffffff', 'important');
+      select.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
+      select.style.setProperty('font-weight', '900', 'important');
+    }else{
+      select.style.removeProperty('background-color');
+      select.style.removeProperty('border-color');
+      select.style.removeProperty('color');
+      select.style.removeProperty('-webkit-text-fill-color');
+      select.style.removeProperty('font-weight');
+    }
+  }
+
+  function applyAllDanger(){
+    var list = document.querySelectorAll([
+      '#secInput .sticker-select',
+      '#secInput .cluster-select',
+      '#secInput .exterior-select',
+      '#secInput .danger-when-inspection-expired',
+      '#secInput .recall-main',
+      '#secInput .danger-when-maint-unchecked',
+      '#secInput .tuning-main',
+      '#secDiag .wrap-select'
+    ].join(','));
+    for(var i=0;i<list.length;i++) applyDanger(list[i]);
+  }
+
+  function syncMemos(){
+    var cluster = document.querySelector('#secInput .cluster-select');
+    var clusterMemo = document.querySelector('#secInput .cluster-memo');
+    if(clusterMemo){
+      clusterMemo.classList.toggle('memo-show-v1720', norm(cluster && cluster.value) === '있음');
+      clusterMemo.style.display = norm(cluster && cluster.value) === '있음' ? 'block' : 'none';
+    }
+
+    var ext = document.querySelector('#secInput .exterior-select');
+    var extMemo = document.querySelector('#secInput .exterior-memo');
+    if(extMemo){
+      extMemo.classList.toggle('memo-show-v1720', norm(ext && ext.value) === '상이');
+      extMemo.style.display = norm(ext && ext.value) === '상이' ? 'block' : 'none';
+    }
+
+    var wrap = document.querySelector('#secDiag .wrap-select');
+    var wrapMemo = document.querySelector('#secDiag .wrapppf-memo');
+    if(wrapMemo){
+      wrapMemo.classList.toggle('memo-show-v1720', norm(wrap && wrap.value) === '있음');
+      wrapMemo.style.display = norm(wrap && wrap.value) === '있음' ? 'block' : 'none';
+    }
+  }
+
+  function setPlateVisible(force){
+    var badge = document.querySelector('#secInput .plate-change-badge');
+    if(!badge) return;
+    var open = typeof force === 'boolean' ? force : !badge.classList.contains('plate-change-show-v1720');
+    badge.classList.toggle('plate-change-show-v1720', open);
+    badge.style.display = open ? 'inline-flex' : 'none';
+  }
+
+  function setSunroof(state){
+    var badge = document.querySelector('#secDiag .exterior-sunroof-badge');
+    var field = document.querySelector('[data-key="exteriorSunroofState"]');
+    state = state === '점검' ? '점검' : '선루프';
+
+    if(badge){
+      badge.textContent = state;
+      badge.setAttribute('data-state', state === '점검' ? '점검' : '');
+      badge.classList.toggle('sunroof-check-active-v1720', state === '점검');
+    }
+
+    if(field){
+      field.value = state === '점검' ? '점검' : '';
+      try{
+        field.dispatchEvent(new Event('input', {bubbles:true}));
+        field.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+
+  function cycleTalk(btn){
+    var cur = btn.getAttribute('data-value') || '0';
+    var arr = ['0','1','2','3','4','5'];
+    var idx = arr.indexOf(cur);
+    if(idx < 0) idx = 0;
+    var next = arr[(idx + 1) % arr.length];
+    btn.setAttribute('data-value', next);
+    btn.textContent = next === '0' ? '선택' : next;
+  }
+
+  function disableAccA4A7(){
+    var list = document.querySelectorAll('#secDiag .acc-card-a4a7-off-v1720 .acc-a4a7-hard-off-v1720, #secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"], #secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698');
+    for(var i=0;i<list.length;i++){
+      var el = list[i];
+      var text = [el.getAttribute('data-part'), el.getAttribute('for'), el.id, el.className, el.textContent].join(' ');
+      if(/\bA-4\b|\bA-7\b|A4|A7/.test(text)){
+        el.style.setProperty('display','none','important');
+        el.style.setProperty('visibility','hidden','important');
+        el.style.setProperty('pointer-events','none','important');
+        el.setAttribute('data-disabled-marker-v1720','1');
+      }
+    }
+  }
+
+  function isA4A7Target(target){
+    if(!target || !target.closest) return false;
+    var node = target.closest('#secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"], #secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698');
+    if(node) return true;
+    var slot = target.closest('#secDiag .acc-card-a4a7-off-v1720 .slot, #secDiag .acc-card-a4a7-off-v1698 .slot, #secDiag .acc-card-a4a7-off-v1698 label');
+    if(!slot) return false;
+    var attrs = [slot.getAttribute('data-part'), slot.getAttribute('for'), slot.id, slot.className, slot.textContent].join(' ');
+    return /\bA-4\b|\bA-7\b|A4|A7/.test(attrs);
+  }
+
+  function bindV1720(){
+    if(document.body.getAttribute('data-v1720-repair-bound') === '1') return;
+    document.body.setAttribute('data-v1720-repair-bound', '1');
+
+    applyAllDanger();
+    syncMemos();
+    setSunroof('선루프');
+    disableAccA4A7();
+
+    document.addEventListener('input', function(ev){
+      var t = ev.target;
+      if(!t || !t.classList) return;
+
+      if(t.classList.contains('date-ymd-input')){
+        t.value = formatYMD(t.value);
+      }
+
+      if(t.classList.contains('km-comma-input')){
+        t.value = commaNumber(t.value);
+      }
+    }, true);
+
+    document.addEventListener('change', function(ev){
+      var t = ev.target;
+      if(!t) return;
+
+      if(t.classList && t.classList.contains('bi-date-overlay')){
+        var wrap = t.closest('.date-dual-wrap');
+        var text = wrap ? wrap.querySelector('.date-ymd-input') : null;
+        if(text) text.value = t.value || '';
+      }
+
+      if(t.matches && t.matches('#secInput select, #secDiag select')){
+        applyDanger(t);
+        syncMemos();
+      }
+    }, true);
+
+    document.addEventListener('pointerdown', function(ev){
+      if(isA4A7Target(ev.target)){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        return false;
+      }
+    }, true);
+
+    document.addEventListener('click', function(ev){
+      var t = ev.target;
+
+      if(isA4A7Target(t)){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        return false;
+      }
+
+      var plate = t && t.closest ? t.closest('#secInput .plate-change-btn') : null;
+      if(plate){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        setPlateVisible();
+        return false;
+      }
+
+      var sunroof = t && t.closest ? t.closest('#secDiag .exterior-sunroof-badge') : null;
+      if(sunroof){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+
+        var current = sunroof.classList.contains('sunroof-check-active-v1720') || sunroof.getAttribute('data-state') === '점검';
+        setSunroof(current ? '선루프' : '점검');
+        return false;
+      }
+
+      var talk = t && t.closest ? t.closest('.customer-talk-cycle') : null;
+      if(talk){
+        ev.preventDefault();
+        ev.stopPropagation();
+        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        cycleTalk(talk);
+        return false;
+      }
+    }, true);
+
+    setTimeout(function(){
+      applyAllDanger();
+      syncMemos();
+      disableAccA4A7();
+      if(document.querySelector('#secDiag .exterior-sunroof-badge')){
+        setSunroof('선루프');
+      }
+    }, 80);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindV1720, false);
+  }else{
+    bindV1720();
+  }
+  window.addEventListener('load', function(){
+    bindV1720();
+    setTimeout(function(){
+      applyAllDanger();
+      syncMemos();
+      disableAccA4A7();
+    }, 50);
+  }, false);
 })();
 </script></body>
 </html>

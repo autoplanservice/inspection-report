@@ -9095,6 +9095,72 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   top:auto!important;
   transform:none!important;
 }
+
+/* v17.07 - clean phase1 성능 보정
+   목적:
+   - 누적 transition/animation으로 인한 클릭 반응 지연을 줄인다.
+   - 도면 좌표와 카드 DOM은 변경하지 않는다.
+*/
+#secDiag button,
+#secDiag label,
+#secDiag .slot,
+#secDiag .hit,
+#secDiag [data-part],
+#secDiag [data-key],
+#secCheck button,
+#secCheck label,
+#secOrder button,
+#secOrder label{
+  transition:none!important;
+  animation:none!important;
+}
+
+#secDiag .report-card-ui{
+  contain:none!important;
+}
+
+/* v17.08 - 마커 클릭 반응속도 개선
+   목적:
+   - 사고/외관 도면 radio 변경 결과 갱신을 개별 바인딩에서 위임+RAF 단일 갱신으로 전환한다.
+   - 도막 입력의 과도한 keyup/keydown/touchend 중복 커밋을 줄인다.
+   - 마커/도면 클릭 영역의 터치 지연과 애니메이션을 제거한다.
+   영향 범위: 마커 클릭 반응과 도막 입력 이벤트 경량화만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio name/id, localStorage key는 변경하지 않는다.
+*/
+#secDiag .touch-diagram-shell,
+#secDiag .touch-diagram-shell *,
+#secDiag .slot,
+#secDiag .hit,
+#secDiag [data-part],
+#secDiag label{
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+  transition:none!important;
+  animation:none!important;
+}
+
+#secDiag .report-card-ui,
+#secDiag .touch-diagram-shell,
+#secDiag .fig,
+#secDiag [data-diagram-role]{
+  contain:none!important;
+}
+
+/* v17.09 - 단일 볼드 핸들러용 class 유지 */
+.ab-direct-bold-active,
+.ab-ins-bold-active-v1670{
+  font-weight:900!important;
+}
+
+/* 마커 클릭 경로에는 불필요한 전환 효과를 계속 차단 */
+#secDiag .slot,
+#secDiag .hit,
+#secDiag [data-part],
+#secDiag label{
+  transition:none!important;
+  animation:none!important;
+  touch-action:manipulation!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -10396,16 +10462,35 @@ function buildDiagnosisReports(){
   renderTagList('accidentInternal', accident.internal, 'internal');
   renderTagList('panelCustomer', panel.customer, 'customer');
   renderTagList('panelInternal', panel.internal, 'internal');
-  console.info('[AB_DIAG][REPORT_BUILD]', {accident, panel});
 }
 
 /**
  * bindTouchDiagramChange는 도면 radio 변경 시 보고카드를 갱신한다.
  */
 function bindTouchDiagramChange(){
-  qsa('.touch-diagram-shell input[type="radio"]').forEach(function(input){
-    input.addEventListener('change', buildDiagnosisReports);
-  });
+  var root = document;
+  if(root.__abTouchDiagramChangeBoundV1708) return;
+  root.__abTouchDiagramChangeBoundV1708 = true;
+
+  var scheduled = false;
+  var run = function(){
+    scheduled = false;
+    buildDiagnosisReports();
+  };
+
+  var schedule = function(){
+    if(scheduled) return;
+    scheduled = true;
+    if(window.requestAnimationFrame) requestAnimationFrame(run);
+    else setTimeout(run, 0);
+  };
+
+  root.addEventListener('change', function(event){
+    var target = event.target;
+    if(!target || !target.matches) return;
+    if(!target.matches('.touch-diagram-shell input[type="radio"]')) return;
+    schedule();
+  }, true);
 }
 
 /**
@@ -10487,7 +10572,7 @@ function boot(){
   bindLevelButtons();
   bindTouchDiagramChange();
   restoreDraft();
-  buildDiagnosisReports();
+  if(window.requestAnimationFrame) requestAnimationFrame(buildDiagnosisReports); else setTimeout(buildDiagnosisReports, 0);
   qs('#btnSave').addEventListener('click', saveDraft);
   qs('#btnReport').addEventListener('click', buildDiagnosisReports);
 }
@@ -10700,17 +10785,6 @@ boot();
       commitValue(this, this.value, 'change');
     }, false);
 
-    input.addEventListener('keyup', function(){
-      commitValue(this, this.value, 'keyup');
-    }, false);
-
-    input.addEventListener('keydown', function(){
-      var self = this;
-      requestAnimationFrame(function(){
-        commitValue(self, self.value, 'keydown-raf');
-      });
-    }, false);
-
     input.addEventListener('paste', function(){
       var self = this;
       setTimeout(function(){
@@ -10725,13 +10799,6 @@ boot();
     input.addEventListener('blur', function(){
       commitValue(this, this.value, 'blur');
     }, false);
-
-    input.addEventListener('touchend', function(){
-      var self = this;
-      requestAnimationFrame(function(){
-        commitValue(self, self.value, 'touchend-raf');
-      });
-    }, {passive:true});
   }
 
   function delegateInput(ev){
@@ -10749,7 +10816,6 @@ boot();
 
     document.addEventListener('input', delegateInput, true);
     document.addEventListener('change', delegateInput, true);
-    document.addEventListener('keyup', delegateInput, true);
     document.addEventListener('blur', delegateInput, true);
 
     var buttons = document.querySelectorAll('.paint-native-w');
@@ -12149,7 +12215,7 @@ window.addEventListener('load',bindV155,false);
     bindSunroofCycleV1624();
   }
 })();
-</script><script>/* v16.55 disabled old duplicated pros tuning add/remove handler */</script><script>/* v16.55 disabled old duplicated pros tuning add/remove handler */</script><script>
+</script><script>
 /* v16.55 - 장점 > 추가장착(튜닝) 단일 항목 추가/삭제 핸들러 */
 (function(){
   function reindexProsTuningRows(rows){
@@ -12294,318 +12360,6 @@ window.addEventListener('load',bindV155,false);
   window.addEventListener('pageshow', bindBasicDangerSelects, false);
 })();
 </script><script>
-/* v16.67 - 지정 선택값 볼드체 토글 */
-(function(){
-  function getFieldLabelText(el){
-    var node = el;
-    while(node && node !== document){
-      var label = node.querySelector ? node.querySelector('.basicinfo-v5-label, label, .insurance-label, .insurance-basic-label, .ins-label') : null;
-      if(label && label.textContent) return label.textContent.replace(/\s+/g,' ').trim();
-      node = node.parentNode;
-    }
-    return '';
-  }
-
-  function normalizeText(text){
-    return (text || '').replace(/\s+/g,'').trim();
-  }
-
-  function shouldBoldSelect(sel){
-    var value = (sel.value || '').trim();
-    var label = getFieldLabelText(sel);
-    var nLabel = normalizeText(label);
-
-    if(nLabel.indexOf('스티커여부') >= 0 && value === '없음') return true;
-    if(nLabel.indexOf('계기판이상확인') >= 0 && value === '있음') return true;
-    if(nLabel.indexOf('외관색상동일여부') >= 0 && value === '상이') return true;
-    if(nLabel.indexOf('튜닝') >= 0 && nLabel.indexOf('구조변경') >= 0 && value === '있음') return true;
-    if(nLabel.indexOf('정기검사확인') >= 0 && (value === '기간 지남' || value === '기간지남')) return true;
-    if(nLabel.indexOf('리콜확인') >= 0 && value === '해당(미이행)') return true;
-    if(nLabel.indexOf('정비이력확인') >= 0 && value === '미확인') return true;
-    if(nLabel.indexOf('랩핑') >= 0 && nLabel.indexOf('PPF') >= 0 && value === '있음') return true;
-    if(nLabel.indexOf('전손') >= 0 && nLabel.indexOf('침수') >= 0 && nLabel.indexOf('전소') >= 0 && (value === '전손' || value === '침수' || value === '전소')) return true;
-    if(nLabel.indexOf('용도이력') >= 0 && (value === '리스' || value === '렌트' || value === '영업' || value === '관용' || value === '부활')) return true;
-    if(nLabel.indexOf('미확정여부') >= 0 || nLabel.indexOf('미확정여부') >= 0 || nLabel.indexOf('미확정') >= 0){
-      if(value === '있음') return true;
-    }
-
-    return false;
-  }
-
-  function updateSelect(sel){
-    if(shouldBoldSelect(sel)) sel.classList.add('ab-bold-state');
-    else sel.classList.remove('ab-bold-state');
-  }
-
-  function updateButtonGroup(btn){
-    if(!btn) return;
-    var txt = (btn.textContent || '').replace(/\s+/g,' ').trim();
-    var container = btn.parentNode;
-    var label = getFieldLabelText(btn);
-    var nLabel = normalizeText(label);
-
-    var active = btn.classList.contains('active') || btn.getAttribute('aria-pressed') === 'true' || btn.checked;
-
-    var bold = false;
-    if(active){
-      if(nLabel.indexOf('랩핑') >= 0 && nLabel.indexOf('PPF') >= 0 && txt === '있음') bold = true;
-      if(nLabel.indexOf('전손') >= 0 && nLabel.indexOf('침수') >= 0 && nLabel.indexOf('전소') >= 0 && (txt === '전손' || txt === '침수' || txt === '전소')) bold = true;
-      if(nLabel.indexOf('용도이력') >= 0 && (txt === '리스' || txt === '렌트' || txt === '영업' || txt === '관용' || txt === '부활')) bold = true;
-      if(nLabel.indexOf('미확정') >= 0 && txt === '있음') bold = true;
-    }
-
-    if(bold) btn.classList.add('ab-bold-state');
-    else btn.classList.remove('ab-bold-state');
-  }
-
-  function updateAllBoldStates(){
-    var selects = document.querySelectorAll('select');
-    for(var i=0;i<selects.length;i++){
-      updateSelect(selects[i]);
-      if(selects[i].getAttribute('data-ab-bold-bound-v1667') !== '1'){
-        selects[i].setAttribute('data-ab-bold-bound-v1667','1');
-        selects[i].addEventListener('change', function(){ updateSelect(this); }, false);
-        selects[i].addEventListener('input', function(){ updateSelect(this); }, false);
-      }
-    }
-
-    var buttons = document.querySelectorAll('.insurance-option, .insurance-choice, button');
-    for(var j=0;j<buttons.length;j++){
-      updateButtonGroup(buttons[j]);
-      if(buttons[j].getAttribute('data-ab-bold-btn-bound-v1667') !== '1'){
-        buttons[j].setAttribute('data-ab-bold-btn-bound-v1667','1');
-        buttons[j].addEventListener('click', function(){
-          var self = this;
-          setTimeout(function(){ updateAllBoldStates(); }, 0);
-          setTimeout(function(){ updateAllBoldStates(); }, 30);
-        }, false);
-      }
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', updateAllBoldStates, false);
-  }else{
-    updateAllBoldStates();
-  }
-  window.addEventListener('load', updateAllBoldStates, false);
-  window.addEventListener('pageshow', updateAllBoldStates, false);
-})();
-</script><script>
-/* v16.68 - 랩핑/보험·특수 이력 버튼형 선택값 볼드 재적용 */
-(function(){
-  function norm(s){
-    return (s || '').replace(/\s+/g,'').trim();
-  }
-
-  function closestTextContext(el){
-    var node = el;
-    var depth = 0;
-    var out = '';
-    while(node && node !== document && depth < 7){
-      out += ' ' + (node.textContent || '');
-      node = node.parentNode;
-      depth++;
-    }
-    return norm(out);
-  }
-
-  function isActiveControl(el){
-    if(!el) return false;
-    if(el.classList && (el.classList.contains('active') || el.classList.contains('selected') || el.classList.contains('on'))) return true;
-    if(el.getAttribute && (el.getAttribute('aria-pressed') === 'true' || el.getAttribute('aria-selected') === 'true')) return true;
-
-    var forId = el.getAttribute ? el.getAttribute('for') : '';
-    if(forId){
-      var input = document.getElementById(forId);
-      if(input && input.checked) return true;
-    }
-
-    if(el.matches && el.matches('input[type="radio"], input[type="checkbox"]') && el.checked) return true;
-    return false;
-  }
-
-  function shouldBoldButton(el){
-    var text = (el.textContent || el.value || '').replace(/\s+/g,' ').trim();
-    var nText = norm(text);
-    var ctx = closestTextContext(el);
-
-    if(nText === '있음' && ctx.indexOf('랩핑') >= 0 && ctx.indexOf('PPF') >= 0) return true;
-    if((nText === '전손' || nText === '침수' || nText === '전소') && ctx.indexOf('전손') >= 0 && ctx.indexOf('침수') >= 0) return true;
-    if((nText === '리스' || nText === '렌트' || nText === '영업' || nText === '관용' || nText === '부활') && ctx.indexOf('용도이력') >= 0) return true;
-    if(nText === '있음' && ctx.indexOf('미확정') >= 0) return true;
-
-    return false;
-  }
-
-  function updateBoldButtons(){
-    var controls = document.querySelectorAll('button, label, .insurance-option, .insurance-choice, .wrapping-option, .ppf-option');
-    for(var i=0;i<controls.length;i++){
-      var el = controls[i];
-      var target = shouldBoldButton(el) && isActiveControl(el);
-      if(target) el.classList.add('ab-bold-btn-active');
-      else el.classList.remove('ab-bold-btn-active');
-
-      if(el.getAttribute('data-ab-bold-button-bound-v1668') !== '1'){
-        el.setAttribute('data-ab-bold-button-bound-v1668','1');
-        el.addEventListener('click', function(){
-          setTimeout(updateBoldButtons, 0);
-          setTimeout(updateBoldButtons, 60);
-        }, false);
-        el.addEventListener('change', function(){
-          setTimeout(updateBoldButtons, 0);
-          setTimeout(updateBoldButtons, 60);
-        }, false);
-      }
-    }
-
-    var inputs = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-    for(var j=0;j<inputs.length;j++){
-      var inp = inputs[j];
-      if(inp.getAttribute('data-ab-bold-input-bound-v1668') !== '1'){
-        inp.setAttribute('data-ab-bold-input-bound-v1668','1');
-        inp.addEventListener('change', function(){
-          setTimeout(updateBoldButtons, 0);
-          setTimeout(updateBoldButtons, 60);
-        }, false);
-      }
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', updateBoldButtons, false);
-  }else{
-    updateBoldButtons();
-  }
-  window.addEventListener('load', updateBoldButtons, false);
-  window.addEventListener('pageshow', updateBoldButtons, false);
-})();
-</script><script>
-/* v16.69 - data-bold-values 기반 직접 볼드 토글 */
-(function(){
-  function splitValues(text){
-    return (text || '').split('|').map(function(v){ return v.trim(); }).filter(Boolean);
-  }
-
-  function applyDirectBoldSelect(sel){
-    if(!sel) return;
-    var values = splitValues(sel.getAttribute('data-bold-values') || '');
-    var current = (sel.value || '').trim();
-    var hit = values.indexOf(current) >= 0;
-    if(hit) sel.classList.add('ab-direct-bold-active');
-    else sel.classList.remove('ab-direct-bold-active');
-  }
-
-  function isButtonActive(el){
-    if(!el) return false;
-    if(el.classList.contains('active') || el.classList.contains('selected') || el.classList.contains('on')) return true;
-    if(el.getAttribute('aria-pressed') === 'true' || el.getAttribute('aria-selected') === 'true') return true;
-    var forId = el.getAttribute('for');
-    if(forId){
-      var input = document.getElementById(forId);
-      if(input && input.checked) return true;
-    }
-    return false;
-  }
-
-  function applyDirectBoldButton(el){
-    if(!el) return;
-    var values = splitValues(el.getAttribute('data-bold-values') || '');
-    var text = (el.textContent || '').replace(/\\s+/g,' ').trim();
-    var hit = values.indexOf(text) >= 0 && isButtonActive(el);
-    if(hit) el.classList.add('ab-direct-bold-active');
-    else el.classList.remove('ab-direct-bold-active');
-  }
-
-  function bindDirectBold(){
-    var selects = document.querySelectorAll('select.ab-direct-bold-select');
-    for(var i=0;i<selects.length;i++){
-      applyDirectBoldSelect(selects[i]);
-      if(selects[i].getAttribute('data-direct-bold-bound-v1669') === '1') continue;
-      selects[i].setAttribute('data-direct-bold-bound-v1669','1');
-      selects[i].addEventListener('change', function(){ applyDirectBoldSelect(this); }, false);
-      selects[i].addEventListener('input', function(){ applyDirectBoldSelect(this); }, false);
-    }
-
-    var buttons = document.querySelectorAll('.ab-direct-bold-button');
-    for(var j=0;j<buttons.length;j++){
-      applyDirectBoldButton(buttons[j]);
-      if(buttons[j].getAttribute('data-direct-bold-btn-bound-v1669') === '1') continue;
-      buttons[j].setAttribute('data-direct-bold-btn-bound-v1669','1');
-      buttons[j].addEventListener('click', function(){
-        var self = this;
-        setTimeout(function(){
-          var all = document.querySelectorAll('.ab-direct-bold-button');
-          for(var k=0;k<all.length;k++) applyDirectBoldButton(all[k]);
-        }, 0);
-        setTimeout(function(){
-          var all = document.querySelectorAll('.ab-direct-bold-button');
-          for(var k=0;k<all.length;k++) applyDirectBoldButton(all[k]);
-        }, 60);
-      }, false);
-    }
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindDirectBold, false);
-  else bindDirectBold();
-  window.addEventListener('load', bindDirectBold, false);
-  window.addEventListener('pageshow', bindDirectBold, false);
-})();
-</script><script>
-/* v16.70 - 보험·특수 이력 select 직접 볼드 토글 */
-(function(){
-  function splitValues(text){
-    return (text || '').split('|').map(function(v){ return v.trim(); }).filter(Boolean);
-  }
-
-  function applyInsuranceBold(sel){
-    if(!sel) return;
-    var values = splitValues(sel.getAttribute('data-ins-bold-values') || '');
-    var current = (sel.value || '').trim();
-    var hit = values.indexOf(current) >= 0;
-
-    if(hit){
-      sel.classList.add('ab-ins-bold-active-v1670');
-      sel.style.fontWeight = '900';
-    }else{
-      sel.classList.remove('ab-ins-bold-active-v1670');
-      sel.style.fontWeight = '400';
-    }
-  }
-
-  function bindInsuranceBold(){
-    var selects = document.querySelectorAll('#secDiag .insurance-basic-card select.ab-ins-bold-select-v1670');
-    for(var i=0;i<selects.length;i++){
-      var sel = selects[i];
-      applyInsuranceBold(sel);
-
-      if(sel.getAttribute('data-ins-bold-bound-v1670') === '1') continue;
-      sel.setAttribute('data-ins-bold-bound-v1670','1');
-
-      sel.addEventListener('change', function(){
-        applyInsuranceBold(this);
-      }, false);
-
-      sel.addEventListener('input', function(){
-        applyInsuranceBold(this);
-      }, false);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindInsuranceBold, false);
-  }else{
-    bindInsuranceBold();
-  }
-
-  window.addEventListener('load', bindInsuranceBold, false);
-  window.addEventListener('pageshow', bindInsuranceBold, false);
-
-  /* 기존 저장값 복원 스크립트가 뒤늦게 값을 넣는 경우를 대비한다. */
-  setTimeout(bindInsuranceBold, 100);
-  setTimeout(bindInsuranceBold, 300);
-})();
-</script><script>
 /* v16.79 - 점검 탭 선택버튼 클릭 시 전역 볼드 스캔 차단
    원인:
    - v16.67/v16.68 계열의 전역 click 핸들러가 모든 button/label/input을 반복 스캔한다.
@@ -12641,7 +12395,7 @@ window.addEventListener('load',bindV155,false);
   }
   window.addEventListener('load', bindCheckFastClick, false);
 })();
-</script><script>/* v16.90 disabled previous order form/submit handler */</script><script>
+</script><script>
 /* v16.88 - 메뉴 항목 클릭 후 메뉴 닫기 */
 (function(){
   function bindHeaderMenu(){
@@ -12669,7 +12423,7 @@ window.addEventListener('load',bindV155,false);
   }
   window.addEventListener('load', bindHeaderMenu, false);
 })();
-</script><script>/* v16.90 disabled previous order form/submit handler */</script><script>/* v16.91 disabled previous order handler */</script><script>/* v16.99 disabled previous order output handler */</script><script>/* v16.94 disabled previous date/tuning handler */</script><script>/* v16.94 disabled previous date/tuning handler */</script><script>
+</script><script>
 /* v16.94 - 등록/제작일자 YY-MM-DD, 튜닝 추가행 라벨 고정 */
 (function(){
   function onlyDigits(value){
@@ -13135,15 +12889,6 @@ window.addEventListener('load',bindV155,false);
         return false;
       }
     }, true);
-
-    card.addEventListener('touchstart', function(ev){
-      if(isAccidentA4A7Target(ev.target)){
-        ev.preventDefault();
-        ev.stopPropagation();
-        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-        return false;
-      }
-    }, true);
   }
 
   if(document.readyState === 'loading'){
@@ -13152,476 +12897,6 @@ window.addEventListener('load',bindV155,false);
     bindAccA4A7Off();
   }
   window.addEventListener('load', bindAccA4A7Off, false);
-})();
-</script><script>/* v17.04 disabled previous order output handler */</script><script>
-/* v17.04 - 매입오더 연식 YY-MM/YY 및 제출 텍스트 보정 */
-(function(){
-  function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
-  function commaNumber(value){
-    var digits = onlyDigits(value);
-    if(!digits) return '';
-    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-  function formatPhone(value){
-    var d = onlyDigits(value).slice(0, 11);
-    if(!d) return '';
-    if(d.length <= 3) return d;
-    if(d.length <= 7) return d.slice(0,3) + '-' + d.slice(3);
-    return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
-  }
-  function formatRrn(value){
-    var d = onlyDigits(value).slice(0, 13);
-    if(d.length <= 6) return d;
-    return d.slice(0,6) + '-' + d.slice(6);
-  }
-  function formatYYMM(value){
-    var d = onlyDigits(value).slice(0, 4);
-    if(d.length <= 2) return d;
-    return d.slice(0,2) + '-' + d.slice(2);
-  }
-  function getByKey(key){
-    var el = document.querySelector('#secOrder [data-key="' + key + '"]');
-    if(!el) return '';
-    return (el.value || '').trim();
-  }
-  function dateSlash(key){
-    var value = getByKey(key);
-    if(!value) return '';
-    var m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if(!m) return value;
-    return String(parseInt(m[2],10)) + '/' + String(parseInt(m[3],10));
-  }
-  function monthDayKorean(prefix){
-    var m = getByKey(prefix + '_month');
-    var d = getByKey(prefix + '_day');
-    if(!m && !d) return '';
-    if(m && d) return m + '월 ' + d + '일';
-    if(m) return m + '월';
-    return d + '일';
-  }
-  function getYear(){
-    var reg = getByKey('order_year_reg_ym');
-    var model = getByKey('order_year_model_yy');
-
-    var regText = '';
-    if(reg){
-      var parts = reg.split('-');
-      if(parts.length === 2 && parts[0] && parts[1]){
-        regText = parts[0] + '년 ' + parts[1] + '월 (등록)';
-      }else{
-        regText = reg + ' (등록)';
-      }
-    }
-
-    var modelText = model ? model + ' 년형' : '';
-    if(regText && modelText) return regText + ' / ' + modelText;
-    return regText || modelText || '';
-  }
-  function getSelectPlus(selectKey, inputKey){
-    var s = getByKey(selectKey);
-    var i = getByKey(inputKey);
-    if(s && i) return s + ' ' + i;
-    return s || i || '';
-  }
-  function getMoney(prefix, appendFee){
-    var amount = getByKey(prefix + '_amount');
-    var unit = getByKey(prefix + '_unit') || '';
-    if(!amount) return '';
-    var out = unit ? (amount + ' ' + unit) : amount;
-    if(appendFee) out += '+수수료';
-    return out;
-  }
-  function getMoneyDate(prefix){
-    var amount = getByKey(prefix + '_amount');
-    var unit = getByKey(prefix + '_unit') || '만원';
-    var md = monthDayKorean(prefix + '_date');
-    if(!amount && !md) return '';
-    if(amount && md) return amount + ' ' + unit + '/' + md;
-    if(amount) return amount + ' ' + unit;
-    return md;
-  }
-  function getAccount(prefix){
-    var bank = getByKey(prefix + '_bank');
-    var number = getByKey(prefix + '_number');
-    var holder = getByKey(prefix + '_holder');
-    var arr = [];
-    if(bank) arr.push(bank);
-    if(number) arr.push(number);
-    if(holder) arr.push(holder);
-    return arr.join(' ');
-  }
-  function getOxCountMemo(prefix, suffix){
-    var yn = getByKey(prefix + '_yn');
-    if(yn !== 'O') return yn || '';
-    var count = getByKey(prefix + '_count_num');
-    var memo = getByKey(prefix + '_memo');
-    var detail = '';
-    if(count) detail += count + (suffix || '');
-    if(memo) detail += (detail ? '/' : '') + memo;
-    return detail || 'O';
-  }
-  function profitIsOpen(){
-    var btn = document.getElementById('orderProfitToggle');
-    return !!(btn && btn.getAttribute('data-open') === '1');
-  }
-  function dealerIsEncar(){
-    return getByKey('order_dealer').replace(/\s+/g,'') === '엔카';
-  }
-
-  function buildOrderTextV1704(){
-    var lines = [];
-    var fee = dealerIsEncar();
-
-    lines.push('바로지시사항');
-    lines.push(getByKey('order_direct_instruction'));
-    lines.push('');
-    lines.push('차량정보');
-    lines.push('날짜 : ' + dateSlash('order_date'));
-    lines.push('담당딜러 : ' + getByKey('order_dealer'));
-    lines.push('검 수 자  : ' + getByKey('order_inspector'));
-    lines.push('견적(가훈/현우/대표님) : ' + getByKey('order_estimator'));
-    lines.push('경로(낙찰,디비,대차,지인) : ' + getByKey('order_route'));
-    lines.push('탁송,온라인 매입(O/X) : ' + getByKey('order_online_delivery'));
-    lines.push('차량이름 : ' + getByKey('order_car_name'));
-    lines.push('차량번호 : ' + getByKey('order_car_no'));
-    lines.push('연식 : ' + (getYear() || '년 월(등록) / 년형'));
-    lines.push('등급 : ' + getByKey('order_grade'));
-    lines.push('연료 : ' + getByKey('order_fuel'));
-    lines.push('배기량 : ' + (getByKey('order_displacement') ? getByKey('order_displacement') + 'cc' : ' CC'));
-    lines.push('주행 : ' + (getByKey('order_mileage') ? getByKey('order_mileage') + 'km' : '  KM'));
-    lines.push('사고 : ' + (getOxCountMemo('order_accident', '개') || '개'));
-    lines.push('미확정(O/X) : ' + getByKey('order_unconfirmed'));
-    lines.push('전손/침수/직수/계기판/ : ' + getByKey('order_special_history'));
-    lines.push('외판 : ' + (getOxCountMemo('order_outer', '개') || '개'));
-    lines.push('수리 : ' + getOxCountMemo('order_repair', '개'));
-    lines.push('스페어키 여부/위치 : ' + getSelectPlus('order_spare_key_yn', 'order_spare_key_location'));
-    lines.push('');
-    lines.push('금액,송금,위험요소');
-    lines.push('서류발송일 : ' + dateSlash('order_doc_send_date'));
-    lines.push('서류위치 : ' + getByKey('order_doc_location'));
-    lines.push('사업자여부/종류 : ' + getSelectPlus('order_business_yn', 'order_business_type'));
-    lines.push('현금,캐피탈,리스,렌트 : ' + getByKey('order_payment_type'));
-    lines.push('압류(특수) : ' + (getByKey('order_seizure') || 'X'));
-    lines.push('차주송금금액(제시금액) : ' + getMoney('order_owner_transfer', fee));
-    lines.push('실매입금액 : ' + getMoney('order_real_buy', fee));
-    lines.push('계약금 : ' + (getMoneyDate('order_deposit') || '원  월 / 일'));
-    lines.push('잔   금 : ' + (getMoneyDate('order_balance') || '원  월 / 일'));
-    lines.push('인수일 : ' + (monthDayKorean('order_takeover_date') || '월 / 일'));
-    lines.push('반환금액 : ' + getMoney('order_return', false));
-    lines.push('계산서금액 : ' + getMoney('order_invoice', false));
-    lines.push('이름 : ' + getByKey('order_account_name'));
-    lines.push('계좌/예금주 : ' + getAccount('order_account'));
-    lines.push('캐피탈계좌(압류) : ' + getByKey('order_capital_account'));
-    lines.push('차주번호 : ' + (fee ? 'X' : (getByKey('order_owner_phone') || 'x')));
-
-    if(profitIsOpen()){
-      lines.push('');
-      lines.push('수익금 있을 경우 클릭 후 작성');
-      lines.push('알선수익금(소개비) : ' + getMoney('order_referral_profit', false));
-      lines.push('소개비이름 : ' + getByKey('order_referral_name'));
-      lines.push('소개비계좌 : ' + getAccount('order_referral_account'));
-      lines.push('원천주민번호(해당시작성) : ' + getByKey('order_withholding_rrn'));
-    }
-
-    return lines.join('\\n');
-  }
-
-  function refreshOxDetail(wrap){
-    var sel = wrap.querySelector('select');
-    var open = sel && sel.value === 'O';
-    wrap.setAttribute('data-open', open ? '1' : '0');
-  }
-
-  function bindOrderV1704(){
-    var sec = document.getElementById('secOrder');
-    if(!sec || sec.getAttribute('data-order-bound-v1704') === '1') return;
-    sec.setAttribute('data-order-bound-v1704','1');
-
-    sec.addEventListener('input', function(ev){
-      var t = ev.target;
-      if(!t || !t.classList) return;
-      if(t.classList.contains('order-comma-number') || t.classList.contains('order-count-number')){
-        t.value = commaNumber(t.value);
-      }
-      if(t.classList.contains('order-phone')){
-        t.value = formatPhone(t.value);
-      }
-      if(t.classList.contains('order-rrn')){
-        t.value = formatRrn(t.value);
-      }
-      if(t.classList.contains('order-yy-month-input')){
-        t.value = formatYYMM(t.value);
-      }
-      if(t.classList.contains('order-year-model-yy-input')){
-        t.value = onlyDigits(t.value).slice(0, 2);
-      }
-    }, false);
-
-    sec.addEventListener('change', function(ev){
-      var t = ev.target;
-      if(!t || !t.closest) return;
-      var ox = t.closest('.order-ox-detail');
-      if(ox) refreshOxDetail(ox);
-    }, false);
-
-    sec.addEventListener('click', function(ev){
-      var t = ev.target;
-      if(!t || !t.closest) return;
-
-      var unitBtn = t.closest('.order-unit-btn');
-      if(unitBtn && sec.contains(unitBtn)){
-        ev.preventDefault();
-        var wrap = unitBtn.closest('.order-money-unit, .order-money-date');
-        var buttons = wrap ? wrap.querySelectorAll('.order-unit-btn') : [];
-        for(var i=0;i<buttons.length;i++) buttons[i].classList.remove('active');
-        unitBtn.classList.add('active');
-        var hidden = wrap ? wrap.querySelector('input[type="hidden"][data-key]') : null;
-        if(hidden) hidden.value = unitBtn.getAttribute('data-unit') || unitBtn.textContent.trim();
-        return false;
-      }
-
-      var profitBtn = t.closest('#orderProfitToggle');
-      if(profitBtn){
-        ev.preventDefault();
-        var open = profitBtn.getAttribute('data-open') === '1';
-        profitBtn.setAttribute('data-open', open ? '0' : '1');
-        profitBtn.textContent = open ? '▷' : '▶';
-        var grid = document.querySelector('#secOrder .order-profit-grid');
-        if(grid) grid.setAttribute('data-profit-open', open ? '0' : '1');
-        return false;
-      }
-    }, false);
-
-    var submit = document.getElementById('orderSubmitBtn');
-    var output = document.getElementById('orderCopyOutput');
-    var outputCard = document.querySelector('#secOrder .order-output-card');
-    if(submit){
-      submit.addEventListener('click', function(){
-        if(output){
-          output.value = buildOrderTextV1704();
-          if(outputCard) outputCard.classList.add('active');
-          output.focus();
-          output.select();
-        }
-      }, false);
-    }
-
-    var copyBtn = document.getElementById('orderCopyBtn');
-    if(copyBtn){
-      copyBtn.addEventListener('click', function(){
-        if(!output) return;
-        output.focus();
-        output.select();
-        if(navigator.clipboard && navigator.clipboard.writeText){
-          navigator.clipboard.writeText(output.value).then(function(){
-            copyBtn.textContent = '복사완료';
-            setTimeout(function(){ copyBtn.textContent = '전체 복사'; }, 1200);
-          }).catch(function(){});
-        }else{
-          try{ document.execCommand('copy'); }catch(e){}
-          copyBtn.textContent = '복사완료';
-          setTimeout(function(){ copyBtn.textContent = '전체 복사'; }, 1200);
-        }
-      }, false);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindOrderV1704, false);
-  }else{
-    bindOrderV1704();
-  }
-  window.addEventListener('load', bindOrderV1704, false);
-})();
-</script><script>
-/* v17.05 - 매입오더 제출 출력 양식 원본 템플릿 복구
-   목적:
-   - 화면 UI 라벨은 현재처럼 정리된 상태를 유지한다.
-   - 제출하기 후 복사 텍스트는 사용자가 처음 제공한 매입오더 양식으로 출력한다.
-   - 기존 order_* data-key와 입력 구조는 변경하지 않는다.
-*/
-(function(){
-  function getByKey(key){
-    var el = document.querySelector('#secOrder [data-key="' + key + '"]');
-    if(!el) return '';
-    return (el.value || '').trim();
-  }
-
-  function dateSlash(key){
-    var value = getByKey(key);
-    if(!value) return '';
-    var m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-    if(!m) return value;
-    return String(parseInt(m[2],10)) + '/' + String(parseInt(m[3],10));
-  }
-
-  function monthDayKorean(prefix){
-    var m = getByKey(prefix + '_month');
-    var d = getByKey(prefix + '_day');
-    if(!m && !d) return '';
-    if(m && d) return m + '월 ' + d + '일';
-    if(m) return m + '월';
-    return d + '일';
-  }
-
-  function getYear(){
-    var reg = getByKey('order_year_reg_ym');
-    var model = getByKey('order_year_model_yy');
-
-    var regText = '';
-    if(reg){
-      var parts = reg.split('-');
-      if(parts.length === 2 && parts[0] && parts[1]){
-        regText = parts[0] + '년 ' + parts[1] + '월 (등록)';
-      }else{
-        regText = reg + ' (등록)';
-      }
-    }
-
-    var modelText = model ? model + ' 년형' : '';
-    if(regText && modelText) return regText + ' / ' + modelText;
-    return regText || modelText || '';
-  }
-
-  function getSelectPlus(selectKey, inputKey){
-    var s = getByKey(selectKey);
-    var i = getByKey(inputKey);
-    if(s && i) return s + ' ' + i;
-    return s || i || '';
-  }
-
-  function getMoney(prefix, appendFee){
-    var amount = getByKey(prefix + '_amount');
-    var unit = getByKey(prefix + '_unit') || '';
-    if(!amount) return '';
-    var out = unit ? (amount + ' ' + unit) : amount;
-    if(appendFee) out += '+수수료';
-    return out;
-  }
-
-  function getMoneyDate(prefix){
-    var amount = getByKey(prefix + '_amount');
-    var unit = getByKey(prefix + '_unit') || '만원';
-    var md = monthDayKorean(prefix + '_date');
-    if(!amount && !md) return '';
-    if(amount && md) return amount + ' ' + unit + '/' + md;
-    if(amount) return amount + ' ' + unit;
-    return md;
-  }
-
-  function getAccount(prefix){
-    var bank = getByKey(prefix + '_bank');
-    var number = getByKey(prefix + '_number');
-    var holder = getByKey(prefix + '_holder');
-    var arr = [];
-    if(bank) arr.push(bank);
-    if(number) arr.push(number);
-    if(holder) arr.push(holder);
-    return arr.join(' ');
-  }
-
-  function getOxCountMemo(prefix, suffix){
-    var yn = getByKey(prefix + '_yn');
-    if(yn !== 'O') return yn || '';
-    var count = getByKey(prefix + '_count_num');
-    var memo = getByKey(prefix + '_memo');
-    var detail = '';
-    if(count) detail += count + (suffix || '');
-    if(memo) detail += (detail ? '/' : '') + memo;
-    return detail || 'O';
-  }
-
-  function profitIsOpen(){
-    var btn = document.getElementById('orderProfitToggle');
-    return !!(btn && btn.getAttribute('data-open') === '1');
-  }
-
-  function dealerIsEncar(){
-    return getByKey('order_dealer').replace(/\s+/g,'') === '엔카';
-  }
-
-  function buildOrderTextV1705(){
-    var fee = dealerIsEncar();
-    var lines = [];
-
-    lines.push('★바로지시사항');
-    lines.push('=▶ ' + getByKey('order_direct_instruction'));
-    lines.push('■■■ 매 입 ■■■');
-    lines.push('■ 차량정보 ■');
-    lines.push('▷날짜 : ' + dateSlash('order_date'));
-    lines.push('▷담당딜러 : ' + getByKey('order_dealer'));
-    lines.push('▷검 수 자  : ' + getByKey('order_inspector'));
-    lines.push('▷견적(가훈/현우/대표님) : ' + getByKey('order_estimator'));
-    lines.push('▷경로(낙찰,디비,대차,지인) : ' + getByKey('order_route'));
-    lines.push('▷탁송,온라인 매입(O/X) : ' + getByKey('order_online_delivery'));
-    lines.push('▷차량이름 : ' + getByKey('order_car_name'));
-    lines.push('▷차량번호 : ' + getByKey('order_car_no'));
-    lines.push('▷연식 : ' + (getYear() || '년 월(등록) / 년형'));
-    lines.push('▷등급 : ' + getByKey('order_grade'));
-    lines.push('▷연료 : ' + getByKey('order_fuel'));
-    lines.push('▷배기량 : ' + (getByKey('order_displacement') ? getByKey('order_displacement') + ' CC' : ' CC'));
-    lines.push('▷주행 : ' + (getByKey('order_mileage') ? getByKey('order_mileage') + ' KM' : '  KM'));
-    lines.push('▷사고 : ' + (getOxCountMemo('order_accident', '개') || ' 개'));
-    lines.push('▷미확정(O/X) : ' + getByKey('order_unconfirmed'));
-    lines.push('▷전손/침수/직수/계기판/ : ' + getByKey('order_special_history'));
-    lines.push('▷외판 : ' + (getOxCountMemo('order_outer', '개') || ' 개'));
-    lines.push('▷수리 : ' + getOxCountMemo('order_repair', '개'));
-    lines.push('▷스페어키 여부/위치 : ' + getSelectPlus('order_spare_key_yn', 'order_spare_key_location'));
-    lines.push('■ 금액,송금,위험요소 ■');
-    lines.push('▷서류발송일 : ' + dateSlash('order_doc_send_date'));
-    lines.push('▷서류위치 : ' + getByKey('order_doc_location'));
-    lines.push('▷사업자여부/종류 : ' + getSelectPlus('order_business_yn', 'order_business_type'));
-    lines.push('▷현금,캐피탈,리스,렌트 : ' + getByKey('order_payment_type'));
-    lines.push('▷압류(특수) : ' + (getByKey('order_seizure') || 'X'));
-    lines.push('▶차주송금금액◀(제시금액) : ' + getMoney('order_owner_transfer', fee));
-    lines.push('▶실매입금액◀ : ' + getMoney('order_real_buy', fee));
-    lines.push('▷계약금 : ' + (getMoneyDate('order_deposit') || '원  월 / 일'));
-    lines.push('▷잔   금 : ' + (getMoneyDate('order_balance') || '원  월 / 일'));
-    lines.push('▷인수일 : ' + (monthDayKorean('order_takeover_date') || '월 / 일'));
-    lines.push('▷반환금액 : ' + getMoney('order_return', false));
-    lines.push('▷계산서금액 : ' + getMoney('order_invoice', false));
-    lines.push('▷이름 : ' + getByKey('order_account_name'));
-    lines.push('▷계좌/예금주 : ' + getAccount('order_account'));
-    lines.push('▷캐피탈계좌(압류) : ' + getByKey('order_capital_account'));
-    lines.push('▷차주번호 : ' + (fee ? 'X' : (getByKey('order_owner_phone') || 'x')));
-
-    if(profitIsOpen()){
-      lines.push('');
-      lines.push('---수익금 있을때만---');
-      lines.push('알선수익금(소개비) : ' + getMoney('order_referral_profit', false));
-      lines.push('소개비이름 : ' + getByKey('order_referral_name'));
-      lines.push('소개비계좌 : ' + getAccount('order_referral_account'));
-      lines.push('원천주민번호(해당시작성) : ' + getByKey('order_withholding_rrn'));
-    }
-
-    return lines.join('\n');
-  }
-
-  function bindOrderTemplateV1705(){
-    var submit = document.getElementById('orderSubmitBtn');
-    var output = document.getElementById('orderCopyOutput');
-    var outputCard = document.querySelector('#secOrder .order-output-card');
-
-    if(!submit || submit.getAttribute('data-order-template-bound-v1705') === '1') return;
-    submit.setAttribute('data-order-template-bound-v1705', '1');
-
-    submit.addEventListener('click', function(){
-      setTimeout(function(){
-        if(!output) return;
-        output.value = buildOrderTextV1705();
-        if(outputCard) outputCard.classList.add('active');
-        output.focus();
-        output.select();
-      }, 0);
-    }, false);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindOrderTemplateV1705, false);
-  }else{
-    bindOrderTemplateV1705();
-  }
-  window.addEventListener('load', bindOrderTemplateV1705, false);
 })();
 </script><script>
 /* v17.06 - 매입오더 반환금액/캐피탈계좌 미입력 시 X 출력
@@ -13816,6 +13091,263 @@ window.addEventListener('load',bindV155,false);
     bindOrderTemplateV1706();
   }
   window.addEventListener('load', bindOrderTemplateV1706, false);
+})();
+</script><script>
+/* v17.07 - clean phase1 입력 보조 단일화
+   목적:
+   - 과거 매입오더 입력 보조 스크립트 제거 후 필요한 입력 기능만 단일 핸들러로 유지한다.
+   - 금액 콤마, 전화번호, 주민번호, 연식 YY-MM/YY, 수익금 토글, 금액 단위 버튼, O/X 상세영역 표시를 담당한다.
+   영향 범위: #secOrder 내부 입력 보조만 적용한다.
+*/
+(function(){
+  function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
+
+  function commaNumber(value){
+    var digits = onlyDigits(value);
+    if(!digits) return '';
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function formatPhone(value){
+    var d = onlyDigits(value).slice(0, 11);
+    if(!d) return '';
+    if(d.length <= 3) return d;
+    if(d.length <= 7) return d.slice(0,3) + '-' + d.slice(3);
+    return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
+  }
+
+  function formatRrn(value){
+    var d = onlyDigits(value).slice(0, 13);
+    if(d.length <= 6) return d;
+    return d.slice(0,6) + '-' + d.slice(6);
+  }
+
+  function formatYYMM(value){
+    var d = onlyDigits(value).slice(0, 4);
+    if(d.length <= 2) return d;
+    return d.slice(0,2) + '-' + d.slice(2);
+  }
+
+  function refreshOxDetail(wrap){
+    var sel = wrap ? wrap.querySelector('select') : null;
+    var open = sel && sel.value === 'O';
+    if(wrap) wrap.setAttribute('data-open', open ? '1' : '0');
+  }
+
+  function bindCleanOrderInputV1707(){
+    var sec = document.getElementById('secOrder');
+    if(!sec || sec.getAttribute('data-clean-order-input-bound-v1707') === '1') return;
+    sec.setAttribute('data-clean-order-input-bound-v1707','1');
+
+    var oxWraps = sec.querySelectorAll('.order-ox-detail');
+    for(var i=0;i<oxWraps.length;i++) refreshOxDetail(oxWraps[i]);
+
+    sec.addEventListener('input', function(ev){
+      var t = ev.target;
+      if(!t || !t.classList) return;
+
+      if(t.classList.contains('order-comma-number') || t.classList.contains('order-count-number')){
+        t.value = commaNumber(t.value);
+      }
+
+      if(t.classList.contains('order-phone')){
+        t.value = formatPhone(t.value);
+      }
+
+      if(t.classList.contains('order-rrn')){
+        t.value = formatRrn(t.value);
+      }
+
+      if(t.classList.contains('order-yy-month-input')){
+        t.value = formatYYMM(t.value);
+      }
+
+      if(t.classList.contains('order-year-model-yy-input')){
+        t.value = onlyDigits(t.value).slice(0,2);
+      }
+    }, false);
+
+    sec.addEventListener('change', function(ev){
+      var t = ev.target;
+      if(!t || !t.closest) return;
+
+      var ox = t.closest('.order-ox-detail');
+      if(ox) refreshOxDetail(ox);
+    }, false);
+
+    sec.addEventListener('click', function(ev){
+      var t = ev.target;
+      if(!t || !t.closest) return;
+
+      var unitBtn = t.closest('.order-unit-btn');
+      if(unitBtn && sec.contains(unitBtn)){
+        ev.preventDefault();
+        var wrap = unitBtn.closest('.order-money-unit, .order-money-date');
+        if(!wrap) return false;
+
+        var buttons = wrap.querySelectorAll('.order-unit-btn');
+        for(var i=0;i<buttons.length;i++) buttons[i].classList.remove('active');
+        unitBtn.classList.add('active');
+
+        var hidden = wrap.querySelector('input[type="hidden"][data-key]');
+        if(hidden) hidden.value = unitBtn.getAttribute('data-unit') || unitBtn.textContent.trim();
+        return false;
+      }
+
+      var profitBtn = t.closest('#orderProfitToggle');
+      if(profitBtn && sec.contains(profitBtn)){
+        ev.preventDefault();
+        var open = profitBtn.getAttribute('data-open') === '1';
+        profitBtn.setAttribute('data-open', open ? '0' : '1');
+        profitBtn.textContent = open ? '▷' : '▶';
+
+        var grid = document.querySelector('#secOrder .order-profit-grid');
+        if(grid) grid.setAttribute('data-profit-open', open ? '0' : '1');
+        return false;
+      }
+    }, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindCleanOrderInputV1707, false);
+  }else{
+    bindCleanOrderInputV1707();
+  }
+  window.addEventListener('load', bindCleanOrderInputV1707, false);
+})();
+</script><script>
+/* v17.09 - 선택값 볼드 처리 단일 위임 핸들러
+   목적:
+   - v16.67/v16.68/v16.69/v16.70의 전역 재스캔 방식 제거 후 필요한 볼드 기능만 유지한다.
+   - click마다 전체 button/select를 훑지 않고, 실제 변경된 target 주변만 처리한다.
+   영향 범위: bold 표시 class 처리만 적용한다.
+   주의: 저장 key, 도면 좌표, 마커 좌표, radio name/id는 변경하지 않는다.
+*/
+(function(){
+  function norm(value){
+    return String(value || '').replace(/\s+/g, '').trim();
+  }
+
+  function splitValues(text){
+    return String(text || '')
+      .split('|')
+      .map(function(v){ return v.trim(); })
+      .filter(Boolean);
+  }
+
+  function isActiveButton(el){
+    if(!el) return false;
+    return (
+      el.classList.contains('active') ||
+      el.classList.contains('selected') ||
+      el.getAttribute('aria-pressed') === 'true' ||
+      el.getAttribute('data-active') === '1' ||
+      el.checked === true
+    );
+  }
+
+  function getBoldValues(el){
+    var raw = el.getAttribute('data-bold-values') ||
+              el.getAttribute('data-danger-values') ||
+              el.getAttribute('data-red-values') ||
+              el.getAttribute('data-highlight-values') ||
+              '';
+    return splitValues(raw).map(norm);
+  }
+
+  function applySelect(el){
+    if(!el) return;
+
+    var values = getBoldValues(el);
+    var danger = el.getAttribute('data-danger-value');
+    if(danger) values.push(norm(danger));
+
+    /* 보험·특수 이력 select는 기존 class를 유지 */
+    if(el.classList.contains('ab-ins-bold-select-v1670')){
+      var v = norm(el.value);
+      var hit = values.length ? values.indexOf(v) >= 0 : !!v;
+      el.classList.toggle('ab-ins-bold-active-v1670', hit);
+      el.classList.toggle('ab-direct-bold-active', hit);
+      return;
+    }
+
+    if(el.classList.contains('ab-direct-bold-select') || values.length){
+      var cur = norm(el.value);
+      var active = values.length ? values.indexOf(cur) >= 0 : !!cur;
+      el.classList.toggle('ab-direct-bold-active', active);
+      el.classList.toggle('basic-danger-active', active && el.getAttribute('data-danger-value') && norm(el.getAttribute('data-danger-value')) === cur);
+    }
+  }
+
+  function applyButton(el){
+    if(!el) return;
+
+    var values = getBoldValues(el);
+    var text = norm(el.textContent);
+    var shouldBold = values.length ? values.indexOf(text) >= 0 && isActiveButton(el) : isActiveButton(el);
+
+    if(el.classList.contains('ab-direct-bold-button') || values.length){
+      el.classList.toggle('ab-direct-bold-active', shouldBold);
+    }
+  }
+
+  function applyAround(target){
+    if(!target || !target.closest) return;
+
+    var select = target.closest('select');
+    if(select) applySelect(select);
+
+    var button = target.closest('button, label, .ab-direct-bold-button, [data-bold-values]');
+    if(button) applyButton(button);
+  }
+
+  function initialApply(){
+    var root = document;
+    var selects = root.querySelectorAll('select.ab-direct-bold-select, select.ab-ins-bold-select-v1670, select[data-bold-values], select[data-danger-value]');
+    for(var i=0;i<selects.length;i++) applySelect(selects[i]);
+
+    var buttons = root.querySelectorAll('.ab-direct-bold-button, button[data-bold-values], label[data-bold-values]');
+    for(var j=0;j<buttons.length;j++) applyButton(buttons[j]);
+  }
+
+  function bindUnifiedBoldV1709(){
+    if(document.body.getAttribute('data-unified-bold-bound-v1709') === '1') return;
+    document.body.setAttribute('data-unified-bold-bound-v1709','1');
+
+    document.addEventListener('change', function(ev){
+      applyAround(ev.target);
+    }, true);
+
+    document.addEventListener('input', function(ev){
+      applyAround(ev.target);
+    }, true);
+
+    document.addEventListener('click', function(ev){
+      var target = ev.target;
+      if(!target || !target.closest) return;
+
+      var relevant = target.closest('select.ab-direct-bold-select, select.ab-ins-bold-select-v1670, select[data-bold-values], select[data-danger-value], .ab-direct-bold-button, button[data-bold-values], label[data-bold-values]');
+      if(!relevant) return;
+
+      /* label/button active class가 click 후 바뀌는 경우를 위해 현재 target만 1회 지연 처리 */
+      if(window.requestAnimationFrame) requestAnimationFrame(function(){ applyAround(target); });
+      else setTimeout(function(){ applyAround(target); }, 0);
+    }, true);
+
+    if(document.readyState === 'complete'){
+      initialApply();
+    }else{
+      if(window.requestAnimationFrame) requestAnimationFrame(initialApply);
+      else setTimeout(initialApply, 0);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindUnifiedBoldV1709, false);
+  }else{
+    bindUnifiedBoldV1709();
+  }
+  window.addEventListener('load', bindUnifiedBoldV1709, false);
 })();
 </script></body>
 </html>

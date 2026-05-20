@@ -10053,69 +10053,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   display:inline-flex!important;
 }
 
-/* v17.23 - iPhone Safari 진단일자 기존 미니달력 터치 복구
-   목적:
-   - 기존 진단일자 미니 달력 input(.bi-date-overlay)을 그대로 사용한다.
-   - 별도 달력 아이콘은 추가하지 않는다.
-   - iPhone Safari에서 실제 input[type=date]가 직접 터치되도록 터치 영역만 복구한다.
-   영향 범위: #secInput 진단일자 .date-dual-wrap 내부만 적용한다.
-   주의: 등록일자/제작일자, 도면, 매입오더 출력은 변경하지 않는다.
-*/
-
-#secInput .diag-date-ios-fix-v1723{
-  position:relative!important;
-  display:block!important;
-  width:100%!important;
-}
-
-#secInput .diag-date-ios-fix-v1723 .date-text-input.date-ymd-input{
-  width:100%!important;
-  min-height:38px!important;
-  padding-right:46px!important;
-  box-sizing:border-box!important;
-}
-
-/* 기존 미니달력 input 자체를 우측 버튼 영역으로 복구 */
-#secInput .diag-date-ios-fix-v1723 .bi-date-overlay.diag-date-native-ios-v1723,
-#secInput .diag-date-ios-fix-v1723 input[type="date"].diag-date-native-ios-v1723{
-  display:block!important;
-  visibility:visible!important;
-  opacity:0.001!important;
-  pointer-events:auto!important;
-  position:absolute!important;
-  right:4px!important;
-  top:50%!important;
-  transform:translateY(-50%)!important;
-  width:40px!important;
-  min-width:40px!important;
-  height:32px!important;
-  min-height:32px!important;
-  z-index:40!important;
-  cursor:pointer!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  background:transparent!important;
-  color:transparent!important;
-  -webkit-text-fill-color:transparent!important;
-  -webkit-appearance:auto!important;
-  appearance:auto!important;
-}
-
-/* Safari/Chrome iOS 계열에서 calendar indicator 터치 영역 확보 */
-#secInput .diag-date-ios-fix-v1723 .diag-date-native-ios-v1723::-webkit-calendar-picker-indicator{
-  opacity:1!important;
-  display:block!important;
-  width:40px!important;
-  height:32px!important;
-  cursor:pointer!important;
-}
-
-/* 기존 미니 달력 아이콘이 CSS 배경/브라우저 indicator로 보이도록 별도 버튼은 만들지 않는다 */
-#secInput .diag-date-ios-fix-v1723 .ios-date-visual-btn-v1723{
-  display:none!important;
-}
-
 /* v17.24 - 랩핑/PPF 메모 표시 복구 + 외관 좌우 측면진단 트레드 입력박스 조정
    목적:
    1) 랩핑/PPF 여부에서 '있음' 선택 시 메모박스가 표시되지 않는 문제를 복구한다.
@@ -10180,110 +10117,7 @@ textarea.tread-input-fix-v1724,
   flex:0 0 auto!important;
 }
 
-/* v17.25 - iPhone Safari 진단일자 자체 날짜 패널
-   목적:
-   - iPhone Safari에서 네이티브 input[type=date] 클릭이 계속 무반응인 문제를 우회한다.
-   - 기존 진단일자 우측 미니 달력 영역을 그대로 사용하고, 새 아이콘은 추가하지 않는다.
-   - 우측 영역 클릭 시 자체 날짜 선택 패널을 표시한다.
-   영향 범위: #secInput 진단일자 .date-dual-wrap 내부만 적용한다.
-   주의: 등록일자/제작일자, 도면, 매입오더 출력, localStorage key는 변경하지 않는다.
-*/
-
-#secInput .diag-date-panel-wrap-v1725{
-  position:relative!important;
-  display:block!important;
-  width:100%!important;
-}
-
-#secInput .diag-date-panel-wrap-v1725 .date-text-input.date-ymd-input{
-  width:100%!important;
-  min-height:38px!important;
-  padding-right:46px!important;
-  box-sizing:border-box!important;
-}
-
-/* 기존 date input은 유지하되, iPhone에서 클릭이 안될 경우 자체 패널이 우선 동작 */
-#secInput .diag-date-panel-wrap-v1725 .diag-date-native-ios-v1725,
-#secInput .diag-date-panel-wrap-v1725 input[type="date"].bi-date-overlay{
-  display:block!important;
-  visibility:visible!important;
-  opacity:0.001!important;
-  pointer-events:auto!important;
-  position:absolute!important;
-  right:4px!important;
-  top:50%!important;
-  transform:translateY(-50%)!important;
-  width:40px!important;
-  min-width:40px!important;
-  height:32px!important;
-  min-height:32px!important;
-  z-index:30!important;
-  cursor:pointer!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  background:transparent!important;
-  color:transparent!important;
-  -webkit-text-fill-color:transparent!important;
-  -webkit-appearance:auto!important;
-  appearance:auto!important;
-}
-
-/* 자체 날짜 패널 */
-#secInput .diag-date-panel-v1725{
-  display:none!important;
-  position:absolute!important;
-  left:0!important;
-  right:0!important;
-  top:calc(100% + 6px)!important;
-  z-index:9999!important;
-  grid-template-columns:1fr 72px 72px 52px 52px!important;
-  gap:6px!important;
-  padding:8px!important;
-  border:1px solid #cbd5e1!important;
-  border-radius:12px!important;
-  background:#ffffff!important;
-  box-shadow:0 8px 24px rgba(15,23,42,.18)!important;
-  box-sizing:border-box!important;
-}
-
-#secInput .diag-date-panel-v1725[data-open="1"]{
-  display:grid!important;
-}
-
-#secInput .diag-date-panel-v1725 input,
-#secInput .diag-date-panel-v1725 select,
-#secInput .diag-date-panel-v1725 button{
-  height:34px!important;
-  min-height:34px!important;
-  border:1px solid #cbd5e1!important;
-  border-radius:9px!important;
-  background:#ffffff!important;
-  color:#111827!important;
-  font-size:12px!important;
-  font-weight:800!important;
-  box-sizing:border-box!important;
-  padding:0 8px!important;
-}
-
-#secInput .diag-date-panel-v1725 button{
-  padding:0!important;
-  font-weight:900!important;
-}
-
-#secInput .diag-date-panel-v1725 .diag-date-apply-v1725{
-  background:#111827!important;
-  border-color:#111827!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-}
-
 @media (max-width:420px){
-  #secInput .diag-date-panel-v1725{
-    grid-template-columns:1fr 64px 64px 48px 48px!important;
-    gap:5px!important;
-    padding:7px!important;
-  }
 }
 
 /* v17.26 - 외관 좌/우 측면진단 트레드 입력/안내문구/% 정렬 보정
@@ -10450,26 +10284,6 @@ textarea.tread-input-fix-v1724,
   font-weight:900!important;
 }
 
-/* v17.28 - 진단일자 자체 날짜 패널 완전 제거
-   목적:
-   - v17.25에서 추가된 자체 날짜 선택 박스 잔재를 표시하지 않는다.
-   - 기존 진단일자 입력박스와 기존 미니달력 구조만 유지한다.
-   - 새 아이콘/새 패널/별도 박스는 사용하지 않는다.
-   영향 범위: 진단일자 달력 패널 잔재 제거만 적용한다.
-*/
-#secInput .diag-date-panel-v1725,
-#secInput .diag-date-panel-v1725[data-open="1"],
-#secInput .diag-date-year-v1725,
-#secInput .diag-date-month-v1725,
-#secInput .diag-date-day-v1725,
-#secInput .diag-date-apply-v1725,
-#secInput .diag-date-close-v1725{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
-}
-
 /* 기존 진단일자 입력 구조만 유지 */
 #secInput .date-dual-wrap{
   position:relative!important;
@@ -10532,19 +10346,6 @@ textarea.tread-input-fix-v1724,
   -webkit-appearance:auto!important;
   appearance:auto!important;
   cursor:pointer!important;
-}
-
-/* 삭제 대상 잔재는 무조건 숨김 */
-#secInput .diag-date-panel-v1725,
-#secInput .ios-date-visual-btn-v1723,
-#secInput .diag-date-year-v1725,
-#secInput .diag-date-month-v1725,
-#secInput .diag-date-day-v1725,
-#secInput .diag-date-apply-v1725,
-#secInput .diag-date-close-v1725{
-  display:none!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
 }
 
 /* v17.30 - 진단일자 표시 깨짐 복구 + 트레드 입력박스 타이어 상태확인 스타일화
@@ -10614,20 +10415,6 @@ textarea.tread-input-fix-v1724,
   cursor:pointer!important;
 }
 
-/* 자체 날짜 패널/추가 아이콘 잔재 완전 차단 */
-#secInput .diag-date-panel-v1725,
-#secInput .ios-date-visual-btn-v1723,
-#secInput .diag-date-year-v1725,
-#secInput .diag-date-month-v1725,
-#secInput .diag-date-day-v1725,
-#secInput .diag-date-apply-v1725,
-#secInput .diag-date-close-v1725{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
-}
-
 /* 외관 좌/우 측면진단 트레드 input: 타이어 상태확인 입력박스 계열 스타일로 통일 */
 #secDiag input.tread-as-tire-v1730,
 #secDiag input.exterior-tread-input,
@@ -10691,59 +10478,55 @@ textarea.tread-input-fix-v1724,
   justify-content:center!important;
 }
 
-/* v17.31 - 진단일자 웹 달력 아이콘 깨짐 정리
-   목적:
-   - input[type=date]의 브라우저 기본 날짜 텍스트/검정 아이콘 노출을 차단한다.
-   - 기존 bi-date-overlay는 클릭 영역으로만 유지한다.
-   - 화면에는 CSS 배경으로 정리된 미니 달력 1개만 표시한다.
-   - 새 DOM 아이콘/자체 패널은 추가하지 않는다.
-   영향 범위: 진단일자 .date-dual-wrap 내부만 적용한다.
-*/
-
-#secInput .date-icon-clean-v1731{
+/* 진단일자 래퍼 */
+#secInput .real-mini-calendar-v1735{
   position:relative!important;
   display:block!important;
   width:100%!important;
 }
 
-#secInput .date-icon-clean-v1731 .date-text-input.date-ymd-input{
+#secInput .real-mini-calendar-v1735 .date-text-input.date-ymd-input{
   width:100%!important;
   min-height:38px!important;
   padding-right:46px!important;
   box-sizing:border-box!important;
 }
 
-/* 화면에 보이는 달력 아이콘은 wrap 배경으로 1개만 표시 */
-#secInput .date-icon-clean-v1731::after{
+/* 실제 기존 미니아이콘: .date-dual-wrap::after 배경 SVG */
+#secInput .real-mini-calendar-v1735::after{
   content:""!important;
   position:absolute!important;
-  right:14px!important;
+  right:10px!important;
   top:50%!important;
+  width:28px!important;
+  height:28px!important;
   transform:translateY(-50%)!important;
-  width:18px!important;
-  height:18px!important;
-  z-index:20!important;
-  pointer-events:none!important;
+  border:0!important;
+  border-radius:9px!important;
+  background-color:#f3f4f6!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Crect x='5' y='6.5' width='18' height='16' rx='3.2' fill='white' stroke='%23111827' stroke-width='1.6'/%3E%3Cpath d='M5.7 11.2h16.6' stroke='%23111827' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M10 4.8v3.6M18 4.8v3.6' stroke='%23111827' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='10.2' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='14' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='17.8' cy='15.2' r='1.05' fill='%236b7280'/%3E%3C/svg%3E")!important;
   background-repeat:no-repeat!important;
   background-position:center!important;
-  background-size:18px 18px!important;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E")!important;
+  background-size:28px 28px!important;
+  pointer-events:none!important;
+  z-index:30!important;
+  box-shadow:none!important;
 }
 
-/* 실제 date input은 클릭 영역만 담당. 날짜 텍스트/기본 indicator는 보이지 않게 처리 */
-#secInput .date-icon-clean-v1731 input[type="date"].bi-date-overlay,
-#secInput .date-icon-clean-v1731 .bi-date-overlay.date-native-clean-v1731{
+/* 실제 date input은 클릭용 투명 레이어만 담당 */
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay,
+#secInput .real-mini-calendar-v1735 input[type="date"].date-click-layer-v1735{
   position:absolute!important;
   right:6px!important;
   top:50%!important;
   transform:translateY(-50%)!important;
-  width:40px!important;
-  min-width:40px!important;
-  max-width:40px!important;
-  height:34px!important;
-  min-height:34px!important;
-  max-height:34px!important;
-  z-index:30!important;
+  width:42px!important;
+  min-width:42px!important;
+  max-width:42px!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  z-index:40!important;
   opacity:0!important;
   border:0!important;
   outline:0!important;
@@ -10754,6 +10537,7 @@ textarea.tread-input-fix-v1724,
   -webkit-text-fill-color:transparent!important;
   font-size:0!important;
   line-height:0!important;
+  letter-spacing:-999px!important;
   text-indent:-9999px!important;
   overflow:hidden!important;
   pointer-events:auto!important;
@@ -10762,30 +10546,418 @@ textarea.tread-input-fix-v1724,
   appearance:none!important;
 }
 
-/* 크롬/사파리 기본 캘린더 indicator도 숨김. 클릭은 input 영역이 담당 */
-#secInput .date-icon-clean-v1731 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator,
-#secInput .date-icon-clean-v1731 .bi-date-overlay.date-native-clean-v1731::-webkit-calendar-picker-indicator{
+/* 브라우저 기본 date 내부 텍스트/indicator 완전 차단 */
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator,
+#secInput .real-mini-calendar-v1735 input[type="date"].date-click-layer-v1735::-webkit-calendar-picker-indicator,
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-datetime-edit,
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-datetime-edit-fields-wrapper,
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-datetime-edit-text,
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-datetime-edit-year-field,
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-datetime-edit-month-field,
+#secInput .real-mini-calendar-v1735 input[type="date"].bi-date-overlay::-webkit-datetime-edit-day-field{
   opacity:0!important;
-  display:block!important;
-  width:40px!important;
-  height:34px!important;
-  margin:0!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
   padding:0!important;
-  cursor:pointer!important;
+  margin:0!important;
 }
 
-/* 잔재 패널/추가 아이콘 차단 */
-#secInput .diag-date-panel-v1725,
-#secInput .ios-date-visual-btn-v1723,
-#secInput .diag-date-year-v1725,
-#secInput .diag-date-month-v1725,
-#secInput .diag-date-day-v1725,
-#secInput .diag-date-apply-v1725,
-#secInput .diag-date-close-v1725{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
+/* v17.36 - date residue clean final
+   목적:
+   - v17.23~v17.34 날짜 관련 잔재를 제거한 뒤 기존 미니달력 방식만 유지한다.
+   - 기존 미니아이콘은 .date-dual-wrap::after SVG 배경을 사용한다.
+   - input[type=date]는 투명 클릭 레이어로만 사용한다.
+*/
+#secInput .real-mini-calendar-v1736{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .real-mini-calendar-v1736 .date-text-input.date-ymd-input{
+  width:100%!important;
+  min-height:38px!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+#secInput .real-mini-calendar-v1736::after{
+  content:""!important;
+  position:absolute!important;
+  right:10px!important;
+  top:50%!important;
+  width:28px!important;
+  height:28px!important;
+  transform:translateY(-50%)!important;
+  border:0!important;
+  border-radius:9px!important;
+  background-color:#f3f4f6!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Crect x='5' y='6.5' width='18' height='16' rx='3.2' fill='white' stroke='%23111827' stroke-width='1.6'/%3E%3Cpath d='M5.7 11.2h16.6' stroke='%23111827' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M10 4.8v3.6M18 4.8v3.6' stroke='%23111827' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='10.2' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='14' cy='15.2' r='1.05' fill='%236b7280'/%3E%3Ccircle cx='17.8' cy='15.2' r='1.05' fill='%236b7280'/%3E%3C/svg%3E")!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-size:28px 28px!important;
   pointer-events:none!important;
+  z-index:30!important;
+  box-shadow:none!important;
+}
+
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay,
+#secInput .real-mini-calendar-v1736 input[type="date"].date-click-layer-v1736{
+  position:absolute!important;
+  right:6px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:42px!important;
+  height:36px!important;
+  z-index:40!important;
+  opacity:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  letter-spacing:-999px!important;
+  text-indent:-9999px!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
+
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator,
+#secInput .real-mini-calendar-v1736 input[type="date"].date-click-layer-v1736::-webkit-calendar-picker-indicator,
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-datetime-edit,
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-datetime-edit-fields-wrapper,
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-datetime-edit-text,
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-datetime-edit-year-field,
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-datetime-edit-month-field,
+#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-datetime-edit-day-field{
+  opacity:0!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  padding:0!important;
+  margin:0!important;
+}
+
+/* v17.37 - 외관 좌/우 측면진단 트레드 입력박스 타이어 상태확인 스타일 동일 적용
+   기준:
+   - 타이어 상태확인: .tire-percent-wrap / .tire-percent-input / .tire-percent-unit
+   목적:
+   - 외관 좌/우 측면진단의 exterior_tread_b9/b10/c9/c10 입력박스를 타이어 상태확인 입력박스와 같은 형태로 맞춘다.
+   - 이전 보정에서 남은 width 100%, height 38px, font-weight 400 등의 충돌을 최후단에서 차단한다.
+   영향 범위: 외관 좌/우 측면진단 트레드 4개만 적용한다.
+   주의: 좌표(left/top), data-key, localStorage key, 도면/마커 좌표는 변경하지 않는다.
+*/
+
+/* 트레드 wrapper: 타이어 상태확인 percent wrapper와 같은 크기/레이어 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737{
+  width:74px!important;
+  height:34px!important;
+  min-width:74px!important;
+  max-width:74px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  position:absolute!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:130!important;
+  display:block!important;
+  pointer-events:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* 트레드 input: 타이어 상태확인 .tire-percent-input과 동일 스타일 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737 input.exterior-tread-tire-style-v1737,
+#secDiag input.exterior-tread-tire-style-v1737,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-tire-style-v1737{
+  width:100%!important;
+  min-width:100%!important;
+  max-width:100%!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.95)!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:14px!important;
+  font-weight:1000!important;
+  line-height:34px!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  padding:0 22px 0 8px!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.14)!important;
+  outline:none!important;
+  box-sizing:border-box!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  margin:0!important;
+}
+
+/* number spinner 제거: 타이어 상태확인과 동일 */
+#secDiag input.exterior-tread-tire-style-v1737::-webkit-outer-spin-button,
+#secDiag input.exterior-tread-tire-style-v1737::-webkit-inner-spin-button{
+  -webkit-appearance:none!important;
+  margin:0!important;
+}
+
+/* placeholder: 타이어 상태확인 입력박스 기준 */
+#secDiag input.exterior-tread-tire-style-v1737::placeholder,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-tire-style-v1737::placeholder{
+  color:#9ca3af!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  text-align:center!important;
+  line-height:34px!important;
+}
+
+#secDiag input.exterior-tread-tire-style-v1737::-webkit-input-placeholder,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-tire-style-v1737::-webkit-input-placeholder{
+  color:#9ca3af!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  text-align:center!important;
+  line-height:34px!important;
+}
+
+/* % 단위: 타이어 상태확인 .tire-percent-unit과 동일 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737 .exterior-tread-unit,
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737 .exterior-tread-unit-tire-v1737{
+  position:absolute!important;
+  right:9px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  pointer-events:none!important;
+  height:auto!important;
+  display:block!important;
+  z-index:2!important;
+}
+
+/* 이전 v17.24~v17.30 트레드 보정 충돌 최후단 무력화 */
+#secDiag input.tread-input-fix-v1724.exterior-tread-tire-style-v1737,
+#secDiag input.tread-align-v1726.exterior-tread-tire-style-v1737,
+#secDiag input.tread-as-tire-v1730.exterior-tread-tire-style-v1737{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:100%!important;
+  height:34px!important;
+  max-height:34px!important;
+  min-height:34px!important;
+  font-size:14px!important;
+  font-weight:1000!important;
+  line-height:34px!important;
+  padding:0 22px 0 8px!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.14)!important;
+}
+
+/* v17.38 - 외관 좌/우 측면진단 트레드 입력박스 타이어 상태확인과 동일 문구/스타일 고정
+   목적:
+   - 외관 트레드 입력박스가 '트레드 %'로 보이는 문제를 제거한다.
+   - 타이어 상태확인과 동일하게 placeholder를 '상태'로 맞춘다.
+   - 기존 저장값/초기값에 '트레드'가 들어간 경우 화면에서 제거한다.
+   영향 범위: exterior_tread_b9/b10/c9/c10 입력박스만 적용한다.
+*/
+
+/* 타이어 상태확인과 동일한 입력박스 계열 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737{
+  width:74px!important;
+  height:34px!important;
+  min-width:74px!important;
+  max-width:74px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  display:block!important;
+  box-sizing:border-box!important;
+}
+
+/* 값/placeholder 모두 타이어 상태확인과 동일한 중앙정렬 */
+#secDiag input.exterior-tread-same-v1738,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-same-v1738{
+  width:100%!important;
+  height:34px!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.95)!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:14px!important;
+  font-weight:1000!important;
+  line-height:34px!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  padding:0 22px 0 8px!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.14)!important;
+  outline:none!important;
+  box-sizing:border-box!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  margin:0!important;
+}
+
+#secDiag input.exterior-tread-same-v1738::placeholder,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-same-v1738::placeholder{
+  content:"상태";
+  color:#111827!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  text-align:center!important;
+  line-height:34px!important;
+}
+
+#secDiag input.exterior-tread-same-v1738::-webkit-input-placeholder,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-same-v1738::-webkit-input-placeholder{
+  color:#111827!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  text-align:center!important;
+  line-height:34px!important;
+}
+
+/* % 단위는 타이어 상태확인 기준 */
+#secDiag .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737 .exterior-tread-unit,
+#secDiag .exterior-tread-wrap.exterior-tread-as-tire-wrap-v1737 .exterior-tread-unit-tire-v1737{
+  position:absolute!important;
+  right:9px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  pointer-events:none!important;
+}
+
+/* v17.39 - 외관 좌/우 측면진단 트레드 입력박스 타이어 상태확인과 동일 수치 적용
+   기준:
+   .tire-percent-wrap  width:74px height:34px
+   .tire-percent-input width:100% height:34px border-radius:10px font-size:14px font-weight:1000 padding:0 22px 0 8px
+   .tire-percent-unit  right:9px font-size:13px font-weight:1000
+   목적:
+   - v17.24/v17.26/v17.37/v17.38의 이전 트레드 보정 충돌 제거 후 동일 스타일 적용
+   - 좌표(left/top)는 기존 exterior-tread-wrap의 data-v165-tread 좌표 CSS를 그대로 사용한다.
+*/
+
+/* wrapper: 타이어 상태확인 percent wrapper와 같은 크기 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739{
+  position:absolute!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:130!important;
+  width:74px!important;
+  height:34px!important;
+  min-width:74px!important;
+  max-width:74px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  display:block!important;
+  align-items:unset!important;
+  pointer-events:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* input: 타이어 상태확인 .tire-percent-input과 동일 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739 input.exterior-tread-final-v1739,
+#secDiag input.exterior-tread-final-v1739{
+  width:100%!important;
+  min-width:100%!important;
+  max-width:100%!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.95)!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:14px!important;
+  font-weight:1000!important;
+  text-align:center!important;
+  text-align-last:center!important;
+  line-height:34px!important;
+  padding:0 22px 0 8px!important;
+  box-shadow:0 2px 8px rgba(15,23,42,.14)!important;
+  outline:none!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+}
+
+/* number spinner 제거 */
+#secDiag input.exterior-tread-final-v1739::-webkit-outer-spin-button,
+#secDiag input.exterior-tread-final-v1739::-webkit-inner-spin-button{
+  -webkit-appearance:none!important;
+  margin:0!important;
+}
+
+/* placeholder: 타이어 상태확인과 동일 톤 */
+#secDiag input.exterior-tread-final-v1739::placeholder{
+  color:#111827!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  text-align:center!important;
+  line-height:34px!important;
+}
+
+#secDiag input.exterior-tread-final-v1739::-webkit-input-placeholder{
+  color:#111827!important;
+  opacity:1!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  text-align:center!important;
+  line-height:34px!important;
+}
+
+/* %: 타이어 상태확인 .tire-percent-unit과 동일 */
+#secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739 .exterior-tread-unit.exterior-tread-final-unit-v1739{
+  position:absolute!important;
+  right:9px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:13px!important;
+  font-weight:1000!important;
+  line-height:1!important;
+  pointer-events:none!important;
+  display:block!important;
+  height:auto!important;
+  z-index:2!important;
+}
+
+/* 과거 보정 class가 남아도 최종 수치로 고정 */
+#secDiag input.exterior-tread-input.exterior-tread-final-v1739,
+#secDiag input.tire-percent-input.exterior-tread-final-v1739,
+#secDiag input[data-key^="exterior_tread_"].exterior-tread-final-v1739{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:100%!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  font-size:14px!important;
+  font-weight:1000!important;
+  padding:0 22px 0 8px!important;
+  line-height:34px!important;
 }
 </style>
 <style>
@@ -10829,9 +11001,9 @@ textarea.tread-input-fix-v1724,
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap date-old-stable-v1730 date-icon-clean-v1731">
+<div class="date-dual-wrap date-old-stable-v1730 real-mini-calendar-v1735 real-mini-calendar-v1736">
 <input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
-<input aria-label="진단일자 달력" class="bi-date-overlay date-native-clean-v1731" type="date"/>
+<input aria-label="진단일자 달력" class="bi-date-overlay date-click-layer-v1736" type="date"/>
 </div>
 </div>
 <div class="basicinfo-v5-field">
@@ -11624,7 +11796,7 @@ textarea.tread-input-fix-v1724,
 <label class="hit h1" for="pan2_side_C_8_2"><span>X</span></label>
 <label class="hit h2" for="pan2_side_C_8_3"><span>W</span></label>
 <label class="hit h3" for="pan2_side_C_8_4"><span>R</span></label>
-<label class="hit h4" for="pan2_side_C_8_0"><span>L</span></label></div><div class="exterior-tread-wrap left" data-v165-tread="B-9" style="left:17.20000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_b9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap left" data-v165-tread="B-10" style="left:17.20000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_b10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-9" style="left:82.80000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_c9" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><div class="exterior-tread-wrap right" data-v165-tread="C-10" style="left:82.80000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tread-input-fix-v1724 tread-align-v1726 tread-as-tire-v1730" data-key="exterior_tread_c10" inputmode="decimal" placeholder="트레드" style="font-weight:400!important" type="text"/><span class="exterior-tread-unit tread-percent-v1726">%</span></div><input checked="" class="st st0" id="pan2_side_B_9_0" name="pan2_side_B_9" type="radio"/><input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/><input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/><input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/><input class="st st4" id="pan2_side_B_9_4" name="pan2_side_B_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-9" data-part-code="B9" data-v165-wheel="1" style="left:31.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_B_9_1"><span></span></label><label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/><input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/><input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/><input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/><input class="st st4" id="pan2_side_B_10_4" name="pan2_side_B_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-10" data-part-code="B10" data-v165-wheel="1" style="left:31.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_B_10_1"><span></span></label><label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_10_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/><input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/><input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/><input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/><input class="st st4" id="pan2_side_C_9_4" name="pan2_side_C_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-9" data-part-code="C9" data-v165-wheel="1" style="left:69.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_C_9_1"><span></span></label><label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/><input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/><input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/><input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/><input class="st st4" id="pan2_side_C_10_4" name="pan2_side_C_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-10" data-part-code="C10" data-v165-wheel="1" style="left:69.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_C_10_1"><span></span></label><label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_10_0"><span></span></label></div></div></section>
+<label class="hit h4" for="pan2_side_C_8_0"><span>L</span></label></div><div class="exterior-tread-wrap left exterior-tread-final-wrap-v1739" data-v165-tread="B-9" style="left:17.20000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tire-percent-input exterior-tread-final-v1739" data-key="exterior_tread_b9" inputmode="decimal" max="100" min="0" placeholder="상태" step="1" type="number"/><span class="exterior-tread-unit tire-percent-unit exterior-tread-final-unit-v1739">%</span></div><div class="exterior-tread-wrap left exterior-tread-final-wrap-v1739" data-v165-tread="B-10" style="left:17.20000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tire-percent-input exterior-tread-final-v1739" data-key="exterior_tread_b10" inputmode="decimal" max="100" min="0" placeholder="상태" step="1" type="number"/><span class="exterior-tread-unit tire-percent-unit exterior-tread-final-unit-v1739">%</span></div><div class="exterior-tread-wrap right exterior-tread-final-wrap-v1739" data-v165-tread="C-9" style="left:82.80000%;top:22.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tire-percent-input exterior-tread-final-v1739" data-key="exterior_tread_c9" inputmode="decimal" max="100" min="0" placeholder="상태" step="1" type="number"/><span class="exterior-tread-unit tire-percent-unit exterior-tread-final-unit-v1739">%</span></div><div class="exterior-tread-wrap right exterior-tread-final-wrap-v1739" data-v165-tread="C-10" style="left:82.80000%;top:76.00000%;transform:translate(-50%,-50%)"><input autocomplete="off" class="exterior-tread-input tire-percent-input exterior-tread-final-v1739" data-key="exterior_tread_c10" inputmode="decimal" max="100" min="0" placeholder="상태" step="1" type="number"/><span class="exterior-tread-unit tire-percent-unit exterior-tread-final-unit-v1739">%</span></div><input checked="" class="st st0" id="pan2_side_B_9_0" name="pan2_side_B_9" type="radio"/><input class="st st1" id="pan2_side_B_9_1" name="pan2_side_B_9" type="radio"/><input class="st st2" id="pan2_side_B_9_2" name="pan2_side_B_9" type="radio"/><input class="st st3" id="pan2_side_B_9_3" name="pan2_side_B_9" type="radio"/><input class="st st4" id="pan2_side_B_9_4" name="pan2_side_B_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-9" data-part-code="B9" data-v165-wheel="1" style="left:31.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_B_9_1"><span></span></label><label class="hit h1" for="pan2_side_B_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_B_10_0" name="pan2_side_B_10" type="radio"/><input class="st st1" id="pan2_side_B_10_1" name="pan2_side_B_10" type="radio"/><input class="st st2" id="pan2_side_B_10_2" name="pan2_side_B_10" type="radio"/><input class="st st3" id="pan2_side_B_10_3" name="pan2_side_B_10" type="radio"/><input class="st st4" id="pan2_side_B_10_4" name="pan2_side_B_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="B-10" data-part-code="B10" data-v165-wheel="1" style="left:31.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_B_10_1"><span></span></label><label class="hit h1" for="pan2_side_B_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_B_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_B_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_B_10_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_9_0" name="pan2_side_C_9" type="radio"/><input class="st st1" id="pan2_side_C_9_1" name="pan2_side_C_9" type="radio"/><input class="st st2" id="pan2_side_C_9_2" name="pan2_side_C_9" type="radio"/><input class="st st3" id="pan2_side_C_9_3" name="pan2_side_C_9" type="radio"/><input class="st st4" id="pan2_side_C_9_4" name="pan2_side_C_9" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-9" data-part-code="C9" data-v165-wheel="1" style="left:69.00000%;top:22.00000%"><label class="hit h0" for="pan2_side_C_9_1"><span></span></label><label class="hit h1" for="pan2_side_C_9_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_9_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_9_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_9_0"><span></span></label></div><input checked="" class="st st0" id="pan2_side_C_10_0" name="pan2_side_C_10" type="radio"/><input class="st st1" id="pan2_side_C_10_1" name="pan2_side_C_10" type="radio"/><input class="st st2" id="pan2_side_C_10_2" name="pan2_side_C_10" type="radio"/><input class="st st3" id="pan2_side_C_10_3" name="pan2_side_C_10" type="radio"/><input class="st st4" id="pan2_side_C_10_4" name="pan2_side_C_10" type="radio"/><div class="slot exterior-wheel-slot" data-part="C-10" data-part-code="C10" data-v165-wheel="1" style="left:69.00000%;top:76.00000%"><label class="hit h0" for="pan2_side_C_10_1"><span></span></label><label class="hit h1" for="pan2_side_C_10_2"><span>복원</span></label><label class="hit h2" for="pan2_side_C_10_3"><span>교환</span></label><label class="hit h3" for="pan2_side_C_10_0"><span>유지</span></label><label class="hit h4" for="pan2_side_C_10_0"><span></span></label></div></div></section>
 </div>
 <div class="customer-note-block"><div class="customer-note-title customer-note-dot-title">외관 고객기재</div><textarea data-key="exteriorCustomerMemo" placeholder="외관 관련 고객 고지/기재 내용을 입력"></textarea></div>
 <p class="hint"></p>
@@ -14691,179 +14863,6 @@ boot();
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
 })();
 </script><script>
-/* v17.24 - 랩핑/PPF 메모 표시 및 트레드 입력박스 런타임 보강 */
-(function(){
-  function norm(value){
-    return String(value || '').replace(/\s+/g,'').trim();
-  }
-
-  function applyWrapPpfV1724(){
-    var select = document.querySelector('#secDiag .wrap-select, .wrap-select');
-    var memo = document.querySelector('#secDiag .wrapppf-memo, .wrapppf-memo');
-
-    if(!select || !memo) return;
-
-    var active = norm(select.value) === '있음';
-
-    select.classList.toggle('wrap-danger-active-v1724', active);
-    memo.classList.toggle('wrapppf-show-v1724', active);
-
-    if(active){
-      memo.style.setProperty('display', 'block', 'important');
-      select.style.setProperty('background-color', '#ef4444', 'important');
-      select.style.setProperty('border-color', '#ef4444', 'important');
-      select.style.setProperty('color', '#ffffff', 'important');
-      select.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
-      select.style.setProperty('font-weight', '900', 'important');
-    }else{
-      memo.style.setProperty('display', 'none', 'important');
-      select.style.removeProperty('background-color');
-      select.style.removeProperty('border-color');
-      select.style.removeProperty('color');
-      select.style.removeProperty('-webkit-text-fill-color');
-      select.style.removeProperty('font-weight');
-    }
-  }
-
-  function applyTreadInputsV1724(){
-    var list = document.querySelectorAll([
-      '#secDiag input[class*="tread"]',
-      '#secDiag input[class*="Tread"]',
-      '#secDiag input[data-key*="tread"]',
-      '#secDiag input[data-key*="Tread"]',
-      '#secDiag input[placeholder*="트레드"]',
-      '#secDiag input[aria-label*="트레드"]',
-      '#secDiag textarea[placeholder*="트레드"]'
-    ].join(','));
-
-    for(var i=0;i<list.length;i++){
-      var el = list[i];
-      el.classList.add('tread-input-fix-v1724');
-      el.style.setProperty('width', '50%', 'important');
-      el.style.setProperty('max-width', '92px', 'important');
-      el.style.setProperty('min-width', '54px', 'important');
-      el.style.setProperty('height', '34px', 'important');
-      el.style.setProperty('font-size', '17px', 'important');
-      el.style.setProperty('font-weight', '900', 'important');
-      el.style.setProperty('text-align', 'center', 'important');
-      el.style.setProperty('padding', '0 6px', 'important');
-      el.style.setProperty('box-sizing', 'border-box', 'important');
-    }
-  }
-
-  function bindV1724(){
-    if(document.body.getAttribute('data-v1724-wrap-tread-bound') === '1') return;
-    document.body.setAttribute('data-v1724-wrap-tread-bound','1');
-
-    applyWrapPpfV1724();
-    applyTreadInputsV1724();
-
-    document.addEventListener('change', function(ev){
-      var target = ev.target;
-      if(target && target.matches && target.matches('#secDiag .wrap-select, .wrap-select')){
-        applyWrapPpfV1724();
-      }
-    }, true);
-
-    document.addEventListener('input', function(ev){
-      var target = ev.target;
-      if(target && target.matches && target.matches('#secDiag .wrap-select, .wrap-select')){
-        applyWrapPpfV1724();
-      }
-    }, true);
-
-    window.addEventListener('load', function(){
-      applyWrapPpfV1724();
-      applyTreadInputsV1724();
-    }, false);
-
-    setTimeout(function(){
-      applyWrapPpfV1724();
-      applyTreadInputsV1724();
-    }, 100);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindV1724, false);
-  }else{
-    bindV1724();
-  }
-})();
-</script><script>
-/* v17.26 - 트레드 입력박스 중앙정렬 런타임 보정 */
-(function(){
-  function isTreadInput(el){
-    if(!el || !el.matches) return false;
-    var attrs = [
-      el.className,
-      el.getAttribute('data-key'),
-      el.getAttribute('id'),
-      el.getAttribute('placeholder'),
-      el.getAttribute('aria-label'),
-      el.getAttribute('name')
-    ].join(' ');
-    return /트레드|tread|TREAD/.test(attrs);
-  }
-
-  function applyTreadAlign(el){
-    if(!isTreadInput(el)) return;
-
-    el.classList.add('tread-align-v1726');
-    el.style.setProperty('text-align','center','important');
-    el.style.setProperty('text-align-last','center','important');
-    el.style.setProperty('line-height','34px','important');
-    el.style.setProperty('height','34px','important');
-    el.style.setProperty('font-size','17px','important');
-    el.style.setProperty('font-weight','900','important');
-    el.style.setProperty('padding','0 6px','important');
-    el.style.setProperty('box-sizing','border-box','important');
-
-    var parent = el.parentElement;
-    if(parent){
-      var nodes = parent.querySelectorAll('span,em,label,strong,b,i,small');
-      for(var i=0;i<nodes.length;i++){
-        var txt = (nodes[i].textContent || '').trim();
-        if(txt.indexOf('%') >= 0){
-          nodes[i].classList.add('tread-percent-v1726');
-          nodes[i].style.setProperty('font-weight','900','important');
-          nodes[i].style.setProperty('font-size','17px','important');
-          nodes[i].style.setProperty('line-height','34px','important');
-          nodes[i].style.setProperty('display','inline-flex','important');
-          nodes[i].style.setProperty('align-items','center','important');
-          nodes[i].style.setProperty('justify-content','center','important');
-        }
-      }
-    }
-  }
-
-  function applyAllTreadAlign(){
-    var list = document.querySelectorAll('#secDiag input, #secDiag textarea');
-    for(var i=0;i<list.length;i++){
-      applyTreadAlign(list[i]);
-    }
-  }
-
-  function bindTreadAlignV1726(){
-    if(document.body.getAttribute('data-tread-align-bound-v1726') === '1') return;
-    document.body.setAttribute('data-tread-align-bound-v1726','1');
-
-    applyAllTreadAlign();
-
-    document.addEventListener('input', function(ev){
-      applyTreadAlign(ev.target);
-    }, true);
-
-    window.addEventListener('load', applyAllTreadAlign, false);
-    setTimeout(applyAllTreadAlign, 100);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindTreadAlignV1726, false);
-  }else{
-    bindTreadAlignV1726();
-  }
-})();
-</script><script>
 /* v17.29 - 진단일자 달력 이전 작동 핸들러 복구 */
 (function(){
   function onlyDigits(value){
@@ -15018,27 +15017,157 @@ boot();
   window.addEventListener('load', bindDateCleanV1730, false);
 })();
 </script><script>
-/* v17.31 - 진단일자 date input 표시 정리 보조 */
+/* v17.35 - 실제 기존 미니아이콘 달력 동기화 */
 (function(){
-  function bindDateIconCleanV1731(){
-    var wrap = document.querySelector('#secInput .date-icon-clean-v1731, #secInput .date-old-stable-v1730');
-    if(!wrap || wrap.getAttribute('data-date-icon-clean-v1731') === '1') return;
-    wrap.setAttribute('data-date-icon-clean-v1731', '1');
-    wrap.classList.add('date-icon-clean-v1731');
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
 
-    var date = wrap.querySelector('input[type="date"].bi-date-overlay');
-    if(date){
-      date.className = 'bi-date-overlay date-native-clean-v1731';
-      date.removeAttribute('style');
+  function formatDateText(value){
+    var digits = onlyDigits(value).slice(0,8);
+    if(digits.length <= 4) return digits;
+    if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
+    return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
+  }
+
+  function syncNativeToText(native){
+    var wrap = native.closest ? native.closest('.date-dual-wrap') : native.parentNode;
+    var text = wrap ? wrap.querySelector('.date-ymd-input') : null;
+    if(text && native.value){
+      text.value = native.value;
+      try{
+        text.dispatchEvent(new Event('input', {bubbles:true}));
+        text.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+
+  function bindRealMiniCalendarV1735(){
+    var wrap = document.querySelector('#secInput .real-mini-calendar-v1735');
+    if(!wrap || wrap.getAttribute('data-real-mini-calendar-v1735') === '1') return;
+    wrap.setAttribute('data-real-mini-calendar-v1735','1');
+
+    var text = wrap.querySelector('.date-ymd-input');
+    var native = wrap.querySelector('input[type="date"].bi-date-overlay');
+
+    if(native){
+      native.className = 'bi-date-overlay date-click-layer-v1735';
+      native.addEventListener('input', function(){ syncNativeToText(native); }, false);
+      native.addEventListener('change', function(){ syncNativeToText(native); }, false);
+    }
+
+    if(text){
+      text.addEventListener('input', function(){
+        text.value = formatDateText(text.value);
+        if(native && /^\\d{4}-\\d{2}-\\d{2}$/.test(text.value)){
+          native.value = text.value;
+        }
+      }, false);
     }
   }
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindDateIconCleanV1731, false);
+    document.addEventListener('DOMContentLoaded', bindRealMiniCalendarV1735, false);
   }else{
-    bindDateIconCleanV1731();
+    bindRealMiniCalendarV1735();
   }
-  window.addEventListener('load', bindDateIconCleanV1731, false);
+  window.addEventListener('load', bindRealMiniCalendarV1735, false);
+})();
+</script><script>
+/* v17.36 - date residue clean sync */
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+  function formatDateText(value){
+    var digits = onlyDigits(value).slice(0,8);
+    if(digits.length <= 4) return digits;
+    if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
+    return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
+  }
+  function syncNativeToText(native){
+    var wrap = native.closest ? native.closest('.date-dual-wrap') : native.parentNode;
+    var text = wrap ? wrap.querySelector('.date-ymd-input') : null;
+    if(text && native.value){
+      text.value = native.value;
+      try{
+        text.dispatchEvent(new Event('input', {bubbles:true}));
+        text.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+  function bindDateCleanV1736(){
+    var wrap = document.querySelector('#secInput .real-mini-calendar-v1736');
+    if(!wrap || wrap.getAttribute('data-real-mini-calendar-v1736') === '1') return;
+    wrap.setAttribute('data-real-mini-calendar-v1736','1');
+    var text = wrap.querySelector('.date-ymd-input');
+    var native = wrap.querySelector('input[type="date"].bi-date-overlay');
+    if(native){
+      native.className = 'bi-date-overlay date-click-layer-v1736';
+      native.addEventListener('input', function(){ syncNativeToText(native); }, false);
+      native.addEventListener('change', function(){ syncNativeToText(native); }, false);
+    }
+    if(text){
+      text.addEventListener('input', function(){
+        text.value = formatDateText(text.value);
+        if(native && /^\d{4}-\d{2}-\d{2}$/.test(text.value)){
+          native.value = text.value;
+        }
+      }, false);
+    }
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDateCleanV1736, false);
+  }else{
+    bindDateCleanV1736();
+  }
+  window.addEventListener('load', bindDateCleanV1736, false);
+})();
+</script><script>
+/* v17.39 - 외관 트레드 최종 구조 방어: inline style 제거만 수행 */
+(function(){
+  function cleanExteriorTreadV1739(){
+    var inputs = document.querySelectorAll('#secDiag input[data-key^="exterior_tread_"], #secDiag input.exterior-tread-input');
+    for(var i=0;i<inputs.length;i++){
+      var input = inputs[i];
+
+      input.removeAttribute('style');
+      input.className = 'exterior-tread-input tire-percent-input exterior-tread-final-v1739';
+      input.setAttribute('type','number');
+      input.setAttribute('inputmode','decimal');
+      input.setAttribute('min','0');
+      input.setAttribute('max','100');
+      input.setAttribute('step','1');
+      input.setAttribute('placeholder','상태');
+
+      if(String(input.value || '').trim() === '트레드'){
+        input.value = '';
+      }
+
+      var wrap = input.closest('.exterior-tread-wrap');
+      if(wrap){
+        var keep = ['exterior-tread-wrap'];
+        if(wrap.classList.contains('left')) keep.push('left');
+        if(wrap.classList.contains('right')) keep.push('right');
+        keep.push('exterior-tread-final-wrap-v1739');
+        wrap.className = keep.join(' ');
+
+        var unit = wrap.querySelector('.exterior-tread-unit');
+        if(unit){
+          unit.className = 'exterior-tread-unit tire-percent-unit exterior-tread-final-unit-v1739';
+          unit.textContent = '%';
+        }
+      }
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', cleanExteriorTreadV1739, false);
+  }else{
+    cleanExteriorTreadV1739();
+  }
+  window.addEventListener('load', cleanExteriorTreadV1739, false);
+  setTimeout(cleanExteriorTreadV1739, 100);
 })();
 </script></body>
 </html>

@@ -9175,6 +9175,102 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   width:100%!important;
   padding-right:10px!important;
 }
+
+/* v17.11 - 도막 좌/우 측면진단 선택점 위치 안정화 + 계약금/잔금 단위버튼 크기 통일
+   목적:
+   1) 도막 좌/우 측면진단에서 도막수치 입력 시 선택점/라벨이 위로 밀리는 현상을 방지한다.
+      - 도막 상부진단처럼 슬롯/마커 기준 위치를 유지하도록 line-height, transform, absolute 기준을 고정한다.
+      - 좌표값 자체는 변경하지 않는다.
+   2) 매입오더 계약금/잔금의 만원/원 버튼 크기를 실매입금액의 만원/원 버튼과 동일하게 맞춘다.
+   영향 범위: 도막 진단확인 카드의 paint-native 계열 표시 안정화, #secOrder 계약금/잔금 단위버튼 UI만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key는 변경하지 않는다.
+*/
+
+/* 도막 좌/우 측면진단: 입력 후 배지/선택점이 줄높이 영향으로 위로 밀리지 않도록 고정 */
+#secDiag .diag-paint-card .paint-native-slot,
+#secDiag .diag-paint-card .paint-native-slot.side,
+#secDiag .diag-paint-card [data-paint-id]{
+  line-height:0!important;
+  vertical-align:top!important;
+}
+
+#secDiag .diag-paint-card .paint-native-badge{
+  position:absolute!important;
+  top:50%!important;
+  left:50%!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+  will-change:auto!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+/* 도막 상부진단에서 별도 보정이 있던 B4/C4 위치는 기존 보정 유지 */
+#secDiag .diag-paint-card #paintNativeBadge_B4{
+  transform:translate(-94%,-50%)!important;
+}
+
+#secDiag .diag-paint-card #paintNativeBadge_C4{
+  transform:translate(-14%,-50%)!important;
+}
+
+/* 도막 입력패널/입력박스가 열려도 슬롯 자체 위치는 고정 */
+#secDiag .diag-paint-card .paint-native-panel,
+#secDiag .diag-paint-card .paint-native-input{
+  line-height:1.2!important;
+}
+
+/* 혹시 좌/우 측면진단 전용 클래스가 다른 경우까지 방어 */
+#secDiag .diag-paint-card [class*="side"] .paint-native-badge,
+#secDiag .diag-paint-card [class*="left"] .paint-native-badge,
+#secDiag .diag-paint-card [class*="right"] .paint-native-badge{
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+/* 매입오더 계약금/잔금 만원/원 버튼: 실매입금액 단위버튼과 크기 통일 */
+#secOrder .order-money-date .order-small-unit{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:4px!important;
+  height:36px!important;
+  min-height:36px!important;
+}
+
+#secOrder .order-money-date .order-small-unit .order-unit-btn,
+#secOrder .order-money-date .order-unit-btn{
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+
+/* 실매입금액/차주송금금액 계열 버튼 기준도 동일하게 명시 */
+#secOrder .order-money-unit .order-unit-btn{
+  width:100%!important;
+  min-width:0!important;
+  height:36px!important;
+  min-height:36px!important;
+  max-height:36px!important;
+  border-radius:10px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+
+/* v17.12 - 선루프 단일 핸들러 적용 후 클릭 반응 보정 */
+#secDiag .exterior-sunroof-badge{
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+  transition:none!important;
+  animation:none!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -11116,13 +11212,6 @@ boot();
   window.addEventListener('load', bindInsuranceSelects, false);
 })();
 </script>
-
-
-
-
-
-
-
 <script>
 (function(){
   'use strict';
@@ -11439,120 +11528,6 @@ boot();
     return result;
   };
   console.log('[MARKER][STATE][v16.9]', 'X/W/R/L/empty');
-})();
-</script><script>
-(function(){
-  function syncExteriorSunroof(){
-    var field=document.querySelector('[data-key="exteriorSunroofState"]');
-    var badge=document.querySelector('.exterior-sunroof-badge');
-    if(!field || !badge) return;
-    var value=String(field.value||'').trim();
-    badge.setAttribute('data-state', value);
-    badge.textContent = value || '선루프';
-  }
-
-  function bindExteriorSunroof(){
-    var wrap=document.querySelector('.exterior-sunroof-wrap');
-    var badge=document.querySelector('.exterior-sunroof-badge');
-    var field=document.querySelector('[data-key="exteriorSunroofState"]');
-    if(!wrap || !badge || !field) return;
-
-    function closePanel(){ wrap.classList.remove('open'); }
-    function togglePanel(event){ if(event){ event.preventDefault(); } wrap.classList.toggle('open'); }
-    function applyValue(value){ field.value=value||''; syncExteriorSunroof(); closePanel(); }
-
-    badge.addEventListener('click', togglePanel);
-    badge.addEventListener('touchend', function(event){ event.preventDefault(); togglePanel(event); }, {passive:false});
-
-    wrap.querySelectorAll('.exterior-sunroof-choice').forEach(function(btn){
-      btn.addEventListener('click', function(event){ event.preventDefault(); applyValue(btn.dataset.value || ''); });
-      btn.addEventListener('touchend', function(event){ event.preventDefault(); applyValue(btn.dataset.value || ''); }, {passive:false});
-    });
-
-    document.addEventListener('click', function(event){ if(!wrap.contains(event.target)) closePanel(); });
-    syncExteriorSunroof();
-  }
-
-  bindExteriorSunroof();
-})();
-</script><script>
-(function(){
-  function bindSunroofCycleV1622(){
-    var wrap=document.querySelector('.exterior-sunroof-wrap');
-    if(!wrap) return;
-    var oldBadge=wrap.querySelector('.exterior-sunroof-badge');
-    var field=document.querySelector('[data-key="exteriorSunroofState"]');
-    if(!oldBadge || !field) return;
-
-    var badge=oldBadge.cloneNode(true);
-    oldBadge.parentNode.replaceChild(badge, oldBadge);
-
-    function sync(){
-      var value=String(field.value||'').trim();
-      badge.setAttribute('data-state', value);
-      badge.textContent = value || '선루프';
-      wrap.classList.remove('open');
-    }
-
-    function cycle(event){
-      if(event){ event.preventDefault(); event.stopPropagation(); }
-      var cur=String(field.value||'').trim();
-      field.value = (cur === '양호') ? '점검' : '양호';
-      sync();
-      console.info('[EXTERIOR][SUNROOF][v16.22]', {state:field.value});
-    }
-
-    badge.addEventListener('click', cycle);
-    badge.addEventListener('touchend', cycle, {passive:false});
-    sync();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindSunroofCycleV1622);
-  }else{
-    bindSunroofCycleV1622();
-  }
-})();
-</script><script>
-(function(){
-  function bindSunroofCycleV1624(){
-    var wrap=document.querySelector('.exterior-sunroof-wrap');
-    if(!wrap) return;
-    var oldBadge=wrap.querySelector('.exterior-sunroof-badge');
-    var field=document.querySelector('[data-key="exteriorSunroofState"]');
-    if(!oldBadge || !field) return;
-
-    var badge=oldBadge.cloneNode(true);
-    oldBadge.parentNode.replaceChild(badge, oldBadge);
-
-    function normalize(value){
-      value=String(value||'').trim();
-      if(value === '점검') return '점검';
-      return '';
-    }
-    function sync(){
-      var value=normalize(field.value);
-      field.value=value;
-      badge.setAttribute('data-state', value || '선루프');
-      badge.textContent = value || '선루프';
-      wrap.classList.remove('open');
-    }
-    function cycle(event){
-      if(event){ event.preventDefault(); event.stopPropagation(); }
-      field.value = normalize(field.value) === '점검' ? '' : '점검';
-      sync();
-      console.info('[EXTERIOR][SUNROOF][v16.24]', {state:field.value || '선루프'});
-    }
-    badge.addEventListener('click', cycle);
-    badge.addEventListener('touchend', cycle, {passive:false});
-    sync();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindSunroofCycleV1624);
-  }else{
-    bindSunroofCycleV1624();
-  }
 })();
 </script><script>
 /* v16.55 - 장점 > 추가장착(튜닝) 단일 항목 추가/삭제 핸들러 */
@@ -12814,6 +12789,69 @@ boot();
     bindBasicV1710();
   }
   window.addEventListener('load', bindBasicV1710, false);
+})();
+</script><script>
+/* v17.12 - 선루프/외관 상태 단일 핸들러
+   목적:
+   - syncExteriorSunroof / bindSunroofCycleV1622 / bindSunroofCycleV1624 중복 핸들러를 제거하고 단일 핸들러로 유지한다.
+   - 선루프 badge 클릭 시 기존 상태 순환과 hidden field 동기화를 유지한다.
+   영향 범위: .exterior-sunroof-wrap / .exterior-sunroof-badge / [data-key="exteriorSunroofState"]만 적용한다.
+   주의: 도면 좌표, 마커 좌표, radio id/name, 저장 key는 변경하지 않는다.
+*/
+(function(){
+  function syncSunroofValue(value){
+    var field = document.querySelector('[data-key="exteriorSunroofState"]');
+    var badge = document.querySelector('.exterior-sunroof-badge');
+    if(!badge) return;
+
+    value = String(value || '').trim();
+
+    if(field && field.value !== value){
+      field.value = value;
+      try{
+        field.dispatchEvent(new Event('input', {bubbles:true}));
+        field.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+
+    badge.setAttribute('data-state', value);
+    badge.textContent = value || '선루프';
+  }
+
+  function nextSunroofValue(current){
+    var order = ['', '점검', '깨짐(금감)', '스톤칩', '선팅불량'];
+    var idx = order.indexOf(String(current || '').trim());
+    if(idx < 0) idx = 0;
+    return order[(idx + 1) % order.length];
+  }
+
+  function bindSunroofUnifiedV1712(){
+    var wrap = document.querySelector('.exterior-sunroof-wrap');
+    var badge = document.querySelector('.exterior-sunroof-badge');
+    var field = document.querySelector('[data-key="exteriorSunroofState"]');
+
+    if(!wrap || !badge || wrap.getAttribute('data-sunroof-bound-v1712') === '1') return;
+    wrap.setAttribute('data-sunroof-bound-v1712', '1');
+
+    syncSunroofValue(field ? field.value : (badge.getAttribute('data-state') || ''));
+
+    wrap.addEventListener('click', function(ev){
+      var targetBadge = ev.target && ev.target.closest ? ev.target.closest('.exterior-sunroof-badge') : null;
+      if(!targetBadge || !wrap.contains(targetBadge)) return;
+
+      ev.preventDefault();
+      var current = field ? field.value : targetBadge.getAttribute('data-state');
+      syncSunroofValue(nextSunroofValue(current));
+      return false;
+    }, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindSunroofUnifiedV1712, false);
+  }else{
+    bindSunroofUnifiedV1712();
+  }
+  window.addEventListener('load', bindSunroofUnifiedV1712, false);
 })();
 </script></body>
 </html>

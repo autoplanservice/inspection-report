@@ -10988,6 +10988,374 @@ textarea.tread-input-fix-v1724,
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap.exterior-tread-final-wrap-v1739 .exterior-tread-unit.exterior-tread-final-unit-v1739{
   right:7px!important;
 }
+
+/* v17.41 - PDF 리포트 출력 섹션 및 출력창 스타일
+   목적:
+   - 기본/사고/외관·수리/점검 작성 내용을 고객 보고용/회사 보고용 PDF로 출력한다.
+   - 회사 보고용은 사고/도막/외관 진단확인 카드에서 마커 L을 제외한다.
+   영향 범위:
+   - #reportOutputSection UI
+   - 출력용 새 창 HTML
+   주의:
+   - 기존 입력 data-key, localStorage key, 도면 좌표, 마커 좌표는 변경하지 않는다.
+*/
+.report-output-card-v1741{
+  background:#ffffff;
+  border:1px solid #d8e0ea;
+  border-radius:14px;
+  padding:14px;
+  margin:12px auto 18px;
+  box-shadow:0 2px 10px rgba(15,23,42,.06);
+}
+
+.report-output-title-v1741{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
+  font-weight:900;
+  color:#111827;
+  margin-bottom:8px;
+}
+
+.report-output-badge-v1741{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:22px;
+  border-radius:7px;
+  background:#111827;
+  color:#ffffff;
+  font-size:11px;
+  font-weight:900;
+}
+
+.report-output-desc-v1741{
+  font-size:12px;
+  color:#4b5563;
+  line-height:1.45;
+  margin-bottom:10px;
+}
+
+.report-output-btns-v1741{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.report-output-btn-v1741{
+  height:42px;
+  border:1px solid #cbd5e1;
+  border-radius:11px;
+  background:#ffffff;
+  color:#111827;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.report-output-btn-v1741.customer{
+  background:#111827;
+  border-color:#111827;
+  color:#ffffff;
+}
+
+.report-output-btn-v1741.company{
+  background:#f3f4f6;
+  border-color:#cbd5e1;
+  color:#111827;
+}
+
+@media (max-width:420px){
+  .report-output-btns-v1741{
+    grid-template-columns:1fr;
+  }
+}
+
+/* v17.42 - 캡처형 PDF 리포트 출력
+   목적:
+   - 기존 텍스트 재구성 방식 대신 화면 카드/도면/마커 배치를 캡처 이미지로 출력한다.
+   - 고객 보고용/회사 보고용 버튼은 그대로 사용한다.
+   - 회사 보고용은 사고/도막/외관 진단확인 카드에서 L 마커를 제외한 캡처본을 사용한다.
+   영향 범위:
+   - #reportOutputSection 버튼 동작
+   - 임시 캡처 stage
+   주의:
+   - 기존 입력 data-key, localStorage key, 도면 좌표, 마커 좌표는 변경하지 않는다.
+*/
+
+.report-capture-stage-v1742{
+  position:absolute!important;
+  left:-100000px!important;
+  top:0!important;
+  width:760px!important;
+  max-width:760px!important;
+  background:#f3f5f7!important;
+  padding:12px!important;
+  z-index:-1!important;
+  opacity:1!important;
+  pointer-events:none!important;
+}
+
+.report-capture-stage-v1742,
+.report-capture-stage-v1742 *{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+
+.report-capture-section-v1742{
+  background:#ffffff!important;
+  border:1px solid #d8e0ea!important;
+  border-radius:14px!important;
+  padding:12px!important;
+  margin:0 0 12px!important;
+  box-shadow:none!important;
+  break-inside:avoid!important;
+}
+
+.report-capture-section-title-v1742{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  height:32px!important;
+  padding:0 10px!important;
+  margin:0 0 10px!important;
+  border-radius:9px!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  font-size:14px!important;
+  font-weight:900!important;
+}
+
+.report-capture-stage-v1742 .tabs,
+.report-capture-stage-v1742 .menu-btn,
+.report-capture-stage-v1742 .report-output-card-v1741,
+.report-capture-stage-v1742 .order-output-card,
+.report-capture-stage-v1742 .order-submit-row,
+.report-capture-stage-v1742 .no-print{
+  display:none!important;
+}
+
+.report-capture-stage-v1742 #secInput,
+.report-capture-stage-v1742 #secDiag,
+.report-capture-stage-v1742 #secExterior,
+.report-capture-stage-v1742 #secCheck,
+.report-capture-stage-v1742 [id^="sec"]{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+
+.report-capture-stage-v1742 input,
+.report-capture-stage-v1742 select,
+.report-capture-stage-v1742 textarea{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+
+.report-capture-company-v1742 .report-hide-company-l-v1742{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+.report-capture-loading-v1742{
+  position:fixed!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:99999!important;
+  min-width:240px!important;
+  padding:14px 16px!important;
+  border-radius:14px!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  box-shadow:0 10px 32px rgba(15,23,42,.35)!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  text-align:center!important;
+}
+
+/* v17.43 - 캡처형 PDF 이미지/도면 렌더링 안정화
+   목적:
+   - offscreen left:-100000px 캡처로 일부 이미지/도면이 깨지는 문제를 줄인다.
+   - 캡처 stage를 실제 렌더링 가능한 화면 영역에 올리고, 로딩 오버레이 뒤에서 캡처한다.
+   - 확대/축소에 의존하지 않고 레이아웃 reflow 후 캡처한다.
+*/
+.report-capture-stage-v1743{
+  position:fixed!important;
+  left:50%!important;
+  top:8px!important;
+  transform:translateX(-50%)!important;
+  width:760px!important;
+  max-width:calc(100vw - 16px)!important;
+  max-height:calc(100vh - 16px)!important;
+  overflow:auto!important;
+  background:#f3f5f7!important;
+  padding:12px!important;
+  z-index:99990!important;
+  opacity:1!important;
+  pointer-events:none!important;
+  box-shadow:0 0 0 9999px rgba(15,23,42,.18)!important;
+  border-radius:14px!important;
+}
+
+.report-capture-stage-v1743,
+.report-capture-stage-v1743 *{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+
+.report-capture-stage-v1743 .report-capture-section-v1742{
+  background:#ffffff!important;
+  border:1px solid #d8e0ea!important;
+  border-radius:14px!important;
+  padding:12px!important;
+  margin:0 0 12px!important;
+  box-shadow:none!important;
+  break-inside:avoid!important;
+  page-break-inside:avoid!important;
+  overflow:visible!important;
+}
+
+.report-capture-stage-v1743 img{
+  display:block!important;
+  max-width:100%!important;
+  height:auto!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.report-capture-stage-v1743 canvas,
+.report-capture-stage-v1743 svg{
+  max-width:100%!important;
+}
+
+.report-capture-stage-v1743 .fig,
+.report-capture-stage-v1743 .paint-fig,
+.report-capture-stage-v1743 .paint-fig-bent,
+.report-capture-stage-v1743 .touch-card,
+.report-capture-stage-v1743 .touch-diagram-shell{
+  overflow:visible!important;
+  contain:none!important;
+  transform:none!important;
+}
+
+.report-capture-loading-v1742{
+  z-index:100000!important;
+}
+
+/* v17.44 - 카드별 PNG 이중 출력 */
+.report-output-btns-v1744{
+  display:block;
+}
+.report-output-btn-v1741.both{
+  width:100%;
+  height:44px;
+  border:1px solid #111827;
+  border-radius:11px;
+  background:#111827;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.report-output-note-v1744{
+  margin-top:8px;
+  font-size:11px;
+  color:#6b7280;
+  line-height:1.45;
+}
+
+/* 카드 단위 PNG 캡처 stage
+   목적:
+   - 한 번에 전체 섹션을 캡처하지 않고 카드 1개씩 안정적으로 PNG 생성
+   - 마커 어긋남, 이미지 깨짐 가능성을 줄이기 위해 실제 렌더링 영역에서 1개 카드만 캡처
+*/
+.report-capture-stage-v1744{
+  position:fixed!important;
+  left:50%!important;
+  top:10px!important;
+  transform:translateX(-50%)!important;
+  width:560px!important;
+  max-width:calc(100vw - 20px)!important;
+  max-height:calc(100vh - 20px)!important;
+  overflow:auto!important;
+  padding:10px!important;
+  background:#f3f5f7!important;
+  border-radius:14px!important;
+  box-shadow:0 0 0 9999px rgba(15,23,42,.18)!important;
+  z-index:99990!important;
+  pointer-events:none!important;
+  opacity:1!important;
+}
+.report-capture-stage-v1744,
+.report-capture-stage-v1744 *{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.report-capture-item-v1744{
+  background:#fff!important;
+  border:1px solid #d8e0ea!important;
+  border-radius:14px!important;
+  padding:0!important;
+  overflow:visible!important;
+  box-shadow:none!important;
+}
+.report-capture-item-v1744.report-title-only{
+  padding:12px!important;
+}
+.report-capture-section-title-v1744{
+  display:flex!important;
+  align-items:center!important;
+  min-height:34px!important;
+  padding:7px 11px!important;
+  border-radius:10px!important;
+  background:#111827!important;
+  color:#fff!important;
+  font-size:15px!important;
+  font-weight:900!important;
+}
+.report-capture-stage-v1744 img{
+  display:block!important;
+  max-width:100%!important;
+  height:auto!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.report-capture-stage-v1744 .tabs,
+.report-capture-stage-v1744 .menu-btn,
+.report-capture-stage-v1744 .report-output-card-v1741,
+.report-capture-stage-v1744 #reportOutputSection,
+.report-capture-stage-v1744 .order-output-card,
+.report-capture-stage-v1744 .order-submit-row,
+.report-capture-stage-v1744 .no-print{
+  display:none!important;
+}
+.report-capture-loading-v1744{
+  position:fixed!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:100000!important;
+  min-width:260px!important;
+  padding:14px 16px!important;
+  border-radius:14px!important;
+  background:#111827!important;
+  color:#fff!important;
+  box-shadow:0 10px 32px rgba(15,23,42,.35)!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  text-align:center!important;
+}
 </style>
 <style>
 /* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
@@ -11005,6 +11373,1177 @@ textarea.tread-input-fix-v1724,
 #secDiag input.paint-native-radio[data-paint-id="A7"]{
   display:none!important;
   pointer-events:none!important;
+}
+</style><style>
+/* v17.46 - 출력모드 최종 보정
+   목적:
+   - PDF/PNG/html2canvas 생성 방식 폐기
+   - 현재 DOM을 그대로 출력모드로 전환
+   - 탭 CSS를 무시하고 기본/사고/외관/점검 전체 출력
+   - 리포트 출력 섹션과 매입오더는 출력 제외
+*/
+.report-output-badge-v1741{
+  width:auto!important;
+  min-width:34px!important;
+  padding:0 8px!important;
+}
+
+@media print{
+  html,body{
+    background:#ffffff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  body.report-print-mode-v1746{
+    background:#ffffff!important;
+  }
+
+  body.report-print-mode-v1746 .wrap{
+    max-width:760px!important;
+    width:760px!important;
+    margin:0 auto!important;
+    padding:0!important;
+    background:#ffffff!important;
+  }
+
+  body.report-print-mode-v1746 .header{
+    position:static!important;
+    top:auto!important;
+    box-shadow:none!important;
+    margin:0 0 10px!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  body.report-print-mode-v1746 .header .tabs,
+  body.report-print-mode-v1746 .menu-btn,
+  body.report-print-mode-v1746 .menu-panel,
+  body.report-print-mode-v1746 .order-open-btn,
+  body.report-print-mode-v1746 #reportOutputSection,
+  body.report-print-mode-v1746 #secOrder{
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  body.report-print-mode-v1746 #secInput,
+  body.report-print-mode-v1746 #secDiag,
+  body.report-print-mode-v1746 #secExterior,
+  body.report-print-mode-v1746 #secCheck{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  body.report-print-mode-v1746 .section{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  body.report-print-mode-v1746 #secInput::before{
+    content:"기본";
+    display:block!important;
+    margin:8px 0 6px!important;
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#111827!important;
+  }
+
+  body.report-print-mode-v1746 #secDiag::before{
+    content:"사고";
+    display:block!important;
+    margin:12px 0 6px!important;
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#111827!important;
+  }
+
+  body.report-print-mode-v1746 #secExterior::before{
+    content:"외관/수리";
+    display:block!important;
+    margin:12px 0 6px!important;
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#111827!important;
+  }
+
+  body.report-print-mode-v1746 #secCheck::before{
+    content:"점검";
+    display:block!important;
+    margin:12px 0 6px!important;
+    font-size:14px!important;
+    font-weight:900!important;
+    color:#111827!important;
+  }
+
+  body.report-print-mode-v1746 article.report-card-ui,
+  body.report-print-mode-v1746 .report-card-ui,
+  body.report-print-mode-v1746 .touch-card,
+  body.report-print-mode-v1746 .paint-diagram-block,
+  body.report-print-mode-v1746 .card{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  body.report-print-mode-v1746 input,
+  body.report-print-mode-v1746 textarea,
+  body.report-print-mode-v1746 select,
+  body.report-print-mode-v1746 button{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+}
+</style><style>
+/* v17.47 - 출력모드/PPF 최종 보강 */
+
+/* 랩핑/PPF 카드: select는 항상 표시, memo만 토글 */
+.wrapppf-card-fix-v1724 .wrapppf-card,
+.wrapppf-card .wrap-select,
+.wrapppf-card .wrap-select-fix-v1724{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.wrapppf-card .wrapppf-memo{
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+  box-sizing:border-box!important;
+}
+
+.wrapppf-card .wrapppf-memo:not(.wrapppf-memo-on-v1747){
+  display:none!important;
+}
+
+.wrapppf-card .wrapppf-memo.wrapppf-memo-on-v1747{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* 일반 화면에서 리포트 버튼 2개 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+
+/* 출력 준비 상태: 화면에서도 바로 강제 표시 */
+body.report-print-mode-v1747 #secInput,
+body.report-print-mode-v1747 #secDiag,
+body.report-print-mode-v1747 #secExterior,
+body.report-print-mode-v1747 #secCheck{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+
+body.report-print-mode-v1747 #reportOutputSection,
+body.report-print-mode-v1747 #secOrder,
+body.report-print-mode-v1747 .header .tabs,
+body.report-print-mode-v1747 .menu-btn,
+body.report-print-mode-v1747 .menu-panel,
+body.report-print-mode-v1747 .order-open-btn{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+/* 출력 전용 */
+@media print{
+  @page{
+    size:A4;
+    margin:8mm;
+  }
+
+  html,body{
+    background:#fff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  body.report-print-mode-v1747{
+    background:#fff!important;
+  }
+
+  body.report-print-mode-v1747 .wrap{
+    max-width:760px!important;
+    width:760px!important;
+    margin:0 auto!important;
+    padding:0!important;
+    background:#fff!important;
+  }
+
+  body.report-print-mode-v1747 .header{
+    position:static!important;
+    top:auto!important;
+    margin:0 0 10px!important;
+    box-shadow:none!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  body.report-print-mode-v1747 .header .tabs,
+  body.report-print-mode-v1747 .menu-btn,
+  body.report-print-mode-v1747 .menu-panel,
+  body.report-print-mode-v1747 .order-open-btn,
+  body.report-print-mode-v1747 #reportOutputSection,
+  body.report-print-mode-v1747 #secOrder{
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  body.report-print-mode-v1747 #secInput,
+  body.report-print-mode-v1747 #secDiag,
+  body.report-print-mode-v1747 #secExterior,
+  body.report-print-mode-v1747 #secCheck{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    position:static!important;
+  }
+
+  body.report-print-mode-v1747 #secInput,
+  body.report-print-mode-v1747 #secDiag,
+  body.report-print-mode-v1747 #secExterior,
+  body.report-print-mode-v1747 #secCheck{
+    page-break-before:always!important;
+    break-before:page!important;
+  }
+
+  body.report-print-mode-v1747 #secInput{
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+
+  body.report-print-mode-v1747 #secInput::before,
+  body.report-print-mode-v1747 #secDiag::before,
+  body.report-print-mode-v1747 #secExterior::before,
+  body.report-print-mode-v1747 #secCheck::before{
+    display:block!important;
+    margin:0 0 8px!important;
+    padding:7px 10px!important;
+    border-radius:8px!important;
+    background:#111827!important;
+    color:#fff!important;
+    font-size:14px!important;
+    font-weight:900!important;
+    page-break-after:avoid!important;
+    break-after:avoid!important;
+  }
+
+  body.report-print-mode-v1747 #secInput::before{content:"기본";}
+  body.report-print-mode-v1747 #secDiag::before{content:"사고";}
+  body.report-print-mode-v1747 #secExterior::before{content:"외관/수리";}
+  body.report-print-mode-v1747 #secCheck::before{content:"점검";}
+
+  body.report-print-mode-v1747 article.report-card-ui,
+  body.report-print-mode-v1747 .report-card-ui,
+  body.report-print-mode-v1747 .touch-card,
+  body.report-print-mode-v1747 .paint-diagram-block,
+  body.report-print-mode-v1747 .card,
+  body.report-print-mode-v1747 .fig,
+  body.report-print-mode-v1747 .paint-fig,
+  body.report-print-mode-v1747 .paint-fig-bent{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  body.report-print-mode-v1747 input,
+  body.report-print-mode-v1747 textarea,
+  body.report-print-mode-v1747 select,
+  body.report-print-mode-v1747 button,
+  body.report-print-mode-v1747 .report-card-ui,
+  body.report-print-mode-v1747 .check-btn,
+  body.report-print-mode-v1747 .seg-btn{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+}
+</style><style>
+/* v17.48 - 탭별 4장 출력 전용 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+
+/* 랩핑/PPF: 선택값은 항상 표시, 메모만 토글 */
+.wrapppf-card .wrap-select,
+.wrapppf-card .wrap-select-fix-v1724,
+.wrapppf-card select{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.wrapppf-card .wrapppf-memo:not(.wrapppf-memo-on-v1748){
+  display:none!important;
+}
+.wrapppf-card .wrapppf-memo.wrapppf-memo-on-v1748{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+}
+
+/* JS 측정용 출력 컨테이너 */
+#reportPrintPagesV1748{
+  position:absolute;
+  left:-100000px;
+  top:0;
+  width:760px;
+  background:#fff;
+  z-index:-1;
+}
+.report-print-page-v1748{
+  width:760px;
+  height:1040px;
+  overflow:hidden;
+  background:#fff;
+  box-sizing:border-box;
+  padding:0;
+}
+.report-print-page-inner-v1748{
+  width:760px;
+  transform-origin:top left;
+  box-sizing:border-box;
+  background:#fff;
+  padding:10px;
+}
+.report-print-tab-title-v1748{
+  display:flex;
+  align-items:center;
+  height:32px;
+  padding:0 10px;
+  margin:0 0 8px;
+  border-radius:9px;
+  background:#111827;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  box-sizing:border-box;
+}
+.report-print-page-inner-v1748 .section,
+.report-print-page-inner-v1748 #secInput,
+.report-print-page-inner-v1748 #secDiag,
+.report-print-page-inner-v1748 #secExterior,
+.report-print-page-inner-v1748 #secCheck{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:static!important;
+}
+.report-print-page-inner-v1748 .header,
+.report-print-page-inner-v1748 .tabs,
+.report-print-page-inner-v1748 #reportOutputSection,
+.report-print-page-inner-v1748 #secOrder,
+.report-print-page-inner-v1748 .menu-btn,
+.report-print-page-inner-v1748 .menu-panel,
+.report-print-page-inner-v1748 .order-open-btn{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+/* 실제 인쇄 시 원본 화면은 숨기고, 4개 출력 페이지 컨테이너만 사용 */
+@media print{
+  @page{
+    size:A4;
+    margin:8mm;
+  }
+
+  html,body{
+    background:#fff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  body.report-print-mode-v1748 > :not(#reportPrintPagesV1748){
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  body.report-print-mode-v1748 #reportPrintPagesV1748{
+    display:block!important;
+    visibility:visible!important;
+    position:static!important;
+    left:auto!important;
+    top:auto!important;
+    width:190mm!important;
+    margin:0 auto!important;
+    background:#fff!important;
+    z-index:auto!important;
+  }
+
+  body.report-print-mode-v1748 .report-print-page-v1748{
+    display:block!important;
+    visibility:visible!important;
+    width:190mm!important;
+    height:277mm!important;
+    overflow:hidden!important;
+    page-break-after:always!important;
+    break-after:page!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+    background:#fff!important;
+  }
+
+  body.report-print-mode-v1748 .report-print-page-v1748:last-child{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+  body.report-print-mode-v1748 .report-print-page-inner-v1748{
+    width:760px!important;
+    background:#fff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  body.report-print-mode-v1748 .report-print-page-inner-v1748 *,
+  body.report-print-mode-v1748 input,
+  body.report-print-mode-v1748 textarea,
+  body.report-print-mode-v1748 select,
+  body.report-print-mode-v1748 button{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+}
+</style><style>
+/* v17.49 - 이미지 리포트 출력 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+
+/* 랩핑/PPF 완료 상태 유지 */
+.wrapppf-card .wrap-select,
+.wrapppf-card .wrap-select-fix-v1724,
+.wrapppf-card select{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.wrapppf-card .wrapppf-memo:not(.wrapppf-memo-on-v1749){
+  display:none!important;
+}
+.wrapppf-card .wrapppf-memo.wrapppf-memo-on-v1749{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+}
+
+/* 이미지 캡처 준비 중 실제 DOM을 세로로 모두 펼치는 모드 */
+body.report-image-capture-mode-v1749 #secInput,
+body.report-image-capture-mode-v1749 #secDiag,
+body.report-image-capture-mode-v1749 #secExterior,
+body.report-image-capture-mode-v1749 #secCheck{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:static!important;
+}
+body.report-image-capture-mode-v1749 #reportOutputSection,
+body.report-image-capture-mode-v1749 #secOrder,
+body.report-image-capture-mode-v1749 .header .tabs,
+body.report-image-capture-mode-v1749 .menu-btn,
+body.report-image-capture-mode-v1749 .menu-panel,
+body.report-image-capture-mode-v1749 .order-open-btn{
+  display:none!important;
+  visibility:hidden!important;
+}
+</style><style>
+/* v17.50 - 카드 번호별 이미지 리포트 + 차량번호/차량이름 정렬 */
+
+/* 차량번호 / 차량이름 라벨 행 높이 통일 */
+#secInput .basicinfo-v5-field > .basicinfo-v5-label,
+#secInput .basicinfo-v5-field > .basicinfo-v5-label-row{
+  min-height:20px!important;
+  height:20px!important;
+  line-height:20px!important;
+  margin:0 0 6px!important;
+  box-sizing:border-box!important;
+}
+
+#secInput .basicinfo-v5-field > .basicinfo-v5-label-row{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+  overflow:visible!important;
+}
+
+#secInput .basicinfo-v5-field > .basicinfo-v5-label-row .basicinfo-v5-label{
+  min-height:20px!important;
+  height:20px!important;
+  line-height:20px!important;
+  display:flex!important;
+  align-items:center!important;
+  margin:0!important;
+}
+
+#secInput .basicinfo-v5-field .plate-title-tools{
+  display:flex!important;
+  align-items:center!important;
+  gap:4px!important;
+  height:20px!important;
+  min-height:20px!important;
+  line-height:20px!important;
+  margin:0!important;
+}
+
+#secInput .basicinfo-v5-field .plate-change-btn{
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  min-height:20px!important;
+  max-height:20px!important;
+  padding:0!important;
+  line-height:18px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+}
+
+#secInput .basicinfo-v5-field .plate-change-badge{
+  height:20px!important;
+  min-height:20px!important;
+  line-height:20px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  padding:0 7px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+
+/* 숨김 상태일 때 라벨 행 높이를 밀지 않음 */
+#secInput .basicinfo-v5-field .plate-change-badge[style*="display:none"]{
+  display:none!important;
+}
+
+/* 이미지 리포트 버튼 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+
+/* 랩핑/PPF 완료 상태 유지 */
+.wrapppf-card .wrap-select,
+.wrapppf-card .wrap-select-fix-v1724,
+.wrapppf-card select{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.wrapppf-card .wrapppf-memo:not(.wrapppf-memo-on-v1750){
+  display:none!important;
+}
+.wrapppf-card .wrapppf-memo.wrapppf-memo-on-v1750{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+}
+
+/* 탭 이미지 캡처 준비 모드 */
+body.report-card-image-mode-v1750 #secInput,
+body.report-card-image-mode-v1750 #secDiag,
+body.report-card-image-mode-v1750 #secExterior,
+body.report-card-image-mode-v1750 #secCheck{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:static!important;
+}
+body.report-card-image-mode-v1750 #reportOutputSection,
+body.report-card-image-mode-v1750 #secOrder,
+body.report-card-image-mode-v1750 .header .tabs,
+body.report-card-image-mode-v1750 .menu-btn,
+body.report-card-image-mode-v1750 .menu-panel,
+body.report-card-image-mode-v1750 .order-open-btn{
+  display:none!important;
+  visibility:hidden!important;
+}
+</style><style>
+/* v17.51 - 기본정보 차량번호 / 차량이름 세로 정렬 보정
+   원인:
+   - 차량번호 라벨 행에는 체인지 아이콘이 포함되어 있고,
+     차량이름 라벨 행과 line-height/align-items 계산이 달라져 input 시작 위치가 내려감.
+   처리:
+   - 두 필드의 라벨 영역 높이를 22px로 통일
+   - 두 필드의 input 상단 위치를 같은 기준으로 고정
+   - 체인지 아이콘/배지는 라벨 행 내부에서만 정렬되고 input 위치를 밀지 않도록 고정
+*/
+
+/* 두 필드 자체를 같은 기준으로 정렬 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751,
+#secInput .basicinfo-v5-field.carname-field-align-v1751{
+  align-self:start!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+  gap:0!important;
+  padding-top:0!important;
+  margin-top:0!important;
+}
+
+/* 차량번호 / 차량이름 라벨 행 높이 동일 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 > .basicinfo-v5-label,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 > .basicinfo-v5-label-row,
+#secInput .basicinfo-v5-field.carname-field-align-v1751 > .basicinfo-v5-label,
+#secInput .basicinfo-v5-field.carname-field-align-v1751 > .basicinfo-v5-label-row{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  min-height:22px!important;
+  height:22px!important;
+  max-height:22px!important;
+  line-height:22px!important;
+  margin:0 0 6px!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+
+/* label-row 안에 다시 label이 들어간 경우도 동일 높이 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 > .basicinfo-v5-label-row .basicinfo-v5-label,
+#secInput .basicinfo-v5-field.carname-field-align-v1751 > .basicinfo-v5-label-row .basicinfo-v5-label{
+  display:flex!important;
+  align-items:center!important;
+  min-height:22px!important;
+  height:22px!important;
+  max-height:22px!important;
+  line-height:22px!important;
+  margin:0!important;
+  padding:0!important;
+}
+
+/* 입력박스 상단 시작 위치 강제 통일 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 > input,
+#secInput .basicinfo-v5-field.carname-field-align-v1751 > input,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .bi-input,
+#secInput .basicinfo-v5-field.carname-field-align-v1751 .bi-input{
+  margin-top:0!important;
+  align-self:stretch!important;
+}
+
+/* 차량번호 체인지 아이콘 영역이 라벨 행 높이를 밀지 않도록 고정 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-title-tools,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-tools,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-wrap{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:4px!important;
+  min-height:22px!important;
+  height:22px!important;
+  max-height:22px!important;
+  line-height:22px!important;
+  margin:0!important;
+  padding:0!important;
+  vertical-align:top!important;
+  flex:0 0 auto!important;
+}
+
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-btn,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 button[class*="plate"],
+#secInput .basicinfo-v5-field.plate-field-align-v1751 button[class*="change"]{
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  min-height:20px!important;
+  max-width:20px!important;
+  max-height:20px!important;
+  padding:0!important;
+  margin:0!important;
+  line-height:18px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  vertical-align:middle!important;
+  flex:0 0 20px!important;
+}
+
+/* 번호 변경예정 배지는 라벨 행 안에서만 표시되게 고정 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-badge,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 [class*="plate"][class*="badge"]{
+  min-height:20px!important;
+  height:20px!important;
+  max-height:20px!important;
+  line-height:20px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  padding:0 7px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  vertical-align:middle!important;
+}
+
+/* 혹시 기존 CSS가 차량번호 input만 추가 margin을 준 경우 차단 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 input[data-key],
+#secInput .basicinfo-v5-field.carname-field-align-v1751 input[data-key]{
+  margin-top:0!important;
+  transform:none!important;
+}
+</style><style>
+/* v17.52 - 번호 변경예정 배지 상시 노출 방지
+   기준:
+   - 번호 변경예정 배지는 차량번호 체인지아이콘 클릭 시에만 표시한다.
+   - 기본 상태에서는 반드시 숨긴다.
+   - v17.51 정렬 CSS의 display:inline-flex!important가 style="display:none"을 덮는 문제를 최후단에서 차단한다.
+*/
+
+/* 기본 상태: 무조건 숨김 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-badge:not(.plate-change-show-v1720):not(.plate-change-show-v1721):not(.show):not([data-plate-open="1"]),
+#secInput .plate-change-badge[style*="display:none"]:not(.plate-change-show-v1720):not(.plate-change-show-v1721):not(.show):not([data-plate-open="1"]){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+/* 클릭 후 표시 상태: 기존 토글 class가 붙은 경우만 표시 */
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-badge.plate-change-show-v1720,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-badge.plate-change-show-v1721,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-badge.show,
+#secInput .basicinfo-v5-field.plate-field-align-v1751 .plate-change-badge[data-plate-open="1"]{
+  display:inline-flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+</style><style>
+/* v17.53 - 탭 이미지 생성 속도 개선 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+body.report-card-image-mode-v1753 #secInput,
+body.report-card-image-mode-v1753 #secDiag,
+body.report-card-image-mode-v1753 #secExterior,
+body.report-card-image-mode-v1753 #secCheck{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:static!important;
+}
+body.report-card-image-mode-v1753 #reportOutputSection,
+body.report-card-image-mode-v1753 #secOrder,
+body.report-card-image-mode-v1753 .header .tabs,
+body.report-card-image-mode-v1753 .menu-btn,
+body.report-card-image-mode-v1753 .menu-panel,
+body.report-card-image-mode-v1753 .order-open-btn{
+  display:none!important;
+  visibility:hidden!important;
+}
+</style><style>
+/* v17.54 - 탭 이미지 캡처 타임아웃 보강 */
+body.report-card-image-mode-v1754 #secInput,
+body.report-card-image-mode-v1754 #secDiag,
+body.report-card-image-mode-v1754 #secExterior,
+body.report-card-image-mode-v1754 #secCheck{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  position:static!important;
+}
+body.report-card-image-mode-v1754 #reportOutputSection,
+body.report-card-image-mode-v1754 #secOrder,
+body.report-card-image-mode-v1754 .header .tabs,
+body.report-card-image-mode-v1754 .menu-btn,
+body.report-card-image-mode-v1754 .menu-panel,
+body.report-card-image-mode-v1754 .order-open-btn{
+  display:none!important;
+  visibility:hidden!important;
+}
+</style><style>
+/* v17.55 - 출력 전용 정적 카드 DOM + 카드별 이미지 */
+
+/* 리포트 버튼 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+
+/* 정적 카드 렌더 stage */
+.report-static-stage-v1755{
+  position:fixed!important;
+  left:50%!important;
+  top:8px!important;
+  transform:translateX(-50%)!important;
+  width:560px!important;
+  max-width:calc(100vw - 20px)!important;
+  max-height:calc(100vh - 16px)!important;
+  overflow:auto!important;
+  background:#f3f5f7!important;
+  padding:10px!important;
+  border-radius:14px!important;
+  box-shadow:0 0 0 9999px rgba(15,23,42,.16)!important;
+  z-index:99990!important;
+  pointer-events:none!important;
+}
+.report-static-stage-v1755,
+.report-static-stage-v1755 *{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+  transition:none!important;
+  animation:none!important;
+}
+.report-static-card-wrap-v1755{
+  width:100%!important;
+  background:#fff!important;
+  border-radius:14px!important;
+  overflow:visible!important;
+}
+
+/* 출력용 카드 내부에서 실제 입력 요소를 정적 값 박스로 치환 */
+.report-static-value-v1755{
+  display:flex!important;
+  align-items:center!important;
+  min-height:38px!important;
+  width:100%!important;
+  padding:8px 10px!important;
+  border:1px solid #cfd7e3!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  line-height:1.35!important;
+  box-sizing:border-box!important;
+  white-space:pre-wrap!important;
+  word-break:break-word!important;
+}
+.report-static-value-v1755.is-empty{
+  color:#9ca3af!important;
+  -webkit-text-fill-color:#9ca3af!important;
+  font-weight:500!important;
+}
+.report-static-textarea-v1755{
+  min-height:74px!important;
+  align-items:flex-start!important;
+}
+.report-static-inline-v1755{
+  display:inline-flex!important;
+  width:auto!important;
+  min-width:42px!important;
+  min-height:28px!important;
+  height:auto!important;
+  justify-content:center!important;
+  text-align:center!important;
+}
+
+/* 도면 위 input 자리도 박스가 유지되도록 보정 */
+.report-static-stage-v1755 .exterior-tread-wrap .report-static-value-v1755,
+.report-static-stage-v1755 .tire-percent-wrap .report-static-value-v1755,
+.report-static-stage-v1755 .paint-input-wrap .report-static-value-v1755{
+  min-height:34px!important;
+  height:34px!important;
+  padding:0 8px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  line-height:34px!important;
+}
+
+/* 캡처 대상에서 불필요 UI 제거 */
+.report-static-stage-v1755 #reportOutputSection,
+.report-static-stage-v1755 #secOrder,
+.report-static-stage-v1755 .tabs,
+.report-static-stage-v1755 .menu-btn,
+.report-static-stage-v1755 .menu-panel,
+.report-static-stage-v1755 .order-open-btn,
+.report-static-stage-v1755 .no-print{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+/* 랩핑/PPF 완료 상태 유지 */
+.wrapppf-card .wrap-select,
+.wrapppf-card .wrap-select-fix-v1724,
+.wrapppf-card select{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.wrapppf-card .wrapppf-memo:not(.wrapppf-memo-on-v1755){
+  display:none!important;
+}
+.wrapppf-card .wrapppf-memo.wrapppf-memo-on-v1755{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+}
+</style><style>
+/* v17.56 - 원본 카드 clone 기반 이미지 리포트 */
+
+/* 리포트 버튼 */
+.report-output-card-v1745 .report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+
+/* 캡처 stage: 원본 카드 폭/스타일 유지 */
+.report-clone-stage-v1756{
+  position:fixed!important;
+  left:50%!important;
+  top:8px!important;
+  transform:translateX(-50%)!important;
+  width:560px!important;
+  max-width:560px!important;
+  max-height:calc(100vh - 16px)!important;
+  overflow:auto!important;
+  background:#f3f5f7!important;
+  padding:10px!important;
+  border-radius:14px!important;
+  box-shadow:0 0 0 9999px rgba(15,23,42,.14)!important;
+  z-index:99990!important;
+  pointer-events:none!important;
+}
+.report-clone-stage-v1756,
+.report-clone-stage-v1756 *{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+  transition:none!important;
+  animation:none!important;
+}
+.report-clone-card-wrap-v1756{
+  width:100%!important;
+  background:#f3f5f7!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:visible!important;
+}
+
+/* 캡처 stage 내부 불필요 UI 제거 */
+.report-clone-stage-v1756 #reportOutputSection,
+.report-clone-stage-v1756 #secOrder,
+.report-clone-stage-v1756 .tabs,
+.report-clone-stage-v1756 .menu-btn,
+.report-clone-stage-v1756 .menu-panel,
+.report-clone-stage-v1756 .order-open-btn,
+.report-clone-stage-v1756 .no-print{
+  display:none!important;
+  visibility:hidden!important;
+}
+
+/* clone 안에서는 section hidden 상태를 해제 */
+.report-clone-stage-v1756 article,
+.report-clone-stage-v1756 .report-card-ui,
+.report-clone-stage-v1756 .touch-card,
+.report-clone-stage-v1756 .card{
+  display:block;
+  visibility:visible;
+}
+
+/* 랩핑/PPF 완료 상태 유지 */
+.wrapppf-card .wrap-select,
+.wrapppf-card .wrap-select-fix-v1724,
+.wrapppf-card select{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.wrapppf-card .wrapppf-memo:not(.wrapppf-memo-on-v1756){
+  display:none!important;
+}
+.wrapppf-card .wrapppf-memo.wrapppf-memo-on-v1756{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+}
+</style><style>
+/* v17.62 - 실제 탭 캡처 버튼 전용 보정 */
+.report-output-card-v1745 .report-output-btns-v1745,
+.report-output-btns-v1745{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:10px!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.customer,
+#btnCustomerReportImage{
+  background:#111827!important;
+  color:#fff!important;
+}
+.report-output-card-v1745 .report-output-btn-v1741.company,
+#btnCompanyReportImage{
+  background:#fff!important;
+  color:#111827!important;
+  border:1px solid #cfd7e3!important;
+}
+</style><style>
+/* v17.63 - 랩핑/PPF 있음 선택 시 메모박스 표시 복구
+   기준:
+   - 없음/있음 선택박스는 항상 표시
+   - 있음 선택 시 메모 textarea만 표시
+   - 없음 선택 시 메모 textarea만 숨김
+   - 카드 전체 또는 select 부모를 숨기지 않음
+*/
+.wrapppf-card-fix-v1724,
+.wrapppf-card,
+article.wrapppf-card-fix-v1724{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.wrapppf-card-fix-v1724 select,
+.wrapppf-card select,
+.wrapppf-card-fix-v1724 .wrap-select,
+.wrapppf-card .wrap-select,
+.wrapppf-card-fix-v1724 .wrap-select-fix-v1724,
+.wrapppf-card .wrap-select-fix-v1724{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.wrapppf-card-fix-v1724 textarea.wrapppf-memo,
+.wrapppf-card textarea.wrapppf-memo,
+.wrapppf-card-fix-v1724 textarea.wrapppf-memo-fix-v1724,
+.wrapppf-card textarea.wrapppf-memo-fix-v1724,
+.wrapppf-card-fix-v1724 textarea[data-key="wrapPpfMemo"],
+.wrapppf-card textarea[data-key="wrapPpfMemo"]{
+  width:100%!important;
+  min-height:74px!important;
+  margin-top:8px!important;
+  box-sizing:border-box!important;
+}
+
+.wrapppf-card-fix-v1724 textarea.wrapppf-memo-on-v1763,
+.wrapppf-card textarea.wrapppf-memo-on-v1763,
+.wrapppf-card-fix-v1724 textarea.wrapppf-memo-fix-v1724.wrapppf-memo-on-v1763,
+.wrapppf-card textarea.wrapppf-memo-fix-v1724.wrapppf-memo-on-v1763,
+.wrapppf-card-fix-v1724 textarea[data-key="wrapPpfMemo"].wrapppf-memo-on-v1763,
+.wrapppf-card textarea[data-key="wrapPpfMemo"].wrapppf-memo-on-v1763{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.wrapppf-card-fix-v1724 textarea.wrapppf-memo-off-v1763,
+.wrapppf-card textarea.wrapppf-memo-off-v1763,
+.wrapppf-card-fix-v1724 textarea.wrapppf-memo-fix-v1724.wrapppf-memo-off-v1763,
+.wrapppf-card textarea.wrapppf-memo-fix-v1724.wrapppf-memo-off-v1763,
+.wrapppf-card-fix-v1724 textarea[data-key="wrapPpfMemo"].wrapppf-memo-off-v1763,
+.wrapppf-card textarea[data-key="wrapPpfMemo"].wrapppf-memo-off-v1763{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
 }
 </style></head>
 <body>
@@ -11046,14 +12585,14 @@ textarea.tread-input-fix-v1724,
 <option>중고차</option>
 </select>
 </div>
-<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-field plate-field-align-v1751">
 <div class="basicinfo-v5-label-row">
 <div class="basicinfo-v5-label">차량번호</div>
 <div class="plate-title-tools"><button class="plate-change-btn" type="button">⇄</button><span class="plate-change-badge" style="display:none">번호 변경예정</span></div>
 </div>
 <input class="bi-input" placeholder="차량번호 입력"/>
 </div>
-<div class="basicinfo-v5-field">
+<div class="basicinfo-v5-field carname-field-align-v1751">
 <div class="basicinfo-v5-label">차량이름</div>
 <input class="bi-input" placeholder="차량이름 입력"/>
 </div>
@@ -12158,7 +13697,7 @@ textarea.tread-input-fix-v1724,
 <h2><span class="no">20</span> 코멘트</h2>
 <div class="field"><label class="comment-item-title-v1674 customer-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">고객 코멘트</label><textarea data-key="customerCommentMemo" placeholder="고객에게 질문한 주행 이슈, 기타 특이사항, 고객의 전달사항 입력"></textarea></div>
 <div class="field customer-talk-field"><div class="customer-talk-head"><span class="customer-talk-title comment-item-title-v1674 inspector-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">검수자 코멘트</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle" data-talk-level="0" type="button">선택</button><span class="customer-talk-time">일정시간</span></div><textarea class="customer-talk-memo" data-key="inspectorCommentMemo" placeholder="고객도 같이 보는 관점의 검수자 코멘트를 입력"></textarea></div>
-</article></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>탁송,온라인 매입</label><select class="order-select" data-key="order_online_delivery"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-count-detail-v1717" data-count-prefix="order_accident"><select class="order-select order-count-select-v1717" data-key="order_accident_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_accident_memo" placeholder="사고 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-count-detail-v1717" data-count-prefix="order_outer"><select class="order-select order-count-select-v1717" data-key="order_outer_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_outer_memo" placeholder="외판 내용 입력" rows="2"></textarea></div></div><div class="order-field full"><label>수리</label><div class="order-count-detail-v1717" data-count-prefix="order_repair"><select class="order-select order-count-select-v1717" data-key="order_repair_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_repair_memo" placeholder="수리 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_deposit_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_balance_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>인수일</label><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_takeover_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_takeover_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section>
+</article><section class="report-output-card-v1741 report-output-card-v1745" id="reportOutputSection"><div class="report-output-title-v1741"><span class="report-output-badge-v1741">캡처</span><span>리포트 출력</span></div><div class="report-output-desc-v1741">현재 탭 실제 화면을 기준으로 탭별 PNG 4장을 생성합니다.</div><div class="report-output-btns-v1744 report-output-btns-v1745"><button class="report-output-btn-v1741 customer" id="btnCustomerReportImage" type="button">고객보고용 화면캡처</button><button class="report-output-btn-v1741 company" id="btnCompanyReportImage" type="button">회사보고용 화면캡처</button></div><div class="report-output-note-v1744">공유 허용 후 안내문구를 숨긴 상태로 기본/사고/외관/수리/점검 탭을 각각 실제 화면 캡처합니다.</div></section></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>탁송,온라인 매입</label><select class="order-select" data-key="order_online_delivery"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-count-detail-v1717" data-count-prefix="order_accident"><select class="order-select order-count-select-v1717" data-key="order_accident_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_accident_memo" placeholder="사고 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-count-detail-v1717" data-count-prefix="order_outer"><select class="order-select order-count-select-v1717" data-key="order_outer_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_outer_memo" placeholder="외판 내용 입력" rows="2"></textarea></div></div><div class="order-field full"><label>수리</label><div class="order-count-detail-v1717" data-count-prefix="order_repair"><select class="order-select order-count-select-v1717" data-key="order_repair_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_repair_memo" placeholder="수리 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_deposit_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_balance_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>인수일</label><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_takeover_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_takeover_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section>
 </div>
 <script>
 
@@ -15197,6 +16736,897 @@ boot();
   }
   window.addEventListener('load', cleanExteriorTreadV1739, false);
   setTimeout(cleanExteriorTreadV1739, 100);
+})();
+</script><script>
+/* v17.52 - 번호 변경예정 배지 초기상태 보정 */
+(function(){
+  function normalizePlateBadgeV1752(){
+    var badge = document.querySelector('#secInput .plate-change-badge');
+    if(!badge) return;
+
+    var opened =
+      badge.classList.contains('plate-change-show-v1720') ||
+      badge.classList.contains('plate-change-show-v1721') ||
+      badge.classList.contains('show') ||
+      badge.getAttribute('data-plate-open') === '1';
+
+    if(!opened){
+      badge.style.display = 'none';
+      badge.style.visibility = 'hidden';
+      badge.style.opacity = '0';
+    }else{
+      badge.style.display = 'inline-flex';
+      badge.style.visibility = 'visible';
+      badge.style.opacity = '1';
+    }
+  }
+
+  function bindPlateBadgeV1752(){
+    if(document.body.getAttribute('data-plate-badge-v1752') === '1') return;
+    document.body.setAttribute('data-plate-badge-v1752', '1');
+
+    normalizePlateBadgeV1752();
+
+    document.addEventListener('click', function(ev){
+      var btn = ev.target && ev.target.closest ? ev.target.closest('#secInput .plate-change-btn') : null;
+      if(!btn) return;
+
+      setTimeout(normalizePlateBadgeV1752, 0);
+      setTimeout(normalizePlateBadgeV1752, 30);
+    }, true);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindPlateBadgeV1752, false);
+  }else{
+    bindPlateBadgeV1752();
+  }
+  window.addEventListener('load', bindPlateBadgeV1752, false);
+})();
+</script><script>
+/* v17.68 - 외관/수리 탭 실제 표시 카드 스캔 보정 */
+(function(){
+  var REPORT_DEBUG = true;
+  var LOADING_ID = 'reportRealCaptureLoadingV1762';
+  var BODY_FLAG = 'data-real-tab-capture-v1762';
+
+  var TAB_SCHEMA = [
+    {no:'01', title:'기본', tab:'input', section:'#secInput', companyHideL:false},
+    {no:'02', title:'사고', tab:'diag', section:'#secDiag', companyHideL:true},
+    /*
+      v17.67:
+      외관/수리 탭은 화면상 탭은 exterior지만, 실제 도막/외관/타이어 카드가
+      버전별로 #secExterior 또는 #secDiag 내부에 남아 있을 수 있다.
+      따라서 단일 section 캡처가 아니라 실제 카드 묶음 기준으로 캡처 대상을 만든다.
+    */
+    {no:'03', title:'외관/수리', tab:'exterior', section:'#secExterior', fallbackSection:'#secDiag', groupSelector:'article.diag-paint-card, article.diag-exterior-card, article.tire-state-card-v1696, article.report-card-ui, .report-card-ui, .touch-card, .card', scanByText:true, companyHideL:true},
+    {no:'04', title:'점검', tab:'check', section:'#secCheck', companyHideL:false}
+  ];
+
+  function log(){
+    if(!REPORT_DEBUG || !window.console) return;
+    try{ console.log.apply(console, arguments); }catch(e){}
+  }
+  function qs(sel, root){ return (root || document).querySelector(sel); }
+  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+  function waitFrame(count){
+    count = count || 1;
+    return new Promise(function(resolve){
+      function next(n){
+        if(n <= 0) return resolve();
+        requestAnimationFrame(function(){ next(n - 1); });
+      }
+      next(count);
+    });
+  }
+
+  function showLoading(msg){
+    var box = document.getElementById(LOADING_ID);
+    if(!box){
+      box = document.createElement('div');
+      box.id = LOADING_ID;
+      box.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:100000;min-width:320px;max-width:92vw;padding:14px 16px;border-radius:14px;background:#111827;color:#fff;box-shadow:0 10px 32px rgba(15,23,42,.35);font-size:13px;font-weight:900;text-align:center;white-space:pre-line;';
+      document.body.appendChild(box);
+    }
+    box.textContent = msg || '화면 캡처 준비 중...';
+  }
+  function hideLoading(){
+    var ids = [
+      LOADING_ID,
+      'reportRealCaptureLoadingV1758',
+      'reportRealCaptureLoadingV1761',
+      'reportCloneImageLoadingV1756',
+      'reportStaticImageLoadingV1755',
+      'reportCardImageLoadingV1754',
+      'reportCardImageLoadingV1753'
+    ];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.remove();
+    });
+  }
+
+  function safeFileName(value){
+    return String(value || '').replace(/[\\/:*?"<>|\s]+/g, '_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+  }
+
+  function openStreamingWindow(mode){
+    var reportTitle = mode === 'company' ? '회사보고용 탭별 PNG 리포트' : '고객보고용 탭별 PNG 리포트';
+    var now = new Date();
+    var yyyy = now.getFullYear();
+    var mm = String(now.getMonth()+1).padStart(2,'0');
+    var dd = String(now.getDate()).padStart(2,'0');
+    var win = window.open('', '_blank');
+    if(!win) throw new Error('popup blocked');
+    win.__captureDownloads = [];
+    win.document.open();
+    win.document.write(
+      '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<title>오토베이 현장 매입 진단리포트 - ' + reportTitle + '</title>' +
+      '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
+      '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main></body></html>'
+    );
+    win.document.close();
+    return win;
+  }
+
+  function refreshDownloadAllState(win){
+    if(!win || win.closed) return;
+    var doc = win.document;
+    var btn = doc.getElementById('downloadAllBtn');
+    var meta = doc.getElementById('downloadMeta');
+    var list = win.__captureDownloads || [];
+    var readyCount = list.length;
+    if(btn) btn.disabled = readyCount === 0;
+    if(meta){
+      meta.textContent = readyCount > 0 ? ('저장 가능 이미지 ' + readyCount + '장 · 버튼 1회 클릭으로 순차 다운로드') : '탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.';
+    }
+  }
+
+  function downloadAllCapturedImages(win){
+    if(!win || win.closed) return;
+    var list = (win.__captureDownloads || []).slice();
+    if(!list.length){
+      try{ win.alert('다운로드할 이미지가 아직 없습니다.'); }catch(e){}
+      return;
+    }
+    var idx = 0;
+    function step(){
+      if(idx >= list.length) return;
+      var item = list[idx++];
+      try{
+        var a = win.document.createElement('a');
+        a.href = item.href;
+        a.download = item.download;
+        a.style.display = 'none';
+        win.document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }catch(e){
+        console.error('[REPORT][REALCAPTURE][DOWNLOAD_ALL]', e);
+      }
+      win.setTimeout(step, 180);
+    }
+    step();
+  }
+
+  function bindDownloadAllButton(win){
+    if(!win || win.closed) return;
+    var doc = win.document;
+    var btn = doc.getElementById('downloadAllBtn');
+    if(!btn || btn.getAttribute('data-bind-v1764') === '1'){
+      refreshDownloadAllState(win);
+      return;
+    }
+    btn.setAttribute('data-bind-v1764', '1');
+    btn.addEventListener('click', function(){
+      downloadAllCapturedImages(win);
+    }, false);
+    refreshDownloadAllState(win);
+  }
+
+  function appendCardToWindow(win, mode, item){
+    if(!win || win.closed) return;
+    var doc = win.document;
+    var root = doc.getElementById('images');
+    if(!root) return;
+    var sec = doc.createElement('section');
+    sec.className = 'img-section';
+
+    var title = doc.createElement('div');
+    title.className = 'section-title';
+    var num = doc.createElement('span');
+    num.className = 'num';
+    num.textContent = item.no;
+    var txt = doc.createElement('span');
+    txt.textContent = item.title;
+    title.appendChild(num);
+    title.appendChild(txt);
+    sec.appendChild(title);
+
+    if(item.failed){
+      var fail = doc.createElement('div');
+      fail.className = 'failed';
+      fail.textContent = item.no + ' ' + item.title + ' 생성 실패: ' + item.error;
+      sec.appendChild(fail);
+    }else{
+      var wrap = doc.createElement('div');
+      wrap.className = 'img-wrap';
+      wrap.style.width = item.cssWidth + 'px';
+      var img = doc.createElement('img');
+      img.src = item.dataUrl;
+      img.alt = item.no + ' ' + item.title;
+      img.style.width = item.cssWidth + 'px';
+      img.style.height = 'auto';
+      wrap.appendChild(img);
+      sec.appendChild(wrap);
+
+      var a = doc.createElement('a');
+      a.className = 'download';
+      a.href = item.dataUrl;
+      a.download = 'autobay_' + (mode === 'company' ? 'company' : 'customer') + '_' + item.no + '_' + safeFileName(item.title) + '.png';
+      a.textContent = '이미지 저장';
+      sec.appendChild(a);
+
+      win.__captureDownloads = win.__captureDownloads || [];
+      win.__captureDownloads.push({ href:a.href, download:a.download });
+      refreshDownloadAllState(win);
+    }
+    root.appendChild(sec);
+    var status = doc.getElementById('status');
+    if(status) status.firstChild.textContent = item.no + ' ' + item.title + (item.failed ? ' 탭 생성 실패' : ' 탭 생성 완료');
+    bindDownloadAllButton(win);
+    refreshDownloadAllState(win);
+  }
+
+  function getCurrentTabName(){
+    if(qs('#tabOrder') && qs('#tabOrder').checked) return 'order';
+    if(qs('#tabExterior') && qs('#tabExterior').checked) return 'exterior';
+    if(qs('#tabDiag') && qs('#tabDiag').checked) return 'diag';
+    if(qs('#tabCheck') && qs('#tabCheck').checked) return 'check';
+    return 'input';
+  }
+  function setActiveBodyTab(tabName){
+    document.body.classList.add('ab-tab-fast-v1697');
+    ['input','diag','exterior','check','order'].forEach(function(name){
+      document.body.classList.remove('ab-tab-' + name);
+    });
+    document.body.classList.add('ab-tab-' + tabName);
+  }
+  function activateTab(tabName){
+    var map = { input:'tabInput', diag:'tabDiag', exterior:'tabExterior', check:'tabCheck', order:'tabOrder' };
+    var id = map[tabName] || map.input;
+    var radio = document.getElementById(id);
+    if(!radio) return;
+    if(!radio.checked){
+      radio.checked = true;
+      radio.dispatchEvent(new Event('change', {bubbles:true}));
+    }
+    setActiveBodyTab(tabName);
+  }
+
+  function getCardElement(item){
+    var sections = item.sections || (item.section ? [item.section] : []);
+    for(var i=0;i<sections.length;i++){
+      var section = document.querySelector(sections[i]);
+      if(!section) continue;
+      var list = qsa(item.selector, section);
+      if(list[item.pick || 0]) return list[item.pick || 0];
+    }
+    var globalList = qsa(item.selector, document);
+    return globalList[item.pick || 0] || null;
+  }
+  function isVisibleCaptureTarget(el){
+    if(!el) return false;
+    var rect = el.getBoundingClientRect();
+    return rect.width > 10 && rect.height > 10;
+  }
+
+  function textOfCaptureNode(el){
+    return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function isExteriorRelatedCard(el){
+    if(!el) return false;
+
+    var txt = textOfCaptureNode(el);
+    var cls = typeof el.className === 'string' ? el.className : '';
+    var id = el.id || '';
+    var attrs = [
+      cls,
+      id,
+      el.getAttribute('data-card'),
+      el.getAttribute('data-section'),
+      el.getAttribute('data-key')
+    ].join(' ');
+
+    if(/diag-paint-card|diag-exterior-card|tire-state-card|paint|exterior|tire|외관|도막|타이어|수리/.test(attrs)){
+      return true;
+    }
+
+    return /도막\s*진단확인|외관\s*진단확인|타이어\s*상태확인|외관\s*고객기재|도막|트레드|외관\/수리|외관\/ 수리/.test(txt);
+  }
+
+  function pushUniqueVisible(list, el){
+    if(!el || list.indexOf(el) >= 0) return;
+    var rect = el.getBoundingClientRect();
+    if(rect.width > 10 && rect.height > 10){
+      list.push(el);
+    }
+  }
+
+  function createExteriorCaptureGroup(item){
+    var candidates = [];
+
+    /*
+      v17.68:
+      외관/수리 탭 구조가 버전별로 섞여 있으므로, 고정 class만 보지 않고
+      현재 활성화된 화면에서 실제 표시 중인 카드 텍스트까지 스캔한다.
+    */
+    [item.section, item.fallbackSection, 'body'].forEach(function(sectionSelector){
+      var root = sectionSelector ? qs(sectionSelector) : null;
+      if(!root) return;
+
+      qsa(item.groupSelector || 'article, .report-card-ui, .touch-card, .card', root).forEach(function(card){
+        if(isExteriorRelatedCard(card)){
+          pushUniqueVisible(candidates, card);
+        }
+      });
+    });
+
+    /*
+      section 안에 개별 카드 class가 없고 하위 블록만 있는 경우를 대비해,
+      관련 텍스트를 가진 요소의 가장 가까운 카드형 부모를 다시 탐색한다.
+    */
+    qsa('article, .report-card-ui, .touch-card, .card, section, div').forEach(function(el){
+      if(!isExteriorRelatedCard(el)) return;
+
+      var parent = el.closest('article, .report-card-ui, .touch-card, .card') || el;
+      pushUniqueVisible(candidates, parent);
+    });
+
+    /*
+      너무 큰 부모 section/body가 후보에 섞이면 제외한다.
+    */
+    candidates = candidates.filter(function(card){
+      if(card === document.body || card === document.documentElement) return false;
+      var rect = card.getBoundingClientRect();
+      if(rect.height > window.innerHeight * 4 && !/도막|외관|타이어|수리/.test(textOfCaptureNode(card))) return false;
+      return rect.width > 10 && rect.height > 10;
+    });
+
+    /*
+      후보가 너무 많이 잡히면 외관 관련 텍스트가 직접 들어간 카드만 우선한다.
+    */
+    var direct = candidates.filter(function(card){
+      return /도막\s*진단확인|외관\s*진단확인|타이어\s*상태확인|외관\s*고객기재/.test(textOfCaptureNode(card));
+    });
+    if(direct.length){
+      candidates = direct;
+    }
+
+    if(!candidates.length){
+      var sec = qs(item.section);
+      if(isVisibleCaptureTarget(sec)) return sec;
+      var fallback = qs(item.fallbackSection);
+      if(isVisibleCaptureTarget(fallback)) return fallback;
+      return null;
+    }
+
+    var minLeft = Infinity;
+    var minTop = Infinity;
+    var maxRight = -Infinity;
+    var maxBottom = -Infinity;
+
+    candidates.forEach(function(card){
+      var r = card.getBoundingClientRect();
+      minLeft = Math.min(minLeft, r.left);
+      minTop = Math.min(minTop, r.top);
+      maxRight = Math.max(maxRight, r.right);
+      maxBottom = Math.max(maxBottom, r.bottom);
+    });
+
+    var marker = document.getElementById('exteriorCaptureBBoxV1767');
+    if(!marker){
+      marker = document.createElement('div');
+      marker.id = 'exteriorCaptureBBoxV1767';
+      marker.style.cssText = 'position:absolute;z-index:-1;pointer-events:none;opacity:0;background:transparent;';
+      document.body.appendChild(marker);
+    }
+
+    marker.style.left = Math.round(window.scrollX + minLeft) + 'px';
+    marker.style.top = Math.round(window.scrollY + minTop) + 'px';
+    marker.style.width = Math.ceil(maxRight - minLeft) + 'px';
+    marker.style.height = Math.ceil(maxBottom - minTop) + 'px';
+    marker.__captureSourceCards = candidates;
+
+    log('[REPORT][EXTERIOR][V1768]', 'candidates=', candidates.length, 'bbox=', marker.style.width, marker.style.height);
+
+    return marker;
+  }
+
+  function resolveTabCaptureElement(item){
+    if(item.groupSelector){
+      return createExteriorCaptureGroup(item);
+    }
+
+    var el = qs(item.section);
+    if(isVisibleCaptureTarget(el)) return el;
+
+    if(item.fallbackSection){
+      var fallback = qs(item.fallbackSection);
+      if(isVisibleCaptureTarget(fallback)) return fallback;
+    }
+
+    return el || null;
+  }
+
+  function collectCardList(){
+    return TAB_SCHEMA.map(function(item){
+      return {
+        no:item.no,
+        title:item.title,
+        tab:item.tab,
+        el:resolveTabCaptureElement(item),
+        companyHideL:!!item.companyHideL,
+        groupSelector:item.groupSelector || ''
+      };
+    });
+  }
+
+  function collectLNodes(root){
+    var found = [];
+    if(!root) return found;
+    qsa('*', root).forEach(function(el){
+      var text = String(el.innerText || el.textContent || '').replace(/\s+/g,' ').trim();
+      var attrs = [el.getAttribute('data-marker'),el.getAttribute('data-part'),el.getAttribute('data-id'),el.getAttribute('data-code'),el.getAttribute('data-value'),el.getAttribute('for'),el.id,typeof el.className === 'string' ? el.className : ''].join(' ');
+      var isTextL = text === 'L' || text === 'L마커' || text === '마커 L';
+      var isAttrL = /(^|\s|_|-|:)(marker)?L(\s|_|-|:|$)/.test(attrs) || /(^|\s|_|-|:)L(marker)?(\s|_|-|:|$)/.test(attrs);
+      if(isTextL || isAttrL) found.push(el);
+    });
+    return found;
+  }
+  function hideLNodes(root){
+    return collectLNodes(root).map(function(el){
+      var prevDisplay = el.style.display || '';
+      var prevVisibility = el.style.visibility || '';
+      el.style.setProperty('display','none','important');
+      el.style.setProperty('visibility','hidden','important');
+      return {el:el, display:prevDisplay, visibility:prevVisibility};
+    });
+  }
+  function restoreNodes(records){
+    (records || []).forEach(function(rec){
+      if(!rec || !rec.el) return;
+      rec.el.style.display = rec.display || '';
+      rec.el.style.visibility = rec.visibility || '';
+    });
+  }
+
+  async function ensureCardTab(card){
+    activateTab(card.tab);
+    await waitFrame(2);
+    await wait(140);
+  }
+
+  function createVideoFromStream(stream){
+    var video = document.createElement('video');
+    video.playsInline = true;
+    video.muted = true;
+    video.autoplay = true;
+    video.style.cssText = 'position:fixed;left:-99999px;top:-99999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+    document.body.appendChild(video);
+    video.srcObject = stream;
+    return video;
+  }
+  async function waitVideoReady(video){
+    await new Promise(function(resolve, reject){
+      var done = false;
+      function finish(){ if(done) return; done = true; resolve(); }
+      function fail(err){ if(done) return; done = true; reject(err || new Error('video init failed')); }
+      video.onloadedmetadata = finish;
+      video.onerror = fail;
+      setTimeout(finish, 1500);
+    });
+    try{ await video.play(); }catch(e){}
+    await wait(180);
+  }
+  async function requestDisplayStream(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia){
+      throw new Error('getDisplayMedia unsupported');
+    }
+
+    /*
+      v17.65:
+      PNG는 무손실이므로 저장 형식 문제가 아니라 캡처 스트림 해상도가 핵심이다.
+      가능한 경우 브라우저 탭 공유 스트림을 고해상도로 요청한다.
+      브라우저가 지원하지 않는 제약은 자동으로 낮춰 적용된다.
+    */
+    return navigator.mediaDevices.getDisplayMedia({
+      video:{
+        displaySurface:'browser',
+        frameRate:{ideal:15,max:30},
+        width:{ideal:3840,max:7680},
+        height:{ideal:2160,max:4320},
+        resizeMode:'none'
+      },
+      audio:false,
+      preferCurrentTab:true,
+      selfBrowserSurface:'include',
+      surfaceSwitching:'exclude'
+    });
+  }
+  function stopStream(stream, video){
+    try{
+      if(video){ video.pause(); video.srcObject = null; video.remove(); }
+    }catch(e){}
+    try{ (stream && stream.getTracks ? stream.getTracks() : []).forEach(function(track){ track.stop(); }); }catch(e){}
+  }
+
+  function getSafeTopPadding(){
+    var header = document.querySelector('.header');
+    var bottom = 0;
+    if(header){
+      var rect = header.getBoundingClientRect();
+      if(rect.height > 0) bottom = Math.ceil(rect.bottom);
+    }
+    bottom = Math.max(bottom + 10, 18);
+    return Math.min(bottom, Math.floor(window.innerHeight * 0.35));
+  }
+
+  async function captureCardByRealScreen(video, cardEl){
+    var initialRect = cardEl.getBoundingClientRect();
+    var cssWidth = Math.ceil(initialRect.width || cardEl.scrollWidth || 560);
+    var cssHeight = Math.ceil(initialRect.height || cardEl.scrollHeight || 200);
+    var docTop = Math.round(window.scrollY + initialRect.top);
+    var scaleX = (video.videoWidth || window.innerWidth) / Math.max(window.innerWidth, 1);
+    var scaleY = (video.videoHeight || window.innerHeight) / Math.max(window.innerHeight, 1);
+
+    var output = document.createElement('canvas');
+    output.width = Math.max(1, Math.round(cssWidth * scaleX));
+    output.height = Math.max(1, Math.round(cssHeight * scaleY));
+    var octx = output.getContext('2d');
+
+    /*
+      v17.65:
+      crop 과정에서 불필요한 보간 흐림을 줄인다.
+      실제 화면 픽셀을 그대로 잘라내는 목적이므로 smoothing을 끈다.
+    */
+    if(octx){
+      octx.imageSmoothingEnabled = false;
+      octx.webkitImageSmoothingEnabled = false;
+      octx.mozImageSmoothingEnabled = false;
+      octx.msImageSmoothingEnabled = false;
+    }
+
+    var frame = document.createElement('canvas');
+    frame.width = video.videoWidth || Math.round(window.innerWidth * scaleX);
+    frame.height = video.videoHeight || Math.round(window.innerHeight * scaleY);
+    var fctx = frame.getContext('2d');
+
+    if(fctx){
+      fctx.imageSmoothingEnabled = false;
+      fctx.webkitImageSmoothingEnabled = false;
+      fctx.mozImageSmoothingEnabled = false;
+      fctx.msImageSmoothingEnabled = false;
+    }
+
+    var safeTop = getSafeTopPadding();
+    var bottomPad = 16;
+    var capturedCss = 0;
+    var guard = 0;
+
+    while(capturedCss < cssHeight - 1 && guard < 100){
+      guard += 1;
+      var targetScrollY = Math.max(0, Math.round(docTop + capturedCss - safeTop));
+      window.scrollTo(0, targetScrollY);
+      await waitFrame(2);
+      await wait(130);
+
+      var rect = cardEl.getBoundingClientRect();
+      var srcXCss = Math.max(0, Math.round(rect.left));
+      var srcYCss = Math.max(0, Math.round(rect.top + capturedCss));
+      var availableCss = Math.floor(window.innerHeight - srcYCss - bottomPad);
+      var remainingCss = cssHeight - capturedCss;
+      var segCss = Math.min(remainingCss, availableCss);
+
+      if(segCss <= 0){
+        throw new Error('카드 표시 영역이 부족합니다. 브라우저 확대/축소를 조정해 주세요.');
+      }
+
+      fctx.clearRect(0,0,frame.width,frame.height);
+      fctx.drawImage(video, 0, 0, frame.width, frame.height);
+
+      var srcX = Math.max(0, Math.round(srcXCss * scaleX));
+      var srcY = Math.max(0, Math.round(srcYCss * scaleY));
+      var srcW = Math.max(1, Math.round(cssWidth * scaleX));
+      var srcH = Math.max(1, Math.round(segCss * scaleY));
+      var destY = Math.round(capturedCss * scaleY);
+
+      octx.drawImage(frame, srcX, srcY, srcW, srcH, 0, destY, srcW, srcH);
+      capturedCss += segCss;
+    }
+    return { cssWidth: cssWidth, dataUrl: output.toDataURL('image/png') };
+  }
+
+  function updateProgress(mode, card, total, index){
+    hideLoading();
+    log('[REPORT][REALCAPTURE][PROGRESS]', mode, index + '/' + total, card.no, card.title);
+  }
+
+  async function generateRealTabCaptureReport(mode){
+    var win = null;
+    var stream = null;
+    var video = null;
+    var originalScrollY = window.scrollY;
+    var originalTab = getCurrentTabName();
+
+    try{
+      showLoading('현재 탭 공유를 허용해 주세요.\n공유 허용 후 안내문구는 자동으로 사라지고 캡처됩니다.');
+      win = openStreamingWindow(mode);
+      bindDownloadAllButton(win);
+      stream = await requestDisplayStream();
+      video = createVideoFromStream(stream);
+      await waitVideoReady(video);
+      log('[REPORT][REALCAPTURE][STREAM]', 'video=', video.videoWidth + 'x' + video.videoHeight, 'viewport=', window.innerWidth + 'x' + window.innerHeight, 'dpr=', window.devicePixelRatio);
+
+      hideLoading();
+      await waitFrame(2);
+      await wait(120);
+
+      var cards = collectCardList();
+      var statusNode = win && !win.closed ? win.document.getElementById('status') : null;
+      if(statusNode) statusNode.firstChild.textContent = '캡처 준비 완료';
+
+      for(var i=0;i<cards.length;i++){
+        var card = cards[i];
+        updateProgress(mode, card, cards.length, i + 1);
+        if(statusNode) statusNode.firstChild.textContent = card.no + ' ' + card.title + ' 탭 생성 중...';
+
+        hideLoading();
+        await waitFrame(2);
+        await wait(80);
+
+        if(!card.el){
+          appendCardToWindow(win, mode, { no:card.no, title:card.title, failed:true, error:(card.title === '외관/수리' ? '외관/수리 표시 카드를 찾지 못했습니다. 현재 외관/수리 탭에서 카드가 보이는지 확인 필요' : '탭 영역 요소를 찾지 못했습니다.'), cssWidth:560 });
+          continue;
+        }
+
+        await ensureCardTab(card);
+
+        /*
+          v17.67:
+          탭 전환 전에 잡힌 외관/수리 캡처 대상은 높이가 0이거나 숨김 상태일 수 있다.
+          탭 전환 후 실제 보이는 카드 묶음으로 다시 계산한다.
+        */
+        if(card.groupSelector){
+          card.el = resolveTabCaptureElement({
+            title:card.title,
+            section:'#secExterior',
+            fallbackSection:'#secDiag',
+            groupSelector:card.groupSelector
+          });
+        }
+
+        var restoreRecords = [];
+        if(mode === 'company' && card.companyHideL){
+          restoreRecords = hideLNodes(card.el);
+          await waitFrame(1);
+          await wait(40);
+        }
+
+        try{
+          hideLoading();
+          await waitFrame(2);
+          await wait(80);
+          var shot = await captureCardByRealScreen(video, card.el);
+          appendCardToWindow(win, mode, { no:card.no, title:card.title, failed:false, cssWidth:shot.cssWidth, dataUrl:shot.dataUrl });
+        }finally{
+          restoreNodes(restoreRecords);
+        }
+      }
+
+      if(statusNode) statusNode.firstChild.textContent = '완료';
+      bindDownloadAllButton(win);
+      refreshDownloadAllState(win);
+    }catch(err){
+      console.error('[REPORT][REALCAPTURE][ERROR]', err);
+      if(String(err && err.message || '').indexOf('popup blocked') >= 0){
+        alert('팝업이 차단되었습니다. 브라우저 팝업 허용 후 다시 실행해 주세요.');
+      }else if(String(err && err.message || '').indexOf('getDisplayMedia unsupported') >= 0){
+        alert('현재 브라우저에서는 실제 탭 캡처를 지원하지 않습니다.');
+      }else if(err && err.name === 'NotAllowedError'){
+        alert('탭 공유가 취소되었습니다. 다시 실행해서 현재 탭을 선택해 주세요.');
+      }else{
+        alert('실제 탭 캡처 중 오류가 발생했습니다. 현재 탭 공유 상태와 브라우저 확대 비율을 확인해 주세요.');
+      }
+      try{ if(win && !win.closed) win.close(); }catch(e){}
+    }finally{
+      stopStream(stream, video);
+      var bbox = document.getElementById('exteriorCaptureBBoxV1767');
+      if(bbox) bbox.remove();
+      activateTab(originalTab);
+      window.scrollTo(0, originalScrollY);
+      hideLoading();
+    }
+  }
+
+  function rebindButton(id, handler){
+    var oldBtn = document.getElementById(id);
+    if(!oldBtn) return;
+    var newBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+    newBtn.addEventListener('click', handler, false);
+  }
+
+  function bootRealCapture(){
+    if(document.body.getAttribute(BODY_FLAG) === '1') return;
+    document.body.setAttribute(BODY_FLAG, '1');
+    rebindButton('btnCustomerReportImage', function(){ generateRealTabCaptureReport('customer'); });
+    rebindButton('btnCompanyReportImage', function(){ generateRealTabCaptureReport('company'); });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bootRealCapture, false);
+  }else{
+    bootRealCapture();
+  }
+  window.addEventListener('load', bootRealCapture, false);
+})();
+</script><script>
+/* v17.63 - 랩핑/PPF 있음 메모박스 표시 방어 로직 */
+(function(){
+  var DEBUG = true;
+
+  function log(){
+    if(!DEBUG || !window.console) return;
+    try{ console.log.apply(console, arguments); }catch(e){}
+  }
+
+  function qsa(sel, root){
+    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  }
+
+  function textOf(el){
+    return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim();
+  }
+
+  function findWrapPpfCard(){
+    var direct = document.querySelector('.wrapppf-card-fix-v1724, article.wrapppf-card-fix-v1724, .wrapppf-card');
+    if(direct) return direct;
+
+    var cards = qsa('article.report-card-ui, .report-card-ui, article, .card');
+    for(var i=0;i<cards.length;i++){
+      var txt = textOf(cards[i]);
+      if(/랩핑\s*\/\s*PPF|랩핑\/PPF|PPF/.test(txt)){
+        return cards[i];
+      }
+    }
+    return null;
+  }
+
+  function findSelect(card){
+    if(!card) return null;
+    return card.querySelector(
+      'select.wrap-select, select.wrap-select-fix-v1724, select[data-key*="wrap"], select[data-key*="ppf"], select'
+    );
+  }
+
+  function findMemo(card){
+    if(!card) return null;
+
+    var memo = card.querySelector(
+      'textarea.wrapppf-memo, textarea.wrapppf-memo-fix-v1724, textarea[data-key="wrapPpfMemo"], textarea[data-key*="wrap"], textarea[data-key*="ppf"]'
+    );
+    if(memo) return memo;
+
+    var textareas = qsa('textarea', card);
+    if(textareas.length === 1) return textareas[0];
+
+    for(var i=0;i<textareas.length;i++){
+      var attrs = [
+        textareas[i].getAttribute('placeholder'),
+        textareas[i].getAttribute('aria-label'),
+        textareas[i].getAttribute('name'),
+        textareas[i].id,
+        textareas[i].className
+      ].join(' ');
+      if(/랩핑|PPF|ppf|wrap|wrapping|메모|내용|특이/.test(attrs)){
+        return textareas[i];
+      }
+    }
+    return null;
+  }
+
+  function selectedIsOn(select){
+    if(!select) return false;
+
+    var value = (select.value || '').trim();
+    var label = '';
+    if(select.options && select.selectedIndex >= 0){
+      label = (select.options[select.selectedIndex].textContent || '').trim();
+    }
+
+    return value === '있음' || label === '있음' || /있음|O|해당/.test(value + ' ' + label);
+  }
+
+  function applyWrapPpfMemoV1763(){
+    var card = findWrapPpfCard();
+    if(!card){
+      log('[WRAPPPF][V1763] card not found');
+      return;
+    }
+
+    var select = findSelect(card);
+    var memo = findMemo(card);
+
+    if(!select || !memo){
+      log('[WRAPPPF][V1763] missing select/memo', !!select, !!memo);
+      return;
+    }
+
+    /* 선택박스는 항상 표시 */
+    select.style.setProperty('display', 'block', 'important');
+    select.style.setProperty('visibility', 'visible', 'important');
+    select.style.setProperty('opacity', '1', 'important');
+
+    var on = selectedIsOn(select);
+
+    memo.classList.remove('wrapppf-memo-on-v1763', 'wrapppf-memo-off-v1763');
+
+    if(on){
+      memo.classList.add('wrapppf-memo-on-v1763');
+      memo.style.setProperty('display', 'block', 'important');
+      memo.style.setProperty('visibility', 'visible', 'important');
+      memo.style.setProperty('opacity', '1', 'important');
+      memo.style.setProperty('width', '100%', 'important');
+      memo.style.setProperty('min-height', '74px', 'important');
+      if(!memo.getAttribute('placeholder')){
+        memo.setAttribute('placeholder', '랩핑/PPF 관련 내용 입력');
+      }
+    }else{
+      memo.classList.add('wrapppf-memo-off-v1763');
+      memo.style.setProperty('display', 'none', 'important');
+      memo.style.setProperty('visibility', 'hidden', 'important');
+      memo.style.setProperty('opacity', '0', 'important');
+    }
+
+    log('[WRAPPPF][V1763]', 'on=', on, 'value=', select.value, 'memo=', !!memo);
+  }
+
+  function bindWrapPpfMemoV1763(){
+    if(document.body.getAttribute('data-wrapppf-v1763') === '1') return;
+    document.body.setAttribute('data-wrapppf-v1763', '1');
+
+    document.addEventListener('change', function(ev){
+      var card = findWrapPpfCard();
+      if(card && card.contains(ev.target)){
+        setTimeout(applyWrapPpfMemoV1763, 0);
+        setTimeout(applyWrapPpfMemoV1763, 60);
+      }
+    }, true);
+
+    document.addEventListener('click', function(ev){
+      var card = findWrapPpfCard();
+      if(card && card.contains(ev.target)){
+        setTimeout(applyWrapPpfMemoV1763, 30);
+      }
+    }, true);
+
+    applyWrapPpfMemoV1763();
+    setTimeout(applyWrapPpfMemoV1763, 200);
+    setTimeout(applyWrapPpfMemoV1763, 600);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindWrapPpfMemoV1763, false);
+  }else{
+    bindWrapPpfMemoV1763();
+  }
+  window.addEventListener('load', bindWrapPpfMemoV1763, false);
+
+  window.__applyWrapPpfMemoV1763 = applyWrapPpfMemoV1763;
 })();
 </script></body>
 </html>

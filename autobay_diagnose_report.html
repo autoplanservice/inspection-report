@@ -17628,5 +17628,194 @@ boot();
 
   window.__applyWrapPpfMemoV1763 = applyWrapPpfMemoV1763;
 })();
-</script></body>
+</script><style>
+/* v17.69 - 모바일 저장화면 모드 */
+.report-mobile-save-wrap-v1769{margin-top:14px;padding-top:14px;border-top:1px solid #e5e7eb}
+.report-mobile-save-title-v1769{font-size:13px;font-weight:900;color:#111827;margin:0 0 8px}
+.report-mobile-save-desc-v1769{font-size:12px;line-height:1.55;color:#4b5563;margin:0 0 10px}
+.report-mobile-save-btns-v1769{display:flex;gap:8px;flex-wrap:wrap}
+.report-mobile-save-btn-v1769{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}
+.report-mobile-save-btn-v1769.customer{background:#111827;border-color:#111827;color:#fff}
+.report-mobile-save-btn-v1769.company{background:#fff;color:#111827}
+#reportMobileSaveBarV1769{position:fixed;right:12px;bottom:12px;z-index:100002}
+.report-mobile-save-pill-v1769{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:999px;background:rgba(17,24,39,.96);color:#fff;box-shadow:0 10px 24px rgba(15,23,42,.28);font-size:12px;font-weight:900}
+.report-mobile-save-pill-v1769 button{display:inline-flex;align-items:center;justify-content:center;height:30px;padding:0 12px;border:none;border-radius:999px;background:#fff;color:#111827;font-size:12px;font-weight:900;cursor:pointer}
+body.report-mobile-save-mode-v1769{background:#f3f5f7!important}
+body.report-mobile-save-mode-v1769 .header .tabs,
+body.report-mobile-save-mode-v1769 .menu-btn,
+body.report-mobile-save-mode-v1769 .menu-panel,
+body.report-mobile-save-mode-v1769 .order-open-btn,
+body.report-mobile-save-mode-v1769 #reportOutputSection,
+body.report-mobile-save-mode-v1769 #secOrder{display:none!important}
+body.report-mobile-save-mode-v1769 .wrap{max-width:620px!important;margin:0 auto!important;padding-bottom:96px!important}
+body.report-mobile-save-mode-v1769 #secInput,
+body.report-mobile-save-mode-v1769 #secDiag,
+body.report-mobile-save-mode-v1769 #secExterior,
+body.report-mobile-save-mode-v1769 #secCheck,
+body.report-mobile-save-mode-v1769 .section{display:block!important;visibility:visible!important;opacity:1!important;max-height:none!important;height:auto!important;overflow:visible!important;pointer-events:auto!important}
+body.report-mobile-save-mode-v1769 #secInput,
+body.report-mobile-save-mode-v1769 #secDiag,
+body.report-mobile-save-mode-v1769 #secExterior,
+body.report-mobile-save-mode-v1769 #secCheck{margin-top:12px!important}
+body.report-mobile-save-mode-v1769 #secInput::before,
+body.report-mobile-save-mode-v1769 #secDiag::before,
+body.report-mobile-save-mode-v1769 #secExterior::before,
+body.report-mobile-save-mode-v1769 #secCheck::before{display:block;margin:0 0 10px;padding:10px 12px;border-radius:12px;background:#111827;color:#fff;font-size:14px;font-weight:900;line-height:1.2;text-align:center}
+body.report-mobile-save-mode-v1769 #secInput::before{content:'기본'}
+body.report-mobile-save-mode-v1769 #secDiag::before{content:'사고'}
+body.report-mobile-save-mode-v1769 #secExterior::before{content:'외관/수리'}
+body.report-mobile-save-mode-v1769 #secCheck::before{content:'점검'}
+@media (max-width:640px){
+  .report-mobile-save-btn-v1769{flex:1 1 100%}
+  .report-mobile-save-btns-v1769{display:grid;grid-template-columns:1fr;gap:8px}
+  #reportMobileSaveBarV1769{left:12px;right:12px;bottom:12px}
+  .report-mobile-save-pill-v1769{justify-content:space-between;width:100%}
+}
+</style>
+<script>
+/* v17.69 - 모바일 저장화면 모드 */
+(function(){
+  var BODY_CLASS='report-mobile-save-mode-v1769';
+  var COMPANY_CLASS='report-mobile-save-company-v1769';
+  var BAR_ID='reportMobileSaveBarV1769';
+  var PREV_ATTR='data-mobile-save-prev-tab-v1769';
+  var restoreRecords=[];
+
+  function qs(sel, root){ return (root || document).querySelector(sel); }
+  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+
+  function getCurrentTabName(){
+    if(qs('#tabOrder') && qs('#tabOrder').checked) return 'order';
+    if(qs('#tabExterior') && qs('#tabExterior').checked) return 'exterior';
+    if(qs('#tabDiag') && qs('#tabDiag').checked) return 'diag';
+    if(qs('#tabCheck') && qs('#tabCheck').checked) return 'check';
+    return 'input';
+  }
+  function activateTab(tabName){
+    var map = { input:'tabInput', diag:'tabDiag', exterior:'tabExterior', check:'tabCheck', order:'tabOrder' };
+    var id = map[tabName] || map.input;
+    var radio = document.getElementById(id);
+    if(!radio) return;
+    if(!radio.checked){
+      radio.checked = true;
+      try{ radio.dispatchEvent(new Event('change', {bubbles:true})); }catch(e){
+        var ev = document.createEvent('Event'); ev.initEvent('change', true, true); radio.dispatchEvent(ev);
+      }
+    }
+    document.body.classList.add('ab-tab-fast-v1697');
+    ['input','diag','exterior','check','order'].forEach(function(name){ document.body.classList.remove('ab-tab-' + name); });
+    document.body.classList.add('ab-tab-' + tabName);
+  }
+  async function warmupTabs(){
+    var prev = getCurrentTabName();
+    var tabs = ['input','diag','exterior','check'];
+    for(var i=0;i<tabs.length;i++){
+      activateTab(tabs[i]);
+      await wait(120);
+    }
+    activateTab(prev);
+    await wait(120);
+  }
+  function collectLNodes(root){
+    var found = [];
+    if(!root) return found;
+    qsa('*', root).forEach(function(el){
+      var text = String(el.innerText || el.textContent || '').replace(/\s+/g,' ').trim();
+      var attrs = [el.getAttribute('data-marker'),el.getAttribute('data-part'),el.getAttribute('data-id'),el.getAttribute('data-code'),el.getAttribute('data-value'),el.getAttribute('for'),el.id,typeof el.className === 'string' ? el.className : ''].join(' ');
+      var isTextL = text === 'L' || text === 'L마커' || text === '마커 L';
+      var isAttrL = /(^|\s|_|-|:)(marker)?L(\s|_|-|:|$)/.test(attrs) || /(^|\s|_|-|:)L(marker)?(\s|_|-|:|$)/.test(attrs);
+      if(isTextL || isAttrL) found.push(el);
+    });
+    return found;
+  }
+  function hideLNodes(root){
+    return collectLNodes(root).map(function(el){
+      var prevDisplay = el.style.display || '';
+      var prevVisibility = el.style.visibility || '';
+      el.style.setProperty('display','none','important');
+      el.style.setProperty('visibility','hidden','important');
+      return {el:el, display:prevDisplay, visibility:prevVisibility};
+    });
+  }
+  function restoreNodes(records){
+    (records || []).forEach(function(rec){
+      if(!rec || !rec.el) return;
+      rec.el.style.display = rec.display || '';
+      rec.el.style.visibility = rec.visibility || '';
+    });
+  }
+  function buildBar(){
+    var bar = document.getElementById(BAR_ID);
+    if(bar) return bar;
+    bar = document.createElement('div');
+    bar.id = BAR_ID;
+    bar.innerHTML = '<div class="report-mobile-save-pill-v1769"><span id="reportMobileSaveModeLabelV1769">모바일 저장모드</span><button id="reportMobileSaveCloseV1769" type="button">종료</button></div>';
+    document.body.appendChild(bar);
+    qs('#reportMobileSaveCloseV1769', bar).addEventListener('click', function(){ exitMode(); }, false);
+    return bar;
+  }
+  function removeBar(){
+    var bar = document.getElementById(BAR_ID);
+    if(bar) bar.remove();
+  }
+  function applyCompanyMode(mode){
+    restoreNodes(restoreRecords);
+    restoreRecords = [];
+    document.body.classList.toggle(COMPANY_CLASS, mode === 'company');
+    if(mode === 'company'){
+      ['#secDiag','#secExterior'].forEach(function(sel){
+        var root = qs(sel);
+        if(root) restoreRecords = restoreRecords.concat(hideLNodes(root));
+      });
+    }
+  }
+  async function enterMode(mode){
+    document.body.setAttribute(PREV_ATTR, getCurrentTabName());
+    await warmupTabs();
+    document.body.classList.add(BODY_CLASS);
+    applyCompanyMode(mode);
+    var bar = buildBar();
+    var label = qs('#reportMobileSaveModeLabelV1769', bar);
+    if(label) label.textContent = mode === 'company' ? '회사보고용 저장모드' : '고객보고용 저장모드';
+    window.scrollTo(0,0);
+  }
+  function exitMode(){
+    applyCompanyMode('customer');
+    restoreNodes(restoreRecords);
+    restoreRecords = [];
+    document.body.classList.remove(BODY_CLASS, COMPANY_CLASS);
+    removeBar();
+    var prev = document.body.getAttribute(PREV_ATTR) || 'input';
+    activateTab(prev);
+    window.scrollTo(0,0);
+  }
+  function bindControls(){
+    var root = qs('#reportOutputSection');
+    if(!root || qs('.report-mobile-save-wrap-v1769', root)) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'report-mobile-save-wrap-v1769';
+    wrap.innerHTML = '' +
+      '<div class="report-mobile-save-title-v1769">모바일 저장모드</div>' +
+      '<div class="report-mobile-save-desc-v1769">모바일 브라우저에서는 자동 화면 캡처 대신 저장용 화면으로 전환합니다. 전환 후 브라우저의 전체 페이지 캡처 또는 공유 기능으로 한 번에 저장하면 됩니다.</div>' +
+      '<div class="report-mobile-save-btns-v1769">' +
+        '<button class="report-mobile-save-btn-v1769 customer" id="btnCustomerMobileSaveV1769" type="button">고객보고용 저장화면</button>' +
+        '<button class="report-mobile-save-btn-v1769 company" id="btnCompanyMobileSaveV1769" type="button">회사보고용 저장화면</button>' +
+      '</div>';
+    root.appendChild(wrap);
+    qs('#btnCustomerMobileSaveV1769', wrap).addEventListener('click', function(){ enterMode('customer'); }, false);
+    qs('#btnCompanyMobileSaveV1769', wrap).addEventListener('click', function(){ enterMode('company'); }, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindControls, false);
+  }else{
+    bindControls();
+  }
+
+  window.__enterReportMobileSaveModeV1769 = enterMode;
+  window.__exitReportMobileSaveModeV1769 = exitMode;
+})();
+</script>
+</body>
 </html>

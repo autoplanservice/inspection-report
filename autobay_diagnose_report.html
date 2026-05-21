@@ -17204,65 +17204,6 @@ boot();
     });
   }
 
-  function rememberSectionStyle(el, prop){
-    sectionStyleRecords.push({
-      el:el,
-      prop:prop,
-      value:el.style.getPropertyValue(prop),
-      priority:el.style.getPropertyPriority(prop),
-      hidden:el.hidden
-    });
-  }
-
-  function setSectionImportant(el, prop, value){
-    if(!el) return;
-    rememberSectionStyle(el, prop);
-    el.style.setProperty(prop, value, 'important');
-  }
-
-  function removeTabBodyClasses(){
-    ['input','diag','exterior','check','order'].forEach(function(name){
-      document.body.classList.remove('ab-tab-' + name);
-    });
-  }
-
-  function forceAllReportSectionsVisible(){
-    restoreSectionStyles();
-    ['#secInput','#secDiag','#secExterior','#secCheck'].forEach(function(sel){
-      var el = qs(sel);
-      if(!el) return;
-      rememberSectionStyle(el, 'hidden');
-      el.hidden = false;
-      setSectionImportant(el, 'display', 'block');
-      setSectionImportant(el, 'visibility', 'visible');
-      setSectionImportant(el, 'opacity', '1');
-      setSectionImportant(el, 'height', 'auto');
-      setSectionImportant(el, 'max-height', 'none');
-      setSectionImportant(el, 'overflow', 'visible');
-      setSectionImportant(el, 'position', 'static');
-      setSectionImportant(el, 'transform', 'none');
-      setSectionImportant(el, 'pointer-events', 'auto');
-    });
-    removeTabBodyClasses();
-  }
-
-  function restoreSectionStyles(){
-    for(var i=sectionStyleRecords.length-1;i>=0;i--){
-      var rec = sectionStyleRecords[i];
-      if(!rec || !rec.el) continue;
-      if(rec.prop === 'hidden'){
-        rec.el.hidden = rec.hidden;
-        continue;
-      }
-      if(rec.value){
-        rec.el.style.setProperty(rec.prop, rec.value, rec.priority || '');
-      }else{
-        rec.el.style.removeProperty(rec.prop);
-      }
-    }
-    sectionStyleRecords = [];
-  }
-
   async function ensureCardTab(card){
     activateTab(card.tab);
     await waitFrame(2);
@@ -17687,141 +17628,374 @@ boot();
 
   window.__applyWrapPpfMemoV1763 = applyWrapPpfMemoV1763;
 })();
-</script><style>
-/* v17.70 - 모바일 저장화면 전체 섹션 고정 표시 보정 */
-.report-mobile-save-wrap-v1769{margin-top:14px;padding-top:14px;border-top:1px solid #e5e7eb}
-.report-mobile-save-title-v1769{font-size:13px;font-weight:900;color:#111827;margin:0 0 8px}
-.report-mobile-save-desc-v1769{font-size:12px;line-height:1.55;color:#4b5563;margin:0 0 10px}
-.report-mobile-save-btns-v1769{display:flex;gap:8px;flex-wrap:wrap}
-.report-mobile-save-btn-v1769{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}
-.report-mobile-save-btn-v1769.customer{background:#111827;border-color:#111827;color:#fff}
-.report-mobile-save-btn-v1769.company{background:#fff;color:#111827}
-#reportMobileSaveBarV1769{position:fixed;right:12px;bottom:12px;z-index:100002}
-.report-mobile-save-pill-v1769{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:999px;background:rgba(17,24,39,.96);color:#fff;box-shadow:0 10px 24px rgba(15,23,42,.28);font-size:12px;font-weight:900}
-.report-mobile-save-pill-v1769 button{display:inline-flex;align-items:center;justify-content:center;height:30px;padding:0 12px;border:none;border-radius:999px;background:#fff;color:#111827;font-size:12px;font-weight:900;cursor:pointer}
-body.report-mobile-save-mode-v1769{background:#f3f5f7!important}
-body.report-mobile-save-mode-v1769 .header .tabs,
-body.report-mobile-save-mode-v1769 .menu-btn,
-body.report-mobile-save-mode-v1769 .menu-panel,
-body.report-mobile-save-mode-v1769 .order-open-btn,
-body.report-mobile-save-mode-v1769 #reportOutputSection,
-body.report-mobile-save-mode-v1769 #secOrder{display:none!important}
-body.report-mobile-save-mode-v1769 .wrap{max-width:620px!important;margin:0 auto!important;padding-bottom:96px!important}
-body.report-mobile-save-mode-v1769 #secInput,
-body.report-mobile-save-mode-v1769 #secDiag,
-body.report-mobile-save-mode-v1769 #secExterior,
-body.report-mobile-save-mode-v1769 #secCheck,
-body.report-mobile-save-mode-v1769 .section{display:block!important;visibility:visible!important;opacity:1!important;max-height:none!important;height:auto!important;overflow:visible!important;pointer-events:auto!important}
-body.report-mobile-save-mode-v1769 #secInput,
-body.report-mobile-save-mode-v1769 #secDiag,
-body.report-mobile-save-mode-v1769 #secExterior,
-body.report-mobile-save-mode-v1769 #secCheck{margin-top:12px!important}
-body.report-mobile-save-mode-v1769 #secInput::before,
-body.report-mobile-save-mode-v1769 #secDiag::before,
-body.report-mobile-save-mode-v1769 #secExterior::before,
-body.report-mobile-save-mode-v1769 #secCheck::before{display:block;margin:0 0 10px;padding:10px 12px;border-radius:12px;background:#111827;color:#fff;font-size:14px;font-weight:900;line-height:1.2;text-align:center}
-body.report-mobile-save-mode-v1769 #secInput::before{content:'기본'}
-body.report-mobile-save-mode-v1769 #secDiag::before{content:'사고'}
-body.report-mobile-save-mode-v1769 #secExterior::before{content:'외관/수리'}
-body.report-mobile-save-mode-v1769 #secCheck::before{content:'점검'}
-@media (max-width:640px){
-  .report-mobile-save-btn-v1769{flex:1 1 100%}
-  .report-mobile-save-btns-v1769{display:grid;grid-template-columns:1fr;gap:8px}
-  #reportMobileSaveBarV1769{left:12px;right:12px;bottom:12px}
-  .report-mobile-save-pill-v1769{justify-content:space-between;width:100%}
+</script>
+<style>
+/* v17.76 - print 사고진단 복구/도막 라벨 CSS 보정 */
+.report-mobile-print-wrap-v1773{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid #e5e7eb;
 }
-
-/* v17.70 - 저장모드에서는 기존 탭 CSS를 무력화하고 4개 섹션을 모두 고정 표시 */
-body.report-mobile-save-mode-v1769.ab-tab-input #secInput,
-body.report-mobile-save-mode-v1769.ab-tab-input #secDiag,
-body.report-mobile-save-mode-v1769.ab-tab-input #secExterior,
-body.report-mobile-save-mode-v1769.ab-tab-input #secCheck,
-body.report-mobile-save-mode-v1769.ab-tab-diag #secInput,
-body.report-mobile-save-mode-v1769.ab-tab-diag #secDiag,
-body.report-mobile-save-mode-v1769.ab-tab-diag #secExterior,
-body.report-mobile-save-mode-v1769.ab-tab-diag #secCheck,
-body.report-mobile-save-mode-v1769.ab-tab-exterior #secInput,
-body.report-mobile-save-mode-v1769.ab-tab-exterior #secDiag,
-body.report-mobile-save-mode-v1769.ab-tab-exterior #secExterior,
-body.report-mobile-save-mode-v1769.ab-tab-exterior #secCheck,
-body.report-mobile-save-mode-v1769.ab-tab-check #secInput,
-body.report-mobile-save-mode-v1769.ab-tab-check #secDiag,
-body.report-mobile-save-mode-v1769.ab-tab-check #secExterior,
-body.report-mobile-save-mode-v1769.ab-tab-check #secCheck{
+.report-mobile-print-title-v1773{
+  font-size:13px;
+  font-weight:900;
+  color:#111827;
+  margin:0 0 8px;
+}
+.report-mobile-print-desc-v1773{
+  font-size:12px;
+  line-height:1.55;
+  color:#4b5563;
+  margin:0 0 10px;
+}
+.report-mobile-print-btns-v1773{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.report-mobile-print-btn-v1773{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:0 14px;
+  border-radius:12px;
+  border:1px solid #cbd5e1;
+  background:#fff;
+  color:#111827;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+}
+.report-mobile-print-btn-v1773.customer{
+  background:#111827;
+  border-color:#111827;
+  color:#fff;
+}
+.report-mobile-print-btn-v1773.company{
+  background:#fff;
+  color:#111827;
+}
+#reportPrintRootV1773{
+  display:none;
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+  padding:16px;
+  background:#f3f5f7;
+  color:#111827;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
+}
+body.report-print-preview-v1773{
+  background:#f3f5f7!important;
+}
+body.report-print-preview-v1773 > .wrap{
+  display:none!important;
+}
+body.report-print-preview-v1773 #reportPrintRootV1773{
+  display:block!important;
+}
+.report-print-head-v1773{
+  background:#fff;
+  border:1px solid #d8e0ea;
+  border-radius:16px;
+  padding:14px;
+  margin:0 0 14px;
+  box-shadow:0 2px 10px rgba(15,23,42,.05);
+}
+.report-print-title-v1773{
+  font-size:18px;
+  font-weight:1000;
+  margin:0 0 6px;
+}
+.report-print-sub-v1773{
+  font-size:13px;
+  font-weight:900;
+  color:#374151;
+  margin:0;
+}
+.report-print-guide-v1773{
+  font-size:11px;
+  font-weight:800;
+  color:#6b7280;
+  line-height:1.45;
+  margin:8px 0 0;
+}
+.report-print-section-v1773{
+  display:block;
+  margin:0 0 16px;
+  page-break-inside:avoid;
+  break-inside:avoid;
+}
+.report-print-section-title-v1773{
+  display:block;
+  margin:0 0 10px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#111827;
+  color:#fff;
+  text-align:center;
+  font-size:14px;
+  font-weight:900;
+}
+.report-print-section-body-v1773,
+.report-print-section-body-v1773 .section,
+.report-print-section-body-v1773 article,
+.report-print-section-body-v1773 .report-card-ui,
+.report-print-section-body-v1773 .touch-card{
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
   height:auto!important;
   max-height:none!important;
   overflow:visible!important;
-  position:static!important;
-  transform:none!important;
 }
-body.report-mobile-save-preparing-v1770 #secInput,
-body.report-mobile-save-preparing-v1770 #secDiag,
-body.report-mobile-save-preparing-v1770 #secExterior,
-body.report-mobile-save-preparing-v1770 #secCheck{
-  visibility:hidden!important;
+.report-print-section-body-v1773 .tabs,
+.report-print-section-body-v1773 .menu-btn,
+.report-print-section-body-v1773 .menu-panel,
+.report-print-section-body-v1773 #reportOutputSection,
+.report-print-section-body-v1773 #secOrder,
+.report-print-section-body-v1773 .order-open-btn,
+.report-print-section-body-v1773 .no-print{
+  display:none!important;
+}
+.report-print-section-body-v1773 input,
+.report-print-section-body-v1773 textarea,
+.report-print-section-body-v1773 select,
+.report-print-section-body-v1773 button{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.report-print-bar-v1773{
+  position:fixed;
+  right:12px;
+  bottom:12px;
+  z-index:100003;
+  display:none;
+  align-items:center;
+  gap:8px;
+  padding:10px;
+  border-radius:999px;
+  background:rgba(17,24,39,.96);
+  box-shadow:0 10px 24px rgba(15,23,42,.28);
+}
+body.report-print-preview-v1773 .report-print-bar-v1773{
+  display:flex;
+}
+.report-print-bar-v1773 button{
+  height:32px;
+  padding:0 12px;
+  border:0;
+  border-radius:999px;
+  background:#fff;
+  color:#111827;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+.report-print-bar-v1773 .primary{
+  background:#2563eb;
+  color:#fff;
+}
+@media (max-width:640px){
+  .report-mobile-print-btns-v1773{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  #reportPrintRootV1773{
+    padding:10px;
+  }
+  .report-print-bar-v1773{
+    left:12px;
+    right:12px;
+    justify-content:space-between;
+  }
+}
+
+/* v17.74 - 도면/마커 원본 배치 보존 */
+#reportPrintRootV1773 #secDiag,
+#reportPrintRootV1773 #secExterior,
+#reportPrintRootV1773 .fig,
+#reportPrintRootV1773 .paint-fig,
+#reportPrintRootV1773 .paint-fig-bent,
+#reportPrintRootV1773 .touch-diagram-shell,
+#reportPrintRootV1773 .diagram-wrap,
+#reportPrintRootV1773 .paint-diagram-block{
+  overflow:visible!important;
+  contain:none!important;
+}
+#reportPrintRootV1773 .fig,
+#reportPrintRootV1773 .paint-fig,
+#reportPrintRootV1773 .paint-fig-bent,
+#reportPrintRootV1773 .touch-diagram-shell{
+  position:relative!important;
+}
+
+
+/* v17.75 - 사고/외관 출력은 #secDiag 컨텍스트를 유지하고 내부 카드만 필터링 */
+#reportPrintRootV1773 .report-print-section-body-v1773 > #secDiag{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+
+
+/* v17.76 - 도막 상부 라벨/마커 CSS 보존 */
+#reportPrintRootV1773 #secDiag .paint-label,
+#reportPrintRootV1773 #secDiag .paint-marker,
+#reportPrintRootV1773 #secDiag .paint-value,
+#reportPrintRootV1773 #secDiag .paint-badge,
+#reportPrintRootV1773 #secDiag .paint-chip,
+#reportPrintRootV1773 #secDiag .marker-label,
+#reportPrintRootV1773 #secDiag .part-label,
+#reportPrintRootV1773 #secDiag [class*="paint"][class*="label"],
+#reportPrintRootV1773 #secDiag [class*="marker"][class*="label"],
+#reportPrintRootV1773 #secDiag [class*="label"]{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+#reportPrintRootV1773 #secDiag .paint-fig,
+#reportPrintRootV1773 #secDiag .paint-fig-bent,
+#reportPrintRootV1773 #secDiag .fig{
+  line-height:0!important;
+}
+#reportPrintRootV1773 #secDiag .paint-fig *,
+#reportPrintRootV1773 #secDiag .paint-fig-bent *,
+#reportPrintRootV1773 #secDiag .fig *{
+  box-sizing:border-box!important;
+}
+
+@media print{
+  html,body{
+    margin:0!important;
+    padding:0!important;
+    background:#fff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+  body > :not(#reportPrintRootV1773){
+    display:none!important;
+  }
+  #reportPrintRootV1773{
+    display:block!important;
+    max-width:none!important;
+    width:100%!important;
+    padding:0!important;
+    margin:0!important;
+    background:#fff!important;
+  }
+  .report-print-bar-v1773{
+    display:none!important;
+  }
+  .report-print-head-v1773,
+  .report-print-section-v1773,
+  .report-print-section-body-v1773 article,
+  .report-print-section-body-v1773 .report-card-ui{
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+  .report-print-section-title-v1773{
+    page-break-after:avoid;
+    break-after:avoid;
+  }
 }
 </style>
 <script>
-/* v17.70 - 모바일 저장화면 전체 섹션 고정 표시 보정 */
+/* v17.76 - print 사고진단 복구/도막 라벨 CSS 보정 */
 (function(){
-  var BODY_CLASS='report-mobile-save-mode-v1769';
-  var COMPANY_CLASS='report-mobile-save-company-v1769';
-  var BAR_ID='reportMobileSaveBarV1769';
-  var PREV_ATTR='data-mobile-save-prev-tab-v1769';
-  var restoreRecords=[];
-  var sectionStyleRecords=[];
+  var ROOT_ID = 'reportPrintRootV1773';
+  var BAR_ID = 'reportPrintBarV1773';
+  var PREV_CLASS = 'report-print-preview-v1773';
+  var restoreRecords = [];
 
   function qs(sel, root){ return (root || document).querySelector(sel); }
   function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
-  function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
 
-  function getCurrentTabName(){
-    if(qs('#tabOrder') && qs('#tabOrder').checked) return 'order';
-    if(qs('#tabExterior') && qs('#tabExterior').checked) return 'exterior';
-    if(qs('#tabDiag') && qs('#tabDiag').checked) return 'diag';
-    if(qs('#tabCheck') && qs('#tabCheck').checked) return 'check';
-    return 'input';
+  function selectedText(select){
+    if(!select) return '';
+    if(select.options && select.selectedIndex >= 0){
+      return (select.options[select.selectedIndex].textContent || '').trim();
+    }
+    return (select.value || '').trim();
   }
-  function activateTab(tabName){
-    var map = { input:'tabInput', diag:'tabDiag', exterior:'tabExterior', check:'tabCheck', order:'tabOrder' };
-    var id = map[tabName] || map.input;
-    var radio = document.getElementById(id);
-    if(!radio) return;
-    if(!radio.checked){
-      radio.checked = true;
-      try{ radio.dispatchEvent(new Event('change', {bubbles:true})); }catch(e){
-        var ev = document.createEvent('Event'); ev.initEvent('change', true, true); radio.dispatchEvent(ev);
+
+  function syncFormValuesForClone(original, clone){
+    var originals = original.querySelectorAll('input, select, textarea');
+    var clones = clone.querySelectorAll('input, select, textarea');
+
+    for(var i=0;i<originals.length && i<clones.length;i++){
+      var o = originals[i];
+      var c = clones[i];
+
+      if(o.tagName === 'TEXTAREA'){
+        c.value = o.value;
+        c.textContent = o.value;
+        c.setAttribute('data-print-value-v1773', o.value || '');
+        continue;
       }
+
+      if(o.tagName === 'SELECT'){
+        c.selectedIndex = o.selectedIndex;
+        var opts = c.options || [];
+        for(var k=0;k<opts.length;k++){
+          opts[k].selected = k === o.selectedIndex;
+        }
+        c.setAttribute('data-print-value-v1773', selectedText(o));
+        continue;
+      }
+
+      if(o.type === 'checkbox' || o.type === 'radio'){
+        c.checked = o.checked;
+        if(o.checked) c.setAttribute('checked','checked');
+        else c.removeAttribute('checked');
+        continue;
+      }
+
+      c.value = o.value;
+      c.setAttribute('value', o.value || '');
+      c.setAttribute('data-print-value-v1773', o.value || '');
     }
-    document.body.classList.add('ab-tab-fast-v1697');
-    ['input','diag','exterior','check','order'].forEach(function(name){ document.body.classList.remove('ab-tab-' + name); });
-    document.body.classList.add('ab-tab-' + tabName);
   }
-  async function warmupTabs(){
-    var prev = getCurrentTabName();
-    var tabs = ['input','diag','exterior','check'];
-    for(var i=0;i<tabs.length;i++){
-      activateTab(tabs[i]);
-      await wait(120);
-    }
-    activateTab(prev);
-    await wait(120);
+
+  function makeReadonlyForPrint(root){
+    qsa('input, textarea', root).forEach(function(el){
+      if(el.type === 'hidden'){
+        el.remove();
+        return;
+      }
+      el.setAttribute('readonly','readonly');
+      el.style.setProperty('pointer-events','none','important');
+    });
+    qsa('select, button', root).forEach(function(el){
+      el.style.setProperty('pointer-events','none','important');
+    });
   }
+
   function collectLNodes(root){
     var found = [];
     if(!root) return found;
     qsa('*', root).forEach(function(el){
       var text = String(el.innerText || el.textContent || '').replace(/\s+/g,' ').trim();
-      var attrs = [el.getAttribute('data-marker'),el.getAttribute('data-part'),el.getAttribute('data-id'),el.getAttribute('data-code'),el.getAttribute('data-value'),el.getAttribute('for'),el.id,typeof el.className === 'string' ? el.className : ''].join(' ');
+      var attrs = [
+        el.getAttribute('data-marker'),
+        el.getAttribute('data-part'),
+        el.getAttribute('data-id'),
+        el.getAttribute('data-code'),
+        el.getAttribute('data-value'),
+        el.getAttribute('for'),
+        el.id,
+        typeof el.className === 'string' ? el.className : ''
+      ].join(' ');
       var isTextL = text === 'L' || text === 'L마커' || text === '마커 L';
       var isAttrL = /(^|\s|_|-|:)(marker)?L(\s|_|-|:|$)/.test(attrs) || /(^|\s|_|-|:)L(marker)?(\s|_|-|:|$)/.test(attrs);
       if(isTextL || isAttrL) found.push(el);
     });
     return found;
   }
+
   function hideLNodes(root){
     return collectLNodes(root).map(function(el){
       var prevDisplay = el.style.display || '';
@@ -17831,6 +18005,7 @@ body.report-mobile-save-preparing-v1770 #secCheck{
       return {el:el, display:prevDisplay, visibility:prevVisibility};
     });
   }
+
   function restoreNodes(records){
     (records || []).forEach(function(rec){
       if(!rec || !rec.el) return;
@@ -17838,91 +18013,322 @@ body.report-mobile-save-preparing-v1770 #secCheck{
       rec.el.style.visibility = rec.visibility || '';
     });
   }
-  function buildBar(){
-    var bar = document.getElementById(BAR_ID);
-    if(bar) return bar;
-    bar = document.createElement('div');
-    bar.id = BAR_ID;
-    bar.innerHTML = '<div class="report-mobile-save-pill-v1769"><span id="reportMobileSaveModeLabelV1769">모바일 저장모드</span><button id="reportMobileSaveCloseV1769" type="button">종료</button></div>';
-    document.body.appendChild(bar);
-    qs('#reportMobileSaveCloseV1769', bar).addEventListener('click', function(){ exitMode(); }, false);
-    return bar;
-  }
-  function removeBar(){
+
+  function removeReportRoot(){
+    var old = document.getElementById(ROOT_ID);
+    if(old) old.remove();
     var bar = document.getElementById(BAR_ID);
     if(bar) bar.remove();
   }
-  function applyCompanyMode(mode){
-    restoreNodes(restoreRecords);
-    restoreRecords = [];
-    document.body.classList.toggle(COMPANY_CLASS, mode === 'company');
-    if(mode === 'company'){
-      ['#secDiag','#secExterior'].forEach(function(sel){
-        var root = qs(sel);
-        if(root) restoreRecords = restoreRecords.concat(hideLNodes(root));
-      });
-    }
+
+  function cloneSection(title, selector){
+    var src = qs(selector);
+    if(!src) return null;
+
+    var outer = document.createElement('section');
+    outer.className = 'report-print-section-v1773';
+
+    var h = document.createElement('div');
+    h.className = 'report-print-section-title-v1773';
+    h.textContent = title;
+
+    var body = document.createElement('div');
+    body.className = 'report-print-section-body-v1773';
+
+    var clone = src.cloneNode(true);
+    /*
+      v17.74:
+      도면/마커 CSS는 #secDiag, #secExterior 같은 원본 ID에 의존한다.
+      clone id를 바꾸면 CSS 기준점이 깨지므로 출력용 clone에서도 원본 ID를 유지한다.
+      원본 .wrap은 print preview/print 상태에서 숨겨지므로 시각적 충돌은 없다.
+    */
+    clone.id = src.id;
+    clone.classList.add('report-print-cloned-section-v1773');
+
+    syncFormValuesForClone(src, clone);
+    makeReadonlyForPrint(clone);
+
+    clone.style.setProperty('display','block','important');
+    clone.style.setProperty('visibility','visible','important');
+    clone.style.setProperty('opacity','1','important');
+    clone.style.setProperty('height','auto','important');
+    clone.style.setProperty('max-height','none','important');
+    clone.style.setProperty('overflow','visible','important');
+    body.appendChild(clone);
+    outer.appendChild(h);
+    outer.appendChild(body);
+
+    return outer;
   }
-  async function enterMode(mode){
-    document.body.setAttribute(PREV_ATTR, getCurrentTabName());
+
+
+  function textOfPrintNode(el){
+    return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function getTopPrintCards(root){
+    /*
+      v17.76:
+      기존 v17.75는 article, .report-card-ui, .touch-card, .card를 모두 대상으로 제거했다.
+      이 경우 사고진단 내부 하위 카드/도면 wrapper까지 제거되어 사고진단이 사라질 수 있다.
+      따라서 #secDiag 바로 아래의 실질 카드 wrapper만 우선 대상으로 잡고,
+      없을 때만 article/report-card-ui를 fallback으로 사용한다.
+    */
+    if(!root) return [];
+
+    var direct = qsa(':scope > article, :scope > .report-card-ui, :scope > .touch-card, :scope > .card', root);
+    direct = direct.filter(function(card){
+      return textOfPrintNode(card).length > 0 || card.querySelector('input,textarea,select,img,canvas,svg');
+    });
+
+    if(direct.length) return direct;
+
+    var all = qsa('article, .report-card-ui', root);
+    return all.filter(function(card){
+      var parentCard = card.parentElement && card.parentElement.closest('article, .report-card-ui');
+      return !parentCard;
+    });
+  }
+
+  function isAccidentPrintCard(card){
+    if(!card) return false;
+    var txt = textOfPrintNode(card);
+    var cls = typeof card.className === 'string' ? card.className : '';
+    var attrs = [
+      cls,
+      card.id || '',
+      card.getAttribute('data-card'),
+      card.getAttribute('data-section'),
+      card.getAttribute('data-key')
+    ].join(' ');
+
+    return /insurance-basic-card|diag-accident-card|accident|보험|특수\s*이력|보험·특수|사고\s*진단확인|사고진단|사고\s*진단|상부\s*진단|좌\/우\s*측면\s*진단|하부\s*진단/.test(attrs + ' ' + txt);
+  }
+
+  function isExteriorPrintCard(card){
+    if(!card) return false;
+    var txt = textOfPrintNode(card);
+    var cls = typeof card.className === 'string' ? card.className : '';
+    var attrs = [
+      cls,
+      card.id || '',
+      card.getAttribute('data-card'),
+      card.getAttribute('data-section'),
+      card.getAttribute('data-key')
+    ].join(' ');
+
+    return /diag-paint-card|diag-exterior-card|tire-state-card|paint|exterior|tire|도막\s*진단확인|외관\s*진단확인|타이어\s*상태확인|트레드|도막|외관|타이어/.test(attrs + ' ' + txt);
+  }
+
+  function cloneFilteredDiagSection(title, mode){
+    var src = qs('#secDiag');
+    if(!src) return null;
+
+    var outer = document.createElement('section');
+    outer.className = 'report-print-section-v1773';
+
+    var h = document.createElement('div');
+    h.className = 'report-print-section-title-v1773';
+    h.textContent = title;
+
+    var body = document.createElement('div');
+    body.className = 'report-print-section-body-v1773';
 
     /*
-      v17.70:
-      기존 warmupTabs가 기본→사고→외관→점검을 빠르게 활성화하면서
-      마지막 점검 탭 상태가 남는 문제가 있었다.
-      준비 중에는 섹션을 숨긴 뒤 렌더만 깨우고, 저장모드 진입 후에는
-      inline !important로 4개 섹션을 모두 고정 표시한다.
+      v17.75:
+      사고/외관 모두 #secDiag 원본 컨텍스트를 유지해야 도면/마커 CSS가 깨지지 않는다.
+      단, 사고에는 보험·특수/사고 카드만 남기고,
+      외관/수리에는 도막/외관/타이어 카드만 남긴다.
     */
-    document.body.classList.add('report-mobile-save-preparing-v1770');
-    await warmupTabs();
-    document.body.classList.remove('report-mobile-save-preparing-v1770');
+    var clone = src.cloneNode(true);
+    clone.id = 'secDiag';
+    clone.classList.add('report-print-cloned-section-v1773');
 
-    document.body.classList.add(BODY_CLASS);
-    forceAllReportSectionsVisible();
-    applyCompanyMode(mode);
+    syncFormValuesForClone(src, clone);
+    makeReadonlyForPrint(clone);
 
-    var bar = buildBar();
-    var label = qs('#reportMobileSaveModeLabelV1769', bar);
-    if(label) label.textContent = mode === 'company' ? '회사보고용 저장모드' : '고객보고용 저장모드';
-    window.scrollTo(0,0);
+    var keepFn = mode === 'exterior' ? isExteriorPrintCard : isAccidentPrintCard;
+    var topCards = getTopPrintCards(clone);
+
+    /*
+      v17.76:
+      하위 요소를 제거하지 않고 최상위 카드만 제거한다.
+      사고진단 내부 도면/마커/라벨 구조 보존이 목적이다.
+    */
+    topCards.forEach(function(card){
+      if(!keepFn(card)){
+        card.remove();
+      }
+    });
+
+    /*
+      fallback:
+      최상위 카드 판별이 실패하여 아무것도 남지 않는 경우,
+      원본 clone을 유지하여 데이터 유실을 방지한다.
+    */
+    if(!textOfPrintNode(clone)){
+      clone = src.cloneNode(true);
+      clone.id = 'secDiag';
+      clone.classList.add('report-print-cloned-section-v1773');
+      syncFormValuesForClone(src, clone);
+      makeReadonlyForPrint(clone);
+    }
+
+    clone.style.setProperty('display','block','important');
+    clone.style.setProperty('visibility','visible','important');
+    clone.style.setProperty('opacity','1','important');
+    clone.style.setProperty('height','auto','important');
+    clone.style.setProperty('max-height','none','important');
+    clone.style.setProperty('overflow','visible','important');
+
+    body.appendChild(clone);
+    outer.appendChild(h);
+    outer.appendChild(body);
+
+    return outer;
   }
-  function exitMode(){
-    applyCompanyMode('customer');
+
+  function cloneExteriorSection(){
+    /*
+      v17.75:
+      외관/수리 카드가 #secDiag 컨텍스트에서는 정상이고 #secExterior/개별 카드 clone에서는 깨진다.
+      따라서 외관/수리도 #secDiag clone에서 도막/외관/타이어 카드만 필터링한다.
+    */
+    var node = cloneFilteredDiagSection('외관/수리', 'exterior');
+    if(node) return node;
+
+    var outer = document.createElement('section');
+    outer.className = 'report-print-section-v1773';
+
+    var h = document.createElement('div');
+    h.className = 'report-print-section-title-v1773';
+    h.textContent = '외관/수리';
+
+    var body = document.createElement('div');
+    body.className = 'report-print-section-body-v1773';
+
+    var empty = document.createElement('article');
+    empty.className = 'report-card-ui';
+    empty.innerHTML = '<h2>외관/수리</h2><div style="font-size:12px;font-weight:800;color:#6b7280;line-height:1.5">외관/수리 표시 카드가 현재 DOM에서 확인되지 않았습니다.</div>';
+    body.appendChild(empty);
+
+    outer.appendChild(h);
+    outer.appendChild(body);
+    return outer;
+  }
+
+  function buildReport(mode){
+    removeReportRoot();
     restoreNodes(restoreRecords);
     restoreRecords = [];
-    restoreSectionStyles();
-    document.body.classList.remove(BODY_CLASS, COMPANY_CLASS, 'report-mobile-save-preparing-v1770');
-    removeBar();
-    var prev = document.body.getAttribute(PREV_ATTR) || 'input';
-    activateTab(prev);
-    window.scrollTo(0,0);
+
+    var root = document.createElement('main');
+    root.id = ROOT_ID;
+
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = String(now.getMonth()+1).padStart(2,'0');
+    var d = String(now.getDate()).padStart(2,'0');
+
+    var head = document.createElement('section');
+    head.className = 'report-print-head-v1773';
+    head.innerHTML =
+      '<div class="report-print-title-v1773">오토베이 현장 매입 진단리포트</div>' +
+      '<p class="report-print-sub-v1773">' + (mode === 'company' ? '회사보고용 PDF 저장' : '고객보고용 PDF 저장') + ' · ' + y + '-' + m + '-' + d + '</p>' +
+      '<p class="report-print-guide-v1773">기본 / 사고 / 외관·수리 / 점검 영역을 PDF 저장용으로 구성했습니다.</p>';
+    root.appendChild(head);
+
+    var basicNode = cloneSection('기본', '#secInput');
+    if(basicNode) root.appendChild(basicNode);
+
+    var accidentNode = cloneFilteredDiagSection('사고', 'accident');
+    if(accidentNode) root.appendChild(accidentNode);
+
+    root.appendChild(cloneExteriorSection());
+
+    var checkNode = cloneSection('점검', '#secCheck');
+    if(checkNode) root.appendChild(checkNode);
+
+    document.body.appendChild(root);
+
+    if(mode === 'company'){
+      qsa('#secDiag, #secExterior, [id^="secExterior_printCloneV1773_card_"]', root).forEach(function(section){
+        restoreRecords = restoreRecords.concat(hideLNodes(section));
+      });
+    }
+
+    return root;
   }
-  function bindControls(){
+
+  function buildBar(){
+    var bar = document.createElement('div');
+    bar.id = BAR_ID;
+    bar.className = 'report-print-bar-v1773';
+    bar.innerHTML =
+      '<button class="primary" id="reportPrintRunV1773" type="button">PDF 저장</button>' +
+      '<button id="reportPrintCloseV1773" type="button">닫기</button>';
+    document.body.appendChild(bar);
+
+    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
+      window.print();
+    }, false);
+
+    qs('#reportPrintCloseV1773', bar).addEventListener('click', function(){
+      closePreview();
+    }, false);
+  }
+
+  function openPreview(mode){
+    buildReport(mode);
+    document.body.classList.add(PREV_CLASS);
+    buildBar();
+    window.scrollTo(0,0);
+    setTimeout(function(){
+      window.print();
+    }, 450);
+  }
+
+  function closePreview(){
+    document.body.classList.remove(PREV_CLASS);
+    restoreNodes(restoreRecords);
+    restoreRecords = [];
+    removeReportRoot();
+  }
+
+  function bindPrintButtons(){
     var root = qs('#reportOutputSection');
-    if(!root || qs('.report-mobile-save-wrap-v1769', root)) return;
+    if(!root || qs('.report-mobile-print-wrap-v1773', root)) return;
+
     var wrap = document.createElement('div');
-    wrap.className = 'report-mobile-save-wrap-v1769';
-    wrap.innerHTML = '' +
-      '<div class="report-mobile-save-title-v1769">모바일 저장모드</div>' +
-      '<div class="report-mobile-save-desc-v1769">모바일 브라우저에서는 자동 화면 캡처 대신 저장용 화면으로 전환합니다. 전환 후 브라우저의 전체 페이지 캡처 또는 공유 기능으로 한 번에 저장하면 됩니다.</div>' +
-      '<div class="report-mobile-save-btns-v1769">' +
-        '<button class="report-mobile-save-btn-v1769 customer" id="btnCustomerMobileSaveV1769" type="button">고객보고용 저장화면</button>' +
-        '<button class="report-mobile-save-btn-v1769 company" id="btnCompanyMobileSaveV1769" type="button">회사보고용 저장화면</button>' +
+    wrap.className = 'report-mobile-print-wrap-v1773';
+    wrap.innerHTML =
+      '<div class="report-mobile-print-title-v1773">모바일 PDF 저장</div>' +
+      '<div class="report-mobile-print-desc-v1773">모바일에서는 화면캡처 대신 PDF 저장용 리포트를 생성합니다. 버튼 클릭 시 저장용 화면이 열리고 인쇄/PDF 저장 창이 실행됩니다.</div>' +
+      '<div class="report-mobile-print-btns-v1773">' +
+        '<button class="report-mobile-print-btn-v1773 customer" id="btnCustomerMobilePrintV1773" type="button">고객보고용 PDF 저장</button>' +
+        '<button class="report-mobile-print-btn-v1773 company" id="btnCompanyMobilePrintV1773" type="button">회사보고용 PDF 저장</button>' +
       '</div>';
     root.appendChild(wrap);
-    qs('#btnCustomerMobileSaveV1769', wrap).addEventListener('click', function(){ enterMode('customer'); }, false);
-    qs('#btnCompanyMobileSaveV1769', wrap).addEventListener('click', function(){ enterMode('company'); }, false);
+
+    qs('#btnCustomerMobilePrintV1773', wrap).addEventListener('click', function(){
+      openPreview('customer');
+    }, false);
+
+    qs('#btnCompanyMobilePrintV1773', wrap).addEventListener('click', function(){
+      openPreview('company');
+    }, false);
   }
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindControls, false);
+    document.addEventListener('DOMContentLoaded', bindPrintButtons, false);
   }else{
-    bindControls();
+    bindPrintButtons();
   }
 
-  window.__enterReportMobileSaveModeV1769 = enterMode;
-  window.__exitReportMobileSaveModeV1769 = exitMode;
+  window.__openReportPrintV1773 = openPreview;
+  window.__closeReportPrintV1773 = closePreview;
 })();
 </script>
+
 </body>
 </html>

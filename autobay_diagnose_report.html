@@ -12984,7 +12984,99 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   font-size:13px !important;
   font-weight:900 !important;
 }
-</style></head>
+</style>
+<style>
+/* v70 - 기능작동/보증연장/고정 헤더 안전 보정
+   기준:
+   - v69를 BASE로 사용한다.
+   - Android 모바일 브라우저를 1차 기준으로 보고, iPhone Safari 호환성만 함께 고려한다.
+   수정 범위:
+   - 13 기능작동 카드의 사이드뷰미러 작동 위치 보정
+   - 18 장점 카드의 보증연장 선택 UI를 검수자 코멘트 선택 UI와 동일 계열로 정리
+   - sticky header 위로 일부 카드/도면 레이어가 침범하지 않도록 z-index 계층을 재정리
+*/
+.header{
+  position:sticky !important;
+  top:0 !important;
+  z-index:2147483600 !important;
+  isolation:isolate !important;
+  -webkit-transform:translateZ(0) !important;
+  transform:translateZ(0) !important;
+  will-change:transform !important;
+}
+.header .tabs,
+.header .tabs label,
+.header .menu-open-btn,
+.header .menu-panel{
+  position:relative !important;
+  z-index:2147483601 !important;
+}
+.section{
+  position:relative !important;
+  z-index:1 !important;
+}
+.report-card-ui,
+.touch-card,
+.touch-card .fig,
+.paint-fig,
+.paint-fig-bent{
+  position:relative !important;
+}
+/* section 자체를 낮은 stacking context로 묶어 카드/도면 내부 고 z-index가 header를 침범하지 않게 한다.
+   내부 marker/button의 z-index 값은 건드리지 않는다. */
+/* 단, 하단 저장/복원 버튼은 기존처럼 화면 하단에 유지하되 header보다 낮게 둔다. */
+.bottom{
+  z-index:2147483500 !important;
+}
+.pros-warranty-head-v70{
+  display:flex !important;
+  align-items:center !important;
+  width:100% !important;
+  gap:8px !important;
+  min-height:30px !important;
+  flex-wrap:nowrap !important;
+}
+.pros-warranty-head-v70 .pros-warranty-label-v1677{
+  flex:0 0 auto !important;
+  font-size:13px !important;
+  line-height:1.35 !important;
+  font-weight:1000 !important;
+  color:#111827 !important;
+}
+.pros-warranty-head-v70 .customer-talk-spacer{
+  flex:1 1 auto !important;
+}
+.pros-warranty-head-v70 .pros-warranty-cycle-v70{
+  flex:0 0 auto !important;
+  min-width:34px !important;
+  height:26px !important;
+  border-radius:8px !important;
+  background:#111827 !important;
+  color:#fff !important;
+  border:0 !important;
+  font-size:11px !important;
+  font-weight:1000 !important;
+  line-height:1 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 8px !important;
+  touch-action:manipulation !important;
+  -webkit-tap-highlight-color:transparent !important;
+}
+.pros-warranty-head-v70 .pros-warranty-year-v70{
+  margin-left:0 !important;
+  min-width:auto !important;
+  height:auto !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:#111827 !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+}
+</style>
+</head>
 <body>
 <div class="app">
 <input checked="" class="tab-radio" id="tabInput" name="mainTabs" type="radio"/>
@@ -13950,6 +14042,7 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 <label class="check-choice bad" for="function_12_bad">이상</label>
 <input class="memo" data-key="function_12_memo" placeholder="이상 메모 입력"/>
 </div>
+<div class="checkline" data-check-key="function_17"><div class="check-title">사이드뷰미러 작동</div><input class="check-radio ok" data-check="ok" id="function_17_ok" name="function_17_state" type="radio"/><label class="check-choice ok" for="function_17_ok">양호</label><input class="check-radio bad" data-check="bad" id="function_17_bad" name="function_17_state" type="radio"/><label class="check-choice bad" for="function_17_bad">이상</label><input class="memo" data-key="function_17_memo" placeholder="이상 메모 입력"/></div>
 <div class="checkline" data-check-key="function_13">
 <div class="check-title">에어쇼바 작동</div>
 <input class="check-radio ok" data-check="ok" id="function_13_ok" name="function_13_state" type="radio"/>
@@ -13966,7 +14059,7 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 <label class="check-choice bad" for="function_14_bad">이상</label>
 <input class="memo" data-key="function_14_memo" placeholder="이상 메모 입력"/>
 </div>
-<div class="checkline" data-check-key="air_0"><div class="check-title">와이퍼작동</div><input class="check-radio ok" data-check="ok" id="air_0_ok" name="air_0_state" type="radio"/><label class="check-choice ok" for="air_0_ok">양호</label><input class="check-radio bad" data-check="bad" id="air_0_bad" name="air_0_state" type="radio"/><label class="check-choice bad" for="air_0_bad">이상</label><input class="memo" data-key="air_0_memo" placeholder="이상 메모 입력"/></div><div class="checkline" data-check-key="air_1"><div class="check-title">워셔액분사</div><input class="check-radio ok" data-check="ok" id="air_1_ok" name="air_1_state" type="radio"/><label class="check-choice ok" for="air_1_ok">양호</label><input class="check-radio bad" data-check="bad" id="air_1_bad" name="air_1_state" type="radio"/><label class="check-choice bad" for="air_1_bad">이상</label><input class="memo" data-key="air_1_memo" placeholder="이상 메모 입력"/></div><div class="checkline" data-check-key="function_17"><div class="check-title">사이드뷰미러 작동</div><input class="check-radio ok" data-check="ok" id="function_17_ok" name="function_17_state" type="radio"/><label class="check-choice ok" for="function_17_ok">양호</label><input class="check-radio bad" data-check="bad" id="function_17_bad" name="function_17_state" type="radio"/><label class="check-choice bad" for="function_17_bad">이상</label><input class="memo" data-key="function_17_memo" placeholder="이상 메모 입력"/></div></article><article class="report-card-ui" data-check-card="media">
+<div class="checkline" data-check-key="air_0"><div class="check-title">와이퍼작동</div><input class="check-radio ok" data-check="ok" id="air_0_ok" name="air_0_state" type="radio"/><label class="check-choice ok" for="air_0_ok">양호</label><input class="check-radio bad" data-check="bad" id="air_0_bad" name="air_0_state" type="radio"/><label class="check-choice bad" for="air_0_bad">이상</label><input class="memo" data-key="air_0_memo" placeholder="이상 메모 입력"/></div><div class="checkline" data-check-key="air_1"><div class="check-title">워셔액분사</div><input class="check-radio ok" data-check="ok" id="air_1_ok" name="air_1_state" type="radio"/><label class="check-choice ok" for="air_1_ok">양호</label><input class="check-radio bad" data-check="bad" id="air_1_bad" name="air_1_state" type="radio"/><label class="check-choice bad" for="air_1_bad">이상</label><input class="memo" data-key="air_1_memo" placeholder="이상 메모 입력"/></div></article><article class="report-card-ui" data-check-card="media">
 <h2><span class="no">14</span> 멀티미디어 작동</h2>
 
 
@@ -14060,7 +14153,7 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 <input class="check-radio bad" data-check="bad" id="owned_0_bad" name="owned_0_state" type="radio"/>
 <label class="check-choice bad" for="owned_0_bad">미보유</label>
 <input class="memo" data-key="owned_0_memo" placeholder="이상 메모 입력" style="display:none!important;"/>
-</div></article><article class="report-card-ui pros-card-v1677" data-check-card="pros"><h2><span class="no">18</span> 장점</h2><div class="field"><div class="pros-warranty-head-v69"><label class="pros-warranty-label-v1677" style="font-size:13px!important;line-height:1.35!important">보증연장</label><select class="bi-select pros-warranty-level-v69" data-key="prosWarrantyLevel"><option value="">선택</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="field pros-tuning-wrap"><label>추가장착(튜닝)</label><div class="pros-tuning-rows" data-pros-tuning-rows="1"><div class="pros-tuning-row"><input data-key="prosTuning_0" placeholder="추가장착/튜닝 항목 입력"/></div></div><button class="pros-add-btn" data-pros-add-tuning="1" type="button">+ 항목추가</button></div><div class="field"><label>관리 상태확인(내역서 보유)</label><select class="bi-select" data-key="prosMaintenanceStatus"><option>보유</option><option>미보유</option></select></div></article><article class="report-card-ui comment-card-v1674 comment-card-v1675">
+</div></article><article class="report-card-ui pros-card-v1677" data-check-card="pros"><h2><span class="no">18</span> 장점</h2><div class="field"><div class="pros-warranty-head-v70 customer-talk-head"><span class="customer-talk-title pros-warranty-label-v1677" style="font-size:13px!important;line-height:1.35!important">보증연장</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle pros-warranty-cycle-v70" data-pros-warranty-cycle="1" data-talk-level="0" data-value="0" type="button">선택</button><span class="customer-talk-time pros-warranty-year-v70">년</span><input data-key="prosWarrantyLevel" type="hidden" value=""/></div></div><div class="field pros-tuning-wrap"><label>추가장착(튜닝)</label><div class="pros-tuning-rows" data-pros-tuning-rows="1"><div class="pros-tuning-row"><input data-key="prosTuning_0" placeholder="추가장착/튜닝 항목 입력"/></div></div><button class="pros-add-btn" data-pros-add-tuning="1" type="button">+ 항목추가</button></div><div class="field"><label>관리 상태확인(내역서 보유)</label><select class="bi-select" data-key="prosMaintenanceStatus"><option>보유</option><option>미보유</option></select></div></article><article class="report-card-ui comment-card-v1674 comment-card-v1675">
 <h2><span class="no">19</span> 코멘트</h2>
 <div class="field"><label class="comment-item-title-v1674 customer-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">고객 코멘트</label><textarea data-key="customerCommentMemo" placeholder="고객에게 질문한 주행 이슈, 기타 특이사항, 고객의 전달사항 입력"></textarea></div>
 <div class="field customer-talk-field"><div class="customer-talk-head"><span class="customer-talk-title comment-item-title-v1674 inspector-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">검수자 코멘트</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle" data-talk-level="0" type="button">선택</button><span class="customer-talk-time">일정시간</span></div><textarea class="customer-talk-memo" data-key="inspectorCommentMemo" placeholder="고객도 같이 보는 관점의 검수자 코멘트를 입력"></textarea></div>
@@ -17243,7 +17336,74 @@ boot();
       '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>오토베이 현장 매입 진단리포트 - ' + reportTitle + '</title>' +
       '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
-      '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main></body></html>'
+      '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main>
+<script>
+/* v70 - 보증연장 선택값 저장/복원 동기화
+   목적:
+   - 보증연장 버튼은 검수자 코멘트와 동일한 클릭 순환 UI를 사용한다.
+   - 기존 저장 함수는 data-key 입력요소 값을 저장하므로 hidden input(prosWarrantyLevel)에 선택값을 동기화한다.
+   - 기존 localStorage key와 saveDraft/restoreDraft 함수는 변경하지 않는다.
+*/
+(function(){
+  function syncProsWarrantyButtonFromHidden(){
+    var input = document.querySelector('[data-key="prosWarrantyLevel"]');
+    var btn = document.querySelector('[data-pros-warranty-cycle="1"]');
+    if(!input || !btn) return;
+
+    var value = input.value || '';
+    if(!/^[1-5]$/.test(value)) value = '';
+
+    btn.setAttribute('data-value', value || '0');
+    btn.setAttribute('data-talk-level', value || '0');
+    btn.textContent = value || '선택';
+  }
+
+  function syncProsWarrantyHiddenFromButton(btn){
+    var input = document.querySelector('[data-key="prosWarrantyLevel"]');
+    if(!input || !btn) return;
+
+    var value = btn.getAttribute('data-value') || btn.textContent || '';
+    if(value === '선택' || value === '0') value = '';
+    if(!/^[1-5]$/.test(value)) value = '';
+
+    btn.setAttribute('data-value', value || '0');
+    btn.setAttribute('data-talk-level', value || '0');
+    btn.textContent = value || '선택';
+    input.value = value;
+
+    try{
+      input.dispatchEvent(new Event('input', {bubbles:true}));
+      input.dispatchEvent(new Event('change', {bubbles:true}));
+    }catch(e){}
+  }
+
+  function bindProsWarrantyV70(){
+    if(document.body.getAttribute('data-pros-warranty-v70-bound') === '1') return;
+    document.body.setAttribute('data-pros-warranty-v70-bound', '1');
+
+    document.addEventListener('click', function(ev){
+      var btn = ev.target && ev.target.closest ? ev.target.closest('[data-pros-warranty-cycle="1"]') : null;
+      if(!btn) return;
+
+      setTimeout(function(){
+        syncProsWarrantyHiddenFromButton(btn);
+      }, 0);
+    }, true);
+
+    setTimeout(syncProsWarrantyButtonFromHidden, 80);
+    window.addEventListener('load', function(){
+      setTimeout(syncProsWarrantyButtonFromHidden, 120);
+    }, false);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindProsWarrantyV70, false);
+  }else{
+    bindProsWarrantyV70();
+  }
+})();
+</script>
+</body></html>'
     );
     win.document.close();
     return win;

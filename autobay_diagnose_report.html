@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 
-<!DOCTYPE html>
-
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
 <title>오토베이 현장 매입 진단리포트</title>
+<!--
+BASE CLEANUP NOTE
+- 기준: 사용자가 업로드한 현재 HTML 코드
+- 환경: Android 모바일 브라우저 기준, iPhone Safari 호환성 고려
+- 유지: L 상태, R 노랑, 기존 localStorage key, radio + label 구조
+- 정리: 중복 doctype, D15 전용 transform 잔재, 비활성 placeholder script, R 검정 잔재
+-->
+
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
@@ -97,12 +103,11 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .touch-card .hit span{width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;line-height:1;color:transparent;background:transparent}
 .touch-card .h1 span{background:#e53935;color:#fff}
 .touch-card .h2 span{background:#1e88e5;color:#fff}
-.touch-card .h3 span{background:#111;color:#fff}
+.touch-card .h3 span{background:#facc15;color:#111827}
 .touch-card .st0:checked + .st1 + .st2 + .st3 + .slot .h0{display:flex}
 .touch-card .st1:checked + .st2 + .st3 + .slot .h1{display:flex}
 .touch-card .st2:checked + .st3 + .slot .h2{display:flex}
 .touch-card .st3:checked + .slot .h3{display:flex}
-.touch-card [data-part="D-15"]{transform:translateX(-26px) !important}
 .touch-card .slot{transform:translate(-50%,-50%) !important}
 .touch-card .slot .hit{display:none;align-items:center !important;justify-content:center !important}
 .touch-card .slot .hit span{position:static !important;transform:none !important;margin:0 !important}
@@ -848,8 +853,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   color:#fff !important;
 }
 #secDiag .touch-diagram-shell .touch-card .h3 span{
-  background:#111 !important;
-  color:#fff !important;
+  background:#facc15 !important;
+  color:#111827 !important;
 }
 
 
@@ -16027,7 +16032,7 @@ boot();
   }
   window.addEventListener('load', bindBasicV1710, false);
 })();
-</script><script>/* v17.19 disabled previous sunroof multi-cycle handler */</script><script>
+</script><script>
 /* v17.13 - 도막 좌/우 측면진단 badge/marker inline 위치 재고정
    목적:
    - paint badge가 cloneNode로 교체될 때 CSS만으로 위치가 흔들리는 것을 방지한다.
@@ -16131,7 +16136,7 @@ boot();
   }
   window.addEventListener('load', bindPaintSideStabilizerV1713, false);
 })();
-</script><script>/* v17.20 disabled conflicting handler: v17.15 - wheel/customer-talk 계열 단일 위임 핸들러 */</script><script>
+</script><script>
 /* v17.17 - 매입오더 count select + money toggle 통합 핸들러 */
 (function(){
   function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
@@ -16540,7 +16545,7 @@ boot();
   }
   window.addEventListener('load', bindMarkerStableV1718, false);
 })();
-</script><script>/* v17.20 disabled conflicting handler: v17.19 - 기본 기능 복구 및 충돌 차단 핸들러 */</script><script>
+</script><script>
 /* v17.20 - 복구 2차 단일 핸들러 */
 (function(){
   function onlyDigits(value){

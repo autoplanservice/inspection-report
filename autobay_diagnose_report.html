@@ -13121,49 +13121,66 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   z-index:2147483601 !important;
 }
 
-/* 관리 상태확인 선택값은 보유확인 카드의 보유/미보유 라디오 버튼과 같은 레이아웃으로 맞춘다. */
+/* 관리 상태확인 선택값은 보유확인 카드의 보유/미보유 라디오 버튼과 같은 레이아웃·색상·레이어로 맞춘다. */
 #secCheck .pros-card-v1677 .pros-maintenance-checkline-v72{
   display:grid !important;
-  grid-template-columns:1fr 64px 64px !important;
-  gap:7px !important;
+  grid-template-columns:1fr 78px 78px !important;
+  column-gap:7px !important;
   align-items:center !important;
   padding:8px 0 !important;
   border-bottom:0 !important;
+  position:relative !important;
+  z-index:auto !important;
+  contain:layout paint !important;
 }
 
 #secCheck .pros-card-v1677 .pros-maintenance-checkline-v72 .check-title{
   font-size:13px !important;
   font-weight:900 !important;
+  color:#111827 !important;
 }
 
 #secCheck .pros-card-v1677 .pros-maintenance-checkline-v72 .check-choice{
+  width:78px !important;
+  min-width:78px !important;
+  max-width:78px !important;
   height:34px !important;
+  min-height:34px !important;
+  max-height:34px !important;
   border:1px solid #cfd6e1 !important;
   background:#fff !important;
   border-radius:10px !important;
-  padding:0 8px !important;
+  padding:0 6px !important;
+  box-sizing:border-box !important;
   font-size:12px !important;
-  font-weight:900 !important;
+  line-height:1 !important;
+  font-weight:400 !important;
   color:#374151 !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
+  text-align:center !important;
+  white-space:nowrap !important;
   touch-action:manipulation !important;
   -webkit-tap-highlight-color:transparent !important;
   user-select:none !important;
   -webkit-user-select:none !important;
+  transition:none !important;
+  animation:none !important;
 }
 
 #secCheck .pros-card-v1677 .pros-maintenance-checkline-v72 .check-radio.ok:checked + .check-choice.ok{
-  background:#dcfce7 !important;
-  border-color:#22c55e !important;
-  color:#166534 !important;
+  background:#1e88e5 !important;
+  border-color:#1e88e5 !important;
+  color:#ffffff !important;
+  font-weight:900 !important;
 }
 
 #secCheck .pros-card-v1677 .pros-maintenance-checkline-v72 .check-radio.bad:checked + .check-choice.bad{
-  background:#fee2e2 !important;
+  background:#ef4444 !important;
   border-color:#ef4444 !important;
-  color:#991b1b !important;
+  color:#ffffff !important;
+  font-weight:900 !important;
 }
 </style>
 
@@ -17429,69 +17446,6 @@ boot();
       '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
       '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main>
 
-<script>
-/* v72 - 관리 상태확인(내역서 보유) hidden 저장값 동기화
-   목적:
-   - UI는 보유확인 카드와 같은 radio/label 레이아웃을 사용한다.
-   - 기존 저장 key(prosMaintenanceStatus)는 hidden input에 보유/미보유 문자열로 유지한다.
-   - 기존 localStorage key와 saveDraft/restoreDraft 함수는 변경하지 않는다.
-*/
-(function(){
-  function getEls(){
-    var hidden = document.querySelector('[data-key="prosMaintenanceStatus"]');
-    var ok = document.getElementById('prosMaintenanceStatus_ok');
-    var bad = document.getElementById('prosMaintenanceStatus_bad');
-    return {hidden:hidden, ok:ok, bad:bad};
-  }
-
-  /**
-   * hidden 저장값을 기준으로 라디오 상태를 복원한다.
-   */
-  function applyMaintenanceValueToRadio(){
-    var els = getEls();
-    if(!els.hidden || !els.ok || !els.bad) return;
-    var value = String(els.hidden.value || '').trim();
-    if(value === '보유' || value === 'ok'){
-      els.ok.checked = true;
-      els.bad.checked = false;
-    }else if(value === '미보유' || value === 'bad'){
-      els.ok.checked = false;
-      els.bad.checked = true;
-    }
-  }
-
-  /**
-   * 라디오 선택값을 기존 data-key 저장값으로 동기화한다.
-   */
-  function syncMaintenanceValueFromRadio(){
-    var els = getEls();
-    if(!els.hidden || !els.ok || !els.bad) return;
-    els.hidden.value = els.ok.checked ? '보유' : (els.bad.checked ? '미보유' : '');
-  }
-
-  /**
-   * 관리 상태확인 라디오 이벤트를 연결한다.
-   */
-  function bindMaintenanceStatusV72(){
-    var els = getEls();
-    if(!els.hidden || !els.ok || !els.bad) return;
-    applyMaintenanceValueToRadio();
-    els.ok.addEventListener('change', syncMaintenanceValueFromRadio, false);
-    els.bad.addEventListener('change', syncMaintenanceValueFromRadio, false);
-    setTimeout(function(){
-      applyMaintenanceValueToRadio();
-      syncMaintenanceValueFromRadio();
-    }, 0);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindMaintenanceStatusV72, false);
-  }else{
-    bindMaintenanceStatusV72();
-  }
-})();
-</script>
-
 </body></html>'
     );
     win.document.close();
@@ -19210,6 +19164,89 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
   }else{
     bindProsWarrantyV70();
   }
+})();
+</script>
+
+
+<script>
+/* v73 - 관리 상태확인(내역서 보유) 저장값 동기화 및 캡처창 코드노출 방지
+   목적:
+   - UI는 보유확인 카드의 보유/미보유와 동일한 radio/label 구조를 사용한다.
+   - 기존 저장 key(prosMaintenanceStatus)는 hidden input에 보유/미보유 문자열로 유지한다.
+   - 캡처/다운로드 미리보기 win.document.write 문자열 안에는 script를 삽입하지 않는다.
+   영향 범위:
+   - 점검 탭 18 장점 카드의 관리 상태확인 항목만 대상으로 한다.
+*/
+(function(){
+  /**
+   * 관리 상태확인 hidden input과 radio 요소를 조회한다.
+   */
+  function getMaintenanceStatusElsV73(){
+    var hidden = document.querySelector('[data-key="prosMaintenanceStatus"]');
+    var ok = document.getElementById('prosMaintenanceStatus_ok');
+    var bad = document.getElementById('prosMaintenanceStatus_bad');
+    return {hidden:hidden, ok:ok, bad:bad};
+  }
+
+  /**
+   * hidden 저장값을 기준으로 보유/미보유 라디오 상태를 복원한다.
+   */
+  function applyMaintenanceStatusValueToRadioV73(){
+    var els = getMaintenanceStatusElsV73();
+    if(!els.hidden || !els.ok || !els.bad) return;
+
+    var value = String(els.hidden.value || '').trim();
+    if(value === '보유' || value === 'ok'){
+      els.ok.checked = true;
+      els.bad.checked = false;
+      els.hidden.value = '보유';
+    }else if(value === '미보유' || value === 'bad'){
+      els.ok.checked = false;
+      els.bad.checked = true;
+      els.hidden.value = '미보유';
+    }
+  }
+
+  /**
+   * 라디오 선택값을 기존 data-key 저장값으로 동기화한다.
+   */
+  function syncMaintenanceStatusValueFromRadioV73(){
+    var els = getMaintenanceStatusElsV73();
+    if(!els.hidden || !els.ok || !els.bad) return;
+
+    els.hidden.value = els.ok.checked ? '보유' : (els.bad.checked ? '미보유' : '');
+    try{
+      els.hidden.dispatchEvent(new Event('input', {bubbles:true}));
+      els.hidden.dispatchEvent(new Event('change', {bubbles:true}));
+    }catch(e){}
+  }
+
+  /**
+   * 관리 상태확인 라디오 이벤트를 한 번만 연결한다.
+   */
+  function bindMaintenanceStatusV73(){
+    if(document.body && document.body.getAttribute('data-maintenance-status-v73-bound') === '1') return;
+    if(document.body) document.body.setAttribute('data-maintenance-status-v73-bound', '1');
+
+    var els = getMaintenanceStatusElsV73();
+    if(!els.hidden || !els.ok || !els.bad) return;
+
+    applyMaintenanceStatusValueToRadioV73();
+    els.ok.addEventListener('change', syncMaintenanceStatusValueFromRadioV73, false);
+    els.bad.addEventListener('change', syncMaintenanceStatusValueFromRadioV73, false);
+
+    setTimeout(function(){
+      applyMaintenanceStatusValueToRadioV73();
+      syncMaintenanceStatusValueFromRadioV73();
+    }, 0);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindMaintenanceStatusV73, false);
+  }else{
+    bindMaintenanceStatusV73();
+  }
+  window.addEventListener('load', bindMaintenanceStatusV73, false);
 })();
 </script>
 

@@ -17449,520 +17449,6 @@ boot();
 
 
 
-<!-- v77.00: customer PDF landscape layout fix. Keep outside win.document.write. -->
-<style>
-/* v77.00 - 고객보고용 PDF 가로형 레이아웃 재배치
-   목적:
-   - 하단/우측 잘림 방지를 위해 고정 1120px 기준을 폐기하고 안전폭 1000px 기준으로 재구성한다.
-   - 각 페이지 상단의 별도 페이지 헤더를 제거하고 카드 번호/카드명만 남긴다.
-   - 1페이지: 기본정보 + 보험이력 카드 좌우 배치.
-   - 2페이지: 사고 진단 도면 3장.
-   - 3페이지: 도막 상부/좌우 + 외관 상부/좌우 2열 배치.
-   - 4페이지부터 점검 카드는 좌우 2열 배치.
-   - 기존 화면 DOM, localStorage key, 도면 좌표는 수정하지 않는다.
-*/
-#reportPrintRootV1773.report-pdf-root-v77{
-  display:none;
-  width:100%;
-  max-width:1020px;
-  margin:0 auto;
-  padding:10px;
-  background:#eef1f5;
-  color:#111827;
-  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
-  box-sizing:border-box;
-}
-body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v77{display:block!important}
-.report-pdf-page-v77{
-  width:1000px;
-  height:720px;
-  overflow:hidden;
-  background:#fff;
-  border:1px solid #d8e0ea;
-  border-radius:12px;
-  margin:0 auto 14px;
-  box-shadow:0 2px 10px rgba(15,23,42,.06);
-  box-sizing:border-box;
-  page-break-after:always;
-  break-after:page;
-}
-.report-pdf-page-v77:last-child{page-break-after:auto;break-after:auto}
-.report-pdf-page-inner-v77{width:1000px;height:720px;padding:10px;box-sizing:border-box;background:#fff;transform-origin:top left;overflow:hidden}
-.report-pdf-page-body-v77{width:100%;height:100%;box-sizing:border-box;overflow:hidden}
-.report-pdf-grid-v77{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;width:100%;height:100%;box-sizing:border-box;align-items:start;overflow:hidden}
-.report-pdf-grid-v77.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.report-pdf-col-v77{min-width:0;overflow:hidden;box-sizing:border-box}
-.report-pdf-card-v77{background:#fff;border:1px solid #d8e0ea;border-radius:11px;padding:9px;margin:0 0 9px;box-sizing:border-box;overflow:hidden;break-inside:avoid;page-break-inside:avoid}
-.report-pdf-card-v77 h2,.report-pdf-page-body-v77 .report-card-ui h2{font-size:12px!important;line-height:1.25!important;margin:0 0 7px!important;font-weight:1000!important}
-.report-pdf-page-body-v77,
-.report-pdf-page-body-v77 .section,
-.report-pdf-page-body-v77 article,
-.report-pdf-page-body-v77 .report-card-ui,
-.report-pdf-page-body-v77 .touch-card,
-.report-pdf-page-body-v77 .paint-diagram-block{display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;max-height:none!important;overflow:visible!important}
-.report-pdf-page-body-v77 .header,
-.report-pdf-page-body-v77 .tabs,
-.report-pdf-page-body-v77 .menu-btn,
-.report-pdf-page-body-v77 .menu-open-btn,
-.report-pdf-page-body-v77 .menu-panel,
-.report-pdf-page-body-v77 #reportOutputSection,
-.report-pdf-page-body-v77 #secOrder,
-.report-pdf-page-body-v77 .order-open-btn,
-.report-pdf-page-body-v77 .scanner-start-card,
-.report-pdf-page-body-v77 .no-print{display:none!important;visibility:hidden!important}
-.report-pdf-page-body-v77 .report-card-ui,
-.report-pdf-page-body-v77 article.report-card-ui,
-.report-pdf-page-body-v77 .touch-card,
-.report-pdf-page-body-v77 .paint-diagram-block{box-shadow:none!important;margin-bottom:7px!important;break-inside:avoid!important;page-break-inside:avoid!important}
-.report-pdf-page-body-v77 .report-card-ui{padding:8px!important;border-radius:10px!important}
-.report-pdf-page-body-v77 .no{height:18px!important;min-width:18px!important;font-size:9px!important;padding:0 6px!important}
-.report-pdf-page-body-v77 label,
-.report-pdf-page-body-v77 .basicinfo-v5-label,
-.report-pdf-page-body-v77 .field label,
-.report-pdf-page-body-v77 .check-title{font-size:10px!important;line-height:1.22!important;margin-bottom:2px!important}
-.report-pdf-page-body-v77 input,
-.report-pdf-page-body-v77 textarea,
-.report-pdf-page-body-v77 select,
-.report-pdf-page-body-v77 button,
-.report-pdf-page-body-v77 label{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-.report-pdf-page-body-v77 input,
-.report-pdf-page-body-v77 textarea,
-.report-pdf-page-body-v77 select,
-.report-pdf-page-body-v77 button{pointer-events:none!important}
-/* 1페이지 기본정보 압축 */
-.report-pdf-page-body-v77 #secInput .basicinfo-v5-wrap{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px 7px!important}
-.report-pdf-page-body-v77 #secInput .basicinfo-v5-field,
-.report-pdf-page-body-v77 #secInput .basicinfo-v5-field.full{grid-column:auto!important;min-width:0!important}
-.report-pdf-page-body-v77 #secInput .bi-input,
-.report-pdf-page-body-v77 #secInput .bi-select,
-.report-pdf-page-body-v77 #secInput input,
-.report-pdf-page-body-v77 #secInput select{height:26px!important;min-height:26px!important;padding:4px 7px!important;font-size:10px!important;line-height:16px!important;border-radius:7px!important}
-.report-pdf-page-body-v77 #secInput textarea{min-height:28px!important;height:28px!important;padding:4px 7px!important;font-size:10px!important;border-radius:7px!important}
-.report-pdf-page-body-v77 #secInput .tri-row-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
-/* 도면 전용 */
-.report-pdf-diagram-card-v77{height:100%;display:flex!important;flex-direction:column!important;overflow:hidden!important}
-.report-pdf-diagram-card-v77 .touch-card,
-.report-pdf-diagram-card-v77 .paint-diagram-block{height:100%!important;margin:0!important;overflow:hidden!important}
-.report-pdf-diagram-card-v77 .fig,
-.report-pdf-diagram-card-v77 .paint-fig,
-.report-pdf-diagram-card-v77 .paint-fig-bent{height:100%!important;max-height:100%!important;overflow:hidden!important;position:relative!important}
-.report-pdf-diagram-card-v77 img{max-height:100%!important;object-fit:contain!important}
-.report-pdf-page-body-v77 .fig,
-.report-pdf-page-body-v77 .paint-fig,
-.report-pdf-page-body-v77 .paint-fig-bent,
-.report-pdf-page-body-v77 .touch-diagram-shell,
-.report-pdf-page-body-v77 .diagram-wrap,
-.report-pdf-page-body-v77 .paint-diagram-block{overflow:visible!important;contain:none!important;position:relative!important}
-.report-pdf-page-body-v77 .touch-card{width:100%!important;max-width:100%!important;margin:0!important}
-.report-pdf-page-body-v77 .touch-card .fig{width:100%!important;max-width:100%!important;overflow:visible!important}
-/* PDF에서 도막 입력 패널/입력바/닫기/선택 버튼 제거 */
-.report-pdf-page-body-v77 .paint-native-panel,
-.report-pdf-page-body-v77 .paint-v98-panel,
-.report-pdf-page-body-v77 .paint-input-dock,
-.report-pdf-page-body-v77 #paintInputDock,
-.report-pdf-page-body-v77 .paint-native-input,
-.report-pdf-page-body-v77 .paint-native-input-wrap,
-.report-pdf-page-body-v77 .paint-native-close,
-.report-pdf-page-body-v77 .paint-native-w,
-.report-pdf-page-body-v77 .paint-v98-input,
-.report-pdf-page-body-v77 .paint-v98-w,
-.report-pdf-page-body-v77 .paint-v98-current,
-.report-pdf-page-body-v77 .paint-v98-unit,
-.report-pdf-page-body-v77 [class*="paint"][class*="panel"],
-.report-pdf-page-body-v77 [class*="paint"][class*="dock"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
-/* 4페이지 이후 점검카드 2열 압축 */
-.report-pdf-check-grid-v77{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;width:100%;height:100%;align-items:start;overflow:hidden;box-sizing:border-box}
-.report-pdf-check-grid-v77 .report-card-ui{margin:0 0 8px!important}
-.report-pdf-check-grid-v77 .checkline{display:grid!important;grid-template-columns:minmax(0,1fr) 58px 58px!important;gap:5px!important;align-items:center!important;padding:4px 0!important;min-height:28px!important}
-.report-pdf-check-grid-v77 .check-choice{height:24px!important;min-height:24px!important;border-radius:7px!important;padding:0 5px!important;font-size:10px!important}
-.report-pdf-check-grid-v77 textarea{min-height:48px!important;height:48px!important;font-size:10px!important}
-.report-pdf-fit-note-v77{display:none;margin-top:4px;font-size:10px;color:#6b7280;text-align:right;font-weight:800}
-.report-pdf-page-v77[data-scaled="1"] .report-pdf-fit-note-v77{display:block}
-@media (max-width:1060px){
-  #reportPrintRootV1773.report-pdf-root-v77{max-width:100%;padding:8px}
-  .report-pdf-page-v77{width:100%;height:auto;min-height:auto;overflow:visible}
-  .report-pdf-page-inner-v77{width:100%;height:auto;transform:none!important}
-}
-@media print{
-  @page{size:A4 landscape;margin:4mm}
-  html,body{margin:0!important;padding:0!important;background:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  body.report-print-preview-v1773 > :not(#reportPrintRootV1773){display:none!important;visibility:hidden!important}
-  #reportPrintRootV1773.report-pdf-root-v77{display:block!important;width:289mm!important;max-width:289mm!important;margin:0 auto!important;padding:0!important;background:#fff!important}
-  #reportPrintRootV1773.report-pdf-root-v77 .report-pdf-page-v77{width:289mm!important;height:201mm!important;min-height:201mm!important;max-height:201mm!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;page-break-after:always!important;break-after:page!important;page-break-inside:avoid!important;break-inside:avoid!important;background:#fff!important}
-  #reportPrintRootV1773.report-pdf-root-v77 .report-pdf-page-v77:last-child{page-break-after:auto!important;break-after:auto!important}
-  #reportPrintRootV1773.report-pdf-root-v77 .report-pdf-page-inner-v77{width:1000px!important;height:720px!important;padding:8px!important;background:#fff!important;transform-origin:top left!important}
-  .report-print-bar-v1773{display:none!important}
-}
-</style>
-<script>
-/* v77.00 - 고객보고용 PDF 가로형 재배치 모듈
-   목적:
-   - PDF 페이지별 불필요한 1차 헤더를 제거한다.
-   - 페이지별 좌우/3열 배치를 명시한다.
-   - 우측/하단 잘림 방지를 위해 1000x720 안전 캔버스 기준으로 맞춘다.
-   - 기존 화면 DOM과 저장 key는 수정하지 않는다.
-*/
-(function(){
-  var ROOT_ID = 'reportPrintRootV1773';
-  var BAR_ID = 'reportPrintBarV1773';
-  var PREVIEW_CLASS = 'report-print-preview-v1773';
-  var restoreRecords = [];
-
-  /** 단일 요소를 조회한다. */
-  function qs(sel, root){ return (root || document).querySelector(sel); }
-
-  /** 복수 요소를 배열로 조회한다. */
-  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
-
-  /** 요소의 표시 텍스트를 정규화한다. */
-  function textOf(el){ return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim(); }
-
-  /** 기존 PDF root와 버튼바를 제거한다. */
-  function removePrintDomV77(){
-    var old = document.getElementById(ROOT_ID);
-    if(old) old.remove();
-    var bar = document.getElementById(BAR_ID);
-    if(bar) bar.remove();
-  }
-
-  /** 회사보고용에서 숨긴 L 노드를 원복한다. */
-  function restoreHiddenLNodesV77(){
-    (restoreRecords || []).forEach(function(rec){
-      if(!rec || !rec.el) return;
-      rec.el.style.display = rec.display || '';
-      rec.el.style.visibility = rec.visibility || '';
-    });
-    restoreRecords = [];
-  }
-
-  /** 회사보고용에서 L 마커 노드를 숨긴다. */
-  function hideLNodesV77(root){
-    qsa('*', root).forEach(function(el){
-      var txt = textOf(el);
-      var attrs = [el.id || '', typeof el.className === 'string' ? el.className : '', el.getAttribute('for') || '', el.getAttribute('data-part') || '', el.getAttribute('data-value') || ''].join(' ');
-      if(txt === 'L' || /(^|\s|_|-)h4(\s|_|-|$)/.test(attrs) || /(^|\s|_|-)L(\s|_|-|$)/.test(attrs)){
-        restoreRecords.push({el:el, display:el.style.display || '', visibility:el.style.visibility || ''});
-        el.style.setProperty('display','none','important');
-        el.style.setProperty('visibility','hidden','important');
-      }
-    });
-  }
-
-  /** 원본 입력값을 clone에 순서 기준으로 복사한다. */
-  function syncFormValuesForCloneV77(original, clone){
-    if(!original || !clone) return;
-    var originals = original.querySelectorAll('input, select, textarea');
-    var clones = clone.querySelectorAll('input, select, textarea');
-    for(var i=0;i<originals.length && i<clones.length;i++){
-      var o = originals[i];
-      var c = clones[i];
-      if(o.tagName === 'TEXTAREA'){
-        c.value = o.value;
-        c.textContent = o.value;
-        c.setAttribute('data-print-value-v77', o.value || '');
-        continue;
-      }
-      if(o.tagName === 'SELECT'){
-        c.selectedIndex = o.selectedIndex;
-        for(var k=0;k<(c.options || []).length;k++) c.options[k].selected = k === o.selectedIndex;
-        continue;
-      }
-      if(o.type === 'checkbox' || o.type === 'radio'){
-        c.checked = o.checked;
-        if(o.checked) c.setAttribute('checked','checked'); else c.removeAttribute('checked');
-        continue;
-      }
-      c.value = o.value;
-      c.setAttribute('value', o.value || '');
-      c.setAttribute('data-print-value-v77', o.value || '');
-    }
-  }
-
-  /** PDF DOM 내부 입력 요소를 읽기 전용화한다. */
-  function makeReadonlyForPrintV77(root){
-    qsa('input, textarea', root).forEach(function(el){
-      if(el.type !== 'hidden') el.setAttribute('readonly','readonly');
-      el.style.setProperty('pointer-events','none','important');
-    });
-    qsa('select, button', root).forEach(function(el){
-      el.style.setProperty('pointer-events','none','important');
-    });
-  }
-
-  /** PDF 출력에서 필요 없는 도막 입력 패널을 제거한다. */
-  function removePaintInputUiV77(root){
-    qsa('.paint-native-panel,.paint-v98-panel,.paint-input-dock,#paintInputDock,.paint-native-input-wrap,.paint-native-close,.paint-native-w,.paint-v98-input,.paint-v98-w,.paint-v98-current,.paint-v98-unit,[class*="paint"][class*="panel"],[class*="paint"][class*="dock"]', root).forEach(function(el){
-      el.remove();
-    });
-  }
-
-  /** clone을 PDF 출력 가능한 상태로 정규화한다. */
-  function normalizeCloneV77(clone){
-    if(!clone) return clone;
-    clone.classList.add('report-print-cloned-section-v1773');
-    clone.style.setProperty('display','block','important');
-    clone.style.setProperty('visibility','visible','important');
-    clone.style.setProperty('opacity','1','important');
-    clone.style.setProperty('height','auto','important');
-    clone.style.setProperty('max-height','none','important');
-    clone.style.setProperty('overflow','visible','important');
-    removePaintInputUiV77(clone);
-    makeReadonlyForPrintV77(clone);
-    return clone;
-  }
-
-  /** PDF 페이지를 생성한다. 페이지 상단 헤더는 만들지 않는다. */
-  function createPageV77(root){
-    var page = document.createElement('section');
-    page.className = 'report-pdf-page-v77';
-    var inner = document.createElement('div');
-    inner.className = 'report-pdf-page-inner-v77';
-    var body = document.createElement('div');
-    body.className = 'report-pdf-page-body-v77';
-    inner.appendChild(body);
-    var note = document.createElement('div');
-    note.className = 'report-pdf-fit-note-v77';
-    note.textContent = 'PDF 페이지 맞춤 축소 적용';
-    inner.appendChild(note);
-    page.appendChild(inner);
-    root.appendChild(page);
-    return body;
-  }
-
-  /** section 전체를 clone하여 추가한다. */
-  function appendSectionCloneV77(parent, selector){
-    var src = qs(selector);
-    if(!src) return null;
-    var clone = src.cloneNode(true);
-    clone.id = src.id;
-    syncFormValuesForCloneV77(src, clone);
-    normalizeCloneV77(clone);
-    parent.appendChild(clone);
-    return clone;
-  }
-
-  /** 지정 텍스트가 포함된 카드를 clone한다. */
-  function cloneCardByTextV77(sectionSelector, regex){
-    var src = qs(sectionSelector);
-    if(!src) return null;
-    var cards = qsa(':scope > article, :scope > .report-card-ui', src);
-    for(var i=0;i<cards.length;i++){
-      if(regex.test(textOf(cards[i]))){
-        var clone = cards[i].cloneNode(true);
-        syncFormValuesForCloneV77(cards[i], clone);
-        normalizeCloneV77(clone);
-        return clone;
-      }
-    }
-    return null;
-  }
-
-  /** 지정 텍스트가 포함된 도면 블록을 clone한다. */
-  function cloneDiagramUnitByTextV77(sectionSelector, regex){
-    var src = qs(sectionSelector);
-    if(!src) return null;
-    var units = qsa('.touch-card,.paint-diagram-block', src);
-    for(var i=0;i<units.length;i++){
-      if(regex.test(textOf(units[i]))){
-        var clone = units[i].cloneNode(true);
-        syncFormValuesForCloneV77(units[i], clone);
-        normalizeCloneV77(clone);
-        return clone;
-      }
-    }
-    return null;
-  }
-
-  /** 카드형 래퍼를 생성한다. */
-  function makeCardWrapV77(title){
-    var card = document.createElement('article');
-    card.className = 'report-pdf-card-v77 report-pdf-diagram-card-v77';
-    if(title){
-      var h = document.createElement('h2');
-      h.textContent = title;
-      card.appendChild(h);
-    }
-    return card;
-  }
-
-  /** 카드 안에 도면 유닛을 추가한다. */
-  function appendDiagramToCardV77(card, unit){
-    if(!card || !unit) return;
-    unit.classList.add('report-pdf-diagram-unit-v77');
-    card.appendChild(unit);
-  }
-
-  /** 1페이지: 기본정보 좌측, 보험이력 우측. */
-  function buildPageBasicAndInsuranceV77(root){
-    var body = createPageV77(root);
-    var grid = document.createElement('div');
-    grid.className = 'report-pdf-grid-v77';
-    var left = document.createElement('div');
-    left.className = 'report-pdf-col-v77';
-    var right = document.createElement('div');
-    right.className = 'report-pdf-col-v77';
-    appendSectionCloneV77(left, '#secInput');
-    var insurance = cloneCardByTextV77('#secDiag', /보험|특수\s*이력|보험·특수/);
-    if(insurance) right.appendChild(insurance);
-    grid.appendChild(left);
-    grid.appendChild(right);
-    body.appendChild(grid);
-  }
-
-  /** 2페이지: 사고 진단확인 도면 3장. */
-  function buildPageAccidentDiagramsV77(root){
-    var body = createPageV77(root);
-    var grid = document.createElement('div');
-    grid.className = 'report-pdf-grid-v77 three';
-    var items = [
-      ['사고 상부진단', /사고\s*상부진단/],
-      ['사고 좌/우 측면진단', /사고\s*좌\/?우\s*측면진단/],
-      ['사고 하부진단', /사고\s*하부진단/]
-    ];
-    items.forEach(function(item){
-      var card = makeCardWrapV77(item[0]);
-      appendDiagramToCardV77(card, cloneDiagramUnitByTextV77('#secDiag', item[1]));
-      grid.appendChild(card);
-    });
-    body.appendChild(grid);
-  }
-
-  /** 3페이지: 좌측 도막 상부/좌우, 우측 외관 상부/좌우. */
-  function buildPageExteriorDiagramsV77(root){
-    var body = createPageV77(root);
-    var grid = document.createElement('div');
-    grid.className = 'report-pdf-grid-v77';
-    var left = document.createElement('div');
-    left.className = 'report-pdf-col-v77';
-    var right = document.createElement('div');
-    right.className = 'report-pdf-col-v77';
-    var paintTop = makeCardWrapV77('5 도막 진단확인');
-    appendDiagramToCardV77(paintTop, cloneDiagramUnitByTextV77('#secDiag', /도막\s*상부진단/));
-    appendDiagramToCardV77(paintTop, cloneDiagramUnitByTextV77('#secDiag', /도막\s*좌\/?우\s*측면진단/));
-    var exteriorTop = makeCardWrapV77('6 외관 진단확인');
-    appendDiagramToCardV77(exteriorTop, cloneDiagramUnitByTextV77('#secDiag', /외관\s*상부진단/));
-    appendDiagramToCardV77(exteriorTop, cloneDiagramUnitByTextV77('#secDiag', /외관\s*좌\/?우\s*측면진단/));
-    left.appendChild(paintTop);
-    right.appendChild(exteriorTop);
-    grid.appendChild(left);
-    grid.appendChild(right);
-    body.appendChild(grid);
-  }
-
-  /** 체크 카드 중 지정 카드만 clone하여 좌우 배치한다. */
-  function appendCheckCardsGridV77(root, cardKeys){
-    var body = createPageV77(root);
-    var grid = document.createElement('div');
-    grid.className = 'report-pdf-check-grid-v77';
-    var colA = document.createElement('div');
-    colA.className = 'report-pdf-col-v77';
-    var colB = document.createElement('div');
-    colB.className = 'report-pdf-col-v77';
-    var src = qs('#secCheck');
-    if(!src){ body.appendChild(grid); return; }
-    cardKeys.forEach(function(key, idx){
-      var card = qs('article[data-check-card="' + key + '"]', src);
-      if(!card) return;
-      var clone = card.cloneNode(true);
-      syncFormValuesForCloneV77(card, clone);
-      normalizeCloneV77(clone);
-      (idx % 2 === 0 ? colA : colB).appendChild(clone);
-    });
-    grid.appendChild(colA);
-    grid.appendChild(colB);
-    body.appendChild(grid);
-  }
-
-  /** 페이지별 content 높이/너비를 측정하여 안전 캔버스 안으로 축소한다. */
-  function fitPdfPagesV77(){
-    qsa('#' + ROOT_ID + ' .report-pdf-page-v77').forEach(function(page){
-      var inner = qs('.report-pdf-page-inner-v77', page);
-      if(!inner) return;
-      inner.style.transform = 'none';
-      inner.style.width = '1000px';
-      inner.style.height = '720px';
-      page.removeAttribute('data-scaled');
-      var maxWidth = 990;
-      var maxHeight = 710;
-      var fullWidth = inner.scrollWidth || inner.offsetWidth || 0;
-      var fullHeight = inner.scrollHeight || inner.offsetHeight || 0;
-      var scaleW = fullWidth > maxWidth ? maxWidth / fullWidth : 1;
-      var scaleH = fullHeight > maxHeight ? maxHeight / fullHeight : 1;
-      var scale = Math.min(scaleW, scaleH, 1);
-      scale = Math.max(0.62, scale);
-      if(scale < 1){
-        inner.style.transform = 'scale(' + scale + ')';
-        page.setAttribute('data-scaled','1');
-        page.setAttribute('data-scale-v77', String(Math.round(scale * 100) / 100));
-      }
-    });
-  }
-
-  /** PDF 전용 root DOM을 생성한다. */
-  function buildPdfDomV77(mode){
-    removePrintDomV77();
-    restoreHiddenLNodesV77();
-    var root = document.createElement('main');
-    root.id = ROOT_ID;
-    root.className = 'report-pdf-root-v77';
-    root.setAttribute('data-report-mode-v77', mode || 'customer');
-
-    buildPageBasicAndInsuranceV77(root);
-    buildPageAccidentDiagramsV77(root);
-    buildPageExteriorDiagramsV77(root);
-    appendCheckCardsGridV77(root, ['scanner','leak','engine_room','engine_func','light']);
-    appendCheckCardsGridV77(root, ['function','media','drive']);
-    appendCheckCardsGridV77(root, ['interior_memo','owned','pros']);
-
-    document.body.appendChild(root);
-    if(mode === 'company') hideLNodesV77(root);
-    setTimeout(fitPdfPagesV77, 80);
-    setTimeout(fitPdfPagesV77, 260);
-    return root;
-  }
-
-  /** PDF 저장/닫기 버튼바를 생성한다. */
-  function buildPrintBarV77(){
-    var old = document.getElementById(BAR_ID);
-    if(old) old.remove();
-    var bar = document.createElement('div');
-    bar.id = BAR_ID;
-    bar.className = 'report-print-bar-v1773';
-    bar.innerHTML = '<button class="primary" id="reportPrintRunV1773" type="button">PDF 저장</button><button id="reportPrintCloseV1773" type="button">닫기</button>';
-    document.body.appendChild(bar);
-    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
-      fitPdfPagesV77();
-      setTimeout(function(){ window.print(); }, 120);
-    }, false);
-    qs('#reportPrintCloseV1773', bar).addEventListener('click', closePdfPreviewV77, false);
-  }
-
-  /** PDF 미리보기를 연다. */
-  function openPdfPreviewV77(mode){
-    buildPdfDomV77(mode || 'customer');
-    document.body.classList.add(PREVIEW_CLASS);
-    buildPrintBarV77();
-    window.scrollTo(0,0);
-    setTimeout(function(){
-      fitPdfPagesV77();
-      window.print();
-    }, 500);
-  }
-
-  /** PDF 미리보기를 닫는다. */
-  function closePdfPreviewV77(){
-    restoreHiddenLNodesV77();
-    removePrintDomV77();
-    document.body.classList.remove(PREVIEW_CLASS);
-    document.body.classList.remove('report-mobile-save-mode-v1769','report-mobile-save-company-v1769','report-mobile-save-preparing-v1770');
-  }
-
-  window.__openReportPrintV1773 = openPdfPreviewV77;
-  window.__closeReportPrintV1773 = closePdfPreviewV77;
-  window.__fitReportPdfPagesV77 = fitPdfPagesV77;
-})();
-</script>
-
 </body></html>'
     );
     win.document.close();
@@ -20846,5 +20332,521 @@ body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v76{
   window.__fitReportPdfPagesV76 = fitPdfPagesV76;
 })();
 </script>
+
+<!-- v78.00: moved v77 PDF DOM block outside openStreamingWindow/write string. -->
+<!-- v77.00: customer PDF landscape layout fix. Keep outside win.document.write. -->
+<style>
+/* v77.00 - 고객보고용 PDF 가로형 레이아웃 재배치
+   목적:
+   - 하단/우측 잘림 방지를 위해 고정 1120px 기준을 폐기하고 안전폭 1000px 기준으로 재구성한다.
+   - 각 페이지 상단의 별도 페이지 헤더를 제거하고 카드 번호/카드명만 남긴다.
+   - 1페이지: 기본정보 + 보험이력 카드 좌우 배치.
+   - 2페이지: 사고 진단 도면 3장.
+   - 3페이지: 도막 상부/좌우 + 외관 상부/좌우 2열 배치.
+   - 4페이지부터 점검 카드는 좌우 2열 배치.
+   - 기존 화면 DOM, localStorage key, 도면 좌표는 수정하지 않는다.
+*/
+#reportPrintRootV1773.report-pdf-root-v77{
+  display:none;
+  width:100%;
+  max-width:1020px;
+  margin:0 auto;
+  padding:10px;
+  background:#eef1f5;
+  color:#111827;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
+  box-sizing:border-box;
+}
+body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v77{display:block!important}
+.report-pdf-page-v77{
+  width:1000px;
+  height:720px;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid #d8e0ea;
+  border-radius:12px;
+  margin:0 auto 14px;
+  box-shadow:0 2px 10px rgba(15,23,42,.06);
+  box-sizing:border-box;
+  page-break-after:always;
+  break-after:page;
+}
+.report-pdf-page-v77:last-child{page-break-after:auto;break-after:auto}
+.report-pdf-page-inner-v77{width:1000px;height:720px;padding:10px;box-sizing:border-box;background:#fff;transform-origin:top left;overflow:hidden}
+.report-pdf-page-body-v77{width:100%;height:100%;box-sizing:border-box;overflow:hidden}
+.report-pdf-grid-v77{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;width:100%;height:100%;box-sizing:border-box;align-items:start;overflow:hidden}
+.report-pdf-grid-v77.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.report-pdf-col-v77{min-width:0;overflow:hidden;box-sizing:border-box}
+.report-pdf-card-v77{background:#fff;border:1px solid #d8e0ea;border-radius:11px;padding:9px;margin:0 0 9px;box-sizing:border-box;overflow:hidden;break-inside:avoid;page-break-inside:avoid}
+.report-pdf-card-v77 h2,.report-pdf-page-body-v77 .report-card-ui h2{font-size:12px!important;line-height:1.25!important;margin:0 0 7px!important;font-weight:1000!important}
+.report-pdf-page-body-v77,
+.report-pdf-page-body-v77 .section,
+.report-pdf-page-body-v77 article,
+.report-pdf-page-body-v77 .report-card-ui,
+.report-pdf-page-body-v77 .touch-card,
+.report-pdf-page-body-v77 .paint-diagram-block{display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;max-height:none!important;overflow:visible!important}
+.report-pdf-page-body-v77 .header,
+.report-pdf-page-body-v77 .tabs,
+.report-pdf-page-body-v77 .menu-btn,
+.report-pdf-page-body-v77 .menu-open-btn,
+.report-pdf-page-body-v77 .menu-panel,
+.report-pdf-page-body-v77 #reportOutputSection,
+.report-pdf-page-body-v77 #secOrder,
+.report-pdf-page-body-v77 .order-open-btn,
+.report-pdf-page-body-v77 .scanner-start-card,
+.report-pdf-page-body-v77 .no-print{display:none!important;visibility:hidden!important}
+.report-pdf-page-body-v77 .report-card-ui,
+.report-pdf-page-body-v77 article.report-card-ui,
+.report-pdf-page-body-v77 .touch-card,
+.report-pdf-page-body-v77 .paint-diagram-block{box-shadow:none!important;margin-bottom:7px!important;break-inside:avoid!important;page-break-inside:avoid!important}
+.report-pdf-page-body-v77 .report-card-ui{padding:8px!important;border-radius:10px!important}
+.report-pdf-page-body-v77 .no{height:18px!important;min-width:18px!important;font-size:9px!important;padding:0 6px!important}
+.report-pdf-page-body-v77 label,
+.report-pdf-page-body-v77 .basicinfo-v5-label,
+.report-pdf-page-body-v77 .field label,
+.report-pdf-page-body-v77 .check-title{font-size:10px!important;line-height:1.22!important;margin-bottom:2px!important}
+.report-pdf-page-body-v77 input,
+.report-pdf-page-body-v77 textarea,
+.report-pdf-page-body-v77 select,
+.report-pdf-page-body-v77 button,
+.report-pdf-page-body-v77 label{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+.report-pdf-page-body-v77 input,
+.report-pdf-page-body-v77 textarea,
+.report-pdf-page-body-v77 select,
+.report-pdf-page-body-v77 button{pointer-events:none!important}
+/* 1페이지 기본정보 압축 */
+.report-pdf-page-body-v77 #secInput .basicinfo-v5-wrap{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px 7px!important}
+.report-pdf-page-body-v77 #secInput .basicinfo-v5-field,
+.report-pdf-page-body-v77 #secInput .basicinfo-v5-field.full{grid-column:auto!important;min-width:0!important}
+.report-pdf-page-body-v77 #secInput .bi-input,
+.report-pdf-page-body-v77 #secInput .bi-select,
+.report-pdf-page-body-v77 #secInput input,
+.report-pdf-page-body-v77 #secInput select{height:26px!important;min-height:26px!important;padding:4px 7px!important;font-size:10px!important;line-height:16px!important;border-radius:7px!important}
+.report-pdf-page-body-v77 #secInput textarea{min-height:28px!important;height:28px!important;padding:4px 7px!important;font-size:10px!important;border-radius:7px!important}
+.report-pdf-page-body-v77 #secInput .tri-row-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+/* 도면 전용 */
+.report-pdf-diagram-card-v77{height:100%;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+.report-pdf-diagram-card-v77 .touch-card,
+.report-pdf-diagram-card-v77 .paint-diagram-block{height:100%!important;margin:0!important;overflow:hidden!important}
+.report-pdf-diagram-card-v77 .fig,
+.report-pdf-diagram-card-v77 .paint-fig,
+.report-pdf-diagram-card-v77 .paint-fig-bent{height:100%!important;max-height:100%!important;overflow:hidden!important;position:relative!important}
+.report-pdf-diagram-card-v77 img{max-height:100%!important;object-fit:contain!important}
+.report-pdf-page-body-v77 .fig,
+.report-pdf-page-body-v77 .paint-fig,
+.report-pdf-page-body-v77 .paint-fig-bent,
+.report-pdf-page-body-v77 .touch-diagram-shell,
+.report-pdf-page-body-v77 .diagram-wrap,
+.report-pdf-page-body-v77 .paint-diagram-block{overflow:visible!important;contain:none!important;position:relative!important}
+.report-pdf-page-body-v77 .touch-card{width:100%!important;max-width:100%!important;margin:0!important}
+.report-pdf-page-body-v77 .touch-card .fig{width:100%!important;max-width:100%!important;overflow:visible!important}
+/* PDF에서 도막 입력 패널/입력바/닫기/선택 버튼 제거 */
+.report-pdf-page-body-v77 .paint-native-panel,
+.report-pdf-page-body-v77 .paint-v98-panel,
+.report-pdf-page-body-v77 .paint-input-dock,
+.report-pdf-page-body-v77 #paintInputDock,
+.report-pdf-page-body-v77 .paint-native-input,
+.report-pdf-page-body-v77 .paint-native-input-wrap,
+.report-pdf-page-body-v77 .paint-native-close,
+.report-pdf-page-body-v77 .paint-native-w,
+.report-pdf-page-body-v77 .paint-v98-input,
+.report-pdf-page-body-v77 .paint-v98-w,
+.report-pdf-page-body-v77 .paint-v98-current,
+.report-pdf-page-body-v77 .paint-v98-unit,
+.report-pdf-page-body-v77 [class*="paint"][class*="panel"],
+.report-pdf-page-body-v77 [class*="paint"][class*="dock"]{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important}
+/* 4페이지 이후 점검카드 2열 압축 */
+.report-pdf-check-grid-v77{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;width:100%;height:100%;align-items:start;overflow:hidden;box-sizing:border-box}
+.report-pdf-check-grid-v77 .report-card-ui{margin:0 0 8px!important}
+.report-pdf-check-grid-v77 .checkline{display:grid!important;grid-template-columns:minmax(0,1fr) 58px 58px!important;gap:5px!important;align-items:center!important;padding:4px 0!important;min-height:28px!important}
+.report-pdf-check-grid-v77 .check-choice{height:24px!important;min-height:24px!important;border-radius:7px!important;padding:0 5px!important;font-size:10px!important}
+.report-pdf-check-grid-v77 textarea{min-height:48px!important;height:48px!important;font-size:10px!important}
+.report-pdf-fit-note-v77{display:none;margin-top:4px;font-size:10px;color:#6b7280;text-align:right;font-weight:800}
+.report-pdf-page-v77[data-scaled="1"] .report-pdf-fit-note-v77{display:block}
+@media (max-width:1060px){
+  #reportPrintRootV1773.report-pdf-root-v77{max-width:100%;padding:8px}
+  .report-pdf-page-v77{width:100%;height:auto;min-height:auto;overflow:visible}
+  .report-pdf-page-inner-v77{width:100%;height:auto;transform:none!important}
+}
+@media print{
+  @page{size:A4 landscape;margin:4mm}
+  html,body{margin:0!important;padding:0!important;background:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body.report-print-preview-v1773 > :not(#reportPrintRootV1773){display:none!important;visibility:hidden!important}
+  #reportPrintRootV1773.report-pdf-root-v77{display:block!important;width:289mm!important;max-width:289mm!important;margin:0 auto!important;padding:0!important;background:#fff!important}
+  #reportPrintRootV1773.report-pdf-root-v77 .report-pdf-page-v77{width:289mm!important;height:201mm!important;min-height:201mm!important;max-height:201mm!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;page-break-after:always!important;break-after:page!important;page-break-inside:avoid!important;break-inside:avoid!important;background:#fff!important}
+  #reportPrintRootV1773.report-pdf-root-v77 .report-pdf-page-v77:last-child{page-break-after:auto!important;break-after:auto!important}
+  #reportPrintRootV1773.report-pdf-root-v77 .report-pdf-page-inner-v77{width:1000px!important;height:720px!important;padding:8px!important;background:#fff!important;transform-origin:top left!important}
+  .report-print-bar-v1773{display:none!important}
+}
+</style>
+<script>
+/* v77.00 - 고객보고용 PDF 가로형 재배치 모듈
+   목적:
+   - PDF 페이지별 불필요한 1차 헤더를 제거한다.
+   - 페이지별 좌우/3열 배치를 명시한다.
+   - 우측/하단 잘림 방지를 위해 1000x720 안전 캔버스 기준으로 맞춘다.
+   - 기존 화면 DOM과 저장 key는 수정하지 않는다.
+*/
+(function(){
+  var ROOT_ID = 'reportPrintRootV1773';
+  var BAR_ID = 'reportPrintBarV1773';
+  var PREVIEW_CLASS = 'report-print-preview-v1773';
+  var restoreRecords = [];
+
+  /** 단일 요소를 조회한다. */
+  function qs(sel, root){ return (root || document).querySelector(sel); }
+
+  /** 복수 요소를 배열로 조회한다. */
+  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  /** 요소의 표시 텍스트를 정규화한다. */
+  function textOf(el){ return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim(); }
+
+  /** 기존 PDF root와 버튼바를 제거한다. */
+  function removePrintDomV77(){
+    var old = document.getElementById(ROOT_ID);
+    if(old) old.remove();
+    var bar = document.getElementById(BAR_ID);
+    if(bar) bar.remove();
+  }
+
+  /** 회사보고용에서 숨긴 L 노드를 원복한다. */
+  function restoreHiddenLNodesV77(){
+    (restoreRecords || []).forEach(function(rec){
+      if(!rec || !rec.el) return;
+      rec.el.style.display = rec.display || '';
+      rec.el.style.visibility = rec.visibility || '';
+    });
+    restoreRecords = [];
+  }
+
+  /** 회사보고용에서 L 마커 노드를 숨긴다. */
+  function hideLNodesV77(root){
+    qsa('*', root).forEach(function(el){
+      var txt = textOf(el);
+      var attrs = [el.id || '', typeof el.className === 'string' ? el.className : '', el.getAttribute('for') || '', el.getAttribute('data-part') || '', el.getAttribute('data-value') || ''].join(' ');
+      if(txt === 'L' || /(^|\s|_|-)h4(\s|_|-|$)/.test(attrs) || /(^|\s|_|-)L(\s|_|-|$)/.test(attrs)){
+        restoreRecords.push({el:el, display:el.style.display || '', visibility:el.style.visibility || ''});
+        el.style.setProperty('display','none','important');
+        el.style.setProperty('visibility','hidden','important');
+      }
+    });
+  }
+
+  /** 원본 입력값을 clone에 순서 기준으로 복사한다. */
+  function syncFormValuesForCloneV77(original, clone){
+    if(!original || !clone) return;
+    var originals = original.querySelectorAll('input, select, textarea');
+    var clones = clone.querySelectorAll('input, select, textarea');
+    for(var i=0;i<originals.length && i<clones.length;i++){
+      var o = originals[i];
+      var c = clones[i];
+      if(o.tagName === 'TEXTAREA'){
+        c.value = o.value;
+        c.textContent = o.value;
+        c.setAttribute('data-print-value-v77', o.value || '');
+        continue;
+      }
+      if(o.tagName === 'SELECT'){
+        c.selectedIndex = o.selectedIndex;
+        for(var k=0;k<(c.options || []).length;k++) c.options[k].selected = k === o.selectedIndex;
+        continue;
+      }
+      if(o.type === 'checkbox' || o.type === 'radio'){
+        c.checked = o.checked;
+        if(o.checked) c.setAttribute('checked','checked'); else c.removeAttribute('checked');
+        continue;
+      }
+      c.value = o.value;
+      c.setAttribute('value', o.value || '');
+      c.setAttribute('data-print-value-v77', o.value || '');
+    }
+  }
+
+  /** PDF DOM 내부 입력 요소를 읽기 전용화한다. */
+  function makeReadonlyForPrintV77(root){
+    qsa('input, textarea', root).forEach(function(el){
+      if(el.type !== 'hidden') el.setAttribute('readonly','readonly');
+      el.style.setProperty('pointer-events','none','important');
+    });
+    qsa('select, button', root).forEach(function(el){
+      el.style.setProperty('pointer-events','none','important');
+    });
+  }
+
+  /** PDF 출력에서 필요 없는 도막 입력 패널을 제거한다. */
+  function removePaintInputUiV77(root){
+    qsa('.paint-native-panel,.paint-v98-panel,.paint-input-dock,#paintInputDock,.paint-native-input-wrap,.paint-native-close,.paint-native-w,.paint-v98-input,.paint-v98-w,.paint-v98-current,.paint-v98-unit,[class*="paint"][class*="panel"],[class*="paint"][class*="dock"]', root).forEach(function(el){
+      el.remove();
+    });
+  }
+
+  /** clone을 PDF 출력 가능한 상태로 정규화한다. */
+  function normalizeCloneV77(clone){
+    if(!clone) return clone;
+    clone.classList.add('report-print-cloned-section-v1773');
+    clone.style.setProperty('display','block','important');
+    clone.style.setProperty('visibility','visible','important');
+    clone.style.setProperty('opacity','1','important');
+    clone.style.setProperty('height','auto','important');
+    clone.style.setProperty('max-height','none','important');
+    clone.style.setProperty('overflow','visible','important');
+    removePaintInputUiV77(clone);
+    makeReadonlyForPrintV77(clone);
+    return clone;
+  }
+
+  /** PDF 페이지를 생성한다. 페이지 상단 헤더는 만들지 않는다. */
+  function createPageV77(root){
+    var page = document.createElement('section');
+    page.className = 'report-pdf-page-v77';
+    var inner = document.createElement('div');
+    inner.className = 'report-pdf-page-inner-v77';
+    var body = document.createElement('div');
+    body.className = 'report-pdf-page-body-v77';
+    inner.appendChild(body);
+    var note = document.createElement('div');
+    note.className = 'report-pdf-fit-note-v77';
+    note.textContent = 'PDF 페이지 맞춤 축소 적용';
+    inner.appendChild(note);
+    page.appendChild(inner);
+    root.appendChild(page);
+    return body;
+  }
+
+  /** section 전체를 clone하여 추가한다. */
+  function appendSectionCloneV77(parent, selector){
+    var src = qs(selector);
+    if(!src) return null;
+    var clone = src.cloneNode(true);
+    clone.id = src.id;
+    syncFormValuesForCloneV77(src, clone);
+    normalizeCloneV77(clone);
+    parent.appendChild(clone);
+    return clone;
+  }
+
+  /** 지정 텍스트가 포함된 카드를 clone한다. */
+  function cloneCardByTextV77(sectionSelector, regex){
+    var src = qs(sectionSelector);
+    if(!src) return null;
+    var cards = qsa(':scope > article, :scope > .report-card-ui', src);
+    for(var i=0;i<cards.length;i++){
+      if(regex.test(textOf(cards[i]))){
+        var clone = cards[i].cloneNode(true);
+        syncFormValuesForCloneV77(cards[i], clone);
+        normalizeCloneV77(clone);
+        return clone;
+      }
+    }
+    return null;
+  }
+
+  /** 지정 텍스트가 포함된 도면 블록을 clone한다. */
+  function cloneDiagramUnitByTextV77(sectionSelector, regex){
+    var src = qs(sectionSelector);
+    if(!src) return null;
+    var units = qsa('.touch-card,.paint-diagram-block', src);
+    for(var i=0;i<units.length;i++){
+      if(regex.test(textOf(units[i]))){
+        var clone = units[i].cloneNode(true);
+        syncFormValuesForCloneV77(units[i], clone);
+        normalizeCloneV77(clone);
+        return clone;
+      }
+    }
+    return null;
+  }
+
+  /** 카드형 래퍼를 생성한다. */
+  function makeCardWrapV77(title){
+    var card = document.createElement('article');
+    card.className = 'report-pdf-card-v77 report-pdf-diagram-card-v77';
+    if(title){
+      var h = document.createElement('h2');
+      h.textContent = title;
+      card.appendChild(h);
+    }
+    return card;
+  }
+
+  /** 카드 안에 도면 유닛을 추가한다. */
+  function appendDiagramToCardV77(card, unit){
+    if(!card || !unit) return;
+    unit.classList.add('report-pdf-diagram-unit-v77');
+    card.appendChild(unit);
+  }
+
+  /** 1페이지: 기본정보 좌측, 보험이력 우측. */
+  function buildPageBasicAndInsuranceV77(root){
+    var body = createPageV77(root);
+    var grid = document.createElement('div');
+    grid.className = 'report-pdf-grid-v77';
+    var left = document.createElement('div');
+    left.className = 'report-pdf-col-v77';
+    var right = document.createElement('div');
+    right.className = 'report-pdf-col-v77';
+    appendSectionCloneV77(left, '#secInput');
+    var insurance = cloneCardByTextV77('#secDiag', /보험|특수\s*이력|보험·특수/);
+    if(insurance) right.appendChild(insurance);
+    grid.appendChild(left);
+    grid.appendChild(right);
+    body.appendChild(grid);
+  }
+
+  /** 2페이지: 사고 진단확인 도면 3장. */
+  function buildPageAccidentDiagramsV77(root){
+    var body = createPageV77(root);
+    var grid = document.createElement('div');
+    grid.className = 'report-pdf-grid-v77 three';
+    var items = [
+      ['사고 상부진단', /사고\s*상부진단/],
+      ['사고 좌/우 측면진단', /사고\s*좌\/?우\s*측면진단/],
+      ['사고 하부진단', /사고\s*하부진단/]
+    ];
+    items.forEach(function(item){
+      var card = makeCardWrapV77(item[0]);
+      appendDiagramToCardV77(card, cloneDiagramUnitByTextV77('#secDiag', item[1]));
+      grid.appendChild(card);
+    });
+    body.appendChild(grid);
+  }
+
+  /** 3페이지: 좌측 도막 상부/좌우, 우측 외관 상부/좌우. */
+  function buildPageExteriorDiagramsV77(root){
+    var body = createPageV77(root);
+    var grid = document.createElement('div');
+    grid.className = 'report-pdf-grid-v77';
+    var left = document.createElement('div');
+    left.className = 'report-pdf-col-v77';
+    var right = document.createElement('div');
+    right.className = 'report-pdf-col-v77';
+    var paintTop = makeCardWrapV77('5 도막 진단확인');
+    appendDiagramToCardV77(paintTop, cloneDiagramUnitByTextV77('#secDiag', /도막\s*상부진단/));
+    appendDiagramToCardV77(paintTop, cloneDiagramUnitByTextV77('#secDiag', /도막\s*좌\/?우\s*측면진단/));
+    var exteriorTop = makeCardWrapV77('6 외관 진단확인');
+    appendDiagramToCardV77(exteriorTop, cloneDiagramUnitByTextV77('#secDiag', /외관\s*상부진단/));
+    appendDiagramToCardV77(exteriorTop, cloneDiagramUnitByTextV77('#secDiag', /외관\s*좌\/?우\s*측면진단/));
+    left.appendChild(paintTop);
+    right.appendChild(exteriorTop);
+    grid.appendChild(left);
+    grid.appendChild(right);
+    body.appendChild(grid);
+  }
+
+  /** 체크 카드 중 지정 카드만 clone하여 좌우 배치한다. */
+  function appendCheckCardsGridV77(root, cardKeys){
+    var body = createPageV77(root);
+    var grid = document.createElement('div');
+    grid.className = 'report-pdf-check-grid-v77';
+    var colA = document.createElement('div');
+    colA.className = 'report-pdf-col-v77';
+    var colB = document.createElement('div');
+    colB.className = 'report-pdf-col-v77';
+    var src = qs('#secCheck');
+    if(!src){ body.appendChild(grid); return; }
+    cardKeys.forEach(function(key, idx){
+      var card = qs('article[data-check-card="' + key + '"]', src);
+      if(!card) return;
+      var clone = card.cloneNode(true);
+      syncFormValuesForCloneV77(card, clone);
+      normalizeCloneV77(clone);
+      (idx % 2 === 0 ? colA : colB).appendChild(clone);
+    });
+    grid.appendChild(colA);
+    grid.appendChild(colB);
+    body.appendChild(grid);
+  }
+
+  /** 페이지별 content 높이/너비를 측정하여 안전 캔버스 안으로 축소한다. */
+  function fitPdfPagesV77(){
+    qsa('#' + ROOT_ID + ' .report-pdf-page-v77').forEach(function(page){
+      var inner = qs('.report-pdf-page-inner-v77', page);
+      if(!inner) return;
+      inner.style.transform = 'none';
+      inner.style.width = '1000px';
+      inner.style.height = '720px';
+      page.removeAttribute('data-scaled');
+      var maxWidth = 990;
+      var maxHeight = 710;
+      var fullWidth = inner.scrollWidth || inner.offsetWidth || 0;
+      var fullHeight = inner.scrollHeight || inner.offsetHeight || 0;
+      var scaleW = fullWidth > maxWidth ? maxWidth / fullWidth : 1;
+      var scaleH = fullHeight > maxHeight ? maxHeight / fullHeight : 1;
+      var scale = Math.min(scaleW, scaleH, 1);
+      scale = Math.max(0.62, scale);
+      if(scale < 1){
+        inner.style.transform = 'scale(' + scale + ')';
+        page.setAttribute('data-scaled','1');
+        page.setAttribute('data-scale-v77', String(Math.round(scale * 100) / 100));
+      }
+    });
+  }
+
+  /** PDF 전용 root DOM을 생성한다. */
+  function buildPdfDomV77(mode){
+    removePrintDomV77();
+    restoreHiddenLNodesV77();
+    var root = document.createElement('main');
+    root.id = ROOT_ID;
+    root.className = 'report-pdf-root-v77';
+    root.setAttribute('data-report-mode-v77', mode || 'customer');
+
+    buildPageBasicAndInsuranceV77(root);
+    buildPageAccidentDiagramsV77(root);
+    buildPageExteriorDiagramsV77(root);
+    appendCheckCardsGridV77(root, ['scanner','leak','engine_room','engine_func','light']);
+    appendCheckCardsGridV77(root, ['function','media','drive']);
+    appendCheckCardsGridV77(root, ['interior_memo','owned','pros']);
+
+    document.body.appendChild(root);
+    if(mode === 'company') hideLNodesV77(root);
+    setTimeout(fitPdfPagesV77, 80);
+    setTimeout(fitPdfPagesV77, 260);
+    return root;
+  }
+
+  /** PDF 저장/닫기 버튼바를 생성한다. */
+  function buildPrintBarV77(){
+    var old = document.getElementById(BAR_ID);
+    if(old) old.remove();
+    var bar = document.createElement('div');
+    bar.id = BAR_ID;
+    bar.className = 'report-print-bar-v1773';
+    bar.innerHTML = '<button class="primary" id="reportPrintRunV1773" type="button">PDF 저장</button><button id="reportPrintCloseV1773" type="button">닫기</button>';
+    document.body.appendChild(bar);
+    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
+      fitPdfPagesV77();
+      setTimeout(function(){ window.print(); }, 120);
+    }, false);
+    qs('#reportPrintCloseV1773', bar).addEventListener('click', closePdfPreviewV77, false);
+  }
+
+  /** PDF 미리보기를 연다. */
+  function openPdfPreviewV77(mode){
+    buildPdfDomV77(mode || 'customer');
+    document.body.classList.add(PREVIEW_CLASS);
+    buildPrintBarV77();
+    window.scrollTo(0,0);
+    setTimeout(function(){
+      fitPdfPagesV77();
+      window.print();
+    }, 500);
+  }
+
+  /** PDF 미리보기를 닫는다. */
+  function closePdfPreviewV77(){
+    restoreHiddenLNodesV77();
+    removePrintDomV77();
+    document.body.classList.remove(PREVIEW_CLASS);
+    document.body.classList.remove('report-mobile-save-mode-v1769','report-mobile-save-company-v1769','report-mobile-save-preparing-v1770');
+  }
+
+  window.__openReportPrintV1773 = openPdfPreviewV77;
+  window.__closeReportPrintV1773 = closePdfPreviewV77;
+  window.__fitReportPdfPagesV77 = fitPdfPagesV77;
+})();
+</script>
+
 </body>
 </html>

@@ -17446,6 +17446,536 @@ boot();
       '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
       '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main>
 
+<style>
+/* v74.00 - PDF DOM 분리 출력 구조
+   목적:
+   - 화면 입력 DOM과 PDF 출력 DOM을 분리한다.
+   - PDF는 A4 페이지 단위로 묶어 임의 페이지 분할을 줄인다.
+   - 기존 data-key, localStorage key, 도면/마커 좌표는 변경하지 않는다.
+*/
+#reportPrintRootV1773.report-pdf-root-v74{
+  display:none;
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+  padding:12px;
+  background:#f3f5f7;
+  color:#111827;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
+  box-sizing:border-box;
+}
+body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v74{
+  display:block!important;
+}
+.report-pdf-page-v74{
+  width:760px;
+  height:1040px;
+  overflow:hidden;
+  background:#ffffff;
+  border:1px solid #d8e0ea;
+  border-radius:16px;
+  margin:0 auto 16px;
+  box-shadow:0 2px 10px rgba(15,23,42,.06);
+  box-sizing:border-box;
+  page-break-after:always;
+  break-after:page;
+}
+.report-pdf-page-v74:last-child{
+  page-break-after:auto;
+  break-after:auto;
+}
+.report-pdf-page-inner-v74{
+  width:760px;
+  padding:14px;
+  box-sizing:border-box;
+  background:#ffffff;
+  transform-origin:top left;
+}
+.report-pdf-head-v74{
+  padding:12px 14px;
+  margin:0 0 10px;
+  border-radius:14px;
+  background:#111827;
+  color:#ffffff;
+  box-sizing:border-box;
+}
+.report-pdf-head-title-v74{
+  font-size:18px;
+  line-height:1.25;
+  font-weight:1000;
+  margin:0 0 4px;
+}
+.report-pdf-head-sub-v74{
+  font-size:12px;
+  line-height:1.35;
+  font-weight:800;
+  color:#d1d5db;
+  margin:0;
+}
+.report-pdf-page-title-v74{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:32px;
+  padding:7px 10px;
+  margin:0 0 10px;
+  border-radius:10px;
+  background:#111827;
+  color:#ffffff;
+  font-size:14px;
+  font-weight:1000;
+  box-sizing:border-box;
+  page-break-after:avoid;
+  break-after:avoid;
+}
+.report-pdf-page-body-v74,
+.report-pdf-page-body-v74 .section,
+.report-pdf-page-body-v74 article,
+.report-pdf-page-body-v74 .report-card-ui,
+.report-pdf-page-body-v74 .touch-card{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.report-pdf-page-body-v74 .header,
+.report-pdf-page-body-v74 .tabs,
+.report-pdf-page-body-v74 .menu-btn,
+.report-pdf-page-body-v74 .menu-panel,
+.report-pdf-page-body-v74 #reportOutputSection,
+.report-pdf-page-body-v74 #secOrder,
+.report-pdf-page-body-v74 .order-open-btn,
+.report-pdf-page-body-v74 .no-print{
+  display:none!important;
+  visibility:hidden!important;
+}
+.report-pdf-page-body-v74 .report-card-ui,
+.report-pdf-page-body-v74 article.report-card-ui,
+.report-pdf-page-body-v74 .touch-card,
+.report-pdf-page-body-v74 .paint-diagram-block{
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+  margin-bottom:10px!important;
+}
+.report-pdf-page-body-v74 input,
+.report-pdf-page-body-v74 textarea,
+.report-pdf-page-body-v74 select,
+.report-pdf-page-body-v74 button,
+.report-pdf-page-body-v74 label{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.report-pdf-page-body-v74 input,
+.report-pdf-page-body-v74 textarea,
+.report-pdf-page-body-v74 select,
+.report-pdf-page-body-v74 button{
+  pointer-events:none!important;
+}
+.report-pdf-page-body-v74 .fig,
+.report-pdf-page-body-v74 .paint-fig,
+.report-pdf-page-body-v74 .paint-fig-bent,
+.report-pdf-page-body-v74 .touch-diagram-shell,
+.report-pdf-page-body-v74 .diagram-wrap,
+.report-pdf-page-body-v74 .paint-diagram-block{
+  overflow:visible!important;
+  contain:none!important;
+  position:relative!important;
+}
+.report-pdf-fit-note-v74{
+  display:none;
+  margin-top:6px;
+  font-size:10px;
+  font-weight:800;
+  color:#6b7280;
+  text-align:right;
+}
+.report-pdf-page-v74[data-scaled="1"] .report-pdf-fit-note-v74{
+  display:block;
+}
+@media (max-width:820px){
+  #reportPrintRootV1773.report-pdf-root-v74{
+    max-width:100%;
+    padding:10px;
+  }
+  .report-pdf-page-v74{
+    width:100%;
+    height:auto;
+    min-height:auto;
+    overflow:visible;
+  }
+  .report-pdf-page-inner-v74{
+    width:100%;
+    transform:none!important;
+  }
+}
+@media print{
+  @page{
+    size:A4;
+    margin:8mm;
+  }
+  html,body{
+    margin:0!important;
+    padding:0!important;
+    background:#ffffff!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+  body.report-print-preview-v1773 > :not(#reportPrintRootV1773){
+    display:none!important;
+    visibility:hidden!important;
+  }
+  #reportPrintRootV1773.report-pdf-root-v74{
+    display:block!important;
+    width:190mm!important;
+    max-width:190mm!important;
+    margin:0 auto!important;
+    padding:0!important;
+    background:#ffffff!important;
+  }
+  #reportPrintRootV1773.report-pdf-root-v74 .report-pdf-page-v74{
+    width:190mm!important;
+    height:277mm!important;
+    min-height:277mm!important;
+    max-height:277mm!important;
+    overflow:hidden!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    page-break-after:always!important;
+    break-after:page!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+    background:#ffffff!important;
+  }
+  #reportPrintRootV1773.report-pdf-root-v74 .report-pdf-page-v74:last-child{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+  #reportPrintRootV1773.report-pdf-root-v74 .report-pdf-page-inner-v74{
+    width:760px!important;
+    padding:12px!important;
+    background:#ffffff!important;
+    transform-origin:top left!important;
+  }
+  .report-print-bar-v1773{
+    display:none!important;
+  }
+}
+</style>
+<script>
+/* v74.00 - PDF DOM 분리 출력 모듈
+   목적:
+   - 기존 화면 DOM을 그대로 인쇄하지 않고, PDF 전용 DOM을 별도로 생성한다.
+   - 페이지별 묶음을 고정하여 카드가 임의로 잘리는 문제를 줄인다.
+   - 기존 버튼은 window.__openReportPrintV1773 연결만 교체한다.
+*/
+(function(){
+  var ROOT_ID = 'reportPrintRootV1773';
+  var BAR_ID = 'reportPrintBarV1773';
+  var PREVIEW_CLASS = 'report-print-preview-v1773';
+  var restoreRecords = [];
+
+  /** 단일 요소를 조회한다. */
+  function qs(sel, root){ return (root || document).querySelector(sel); }
+
+  /** 복수 요소를 배열로 조회한다. */
+  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  /** 문자열 앞자리를 0으로 채운다. */
+  function pad2(n){ return String(n < 10 ? '0' + n : n); }
+
+  /** 요소의 표시 텍스트를 정규화한다. */
+  function textOf(el){ return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim(); }
+
+  /** 기존 PDF root와 버튼바를 제거한다. */
+  function removePrintDomV74(){
+    var old = document.getElementById(ROOT_ID);
+    if(old) old.remove();
+    var bar = document.getElementById(BAR_ID);
+    if(bar) bar.remove();
+  }
+
+  /** 회사보고용에서 숨긴 L 노드를 원복한다. */
+  function restoreHiddenLNodesV74(){
+    (restoreRecords || []).forEach(function(rec){
+      if(!rec || !rec.el) return;
+      rec.el.style.display = rec.display || '';
+      rec.el.style.visibility = rec.visibility || '';
+    });
+    restoreRecords = [];
+  }
+
+  /** 회사보고용에서 L 마커 노드를 숨긴다. */
+  function hideLNodesV74(root){
+    qsa('*', root).forEach(function(el){
+      var txt = textOf(el);
+      var attrs = [el.id || '', typeof el.className === 'string' ? el.className : '', el.getAttribute('for') || '', el.getAttribute('data-part') || '', el.getAttribute('data-value') || ''].join(' ');
+      if(txt === 'L' || /(^|\s|_|-)h4(\s|_|-|$)/.test(attrs) || /(^|\s|_|-)L(\s|_|-|$)/.test(attrs)){
+        restoreRecords.push({el:el, display:el.style.display || '', visibility:el.style.visibility || ''});
+        el.style.setProperty('display','none','important');
+        el.style.setProperty('visibility','hidden','important');
+      }
+    });
+  }
+
+  /** 원본 입력값을 clone에 순서 기준으로 복사한다. */
+  function syncFormValuesForCloneV74(original, clone){
+    if(!original || !clone) return;
+    var originals = original.querySelectorAll('input, select, textarea');
+    var clones = clone.querySelectorAll('input, select, textarea');
+
+    for(var i=0;i<originals.length && i<clones.length;i++){
+      var o = originals[i];
+      var c = clones[i];
+
+      if(o.tagName === 'TEXTAREA'){
+        c.value = o.value;
+        c.textContent = o.value;
+        c.setAttribute('data-print-value-v74', o.value || '');
+        continue;
+      }
+
+      if(o.tagName === 'SELECT'){
+        c.selectedIndex = o.selectedIndex;
+        for(var k=0;k<(c.options || []).length;k++){
+          c.options[k].selected = k === o.selectedIndex;
+        }
+        continue;
+      }
+
+      if(o.type === 'checkbox' || o.type === 'radio'){
+        c.checked = o.checked;
+        if(o.checked) c.setAttribute('checked','checked');
+        else c.removeAttribute('checked');
+        continue;
+      }
+
+      c.value = o.value;
+      c.setAttribute('value', o.value || '');
+      c.setAttribute('data-print-value-v74', o.value || '');
+    }
+  }
+
+  /** PDF DOM 내부 입력 요소를 읽기 전용화한다. */
+  function makeReadonlyForPrintV74(root){
+    qsa('input, textarea', root).forEach(function(el){
+      if(el.type !== 'hidden') el.setAttribute('readonly','readonly');
+      el.style.setProperty('pointer-events','none','important');
+    });
+    qsa('select, button', root).forEach(function(el){
+      el.style.setProperty('pointer-events','none','important');
+    });
+  }
+
+  /** clone을 PDF 출력 가능한 상태로 정규화한다. */
+  function normalizeCloneV74(clone){
+    if(!clone) return clone;
+    clone.classList.add('report-print-cloned-section-v1773');
+    clone.style.setProperty('display','block','important');
+    clone.style.setProperty('visibility','visible','important');
+    clone.style.setProperty('opacity','1','important');
+    clone.style.setProperty('height','auto','important');
+    clone.style.setProperty('max-height','none','important');
+    clone.style.setProperty('overflow','visible','important');
+    makeReadonlyForPrintV74(clone);
+    return clone;
+  }
+
+  /** PDF 페이지를 생성한다. */
+  function createPageV74(root, title, withHead, mode){
+    var page = document.createElement('section');
+    page.className = 'report-pdf-page-v74';
+    page.setAttribute('data-page-title-v74', title || '');
+
+    var inner = document.createElement('div');
+    inner.className = 'report-pdf-page-inner-v74';
+
+    if(withHead){
+      var now = new Date();
+      var head = document.createElement('div');
+      head.className = 'report-pdf-head-v74';
+      head.innerHTML =
+        '<div class="report-pdf-head-title-v74">오토베이 현장 매입 진단리포트</div>' +
+        '<p class="report-pdf-head-sub-v74">' + (mode === 'company' ? '회사보고용 PDF 저장' : '고객보고용 PDF 저장') + ' · ' + now.getFullYear() + '-' + pad2(now.getMonth()+1) + '-' + pad2(now.getDate()) + '</p>';
+      inner.appendChild(head);
+    }
+
+    var h = document.createElement('div');
+    h.className = 'report-pdf-page-title-v74';
+    h.textContent = title || '';
+    inner.appendChild(h);
+
+    var body = document.createElement('div');
+    body.className = 'report-pdf-page-body-v74';
+    inner.appendChild(body);
+
+    var note = document.createElement('div');
+    note.className = 'report-pdf-fit-note-v74';
+    note.textContent = 'PDF 페이지 맞춤 축소 적용';
+    inner.appendChild(note);
+
+    page.appendChild(inner);
+    root.appendChild(page);
+    return body;
+  }
+
+  /** section 전체를 clone하여 페이지에 추가한다. */
+  function appendSectionCloneV74(body, selector){
+    var src = qs(selector);
+    if(!src) return null;
+    var clone = src.cloneNode(true);
+    clone.id = src.id;
+    syncFormValuesForCloneV74(src, clone);
+    normalizeCloneV74(clone);
+    body.appendChild(clone);
+    return clone;
+  }
+
+  /** 사고/외관 겸용 secDiag clone에서 필요한 카드만 남긴다. */
+  function appendFilteredDiagCloneV74(body, mode){
+    var src = qs('#secDiag');
+    if(!src) return null;
+    var clone = src.cloneNode(true);
+    clone.id = 'secDiag';
+    syncFormValuesForCloneV74(src, clone);
+
+    qsa(':scope > article, :scope > .report-card-ui', clone).forEach(function(card){
+      var txt = textOf(card);
+      var isAccident = /보험|특수\s*이력|보험·특수|사고\s*진단확인|사고진단|사고\s*진단/.test(txt);
+      var isExterior = /도막\s*진단확인|외관\s*진단확인|타이어\s*상태확인|트레드|도막|외관|타이어/.test(txt);
+      if(mode === 'accident' && !isAccident) card.remove();
+      if(mode === 'exterior' && !isExterior) card.remove();
+    });
+
+    normalizeCloneV74(clone);
+    body.appendChild(clone);
+    return clone;
+  }
+
+  /** 체크 카드 중 지정 카드만 clone하여 하나의 section에 담는다. */
+  function appendCheckCardsV74(body, cardKeys){
+    var src = qs('#secCheck');
+    if(!src) return null;
+    var section = document.createElement('section');
+    section.id = 'secCheck';
+    section.className = 'section report-print-cloned-section-v1773';
+
+    cardKeys.forEach(function(key){
+      var card = qs('article[data-check-card="' + key + '"]', src);
+      if(!card) return;
+      var clone = card.cloneNode(true);
+      syncFormValuesForCloneV74(card, clone);
+      normalizeCloneV74(clone);
+      section.appendChild(clone);
+    });
+
+    normalizeCloneV74(section);
+    body.appendChild(section);
+    return section;
+  }
+
+  /** 페이지별 content 높이를 측정하여 한 페이지 안으로 축소한다. */
+  function fitPdfPagesV74(){
+    qsa('#' + ROOT_ID + ' .report-pdf-page-v74').forEach(function(page){
+      var inner = qs('.report-pdf-page-inner-v74', page);
+      if(!inner) return;
+
+      inner.style.transform = 'none';
+      inner.style.width = '760px';
+      page.removeAttribute('data-scaled');
+
+      var maxHeight = 1032;
+      var fullHeight = inner.scrollHeight || inner.offsetHeight || 0;
+      if(fullHeight > maxHeight){
+        var scale = Math.max(0.72, Math.min(1, maxHeight / fullHeight));
+        inner.style.transform = 'scale(' + scale + ')';
+        page.setAttribute('data-scaled', '1');
+        page.setAttribute('data-scale-v74', String(Math.round(scale * 100) / 100));
+      }
+    });
+  }
+
+  /** PDF 전용 root DOM을 생성한다. */
+  function buildPdfDomV74(mode){
+    removePrintDomV74();
+    restoreHiddenLNodesV74();
+
+    var root = document.createElement('main');
+    root.id = ROOT_ID;
+    root.className = 'report-pdf-root-v74';
+    root.setAttribute('data-report-mode-v74', mode || 'customer');
+
+    appendSectionCloneV74(createPageV74(root, '1. 기본정보', true, mode), '#secInput');
+    appendFilteredDiagCloneV74(createPageV74(root, '2. 사고', false, mode), 'accident');
+    appendFilteredDiagCloneV74(createPageV74(root, '3. 외관/수리', false, mode), 'exterior');
+    appendCheckCardsV74(createPageV74(root, '4. 점검 8~10', false, mode), ['scanner','leak','engine_room']);
+    appendCheckCardsV74(createPageV74(root, '5. 점검 11~12', false, mode), ['engine_func','light']);
+    appendCheckCardsV74(createPageV74(root, '6. 점검 13 기능작동', false, mode), ['function']);
+    appendCheckCardsV74(createPageV74(root, '7. 점검 14~15', false, mode), ['media','drive']);
+    appendCheckCardsV74(createPageV74(root, '8. 점검 16~19', false, mode), ['interior_memo','owned','pros']);
+
+    document.body.appendChild(root);
+
+    if(mode === 'company'){
+      hideLNodesV74(root);
+    }
+
+    setTimeout(fitPdfPagesV74, 60);
+    setTimeout(fitPdfPagesV74, 240);
+    return root;
+  }
+
+  /** PDF 저장/닫기 버튼바를 생성한다. */
+  function buildPrintBarV74(){
+    var old = document.getElementById(BAR_ID);
+    if(old) old.remove();
+
+    var bar = document.createElement('div');
+    bar.id = BAR_ID;
+    bar.className = 'report-print-bar-v1773';
+    bar.innerHTML =
+      '<button class="primary" id="reportPrintRunV1773" type="button">PDF 저장</button>' +
+      '<button id="reportPrintCloseV1773" type="button">닫기</button>';
+    document.body.appendChild(bar);
+
+    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
+      fitPdfPagesV74();
+      setTimeout(function(){ window.print(); }, 120);
+    }, false);
+
+    qs('#reportPrintCloseV1773', bar).addEventListener('click', closePdfPreviewV74, false);
+  }
+
+  /** PDF 미리보기를 연다. */
+  function openPdfPreviewV74(mode){
+    buildPdfDomV74(mode || 'customer');
+    document.body.classList.add(PREVIEW_CLASS);
+    buildPrintBarV74();
+    window.scrollTo(0,0);
+    setTimeout(function(){
+      fitPdfPagesV74();
+      window.print();
+    }, 500);
+  }
+
+  /** PDF 미리보기를 닫는다. */
+  function closePdfPreviewV74(){
+    restoreHiddenLNodesV74();
+    removePrintDomV74();
+    document.body.classList.remove(PREVIEW_CLASS);
+    document.body.classList.remove('report-mobile-save-mode-v1769','report-mobile-save-company-v1769','report-mobile-save-preparing-v1770');
+  }
+
+  window.__openReportPrintV1773 = openPdfPreviewV74;
+  window.__closeReportPrintV1773 = closePdfPreviewV74;
+  window.__fitReportPdfPagesV74 = fitPdfPagesV74;
+})();
+</script>
+
 </body></html>'
     );
     win.document.close();

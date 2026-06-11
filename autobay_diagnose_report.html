@@ -20848,5 +20848,312 @@ body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v77{displa
 })();
 </script>
 
+
+
+<!-- v79.00 - CLEAN PDF REPORT RENDERER
+  - 화면 DOM 복사 기반 PDF를 중단하고, 값 수집 -> 출력 전용 HTML 생성 방식으로 전환한다.
+  - 기존 입력 화면/도면/저장/localStorage는 변경하지 않는다.
+  - win.document.write() 내부에 삽입하지 않는다.
+-->
+<style id="reportCleanPdfStyleV79">
+#reportCleanPdfRootV79{display:none;background:#fff;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
+body.report-clean-pdf-preview-v79{background:#e5e7eb!important;padding:10px!important;overflow-x:auto!important}
+body.report-clean-pdf-preview-v79 #reportCleanPdfRootV79{display:block!important}
+body.report-clean-pdf-preview-v79 > :not(#reportCleanPdfRootV79):not(#reportCleanPdfBarV79){display:none!important;visibility:hidden!important}
+.report-clean-page-v79{width:270mm;min-height:184mm;margin:0 auto 12px;background:#fff;box-sizing:border-box;padding:6mm;page-break-after:always;break-after:page;overflow:hidden;border:1px solid #d1d5db}
+.report-clean-page-v79:last-child{page-break-after:auto;break-after:auto}
+.report-clean-grid-2-v79{display:grid;grid-template-columns:1fr 1fr;gap:5mm;height:100%}
+.report-clean-grid-3-v79{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;height:100%}
+.report-clean-card-v79{border:1px solid #d8dee8;border-radius:10px;background:#fff;overflow:hidden;box-sizing:border-box;break-inside:avoid;page-break-inside:avoid}
+.report-clean-card-v79.compact{height:auto}
+.report-clean-card-v79.fill{height:100%}
+.report-clean-card-head-v79{display:flex;align-items:center;gap:7px;background:#fff;padding:7px 9px 5px;font-size:12px;font-weight:1000;color:#111827;border-bottom:1px solid #eef1f5}
+.report-clean-no-v79{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:999px;background:#111827;color:#fff;font-size:11px;font-weight:1000;padding:0 7px}
+.report-clean-body-v79{padding:8px 9px}
+.report-clean-kv-grid-v79{display:grid;grid-template-columns:1fr 1fr;gap:6px 9px}
+.report-clean-kv-grid-v79.col3{grid-template-columns:1fr 1fr 1fr}
+.report-clean-kv-v79{min-width:0;border-bottom:1px solid #eef1f5;padding:3px 0 5px}
+.report-clean-k-v79{display:block;font-size:9.5px;font-weight:900;color:#374151;line-height:1.2;margin-bottom:2px;white-space:normal;word-break:keep-all}
+.report-clean-v-v79{display:block;min-height:16px;font-size:10.5px;font-weight:800;color:#111827;line-height:1.25;white-space:normal;word-break:break-word}
+.report-clean-chip-v79{display:inline-flex;align-items:center;justify-content:center;border:1px solid #d1d5db;border-radius:999px;padding:2px 8px;min-height:18px;font-size:10px;font-weight:900;background:#f9fafb;color:#111827}
+.report-clean-chip-v79.good{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}.report-clean-chip-v79.bad{background:#fef2f2;border-color:#fca5a5;color:#991b1b}.report-clean-chip-v79.warn{background:#fffbeb;border-color:#fcd34d;color:#92400e}
+.report-clean-diagram-card-v79{position:relative;border:1px solid #d8dee8;border-radius:10px;background:#fff;overflow:hidden;min-height:0;box-sizing:border-box}
+.report-clean-diagram-title-v79{position:absolute;left:8px;top:8px;z-index:10;background:#111827;color:#fff;border-radius:8px;padding:5px 8px;font-size:10.5px;font-weight:900;box-shadow:0 2px 6px rgba(15,23,42,.18)}
+.report-clean-diagram-fig-v79{position:relative;width:100%;height:100%;min-height:0;display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden}
+.report-clean-diagram-fig-v79 img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;pointer-events:none;-webkit-user-drag:none}
+.report-clean-badge-v79{position:absolute;transform:translate(-50%,-50%);z-index:20;min-width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:1000;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.22)}
+.report-clean-badge-v79.x{background:#e53935}.report-clean-badge-v79.w{background:#1e88e5}.report-clean-badge-v79.r{background:#facc15;color:#111827}.report-clean-badge-v79.l{background:#111827;color:#fff}.report-clean-badge-v79.p{background:#1e88e5;color:#fff}.report-clean-badge-v79.paint{border-radius:7px;min-width:32px;padding:0 6px;background:#6b7280;color:#fff}
+.report-clean-diagram-page-v79{height:100%;display:grid;gap:4mm}.report-clean-accident-layout-v79{grid-template-columns:1fr 1fr 1fr}.report-clean-exterior-layout-v79{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.report-clean-check-rows-v79{display:flex;flex-direction:column;gap:0}
+.report-clean-row-v79{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;border-bottom:1px solid #eef1f5;padding:4px 0;min-height:23px}
+.report-clean-row-v79:last-child{border-bottom:0}.report-clean-row-title-v79{font-size:10.2px;font-weight:900;line-height:1.25;word-break:keep-all}.report-clean-row-value-v79{font-size:10px;font-weight:900;white-space:nowrap}.report-clean-row-memo-v79{grid-column:1/3;font-size:9px;color:#6b7280;margin-top:-2px}.report-clean-subhead-v79{display:inline-flex;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;border-radius:999px;font-size:10px;font-weight:900;padding:4px 8px;margin:5px 0 3px}
+.report-clean-textbox-v79{min-height:38px;border:1px solid #e5e7eb;border-radius:8px;padding:7px;font-size:10px;color:#374151;background:#fafafa;white-space:pre-wrap;line-height:1.35}
+#reportCleanPdfBarV79{display:none;position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:2147483647;background:rgba(17,24,39,.96);border-radius:999px;padding:8px;gap:8px;box-shadow:0 10px 28px rgba(0,0,0,.25)}
+body.report-clean-pdf-preview-v79 #reportCleanPdfBarV79{display:flex!important}#reportCleanPdfBarV79 button{height:38px;border-radius:999px;border:0;padding:0 16px;font-size:13px;font-weight:1000;cursor:pointer}#reportCleanPdfBarV79 .primary{background:#fff;color:#111827}#reportCleanPdfBarV79 .secondary{background:#374151;color:#fff}
+@media print{
+  @page{size:A4 landscape;margin:8mm}
+  html,body{width:auto!important;height:auto!important;background:#fff!important;margin:0!important;padding:0!important;overflow:visible!important}
+  body.report-clean-pdf-preview-v79 > :not(#reportCleanPdfRootV79){display:none!important;visibility:hidden!important}
+  #reportCleanPdfRootV79{display:block!important;width:auto!important;margin:0!important;padding:0!important;background:#fff!important}
+  .report-clean-page-v79{width:281mm!important;min-height:194mm!important;height:194mm!important;margin:0!important;padding:5mm!important;border:0!important;border-radius:0!important;box-shadow:none!important;page-break-after:always!important;break-after:page!important;overflow:hidden!important;background:#fff!important}
+  .report-clean-page-v79:last-child{page-break-after:auto!important;break-after:auto!important}
+  #reportCleanPdfBarV79{display:none!important}
+}
+</style>
+<script id="reportCleanPdfScriptV79">
+(function(){
+  'use strict';
+  var ROOT_ID = 'reportCleanPdfRootV79';
+  var BAR_ID = 'reportCleanPdfBarV79';
+  var PREVIEW_CLASS = 'report-clean-pdf-preview-v79';
+
+  /** 단일 선택자를 안전하게 조회한다. */
+  function qs(sel, root){ return (root || document).querySelector(sel); }
+  /** 다중 선택자를 배열로 반환한다. */
+  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  /** HTML 출력용 문자열을 이스케이프한다. */
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];}); }
+  /** 공백을 정리한다. */
+  function cleanText(v){ return String(v == null ? '' : v).replace(/\s+/g,' ').trim(); }
+  /** 빈 값일 때 placeholder 대신 공백 처리한다. */
+  function displayValue(v){ v = cleanText(v); return v || '-'; }
+  /** 입력 컨트롤의 현재 값을 읽는다. */
+  function controlValue(el){
+    if(!el) return '';
+    if(el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : el.value;
+    if(el.type === 'radio' || el.type === 'checkbox') return el.checked ? (el.value || '선택') : '';
+    return el.value || '';
+  }
+  /** label + 값 한 쌍을 출력한다. */
+  function kv(label, value){ return '<div class="report-clean-kv-v79"><span class="report-clean-k-v79">'+esc(label)+'</span><span class="report-clean-v-v79">'+esc(displayValue(value))+'</span></div>'; }
+  /** 카드 HTML을 생성한다. */
+  function card(no, title, body, cls){ return '<section class="report-clean-card-v79 '+(cls||'')+'"><div class="report-clean-card-head-v79"><span class="report-clean-no-v79">'+esc(no)+'</span><span>'+esc(title)+'</span></div><div class="report-clean-body-v79">'+body+'</div></section>'; }
+  /** 페이지 HTML을 생성한다. */
+  function page(body, cls){ return '<section class="report-clean-page-v79 '+(cls||'')+'">'+body+'</section>'; }
+
+  /** 기본정보 필드를 수집한다. */
+  function collectBasicRows(){
+    var rows = [];
+    qsa('#secInput article:first-of-type .basicinfo-v5-field').forEach(function(field){
+      var labelEl = qs('.basicinfo-v5-label', field);
+      if(!labelEl) return;
+      var label = cleanText(labelEl.textContent);
+      var ctrl = qs('select', field) || qs('textarea', field) || qs('input:not([type="date"]):not([type="hidden"])', field) || qs('input[type="date"]', field);
+      var value = controlValue(ctrl);
+      if(label) rows.push({label:label, value:value});
+    });
+    return rows;
+  }
+  /** 보험·특수 이력 값을 수집한다. */
+  function collectInsuranceRows(){
+    var rows = [];
+    var cardEl = qs('#secDiag article.insurance-basic-card');
+    if(!cardEl) return rows;
+    qsa('.insurance-select-group', cardEl).forEach(function(group){
+      var title = qs('.insurance-select-title', group);
+      var sel = qs('select', group);
+      if(title) rows.push({label:cleanText(title.textContent), value:controlValue(sel)});
+      var memo = qs('textarea', group);
+      if(memo && memo.value) rows.push({label:cleanText(title ? title.textContent : '메모') + ' 메모', value:memo.value});
+    });
+    qsa('.field', cardEl).forEach(function(field){
+      var label = qs('label', field);
+      var ctrl = qs('input,select,textarea', field);
+      if(label) rows.push({label:cleanText(label.textContent), value:controlValue(ctrl)});
+    });
+    return rows;
+  }
+  /** 랩핑/PPF 값을 수집한다. */
+  function collectWrapRows(){
+    var rows = [];
+    var cardEl = qs('#secInput .wrapppf-card-fix-v1724');
+    if(!cardEl) return rows;
+    rows.push({label:'랩핑 / PPF 여부', value:controlValue(qs('select', cardEl))});
+    var memo = qs('textarea', cardEl); if(memo && memo.value) rows.push({label:'랩핑 / PPF 메모', value:memo.value});
+    return rows;
+  }
+  /** 행 배열을 compact grid로 렌더링한다. */
+  function renderKvRows(rows, col3){
+    return '<div class="report-clean-kv-grid-v79 '+(col3?'col3':'')+'">' + rows.map(function(r){ return kv(r.label, r.value); }).join('') + '</div>';
+  }
+
+  /** 현재 선택된 radio의 label 텍스트를 반환한다. */
+  function checkedLabelText(line){
+    var checked = qs('input[type="radio"]:checked', line);
+    if(!checked){
+      checked = qs('input[type="radio"]', line);
+    }
+    if(!checked) return '';
+    var lab = line.querySelector('label[for="'+checked.id+'"]');
+    return cleanText(lab ? lab.textContent : checked.value);
+  }
+  /** 체크 카드 행을 수집한다. */
+  function collectCheckRows(cardKey){
+    var cardEl = qs('[data-check-card="'+cardKey+'"]');
+    var rows = [];
+    if(!cardEl) return rows;
+    qsa('.engine-func-group-title', cardEl).forEach(function(g){
+      rows.push({subhead:cleanText(g.textContent)});
+      var body = g.parentNode ? qs('.engine-func-body', g.parentNode) : null;
+      if(body){
+        qsa('.ab-checkline,.checkline', body).forEach(function(line){ rows.push(readCheckLine(line)); });
+      }
+    });
+    if(rows.length) return rows;
+    qsa('.ab-checkline,.checkline', cardEl).forEach(function(line){ rows.push(readCheckLine(line)); });
+    qsa('.field', cardEl).forEach(function(field){
+      var label = qs('label,.customer-talk-title,.pros-warranty-label-v1677', field);
+      var ctrl = qs('input:not([type="hidden"]),select,textarea,button[data-pros-warranty-cycle]', field);
+      if(label && ctrl){ rows.push({title:cleanText(label.textContent), value:controlValue(ctrl) || cleanText(ctrl.textContent)}); }
+    });
+    return rows;
+  }
+  /** 개별 체크라인을 읽는다. */
+  function readCheckLine(line){
+    var titleEl = qs('.ab-check-title,.check-title', line);
+    var memoEl = qs('input.ab-check-memo,input.memo,textarea.memo,textarea', line);
+    return { title: cleanText(titleEl ? titleEl.textContent : ''), value: checkedLabelText(line), memo: memoEl && memoEl.value ? memoEl.value : '' };
+  }
+  /** 체크 카드 HTML을 생성한다. */
+  function renderCheckCard(cardKey){
+    var cardEl = qs('[data-check-card="'+cardKey+'"]');
+    if(!cardEl) return '';
+    var h = qs('h2', cardEl);
+    var no = h && qs('.no', h) ? cleanText(qs('.no', h).textContent) : '';
+    var title = h ? cleanText(h.textContent.replace(no,'')) : cardKey;
+    var rows = collectCheckRows(cardKey);
+    var body = '<div class="report-clean-check-rows-v79">' + rows.map(function(r){
+      if(r.subhead) return '<div class="report-clean-subhead-v79">'+esc(r.subhead)+'</div>';
+      return '<div class="report-clean-row-v79"><div class="report-clean-row-title-v79">'+esc(r.title)+'</div><div class="report-clean-row-value-v79">'+esc(displayValue(r.value))+'</div>' + (r.memo ? '<div class="report-clean-row-memo-v79">메모: '+esc(r.memo)+'</div>' : '') + '</div>';
+    }).join('') + '</div>';
+    return card(no, title, body, 'compact');
+  }
+  /** 텍스트 카드 내용을 출력용으로 정리한다. */
+  function renderTextCard(cardKey){
+    var cardEl = qs('[data-check-card="'+cardKey+'"]');
+    if(!cardEl) return '';
+    var h = qs('h2', cardEl);
+    var no = h && qs('.no', h) ? cleanText(qs('.no', h).textContent) : '';
+    var title = h ? cleanText(h.textContent.replace(no,'')) : cardKey;
+    var value = '';
+    var ta = qs('textarea', cardEl); if(ta) value = ta.value || ta.placeholder || '';
+    if(cardKey === 'pros'){
+      var rows = [];
+      var w = qs('[data-key="prosWarrantyLevel"]', cardEl); rows.push({label:'보증연장', value:(w && w.value ? w.value + '년' : '선택')});
+      qsa('[data-key^="prosTuning_"]', cardEl).forEach(function(inp, idx){ if(inp.value) rows.push({label:'추가장착 '+(idx+1), value:inp.value}); });
+      var ms = qs('[data-key="prosMaintenanceStatus"]', cardEl); rows.push({label:'관리 상태확인(내역서 보유)', value:ms && ms.value ? ms.value : checkedLabelText(qs('[data-check-key="prosMaintenanceStatus"]', cardEl))});
+      return card(no, title, renderKvRows(rows, false), 'compact');
+    }
+    return card(no, title, '<div class="report-clean-textbox-v79">'+esc(displayValue(value))+'</div>', 'compact');
+  }
+
+  /** 도면 source에서 이미지와 선택 마커만 추출해 출력용 도면을 만든다. */
+  function diagramFromTouchCard(srcCard, title){
+    if(!srcCard) return '<div class="report-clean-diagram-card-v79"></div>';
+    var img = qs('img', srcCard);
+    var src = img ? img.getAttribute('src') : '';
+    var html = '<div class="report-clean-diagram-card-v79"><div class="report-clean-diagram-title-v79">'+esc(title)+'</div><div class="report-clean-diagram-fig-v79"><img src="'+esc(src)+'" alt="'+esc(title)+'">';
+    qsa('.slot,.paint-v98-slot', srcCard).forEach(function(slot){
+      var txt = selectedMarkerText(slot);
+      if(!txt) return;
+      var cls = txt.toLowerCase();
+      if(cls === 'p') cls = 'p';
+      var left = slot.style.left || slot.getAttribute('data-left') || '50%';
+      var top = slot.style.top || slot.getAttribute('data-top') || '50%';
+      html += '<span class="report-clean-badge-v79 '+esc(cls)+'" style="left:'+esc(left)+';top:'+esc(top)+'">'+esc(txt)+'</span>';
+    });
+    html += '</div></div>';
+    return html;
+  }
+  /** slot의 현재 표시 상태를 읽는다. */
+  function selectedMarkerText(slot){
+    var names = [];
+    var prev = slot.previousElementSibling;
+    while(prev && prev.matches && prev.matches('input.st')){ names.unshift(prev); prev = prev.previousElementSibling; }
+    var checkedIdx = -1;
+    names.forEach(function(inp, idx){ if(inp.checked) checkedIdx = idx; });
+    if(checkedIdx <= 0) return '';
+    var hit = qs('.h'+checkedIdx+' span', slot);
+    return cleanText(hit ? hit.textContent : '');
+  }
+  /** 특정 카드의 도면들을 제목과 함께 반환한다. */
+  function touchCardsFromArticle(articleSelector){
+    var art = qs(articleSelector);
+    return art ? qsa('.touch-card', art) : [];
+  }
+  /** 페이지 1을 만든다. */
+  function buildPage1(){
+    var left = card('1','기본정보', renderKvRows(collectBasicRows(), false), 'fill') + card('2','랩핑 / PPF 여부', renderKvRows(collectWrapRows(), false), 'compact');
+    var right = card('3','보험·특수 이력', renderKvRows(collectInsuranceRows(), false), 'fill');
+    return page('<div class="report-clean-grid-2-v79"><div>'+left+'</div><div>'+right+'</div></div>');
+  }
+  /** 페이지 2 사고 도면 3장을 만든다. */
+  function buildPage2(){
+    var cards = touchCardsFromArticle('#secDiag article.diag-accident-card');
+    var titles = ['사고 상부진단','사고 좌/우 측면진단','사고 하부진단'];
+    return page('<div class="report-clean-diagram-page-v79 report-clean-accident-layout-v79">'+[0,1,2].map(function(i){return diagramFromTouchCard(cards[i], titles[i]);}).join('')+'</div>');
+  }
+  /** 페이지 3 도막/외관 도면을 만든다. */
+  function buildPage3(){
+    var paint = touchCardsFromArticle('#secDiag article:nth-of-type(3)');
+    var ext = touchCardsFromArticle('#secDiag article:nth-of-type(4)');
+    var cells = [
+      diagramFromTouchCard(paint[0], '도막 상부진단'),
+      diagramFromTouchCard(ext[0], '외관 상부진단'),
+      diagramFromTouchCard(paint[1], '도막 좌/우 측면진단'),
+      diagramFromTouchCard(ext[1], '외관 좌/우 측면진단')
+    ];
+    return page('<div class="report-clean-diagram-page-v79 report-clean-exterior-layout-v79">'+cells.join('')+'</div>');
+  }
+  /** 체크 카드 2열 페이지를 만든다. */
+  function buildCheckPage(leftKeys, rightKeys){
+    var left = leftKeys.map(function(k){return k.indexOf('text:')===0 ? renderTextCard(k.slice(5)) : renderCheckCard(k);}).join('');
+    var right = rightKeys.map(function(k){return k.indexOf('text:')===0 ? renderTextCard(k.slice(5)) : renderCheckCard(k);}).join('');
+    return page('<div class="report-clean-grid-2-v79"><div>'+left+'</div><div>'+right+'</div></div>');
+  }
+  /** clean PDF DOM을 생성한다. */
+  function buildCleanPdfDomV79(mode){
+    removeCleanPdfV79();
+    var root = document.createElement('main');
+    root.id = ROOT_ID;
+    root.setAttribute('data-report-mode-v79', mode || 'customer');
+    root.innerHTML = buildPage1() + buildPage2() + buildPage3() +
+      buildCheckPage(['scanner','leak'], ['engine_room','engine_func','light']) +
+      buildCheckPage(['function'], ['media','drive']) +
+      buildCheckPage(['text:interior_memo','text:pros'], ['owned','text:comment']);
+    document.body.appendChild(root);
+    return root;
+  }
+  /** 기존 clean PDF DOM을 제거한다. */
+  function removeCleanPdfV79(){ var old = document.getElementById(ROOT_ID); if(old) old.remove(); }
+  /** 출력 버튼바를 생성한다. */
+  function buildCleanPrintBarV79(){
+    var old = document.getElementById(BAR_ID); if(old) old.remove();
+    var bar = document.createElement('div'); bar.id = BAR_ID;
+    bar.innerHTML = '<button type="button" class="primary" id="reportCleanPrintRunV79">PDF 저장</button><button type="button" class="secondary" id="reportCleanPrintCloseV79">닫기</button>';
+    document.body.appendChild(bar);
+    qs('#reportCleanPrintRunV79', bar).addEventListener('click', function(){ window.print(); }, false);
+    qs('#reportCleanPrintCloseV79', bar).addEventListener('click', closeCleanPdfPreviewV79, false);
+  }
+  /** clean PDF 미리보기를 연다. */
+  function openCleanPdfPreviewV79(mode){
+    buildCleanPdfDomV79(mode || 'customer');
+    document.body.classList.add(PREVIEW_CLASS);
+    buildCleanPrintBarV79();
+    window.scrollTo(0,0);
+    setTimeout(function(){ window.print(); }, 420);
+  }
+  /** clean PDF 미리보기를 닫는다. */
+  function closeCleanPdfPreviewV79(){
+    removeCleanPdfV79();
+    var bar = document.getElementById(BAR_ID); if(bar) bar.remove();
+    document.body.classList.remove(PREVIEW_CLASS);
+  }
+
+  window.__openReportPrintV1773 = openCleanPdfPreviewV79;
+  window.__closeReportPrintV1773 = closeCleanPdfPreviewV79;
+  window.__buildCleanPdfDomV79 = buildCleanPdfDomV79;
+})();
+</script>
 </body>
 </html>

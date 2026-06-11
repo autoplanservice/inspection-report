@@ -5,6 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
 <title>오토베이 현장 매입 진단리포트</title>
+<!-- v80 cleanup 1차: 정적 분석상 직접 참조가 0회인 보류 해제 함수 4개 제거. 화면 DOM, data-key, localStorage, 도면 좌표, win.document.write 내부 구조는 미수정. -->
+
 <!--
 BASE CLEANUP NOTE
 - 기준: 사용자가 업로드한 현재 HTML 코드
@@ -17587,18 +17589,7 @@ boot();
     setActiveBodyTab(tabName);
   }
 
-  function getCardElement(item){
-    var sections = item.sections || (item.section ? [item.section] : []);
-    for(var i=0;i<sections.length;i++){
-      var section = document.querySelector(sections[i]);
-      if(!section) continue;
-      var list = qsa(item.selector, section);
-      if(list[item.pick || 0]) return list[item.pick || 0];
-    }
-    var globalList = qsa(item.selector, document);
-    return globalList[item.pick || 0] || null;
-  }
-  function isVisibleCaptureTarget(el){
+function isVisibleCaptureTarget(el){
     if(!el) return false;
     var rect = el.getBoundingClientRect();
     return rect.width > 10 && rect.height > 10;
@@ -18647,61 +18638,7 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
     return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim();
   }
 
-  function getTopPrintCards(root){
-    /*
-      v17.76:
-      기존 v17.75는 article, .report-card-ui, .touch-card, .card를 모두 대상으로 제거했다.
-      이 경우 사고진단 내부 하위 카드/도면 wrapper까지 제거되어 사고진단이 사라질 수 있다.
-      따라서 #secDiag 바로 아래의 실질 카드 wrapper만 우선 대상으로 잡고,
-      없을 때만 article/report-card-ui를 fallback으로 사용한다.
-    */
-    if(!root) return [];
-
-    var direct = qsa(':scope > article, :scope > .report-card-ui, :scope > .touch-card, :scope > .card', root);
-    direct = direct.filter(function(card){
-      return textOfPrintNode(card).length > 0 || card.querySelector('input,textarea,select,img,canvas,svg');
-    });
-
-    if(direct.length) return direct;
-
-    var all = qsa('article, .report-card-ui', root);
-    return all.filter(function(card){
-      var parentCard = card.parentElement && card.parentElement.closest('article, .report-card-ui');
-      return !parentCard;
-    });
-  }
-
-  function isAccidentPrintCard(card){
-    if(!card) return false;
-    var txt = textOfPrintNode(card);
-    var cls = typeof card.className === 'string' ? card.className : '';
-    var attrs = [
-      cls,
-      card.id || '',
-      card.getAttribute('data-card'),
-      card.getAttribute('data-section'),
-      card.getAttribute('data-key')
-    ].join(' ');
-
-    return /insurance-basic-card|diag-accident-card|accident|보험|특수\s*이력|보험·특수|사고\s*진단확인|사고진단|사고\s*진단|상부\s*진단|좌\/우\s*측면\s*진단|하부\s*진단/.test(attrs + ' ' + txt);
-  }
-
-  function isExteriorPrintCard(card){
-    if(!card) return false;
-    var txt = textOfPrintNode(card);
-    var cls = typeof card.className === 'string' ? card.className : '';
-    var attrs = [
-      cls,
-      card.id || '',
-      card.getAttribute('data-card'),
-      card.getAttribute('data-section'),
-      card.getAttribute('data-key')
-    ].join(' ');
-
-    return /diag-paint-card|diag-exterior-card|tire-state-card|paint|exterior|tire|도막\s*진단확인|외관\s*진단확인|타이어\s*상태확인|트레드|도막|외관|타이어/.test(attrs + ' ' + txt);
-  }
-
-  function isWholeDiagClone(el){
+tion isWholeDiagClone(el){
     return !!(el && el.id === 'secDiag');
   }
 

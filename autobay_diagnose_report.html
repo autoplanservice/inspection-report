@@ -19783,5 +19783,552 @@ body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v74{
   window.__fitReportPdfPagesV74 = fitPdfPagesV74;
 })();
 </script>
+
+
+<!-- v76.00: customer PDF landscape DOM override. Keep outside win.document.write. -->
+<style>
+/* v76.00 - 고객보고용 PDF 가로형 전용 DOM
+   목적:
+   - 고객보고용 PDF를 A4 landscape 기준으로 출력한다.
+   - 화면 입력 DOM과 PDF 출력 DOM은 분리한다.
+   - 도막 입력 패널/닫기 버튼 등 입력 UI는 출력에서 숨긴다.
+   - 기존 화면 DOM, localStorage key, 도면 좌표는 수정하지 않는다.
+*/
+#reportPrintRootV1773.report-pdf-root-v76{
+  display:none;
+  width:100%;
+  max-width:1160px;
+  margin:0 auto;
+  padding:12px;
+  background:#eef1f5;
+  color:#111827;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;
+  box-sizing:border-box;
+}
+body.report-print-preview-v1773 #reportPrintRootV1773.report-pdf-root-v76{
+  display:block!important;
+}
+.report-pdf-page-v76{
+  width:1120px;
+  height:780px;
+  overflow:hidden;
+  background:#fff;
+  border:1px solid #d8e0ea;
+  border-radius:14px;
+  margin:0 auto 16px;
+  box-shadow:0 2px 10px rgba(15,23,42,.06);
+  box-sizing:border-box;
+  page-break-after:always;
+  break-after:page;
+}
+.report-pdf-page-v76:last-child{page-break-after:auto;break-after:auto}
+.report-pdf-page-inner-v76{
+  width:1120px;
+  padding:12px;
+  box-sizing:border-box;
+  transform-origin:top left;
+  background:#fff;
+}
+.report-pdf-head-v76{
+  padding:10px 12px;
+  margin:0 0 8px;
+  border-radius:12px;
+  background:#111827;
+  color:#fff;
+}
+.report-pdf-head-title-v76{font-size:18px;line-height:1.2;font-weight:1000;margin:0 0 3px}
+.report-pdf-head-sub-v76{font-size:11px;line-height:1.3;font-weight:800;color:#d1d5db;margin:0}
+.report-pdf-page-title-v76{
+  min-height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 10px;
+  margin:0 0 8px;
+  border-radius:9px;
+  background:#111827;
+  color:#fff;
+  font-size:14px;
+  font-weight:1000;
+}
+.report-pdf-page-body-v76,
+.report-pdf-page-body-v76 .section,
+.report-pdf-page-body-v76 article,
+.report-pdf-page-body-v76 .report-card-ui,
+.report-pdf-page-body-v76 .touch-card{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.report-pdf-page-body-v76 .header,
+.report-pdf-page-body-v76 .tabs,
+.report-pdf-page-body-v76 .menu-btn,
+.report-pdf-page-body-v76 .menu-open-btn,
+.report-pdf-page-body-v76 .menu-panel,
+.report-pdf-page-body-v76 #reportOutputSection,
+.report-pdf-page-body-v76 #secOrder,
+.report-pdf-page-body-v76 .order-open-btn,
+.report-pdf-page-body-v76 .scanner-start-card,
+.report-pdf-page-body-v76 .no-print{
+  display:none!important;
+  visibility:hidden!important;
+}
+.report-pdf-page-body-v76 .report-card-ui,
+.report-pdf-page-body-v76 article.report-card-ui,
+.report-pdf-page-body-v76 .touch-card,
+.report-pdf-page-body-v76 .paint-diagram-block{
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+  margin-bottom:8px!important;
+  box-shadow:none!important;
+}
+/* 기본정보는 PDF 전용으로 압축한다. */
+.report-pdf-page-body-v76 #secInput .basicinfo-v5-wrap{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:6px 8px!important;
+}
+.report-pdf-page-body-v76 #secInput .basicinfo-v5-field,
+.report-pdf-page-body-v76 #secInput .basicinfo-v5-field.full{
+  grid-column:auto!important;
+  min-width:0!important;
+}
+.report-pdf-page-body-v76 #secInput .basicinfo-v5-label,
+.report-pdf-page-body-v76 #secInput label,
+.report-pdf-page-body-v76 .check-title{
+  font-size:11px!important;
+  line-height:1.25!important;
+  margin-bottom:3px!important;
+}
+.report-pdf-page-body-v76 #secInput .bi-input,
+.report-pdf-page-body-v76 #secInput .bi-select,
+.report-pdf-page-body-v76 #secInput input,
+.report-pdf-page-body-v76 #secInput select{
+  height:30px!important;
+  min-height:30px!important;
+  padding:5px 8px!important;
+  font-size:11px!important;
+  line-height:18px!important;
+  border-radius:8px!important;
+}
+.report-pdf-page-body-v76 #secInput textarea{
+  min-height:32px!important;
+  height:32px!important;
+  padding:5px 8px!important;
+  font-size:11px!important;
+  border-radius:8px!important;
+}
+.report-pdf-page-body-v76 #secInput .tri-row-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+.report-pdf-page-body-v76 #secInput .report-card-ui,
+.report-pdf-page-body-v76 .report-card-ui{
+  padding:10px!important;
+  border-radius:12px!important;
+}
+.report-pdf-page-body-v76 .report-card-ui h2{
+  font-size:13px!important;
+  margin:0 0 8px!important;
+}
+.report-pdf-page-body-v76 .no{
+  height:20px!important;
+  min-width:20px!important;
+  font-size:10px!important;
+}
+/* PDF에서 도막 입력 패널/입력바/닫기/선택용 버튼은 출력하지 않는다. */
+.report-pdf-page-body-v76 .paint-native-panel,
+.report-pdf-page-body-v76 .paint-v98-panel,
+.report-pdf-page-body-v76 .paint-input-dock,
+.report-pdf-page-body-v76 #paintInputDock,
+.report-pdf-page-body-v76 .paint-native-input,
+.report-pdf-page-body-v76 .paint-native-input-wrap,
+.report-pdf-page-body-v76 .paint-native-close,
+.report-pdf-page-body-v76 .paint-native-w,
+.report-pdf-page-body-v76 .paint-v98-input,
+.report-pdf-page-body-v76 .paint-v98-w,
+.report-pdf-page-body-v76 .paint-v98-current,
+.report-pdf-page-body-v76 .paint-v98-unit,
+.report-pdf-page-body-v76 [class*="paint"][class*="panel"],
+.report-pdf-page-body-v76 [class*="paint"][class*="dock"]{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+.report-pdf-page-body-v76 input,
+.report-pdf-page-body-v76 textarea,
+.report-pdf-page-body-v76 select,
+.report-pdf-page-body-v76 button,
+.report-pdf-page-body-v76 label{
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.report-pdf-page-body-v76 input,
+.report-pdf-page-body-v76 textarea,
+.report-pdf-page-body-v76 select,
+.report-pdf-page-body-v76 button{
+  pointer-events:none!important;
+}
+.report-pdf-page-body-v76 .fig,
+.report-pdf-page-body-v76 .paint-fig,
+.report-pdf-page-body-v76 .paint-fig-bent,
+.report-pdf-page-body-v76 .touch-diagram-shell,
+.report-pdf-page-body-v76 .diagram-wrap,
+.report-pdf-page-body-v76 .paint-diagram-block{
+  overflow:visible!important;
+  contain:none!important;
+  position:relative!important;
+}
+.report-pdf-page-body-v76 .touch-diagram-shell{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+  align-items:start!important;
+}
+.report-pdf-page-body-v76 .touch-diagram-title,
+.report-pdf-page-body-v76 .touch-diagram-subtitle{
+  grid-column:1/-1!important;
+  margin:3px 0!important;
+  font-size:11px!important;
+  line-height:1.2!important;
+}
+.report-pdf-page-body-v76 .touch-card{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+}
+.report-pdf-page-body-v76 .touch-card .fig{
+  width:100%!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+.report-pdf-fit-note-v76{display:none;margin-top:4px;font-size:10px;color:#6b7280;text-align:right;font-weight:800}
+.report-pdf-page-v76[data-scaled="1"] .report-pdf-fit-note-v76{display:block}
+@media (max-width:1180px){
+  #reportPrintRootV1773.report-pdf-root-v76{max-width:100%;padding:10px}
+  .report-pdf-page-v76{width:100%;height:auto;min-height:auto;overflow:visible}
+  .report-pdf-page-inner-v76{width:100%;transform:none!important}
+}
+@media print{
+  @page{size:A4 landscape;margin:6mm}
+  html,body{margin:0!important;padding:0!important;background:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body.report-print-preview-v1773 > :not(#reportPrintRootV1773){display:none!important;visibility:hidden!important}
+  #reportPrintRootV1773.report-pdf-root-v76{display:block!important;width:285mm!important;max-width:285mm!important;margin:0 auto!important;padding:0!important;background:#fff!important}
+  #reportPrintRootV1773.report-pdf-root-v76 .report-pdf-page-v76{
+    width:285mm!important;height:198mm!important;min-height:198mm!important;max-height:198mm!important;
+    overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+    page-break-after:always!important;break-after:page!important;page-break-inside:avoid!important;break-inside:avoid!important;background:#fff!important;
+  }
+  #reportPrintRootV1773.report-pdf-root-v76 .report-pdf-page-v76:last-child{page-break-after:auto!important;break-after:auto!important}
+  #reportPrintRootV1773.report-pdf-root-v76 .report-pdf-page-inner-v76{width:1120px!important;padding:10px!important;background:#fff!important;transform-origin:top left!important}
+  .report-print-bar-v1773{display:none!important}
+}
+</style>
+<script>
+/* v76.00 - 고객보고용 PDF 가로형 출력 모듈
+   목적:
+   - 고객보고용 PDF는 A4 가로형으로 출력한다.
+   - 회사보관용은 기존 모드 값만 유지하며 동일 가로형으로 우선 출력한다.
+   - 기존 화면 DOM과 저장 key는 수정하지 않는다.
+*/
+(function(){
+  var ROOT_ID = 'reportPrintRootV1773';
+  var BAR_ID = 'reportPrintBarV1773';
+  var PREVIEW_CLASS = 'report-print-preview-v1773';
+  var restoreRecords = [];
+
+  /** 단일 요소를 조회한다. */
+  function qs(sel, root){ return (root || document).querySelector(sel); }
+
+  /** 복수 요소를 배열로 조회한다. */
+  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  /** 문자열 앞자리를 0으로 채운다. */
+  function pad2(n){ return String(n < 10 ? '0' + n : n); }
+
+  /** 요소의 표시 텍스트를 정규화한다. */
+  function textOf(el){ return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim(); }
+
+  /** 기존 PDF root와 버튼바를 제거한다. */
+  function removePrintDomV76(){
+    var old = document.getElementById(ROOT_ID);
+    if(old) old.remove();
+    var bar = document.getElementById(BAR_ID);
+    if(bar) bar.remove();
+  }
+
+  /** 회사보고용에서 숨긴 L 노드를 원복한다. */
+  function restoreHiddenLNodesV76(){
+    (restoreRecords || []).forEach(function(rec){
+      if(!rec || !rec.el) return;
+      rec.el.style.display = rec.display || '';
+      rec.el.style.visibility = rec.visibility || '';
+    });
+    restoreRecords = [];
+  }
+
+  /** 회사보고용에서 L 마커 노드를 숨긴다. */
+  function hideLNodesV76(root){
+    qsa('*', root).forEach(function(el){
+      var txt = textOf(el);
+      var attrs = [el.id || '', typeof el.className === 'string' ? el.className : '', el.getAttribute('for') || '', el.getAttribute('data-part') || '', el.getAttribute('data-value') || ''].join(' ');
+      if(txt === 'L' || /(^|\s|_|-)h4(\s|_|-|$)/.test(attrs) || /(^|\s|_|-)L(\s|_|-|$)/.test(attrs)){
+        restoreRecords.push({el:el, display:el.style.display || '', visibility:el.style.visibility || ''});
+        el.style.setProperty('display','none','important');
+        el.style.setProperty('visibility','hidden','important');
+      }
+    });
+  }
+
+  /** 원본 입력값을 clone에 순서 기준으로 복사한다. */
+  function syncFormValuesForCloneV76(original, clone){
+    if(!original || !clone) return;
+    var originals = original.querySelectorAll('input, select, textarea');
+    var clones = clone.querySelectorAll('input, select, textarea');
+    for(var i=0;i<originals.length && i<clones.length;i++){
+      var o = originals[i];
+      var c = clones[i];
+      if(o.tagName === 'TEXTAREA'){
+        c.value = o.value;
+        c.textContent = o.value;
+        c.setAttribute('data-print-value-v76', o.value || '');
+        continue;
+      }
+      if(o.tagName === 'SELECT'){
+        c.selectedIndex = o.selectedIndex;
+        for(var k=0;k<(c.options || []).length;k++) c.options[k].selected = k === o.selectedIndex;
+        continue;
+      }
+      if(o.type === 'checkbox' || o.type === 'radio'){
+        c.checked = o.checked;
+        if(o.checked) c.setAttribute('checked','checked'); else c.removeAttribute('checked');
+        continue;
+      }
+      c.value = o.value;
+      c.setAttribute('value', o.value || '');
+      c.setAttribute('data-print-value-v76', o.value || '');
+    }
+  }
+
+  /** PDF DOM 내부 입력 요소를 읽기 전용화한다. */
+  function makeReadonlyForPrintV76(root){
+    qsa('input, textarea', root).forEach(function(el){
+      if(el.type !== 'hidden') el.setAttribute('readonly','readonly');
+      el.style.setProperty('pointer-events','none','important');
+    });
+    qsa('select, button', root).forEach(function(el){
+      el.style.setProperty('pointer-events','none','important');
+    });
+  }
+
+  /** PDF 출력에서 필요 없는 도막 입력 패널을 제거한다. */
+  function removePaintInputUiV76(root){
+    qsa('.paint-native-panel,.paint-v98-panel,.paint-input-dock,#paintInputDock,.paint-native-input-wrap,.paint-native-close,.paint-native-w,.paint-v98-input,.paint-v98-w,.paint-v98-current,.paint-v98-unit,[class*="paint"][class*="panel"],[class*="paint"][class*="dock"]', root).forEach(function(el){
+      el.remove();
+    });
+  }
+
+  /** clone을 PDF 출력 가능한 상태로 정규화한다. */
+  function normalizeCloneV76(clone){
+    if(!clone) return clone;
+    clone.classList.add('report-print-cloned-section-v1773');
+    clone.style.setProperty('display','block','important');
+    clone.style.setProperty('visibility','visible','important');
+    clone.style.setProperty('opacity','1','important');
+    clone.style.setProperty('height','auto','important');
+    clone.style.setProperty('max-height','none','important');
+    clone.style.setProperty('overflow','visible','important');
+    removePaintInputUiV76(clone);
+    makeReadonlyForPrintV76(clone);
+    return clone;
+  }
+
+  /** PDF 페이지를 생성한다. */
+  function createPageV76(root, title, withHead, mode){
+    var page = document.createElement('section');
+    page.className = 'report-pdf-page-v76';
+    page.setAttribute('data-page-title-v76', title || '');
+
+    var inner = document.createElement('div');
+    inner.className = 'report-pdf-page-inner-v76';
+
+    if(withHead){
+      var now = new Date();
+      var head = document.createElement('div');
+      head.className = 'report-pdf-head-v76';
+      head.innerHTML =
+        '<div class="report-pdf-head-title-v76">오토베이 현장 매입 진단리포트</div>' +
+        '<p class="report-pdf-head-sub-v76">' + (mode === 'company' ? '회사보고용 PDF 저장' : '고객보고용 PDF 저장') + ' · ' + now.getFullYear() + '-' + pad2(now.getMonth()+1) + '-' + pad2(now.getDate()) + '</p>';
+      inner.appendChild(head);
+    }
+
+    var h = document.createElement('div');
+    h.className = 'report-pdf-page-title-v76';
+    h.textContent = title || '';
+    inner.appendChild(h);
+
+    var body = document.createElement('div');
+    body.className = 'report-pdf-page-body-v76';
+    inner.appendChild(body);
+
+    var note = document.createElement('div');
+    note.className = 'report-pdf-fit-note-v76';
+    note.textContent = 'PDF 페이지 맞춤 축소 적용';
+    inner.appendChild(note);
+
+    page.appendChild(inner);
+    root.appendChild(page);
+    return body;
+  }
+
+  /** section 전체를 clone하여 페이지에 추가한다. */
+  function appendSectionCloneV76(body, selector){
+    var src = qs(selector);
+    if(!src) return null;
+    var clone = src.cloneNode(true);
+    clone.id = src.id;
+    syncFormValuesForCloneV76(src, clone);
+    normalizeCloneV76(clone);
+    body.appendChild(clone);
+    return clone;
+  }
+
+  /** 사고/외관 겸용 secDiag clone에서 필요한 카드만 남긴다. */
+  function appendFilteredDiagCloneV76(body, mode){
+    var src = qs('#secDiag');
+    if(!src) return null;
+    var clone = src.cloneNode(true);
+    clone.id = 'secDiag';
+    syncFormValuesForCloneV76(src, clone);
+    qsa(':scope > article, :scope > .report-card-ui', clone).forEach(function(card){
+      var txt = textOf(card);
+      var isAccident = /보험|특수\s*이력|보험·특수|사고\s*진단확인|사고진단|사고\s*진단/.test(txt);
+      var isExterior = /도막\s*진단확인|외관\s*진단확인|타이어\s*상태확인|트레드|도막|외관|타이어/.test(txt);
+      if(mode === 'accident' && !isAccident) card.remove();
+      if(mode === 'exterior' && !isExterior) card.remove();
+    });
+    normalizeCloneV76(clone);
+    body.appendChild(clone);
+    return clone;
+  }
+
+  /** 체크 카드 중 지정 카드만 clone하여 하나의 section에 담는다. */
+  function appendCheckCardsV76(body, cardKeys){
+    var src = qs('#secCheck');
+    if(!src) return null;
+    var section = document.createElement('section');
+    section.id = 'secCheck';
+    section.className = 'section report-print-cloned-section-v1773';
+    cardKeys.forEach(function(key){
+      var card = qs('article[data-check-card="' + key + '"]', src);
+      if(!card) return;
+      var clone = card.cloneNode(true);
+      syncFormValuesForCloneV76(card, clone);
+      normalizeCloneV76(clone);
+      section.appendChild(clone);
+    });
+    normalizeCloneV76(section);
+    body.appendChild(section);
+    return section;
+  }
+
+  /** 페이지별 content 높이/너비를 측정하여 A4 가로 한 페이지 안으로 축소한다. */
+  function fitPdfPagesV76(){
+    qsa('#' + ROOT_ID + ' .report-pdf-page-v76').forEach(function(page){
+      var inner = qs('.report-pdf-page-inner-v76', page);
+      if(!inner) return;
+      inner.style.transform = 'none';
+      inner.style.width = '1120px';
+      page.removeAttribute('data-scaled');
+      var maxWidth = 1110;
+      var maxHeight = 770;
+      var fullWidth = inner.scrollWidth || inner.offsetWidth || 0;
+      var fullHeight = inner.scrollHeight || inner.offsetHeight || 0;
+      var scaleW = fullWidth > maxWidth ? maxWidth / fullWidth : 1;
+      var scaleH = fullHeight > maxHeight ? maxHeight / fullHeight : 1;
+      var scale = Math.min(scaleW, scaleH, 1);
+      scale = Math.max(0.58, scale);
+      if(scale < 1){
+        inner.style.transform = 'scale(' + scale + ')';
+        page.setAttribute('data-scaled','1');
+        page.setAttribute('data-scale-v76', String(Math.round(scale * 100) / 100));
+      }
+    });
+  }
+
+  /** PDF 전용 root DOM을 생성한다. */
+  function buildPdfDomV76(mode){
+    removePrintDomV76();
+    restoreHiddenLNodesV76();
+    var root = document.createElement('main');
+    root.id = ROOT_ID;
+    root.className = 'report-pdf-root-v76';
+    root.setAttribute('data-report-mode-v76', mode || 'customer');
+
+    appendSectionCloneV76(createPageV76(root, '1. 기본정보', true, mode), '#secInput');
+    appendFilteredDiagCloneV76(createPageV76(root, '2. 사고 진단', false, mode), 'accident');
+    appendFilteredDiagCloneV76(createPageV76(root, '3. 외관/수리 진단', false, mode), 'exterior');
+    appendCheckCardsV76(createPageV76(root, '4. 점검 8~12', false, mode), ['scanner','leak','engine_room','engine_func','light']);
+    appendCheckCardsV76(createPageV76(root, '5. 점검 13~15', false, mode), ['function','media','drive']);
+    appendCheckCardsV76(createPageV76(root, '6. 점검 16~19', false, mode), ['interior_memo','owned','pros']);
+
+    document.body.appendChild(root);
+    if(mode === 'company') hideLNodesV76(root);
+    setTimeout(fitPdfPagesV76, 80);
+    setTimeout(fitPdfPagesV76, 260);
+    return root;
+  }
+
+  /** PDF 저장/닫기 버튼바를 생성한다. */
+  function buildPrintBarV76(){
+    var old = document.getElementById(BAR_ID);
+    if(old) old.remove();
+    var bar = document.createElement('div');
+    bar.id = BAR_ID;
+    bar.className = 'report-print-bar-v1773';
+    bar.innerHTML = '<button class="primary" id="reportPrintRunV1773" type="button">PDF 저장</button><button id="reportPrintCloseV1773" type="button">닫기</button>';
+    document.body.appendChild(bar);
+    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
+      fitPdfPagesV76();
+      setTimeout(function(){ window.print(); }, 120);
+    }, false);
+    qs('#reportPrintCloseV1773', bar).addEventListener('click', closePdfPreviewV76, false);
+  }
+
+  /** PDF 미리보기를 연다. */
+  function openPdfPreviewV76(mode){
+    buildPdfDomV76(mode || 'customer');
+    document.body.classList.add(PREVIEW_CLASS);
+    buildPrintBarV76();
+    window.scrollTo(0,0);
+    setTimeout(function(){
+      fitPdfPagesV76();
+      window.print();
+    }, 500);
+  }
+
+  /** PDF 미리보기를 닫는다. */
+  function closePdfPreviewV76(){
+    restoreHiddenLNodesV76();
+    removePrintDomV76();
+    document.body.classList.remove(PREVIEW_CLASS);
+    document.body.classList.remove('report-mobile-save-mode-v1769','report-mobile-save-company-v1769','report-mobile-save-preparing-v1770');
+  }
+
+  window.__openReportPrintV1773 = openPdfPreviewV76;
+  window.__closeReportPrintV1773 = closePdfPreviewV76;
+  window.__fitReportPdfPagesV76 = fitPdfPagesV76;
+})();
+</script>
 </body>
 </html>

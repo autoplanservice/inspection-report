@@ -11993,7 +11993,6 @@ function bindLevelButtons(){
     var run = function(){
       var group = button.closest('[data-level-group]');
       qsa('.level', group).forEach(el => el.classList.toggle('active', el === button));
-      console.info('[AB_DIAG][LEVEL_SELECT]', {group:group.dataset.levelGroup, level:button.dataset.level});
     };
     button.addEventListener('click', run);
     button.addEventListener('touchend', function(event){
@@ -12082,26 +12081,6 @@ function bindTouchDiagramChange(){
   }, true);
 }
 
-/**
- * saveDraft는 입력값과 도면 radio 상태를 localStorage에 저장한다.
- */
-function saveDraft(){
-  var fields = {};
-  qsa('[data-key]').forEach(el => fields[el.dataset.key] = el.value || '');
-  var radios = qsa('.touch-diagram-shell input[type="radio"]:not(.check-radio)').map(input => ({id:input.id, checked:input.checked}));
-  var checks = qsa('.checkline').map(row => ({
-    key: row.dataset.checkKey,
-    state: qs('.check-radio.bad', row).checked ? 'bad' : (qs('.check-radio.ok', row).checked ? 'ok' : '')
-  }));
-  localStorage.setItem(REPORT_STORAGE_KEY, JSON.stringify({
-    savedAt:new Date().toISOString(),
-    fields,
-    radios,
-    checks
-  }));
-  console.info('[AB_DIAG][SAVE_DRAFT]', {fieldCount:Object.keys(fields).length, radioCount:radios.length, checkCount:checks.length});
-  alert('임시저장 완료');
-}
 
 /**
  * restoreDraft는 저장된 입력값과 도면 radio 상태를 복원한다.
@@ -12126,7 +12105,6 @@ function restoreDraft(){
       if(input) input.checked = true;
       qs('.memo', row).classList.toggle('show', item.state === 'bad');
     });
-    console.info('[AB_DIAG][RESTORE_DRAFT]', {savedAt:saved.savedAt});
   }catch(error){
     console.warn('[AB_DIAG][RESTORE_FAIL]', error);
   }
@@ -12149,12 +12127,6 @@ function bindKmInputs(){
  * boot는 최초 렌더링과 이벤트 연결을 수행한다.
  */
 function boot(){
-  console.info('[AB_DIAG][BOOT]', {
-    storageKey:REPORT_STORAGE_KEY,
-    ua:navigator.userAgent,
-    touch:('ontouchstart' in window),
-    diagramCards:3
-  });
   bindKmInputs();
   bindCheckButtons();
   bindLevelButtons();
@@ -16218,7 +16190,7 @@ function isVisibleCaptureTarget(el){
    목적:
    - 보증연장 버튼은 검수자 코멘트와 동일한 클릭 순환 UI를 사용한다.
    - 기존 저장 함수는 data-key 입력요소 값을 저장하므로 hidden input(prosWarrantyLevel)에 선택값을 동기화한다.
-   - 기존 localStorage key와 saveDraft/restoreDraft 함수는 변경하지 않는다.
+   - 기존 localStorage key와 restoreDraft 함수는 변경하지 않는다.
 */
 (function(){
   function syncProsWarrantyButtonFromHidden(){

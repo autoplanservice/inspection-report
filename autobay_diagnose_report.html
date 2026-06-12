@@ -9962,6 +9962,219 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
   color:#111827!important;
 }
 
+/* v119 - A2 이미지 출력 테스트 */
+.report-a2-image-stage-v119{
+  position:fixed!important;
+  left:-20000px!important;
+  top:0!important;
+  width:1684px!important;
+  background:#ffffff!important;
+  z-index:-1!important;
+  pointer-events:none!important;
+}
+
+.report-a2-image-page-v119{
+  position:relative!important;
+  width:1684px!important;
+  height:1191px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  background:#ffffff!important;
+  padding:44px 52px!important;
+  color:#111827!important;
+  font-family:Arial, sans-serif!important;
+}
+
+.report-a2-image-page-v119 + .report-a2-image-page-v119{
+  margin-top:20px!important;
+}
+
+.report-a2-image-head-v119{
+  position:absolute!important;
+  left:52px!important;
+  right:52px!important;
+  top:40px!important;
+  height:72px!important;
+  text-align:center!important;
+}
+
+.report-a2-image-columns-v119{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:132px!important;
+  bottom:38px!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  gap:84px!important;
+}
+
+.report-a2-image-page-v119:not(.first) .report-a2-image-columns-v119{
+  top:42px!important;
+}
+
+.report-a2-image-column-v119{
+  width:390px!important;
+  height:100%!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+
+.report-a2-image-unit-v119{
+  display:block!important;
+  width:390px!important;
+  max-width:390px!important;
+  box-sizing:border-box!important;
+  margin:0 0 16px!important;
+  break-inside:avoid!important;
+}
+
+.report-a2-image-unit-v119 .report-print-section-title-v1773{
+  width:390px!important;
+  max-width:390px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  text-align:center!important;
+  justify-content:center!important;
+}
+
+.report-a2-image-unit-v119 .report-print-section-body-v1773,
+.report-a2-image-unit-v119 article,
+.report-a2-image-unit-v119 .report-card-ui,
+.report-a2-image-unit-v119 .touch-card{
+  width:390px!important;
+  max-width:390px!important;
+  box-sizing:border-box!important;
+}
+
+.report-a2-image-measure-v119{
+  position:absolute!important;
+  left:-20000px!important;
+  top:0!important;
+  width:390px!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+.report-a2-image-busy-v119{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483646!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:rgba(15,23,42,.62)!important;
+  padding:20px!important;
+}
+
+.report-a2-image-busy-card-v119{
+  width:min(340px, calc(100vw - 40px))!important;
+  border-radius:16px!important;
+  background:#ffffff!important;
+  padding:22px!important;
+  text-align:center!important;
+  box-shadow:0 18px 60px rgba(15,23,42,.28)!important;
+}
+
+.report-a2-image-busy-title-v119{
+  font-size:17px!important;
+  font-weight:900!important;
+  color:#111827!important;
+}
+
+.report-a2-image-busy-text-v119{
+  margin-top:8px!important;
+  font-size:13px!important;
+  line-height:1.5!important;
+  color:#64748b!important;
+}
+
+.report-a2-image-gallery-v119{
+  position:fixed!important;
+  inset:0!important;
+  z-index:2147483647!important;
+  overflow:auto!important;
+  background:#eef2f7!important;
+  padding:18px!important;
+}
+
+.report-a2-image-gallery-head-v119{
+  position:sticky!important;
+  top:0!important;
+  z-index:2!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  max-width:960px!important;
+  margin:0 auto 14px!important;
+  padding:12px!important;
+  border-radius:14px!important;
+  background:rgba(255,255,255,.96)!important;
+  box-shadow:0 8px 28px rgba(15,23,42,.12)!important;
+}
+
+.report-a2-image-gallery-title-v119{
+  font-size:15px!important;
+  font-weight:900!important;
+  color:#111827!important;
+}
+
+.report-a2-image-gallery-close-v119{
+  min-height:38px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  padding:0 16px!important;
+  font-weight:900!important;
+}
+
+.report-a2-image-gallery-list-v119{
+  display:grid!important;
+  gap:18px!important;
+  max-width:960px!important;
+  margin:0 auto!important;
+}
+
+.report-a2-image-gallery-card-v119{
+  border-radius:16px!important;
+  background:#ffffff!important;
+  padding:12px!important;
+  box-shadow:0 8px 28px rgba(15,23,42,.12)!important;
+}
+
+.report-a2-image-gallery-card-v119 img{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  border-radius:10px!important;
+  background:#ffffff!important;
+}
+
+.report-a2-image-gallery-actions-v119{
+  display:flex!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin-top:10px!important;
+}
+
+.report-a2-image-gallery-actions-v119 a{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:40px!important;
+  border-radius:10px!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  padding:0 16px!important;
+  text-decoration:none!important;
+  font-size:13px!important;
+  font-weight:900!important;
+}
+
+
 /* PDF 미리보기 전체 외곽도 상단 카드와 같은 라운드 사각 비율로 정리 */
 body.report-print-preview-v1773 #reportPrintRootV1773{
   border-radius:16px!important;
@@ -15852,17 +16065,414 @@ function isVisibleCaptureTarget(el){
     });
   }
 
+  /**
+   * loadHtml2CanvasV119는 이미지 출력 시점에만 html2canvas를 불러온다.
+   * 기존 PDF 출력 경로에는 영향을 주지 않는다.
+   */
+  function loadHtml2CanvasV119(){
+    if(typeof window.html2canvas === 'function'){
+      return Promise.resolve(window.html2canvas);
+    }
+
+    if(window.__html2canvasPromiseV119){
+      return window.__html2canvasPromiseV119;
+    }
+
+    window.__html2canvasPromiseV119 = new Promise(function(resolve, reject){
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+      script.async = true;
+      script.onload = function(){
+        if(typeof window.html2canvas === 'function'){
+          resolve(window.html2canvas);
+        }else{
+          reject(new Error('html2canvas 로딩 후 함수를 찾지 못했습니다.'));
+        }
+      };
+      script.onerror = function(){
+        reject(new Error('A2 이미지 변환 모듈을 불러오지 못했습니다.'));
+      };
+      document.head.appendChild(script);
+    });
+
+    return window.__html2canvasPromiseV119;
+  }
+
+  /**
+   * waitForReportAssetsV119는 출력 clone 내부 이미지와 웹폰트 로딩을 기다린다.
+   */
+  function waitForReportAssetsV119(root){
+    var imageTasks = qsa('img', root).map(function(image){
+      if(image.complete && image.naturalWidth > 0){
+        return Promise.resolve();
+      }
+
+      return new Promise(function(resolve){
+        var done = function(){
+          image.removeEventListener('load', done);
+          image.removeEventListener('error', done);
+          resolve();
+        };
+        image.addEventListener('load', done);
+        image.addEventListener('error', done);
+        setTimeout(done, 3000);
+      });
+    });
+
+    var fontTask = document.fonts && document.fonts.ready
+      ? document.fonts.ready.catch(function(){})
+      : Promise.resolve();
+
+    return Promise.all(imageTasks.concat([fontTask]));
+  }
+
+  /**
+   * createImageBusyV119는 이미지 생성 진행 상태를 화면에 표시한다.
+   */
+  function createImageBusyV119(){
+    var overlay = document.createElement('div');
+    overlay.className = 'report-a2-image-busy-v119';
+    overlay.innerHTML =
+      '<div class="report-a2-image-busy-card-v119">' +
+        '<div class="report-a2-image-busy-title-v119">A2 이미지 생성 중</div>' +
+        '<div class="report-a2-image-busy-text-v119">레이아웃과 차량 도면을 이미지로 변환하고 있습니다.</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    return overlay;
+  }
+
+  /**
+   * setImageBusyTextV119는 현재 변환 중인 페이지를 표시한다.
+   */
+  function setImageBusyTextV119(overlay, message){
+    var node = qs('.report-a2-image-busy-text-v119', overlay);
+    if(node) node.textContent = message;
+  }
+
+  /**
+   * makeA2UnitsV119는 PDF clone을 A2 두 칼럼에 배치할 단위로 분해한다.
+   * 탭명은 첫 카드와 묶고 이후 카드는 개별 단위로 유지한다.
+   */
+  function makeA2UnitsV119(root){
+    var units = [];
+
+    qsa('.report-print-section-v1773', root).forEach(function(section){
+      var title = qs('.report-print-section-title-v1773', section);
+      var body = qs('.report-print-section-body-v1773', section);
+      if(!body) return;
+
+      var children = Array.prototype.slice.call(body.children);
+      if(!children.length){
+        var emptyUnit = document.createElement('div');
+        emptyUnit.className = 'report-a2-image-unit-v119';
+        if(title) emptyUnit.appendChild(title.cloneNode(true));
+        emptyUnit.appendChild(body.cloneNode(true));
+        units.push(emptyUnit);
+        return;
+      }
+
+      children.forEach(function(child, index){
+        var unit = document.createElement('div');
+        unit.className = 'report-a2-image-unit-v119';
+
+        if(index === 0 && title){
+          unit.appendChild(title.cloneNode(true));
+        }
+
+        var unitBody = document.createElement('div');
+        unitBody.className = 'report-print-section-body-v1773';
+        unitBody.appendChild(child.cloneNode(true));
+        unit.appendChild(unitBody);
+        units.push(unit);
+      });
+    });
+
+    return units;
+  }
+
+  /**
+   * createA2ImagePageV119는 1684×1191 A2 가로형 이미지 페이지를 만든다.
+   */
+  function createA2ImagePageV119(head, isFirst){
+    var page = document.createElement('section');
+    page.className = 'report-a2-image-page-v119' + (isFirst ? ' first' : '');
+
+    if(isFirst && head){
+      var pageHead = document.createElement('div');
+      pageHead.className = 'report-a2-image-head-v119';
+      Array.prototype.slice.call(head.children).forEach(function(child){
+        pageHead.appendChild(child.cloneNode(true));
+      });
+      page.appendChild(pageHead);
+    }
+
+    var columns = document.createElement('div');
+    columns.className = 'report-a2-image-columns-v119';
+
+    var left = document.createElement('div');
+    left.className = 'report-a2-image-column-v119';
+
+    var right = document.createElement('div');
+    right.className = 'report-a2-image-column-v119';
+
+    columns.appendChild(left);
+    columns.appendChild(right);
+    page.appendChild(columns);
+
+    return {
+      page: page,
+      columns: [left, right]
+    };
+  }
+
+  /**
+   * paginateA2ImagesV119는 기존 세로형 카드 단위를 A2 한 장당 좌우 두 칼럼에 순서대로 배치한다.
+   */
+  function paginateA2ImagesV119(root){
+    var stage = document.createElement('div');
+    stage.className = 'report-a2-image-stage-v119';
+    document.body.appendChild(stage);
+
+    var measure = document.createElement('div');
+    measure.className = 'report-a2-image-measure-v119';
+    document.body.appendChild(measure);
+
+    var head = qs('.report-print-head-v1773', root);
+    var units = makeA2UnitsV119(root);
+    var pages = [];
+    var current = null;
+    var columnIndex = 0;
+
+    function nextPage(){
+      current = createA2ImagePageV119(head, pages.length === 0);
+      stage.appendChild(current.page);
+      pages.push(current.page);
+      columnIndex = 0;
+    }
+
+    function nextColumn(){
+      if(!current){
+        nextPage();
+        return;
+      }
+
+      if(columnIndex === 0){
+        columnIndex = 1;
+      }else{
+        nextPage();
+      }
+    }
+
+    nextPage();
+
+    units.forEach(function(sourceUnit){
+      var measureUnit = sourceUnit.cloneNode(true);
+      measure.appendChild(measureUnit);
+      var unitHeight = Math.ceil(measureUnit.getBoundingClientRect().height);
+      measureUnit.remove();
+
+      var column = current.columns[columnIndex];
+      var available = column.clientHeight - column.scrollHeight;
+
+      if(column.children.length && unitHeight > available){
+        nextColumn();
+        column = current.columns[columnIndex];
+      }
+
+      column.appendChild(sourceUnit.cloneNode(true));
+
+      if(column.scrollHeight > column.clientHeight + 2 && column.children.length > 1){
+        var moved = column.lastElementChild;
+        moved.remove();
+        nextColumn();
+        current.columns[columnIndex].appendChild(moved);
+      }
+    });
+
+    measure.remove();
+
+    return {
+      stage: stage,
+      pages: pages
+    };
+  }
+
+  /**
+   * canvasToFileV119는 canvas를 PNG File로 변환한다.
+   */
+  function canvasToFileV119(canvas, fileName){
+    return new Promise(function(resolve, reject){
+      canvas.toBlob(function(blob){
+        if(!blob){
+          reject(new Error('PNG 이미지 데이터를 만들지 못했습니다.'));
+          return;
+        }
+
+        try{
+          resolve(new File([blob], fileName, {type:'image/png'}));
+        }catch(error){
+          blob.name = fileName;
+          resolve(blob);
+        }
+      }, 'image/png', 0.96);
+    });
+  }
+
+  /**
+   * showA2ImageGalleryV119는 공유를 지원하지 않는 환경에서 이미지 저장 화면을 표시한다.
+   */
+  function showA2ImageGalleryV119(files){
+    var old = qs('.report-a2-image-gallery-v119');
+    if(old) old.remove();
+
+    var gallery = document.createElement('div');
+    gallery.className = 'report-a2-image-gallery-v119';
+    gallery.innerHTML =
+      '<div class="report-a2-image-gallery-head-v119">' +
+        '<div class="report-a2-image-gallery-title-v119">A2 이미지 ' + files.length + '장</div>' +
+        '<button class="report-a2-image-gallery-close-v119" type="button">닫기</button>' +
+      '</div>' +
+      '<div class="report-a2-image-gallery-list-v119"></div>';
+
+    var list = qs('.report-a2-image-gallery-list-v119', gallery);
+
+    files.forEach(function(file, index){
+      var url = URL.createObjectURL(file);
+      var card = document.createElement('div');
+      card.className = 'report-a2-image-gallery-card-v119';
+      card.innerHTML =
+        '<img alt="A2 이미지 ' + (index + 1) + '">' +
+        '<div class="report-a2-image-gallery-actions-v119">' +
+          '<a target="_blank" rel="noopener" download="' + (file.name || ('autobay-a2-' + (index + 1) + '.png')) + '">이미지 열기/저장</a>' +
+        '</div>';
+
+      qs('img', card).src = url;
+      qs('a', card).href = url;
+      list.appendChild(card);
+    });
+
+    qs('.report-a2-image-gallery-close-v119', gallery).addEventListener('click', function(){
+      qsa('img', gallery).forEach(function(image){
+        if(image.src.indexOf('blob:') === 0) URL.revokeObjectURL(image.src);
+      });
+      gallery.remove();
+    }, false);
+
+    document.body.appendChild(gallery);
+  }
+
+  /**
+   * deliverA2ImagesV119는 모바일 공유를 우선하고, 불가능하면 저장 갤러리를 연다.
+   */
+  function deliverA2ImagesV119(files){
+    if(
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({files:files})
+    ){
+      return navigator.share({
+        files:files,
+        title:'오토베이 A2 진단리포트 이미지'
+      }).catch(function(error){
+        if(error && error.name === 'AbortError') return;
+        showA2ImageGalleryV119(files);
+      });
+    }
+
+    showA2ImageGalleryV119(files);
+    return Promise.resolve();
+  }
+
+  /**
+   * exportA2ImagesV119는 현재 리포트를 A2 가로형 페이지별 PNG로 생성한다.
+   */
+  function exportA2ImagesV119(mode){
+    var busy = createImageBusyV119();
+    var reportRoot = null;
+    var layout = null;
+
+    repairMainTabHandlersV1784();
+    reportRoot = buildReport(mode);
+    document.body.classList.add(PREV_CLASS);
+    syncPrintSectionTitleWidths(reportRoot);
+
+    return Promise.all([
+      loadHtml2CanvasV119(),
+      waitForReportAssetsV119(reportRoot)
+    ]).then(function(){
+      layout = paginateA2ImagesV119(reportRoot);
+      return waitForReportAssetsV119(layout.stage);
+    }).then(function(){
+      var files = [];
+      var chain = Promise.resolve();
+
+      layout.pages.forEach(function(page, index){
+        chain = chain.then(function(){
+          setImageBusyTextV119(
+            busy,
+            'A2 이미지 ' + (index + 1) + ' / ' + layout.pages.length + ' 생성 중'
+          );
+
+          return window.html2canvas(page, {
+            backgroundColor:'#ffffff',
+            scale:1.5,
+            useCORS:true,
+            allowTaint:false,
+            logging:false,
+            width:1684,
+            height:1191,
+            windowWidth:1684,
+            windowHeight:1191,
+            scrollX:0,
+            scrollY:0
+          }).then(function(canvas){
+            var prefix = mode === 'company' ? 'company' : 'customer';
+            var fileName = 'autobay-a2-' + prefix + '-' + String(index + 1).padStart(2,'0') + '.png';
+            return canvasToFileV119(canvas, fileName).then(function(file){
+              files.push(file);
+            });
+          });
+        });
+      });
+
+      return chain.then(function(){
+        return files;
+      });
+    }).then(function(files){
+      if(layout && layout.stage) layout.stage.remove();
+      closePreview();
+      busy.remove();
+      return deliverA2ImagesV119(files);
+    }).catch(function(error){
+      if(layout && layout.stage) layout.stage.remove();
+      closePreview();
+      busy.remove();
+      window.alert(
+        'A2 이미지 생성 중 오류가 발생했습니다.\n' +
+        (error && error.message ? error.message : String(error))
+      );
+    });
+  }
+
   function buildBar(){
     var bar = document.createElement('div');
     bar.id = BAR_ID;
     bar.className = 'report-print-bar-v1773';
     bar.innerHTML =
       '<button class="primary" id="reportPrintRunV1773" type="button">PDF 저장</button>' +
+      '<button id="reportA2ImageRunV119" type="button">A2 이미지 테스트</button>' +
       '<button id="reportPrintCloseV1773" type="button">닫기</button>';
     document.body.appendChild(bar);
 
     qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
       window.print();
+    }, false);
+
+    qs('#reportA2ImageRunV119', bar).addEventListener('click', function(){
+      var subtitle = qs('.report-print-sub-v1773', qs('#' + ROOT_ID));
+      exportA2ImagesV119(
+        subtitle && subtitle.textContent.indexOf('회사보고용') >= 0 ? 'company' : 'customer'
+      );
     }, false);
 
     qs('#reportPrintCloseV1773', bar).addEventListener('click', function(){
@@ -15982,6 +16592,8 @@ function isVisibleCaptureTarget(el){
       '<div class="report-mobile-print-btns-v1773">' +
         '<button class="report-mobile-print-btn-v1773 customer" id="btnCustomerMobilePrintV1773" type="button">고객보고용 PDF 저장</button>' +
         '<button class="report-mobile-print-btn-v1773 company" id="btnCompanyMobilePrintV1773" type="button">회사보고용 PDF 저장</button>' +
+        '<button class="report-mobile-print-btn-v1773 customer" id="btnCustomerA2ImageV119" type="button">고객보고용 A2 이미지</button>' +
+        '<button class="report-mobile-print-btn-v1773 company" id="btnCompanyA2ImageV119" type="button">회사보고용 A2 이미지</button>' +
       '</div>';
     root.appendChild(wrap);
 
@@ -15991,6 +16603,14 @@ function isVisibleCaptureTarget(el){
 
     qs('#btnCompanyMobilePrintV1773', wrap).addEventListener('click', function(){
       openPreview('company');
+    }, false);
+
+    qs('#btnCustomerA2ImageV119', wrap).addEventListener('click', function(){
+      exportA2ImagesV119('customer');
+    }, false);
+
+    qs('#btnCompanyA2ImageV119', wrap).addEventListener('click', function(){
+      exportA2ImagesV119('company');
     }, false);
 
     repairMainTabHandlersV1784();
@@ -16004,6 +16624,7 @@ function isVisibleCaptureTarget(el){
 
   window.__openReportPrintV1773 = openPreview;
   window.__closeReportPrintV1773 = closePreview;
+  window.__exportA2ImagesV119 = exportA2ImagesV119;
 })();
 </script>
 <script>

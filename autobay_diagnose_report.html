@@ -15983,36 +15983,16 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
+/* v17.96 - 정리 13차
+   v17.81의 !important 최종 규칙에 완전히 덮이던 구형 버튼 시각 선언을 제거했다.
+   실제 fixed 배치와 최상위 레이어, 클릭 커서는 유지한다.
+*/
 .report-print-bar-v1773{
   position:fixed;
-  right:12px;
-  bottom:12px;
   z-index:100003;
-  display:none;
-  align-items:center;
-  gap:8px;
-  padding:10px;
-  border-radius:999px;
-  background:rgba(17,24,39,.96);
-  box-shadow:0 10px 24px rgba(15,23,42,.28);
-}
-body.report-print-preview-v1773 .report-print-bar-v1773{
-  display:flex;
 }
 .report-print-bar-v1773 button{
-  height:32px;
-  padding:0 12px;
-  border:0;
-  border-radius:999px;
-  background:#fff;
-  color:#111827;
-  font-size:12px;
-  font-weight:900;
   cursor:pointer;
-}
-.report-print-bar-v1773 .primary{
-  background:#2563eb;
-  color:#fff;
 }
 @media (max-width:640px){
   .report-mobile-print-btns-v1773{
@@ -16021,11 +16001,6 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
   }
   #reportPrintRootV1773{
     padding:10px;
-  }
-  .report-print-bar-v1773{
-    left:12px;
-    right:12px;
-    justify-content:space-between;
   }
 }
 

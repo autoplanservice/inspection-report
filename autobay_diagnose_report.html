@@ -10630,13 +10630,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 }
 </style>
 <style>
-/* v92 정리9차 - v17.84/v17.86 중복 selector 정리
-   - v17.84의 .paint-sub-title / .paint-section-title exact selector는
-     바로 뒤 v17.86 규칙이 동일 속성으로 완전히 덮으므로 제거했다.
-   - v17.84의 class*=paint 동적 selector는 PDF clone 시 생성 가능성이 있어 유지한다.
-*/
-</style>
-<style>
 /* v17.86 - 도막 라벨 강제정규화 제거 후 안전 CSS만 유지
    v17.85의 textContent 기반 DOM 변형은 상위 wrapper까지 잡아 도면 전체를 깨뜨렸으므로 제거.
    여기서는 실제 class가 명확한 경우에만 색상 보정한다.
@@ -10652,33 +10645,16 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 }
 </style>
 <style>
-/* v17.87 - 원본 구형 검정 diagram-corner-badge 도막/외관 적용 차단
-   원인:
-   - 구형 공통 규칙 .diagram-corner-badge 가 background:#111827 / color:#fff 를 가진다.
-   - 원본에서는 nth-of-type 기반 보정으로 회색이 되었으나,
-     PDF clone/필터 후 카드 순서가 바뀌면 nth-of-type 보정이 끊기고 구형 검정 라벨이 다시 적용된다.
-   처리:
-   - 전역 .diagram-corner-badge 자체는 사고/기타 카드도 사용하므로 삭제하지 않는다.
-   - 도막/외관 진단 카드에 대해서는 nth-of-type이 아닌 class 기반으로 구형 검정 라벨을 무효화한다.
+/* v93 정리10차 - v17.87 diagram-corner-badge selector 정규화
+   - 상위 .diag-paint-card / .diag-exterior-card selector가 모든 하위 배지를 이미 포함하므로
+     paint-v98-shell, paint-fig, paint-fig-bent, touch-diagram-shell, fig 경로 중복을 제거했다.
+   - 현재 #secExterior는 빈 섹션이며 v16.97에서 항상 숨김 처리되므로 #secExterior 경로를 제거했다.
+   - diagram-corner-badge에 dark/black class를 추가하는 HTML/JS가 없어 미사용 방어 selector를 제거했다.
 */
 #secDiag .diag-paint-card .diagram-corner-badge,
-#secDiag .diag-paint-card .paint-v98-shell .diagram-corner-badge,
-#secDiag .diag-paint-card .paint-fig .diagram-corner-badge,
-#secDiag .diag-paint-card .paint-fig-bent .diagram-corner-badge,
 #secDiag .diag-exterior-card .diagram-corner-badge,
-#secDiag .diag-exterior-card .touch-diagram-shell .diagram-corner-badge,
-#secDiag .diag-exterior-card .fig .diagram-corner-badge,
-#secExterior .diag-paint-card .diagram-corner-badge,
-#secExterior .diag-exterior-card .diagram-corner-badge,
 #reportPrintRootV1773 #secDiag .diag-paint-card .diagram-corner-badge,
-#reportPrintRootV1773 #secDiag .diag-paint-card .paint-v98-shell .diagram-corner-badge,
-#reportPrintRootV1773 #secDiag .diag-paint-card .paint-fig .diagram-corner-badge,
-#reportPrintRootV1773 #secDiag .diag-paint-card .paint-fig-bent .diagram-corner-badge,
-#reportPrintRootV1773 #secDiag .diag-exterior-card .diagram-corner-badge,
-#reportPrintRootV1773 #secDiag .diag-exterior-card .touch-diagram-shell .diagram-corner-badge,
-#reportPrintRootV1773 #secDiag .diag-exterior-card .fig .diagram-corner-badge,
-#reportPrintRootV1773 #secExterior .diag-paint-card .diagram-corner-badge,
-#reportPrintRootV1773 #secExterior .diag-exterior-card .diagram-corner-badge{
+#reportPrintRootV1773 #secDiag .diag-exterior-card .diagram-corner-badge{
   background:#e5e7eb!important;
   background-color:#e5e7eb!important;
   color:#111827!important;
@@ -10688,22 +10664,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   font-weight:400!important;
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
-}
-
-/* 구형 검정 배지 class가 도막/외관 소라벨에 남아도 색상은 회색으로 고정 */
-#secDiag .diag-paint-card .diagram-corner-badge[class*="dark"],
-#secDiag .diag-paint-card .diagram-corner-badge[class*="black"],
-#secDiag .diag-exterior-card .diagram-corner-badge[class*="dark"],
-#secDiag .diag-exterior-card .diagram-corner-badge[class*="black"],
-#reportPrintRootV1773 #secDiag .diag-paint-card .diagram-corner-badge[class*="dark"],
-#reportPrintRootV1773 #secDiag .diag-paint-card .diagram-corner-badge[class*="black"],
-#reportPrintRootV1773 #secDiag .diag-exterior-card .diagram-corner-badge[class*="dark"],
-#reportPrintRootV1773 #secDiag .diag-exterior-card .diagram-corner-badge[class*="black"]{
-  background:#e5e7eb!important;
-  background-color:#e5e7eb!important;
-  color:#111827!important;
-  border:1px solid #cbd5e1!important;
-  box-shadow:none!important;
 }
 </style>
 <style>

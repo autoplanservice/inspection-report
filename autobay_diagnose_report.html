@@ -9494,112 +9494,11 @@ textarea.tread-input-fix-v1724,
   pointer-events:auto!important;
 }
 
-/* v17.29 - 진단일자 달력 이전 작동 방식 복구
-   기준:
-   - v15.9~v16.54 계열의 date-dual-wrap + bi-date-overlay 방식으로 되돌린다.
-   - 자체 날짜 패널, 추가 아이콘, iOS 전용 class는 사용하지 않는다.
-   영향 범위: 진단일자/기존 date-dual-wrap 달력 입력 동기화만 적용한다.
+
+
+/* v17.30 - 외관 좌/우 측면진단 트레드 입력 스타일 유지
+   영향 범위: exterior_tread_* 입력박스만 적용한다.
 */
-#secInput .date-dual-wrap{
-  position:relative!important;
-  display:block!important;
-  width:100%!important;
-}
-
-#secInput .date-dual-wrap .date-text-input.date-ymd-input{
-  width:100%!important;
-  box-sizing:border-box!important;
-  padding-right:46px!important;
-}
-
-/* 이전 작동 코드 기준: 실제 date input이 우측 미니달력 영역에 보이면서 직접 터치됨 */
-#secInput .date-dual-wrap .bi-date-overlay{
-  position:absolute!important;
-  right:8px!important;
-  top:50%!important;
-  transform:translateY(-50%)!important;
-  width:30px!important;
-  height:34px!important;
-  opacity:1!important;
-  z-index:4!important;
-  border:0!important;
-  background:transparent!important;
-  padding:0!important;
-  color:#111827!important;
-  -webkit-text-fill-color:#111827!important;
-  pointer-events:auto!important;
-  -webkit-appearance:auto!important;
-  appearance:auto!important;
-  cursor:pointer!important;
-}
-
-/* v17.30 - 진단일자 표시 깨짐 복구 + 트레드 입력박스 타이어 상태확인 스타일화
-   목적:
-   1) 진단일자 우측 date input에서 '월' 등 네이티브 날짜 텍스트가 삐져나오는 현상을 제거한다.
-   2) 추가 아이콘/자체 패널 없이 기존 bi-date-overlay만 사용한다.
-   3) 외관 좌/우 측면진단 트레드 입력박스를 타이어 상태확인 입력박스와 같은 계열의 카드형 입력 스타일로 맞춘다.
-   영향 범위: 진단일자 date-dual-wrap, exterior_tread_* 입력박스만 적용한다.
-   주의: 도면 좌표, 마커 좌표, data-key, localStorage key, 매입오더 출력은 변경하지 않는다.
-*/
-
-/* 진단일자 기존 구조 유지 */
-#secInput .date-old-stable-v1730{
-  position:relative!important;
-  display:block!important;
-  width:100%!important;
-}
-
-#secInput .date-old-stable-v1730 .date-text-input.date-ymd-input{
-  width:100%!important;
-  min-height:38px!important;
-  padding-right:46px!important;
-  box-sizing:border-box!important;
-}
-
-/* 기존 미니달력 input만 사용하되, 날짜 텍스트가 보이지 않도록 정리 */
-#secInput .date-old-stable-v1730 .bi-date-overlay.date-native-clean-v1730,
-#secInput .date-old-stable-v1730 input[type="date"].bi-date-overlay{
-  position:absolute!important;
-  right:8px!important;
-  top:50%!important;
-  transform:translateY(-50%)!important;
-  width:30px!important;
-  min-width:30px!important;
-  max-width:30px!important;
-  height:34px!important;
-  min-height:34px!important;
-  max-height:34px!important;
-  opacity:1!important;
-  z-index:40!important;
-  border:0!important;
-  outline:0!important;
-  background:transparent!important;
-  padding:0!important;
-  margin:0!important;
-  color:transparent!important;
-  -webkit-text-fill-color:transparent!important;
-  font-size:0!important;
-  line-height:0!important;
-  text-indent:0!important;
-  overflow:hidden!important;
-  pointer-events:auto!important;
-  -webkit-appearance:auto!important;
-  appearance:auto!important;
-  cursor:pointer!important;
-}
-
-/* picker indicator만 미니 아이콘처럼 표시 */
-#secInput .date-old-stable-v1730 .bi-date-overlay.date-native-clean-v1730::-webkit-calendar-picker-indicator,
-#secInput .date-old-stable-v1730 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator{
-  opacity:1!important;
-  display:block!important;
-  width:30px!important;
-  height:30px!important;
-  margin:0!important;
-  padding:0!important;
-  cursor:pointer!important;
-}
-
 /* 외관 좌/우 측면진단 트레드 input: 타이어 상태확인 입력박스 계열 스타일로 통일 */
 #secDiag input.tread-as-tire-v1730,
 #secDiag input.exterior-tread-input,
@@ -9663,6 +9562,11 @@ textarea.tread-input-fix-v1724,
   justify-content:center!important;
 }
 
+/* v84 정리4차
+   - v17.36 날짜 처리만 유지한다.
+   - v17.29/v17.30 날짜 CSS 및 이벤트 핸들러는 제거했다.
+   - v17.30의 외관 트레드 입력 스타일은 유지한다.
+*/
 /* v17.36 - date residue clean final
    목적:
    - v17.23~v17.34 날짜 관련 잔재를 제거한 뒤 기존 미니달력 방식만 유지한다.
@@ -12304,7 +12208,7 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap date-old-stable-v1730 real-mini-calendar-v1736">
+<div class="date-dual-wrap real-mini-calendar-v1736">
 <input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
 <input aria-label="진단일자 달력" class="bi-date-overlay date-click-layer-v1736" type="date"/>
 </div>
@@ -16103,160 +16007,6 @@ boot();
     bindOrderNewlineFixV1722();
   }
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
-})();
-</script><script>
-/* v17.29 - 진단일자 달력 이전 작동 핸들러 복구 */
-(function(){
-  function onlyDigits(value){
-    return String(value || '').replace(/[^\d]/g, '');
-  }
-
-  function formatDateText(value){
-    var digits = onlyDigits(value).slice(0, 8);
-    if(digits.length <= 4) return digits;
-    if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
-    return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
-  }
-
-  function syncTextToNative(textInput){
-    var wrap = textInput.closest ? textInput.closest('.date-dual-wrap') : textInput.parentNode;
-    var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
-    if(nativeDate && /^\d{4}-\d{2}-\d{2}$/.test(textInput.value)){
-      nativeDate.value = textInput.value;
-    }
-  }
-
-  function syncNativeToText(dateInput){
-    var wrap = dateInput.closest ? dateInput.closest('.date-dual-wrap') : dateInput.parentNode;
-    var textInput = wrap ? wrap.querySelector('.date-ymd-input') : null;
-    if(textInput){
-      textInput.value = dateInput.value || '';
-      try{
-        textInput.dispatchEvent(new Event('input', {bubbles:true}));
-        textInput.dispatchEvent(new Event('change', {bubbles:true}));
-      }catch(e){}
-    }
-  }
-
-  function openNativeDate(wrap){
-    var picker = wrap ? wrap.querySelector('.bi-date-overlay') : null;
-    if(!picker) return;
-
-    try{
-      if(typeof picker.showPicker === 'function'){
-        picker.showPicker();
-      }else{
-        picker.focus();
-        picker.click();
-      }
-    }catch(error){
-      try{ picker.focus(); }catch(e){}
-      try{ picker.click(); }catch(e){}
-    }
-  }
-
-  function bindDateOldRestoreV1729(){
-    if(document.body.getAttribute('data-date-old-restore-v1729') === '1') return;
-    document.body.setAttribute('data-date-old-restore-v1729', '1');
-
-    var dateInputs = document.querySelectorAll('#secInput .date-ymd-input');
-    for(var i=0;i<dateInputs.length;i++){
-      if(dateInputs[i].getAttribute('data-v1729-date-text') === '1') continue;
-      dateInputs[i].setAttribute('data-v1729-date-text','1');
-      dateInputs[i].setAttribute('maxlength','10');
-      dateInputs[i].setAttribute('inputmode','numeric');
-
-      dateInputs[i].addEventListener('input', function(){
-        this.value = formatDateText(this.value);
-        syncTextToNative(this);
-      }, false);
-
-      dateInputs[i].addEventListener('blur', function(){
-        this.value = formatDateText(this.value);
-        syncTextToNative(this);
-      }, false);
-    }
-
-    var dateOverlays = document.querySelectorAll('#secInput .date-dual-wrap .bi-date-overlay');
-    for(var d=0; d<dateOverlays.length; d++){
-      if(dateOverlays[d].getAttribute('data-v1729-date-overlay') === '1') continue;
-      dateOverlays[d].setAttribute('data-v1729-date-overlay','1');
-
-      dateOverlays[d].addEventListener('input', function(){
-        syncNativeToText(this);
-      }, false);
-
-      dateOverlays[d].addEventListener('change', function(){
-        syncNativeToText(this);
-      }, false);
-    }
-
-    var wraps = document.querySelectorAll('#secInput .date-dual-wrap');
-    for(var w=0; w<wraps.length; w++){
-      (function(wrap){
-        if(wrap.getAttribute('data-v1729-date-touch') === '1') return;
-        wrap.setAttribute('data-v1729-date-touch','1');
-
-        var handler = function(event){
-          var rect = wrap.getBoundingClientRect();
-          var point = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0] : event;
-          var clientX = point && typeof point.clientX === 'number' ? point.clientX : rect.right;
-
-          /* 기존 작동 코드 기준: 우측 미니달력 영역만 반응 */
-          if(clientX < rect.right - 86) return;
-
-          if(event){
-            event.preventDefault();
-            event.stopPropagation();
-          }
-
-          openNativeDate(wrap);
-        };
-
-        wrap.addEventListener('click', handler, true);
-        wrap.addEventListener('touchend', handler, true);
-      })(wraps[w]);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindDateOldRestoreV1729, false);
-  }else{
-    bindDateOldRestoreV1729();
-  }
-  window.addEventListener('load', bindDateOldRestoreV1729, false);
-})();
-</script><script>
-/* v17.30 - 진단일자 표시 깨짐 방지 보조 */
-(function(){
-  function bindDateCleanV1730(){
-    var wrap = document.querySelector('#secInput .date-old-stable-v1730');
-    if(!wrap || wrap.getAttribute('data-date-clean-bound-v1730') === '1') return;
-    wrap.setAttribute('data-date-clean-bound-v1730', '1');
-
-    var date = wrap.querySelector('input[type="date"].bi-date-overlay');
-    var text = wrap.querySelector('.date-text-input.date-ymd-input');
-
-    if(date){
-      date.classList.add('date-native-clean-v1730');
-      date.addEventListener('change', function(){
-        if(text && date.value){
-          text.value = date.value;
-          try{
-            text.dispatchEvent(new Event('input', {bubbles:true}));
-            text.dispatchEvent(new Event('change', {bubbles:true}));
-          }catch(e){}
-        }
-      }, false);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindDateCleanV1730, false);
-  }else{
-    bindDateCleanV1730();
-  }
-  window.addEventListener('load', bindDateCleanV1730, false);
 })();
 </script><script>
 /* v17.36 - date residue clean sync */

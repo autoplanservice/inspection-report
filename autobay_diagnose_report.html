@@ -7519,24 +7519,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   contain:none!important;
 }
 
-/* v16.98 - 사고 상부진단 A-4/A-7 마커 클릭 제외
-   목적:
-   - 사고 진단확인 카드의 상부진단 A-4, A-7 마커는 사용하지 않으므로 클릭되지 않게 처리한다.
-   - 도막 진단확인/외관 진단확인의 A-4, A-7은 변경하지 않는다.
-   영향 범위: #secDiag 내부 사고 진단확인 카드(.acc-card-a4a7-off-v1698)의 A-4/A-7 후보만 적용한다.
-   주의: 도면 좌표, 다른 마커, 저장 key, localStorage key는 변경하지 않는다.
-*/
-#secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698{
-  pointer-events:none!important;
-  cursor:default!important;
-}
-
-/* data 속성 기반으로도 한 번 더 방어 */
-#secDiag .acc-card-a4a7-off-v1698 [data-disabled-marker-v1698="1"]{
-  pointer-events:none!important;
-  cursor:default!important;
-}
-
 /* v16.99 - 매입오더 페이지 UI/라벨 정리
    목적:
    - 매입오더 작성 타이틀을 바로지시사항 위 별도 섹션으로 구성한다.
@@ -13476,76 +13458,6 @@ boot();
     bindFastTabs();
   }
   window.addEventListener('load', bindFastTabs, false);
-})();
-</script><script>
-(function(){
-  function normalizeText(text){
-    return (text || '').replace(/\s+/g,' ').trim();
-  }
-
-  function isAccidentA4A7Target(el){
-    if(!el || !el.closest) return false;
-
-    var card = el.closest('#secDiag .acc-card-a4a7-off-v1698');
-    if(!card) return false;
-
-    var node = el.closest('[data-disabled-marker-v1698="1"], .acc-disabled-marker-v1698');
-    if(node) return true;
-
-    var probe = el;
-    var depth = 0;
-    while(probe && probe !== card && depth < 4){
-      var txt = normalizeText(probe.textContent);
-      var attrs = [
-        probe.getAttribute && probe.getAttribute('data-key'),
-        probe.getAttribute && probe.getAttribute('data-part'),
-        probe.getAttribute && probe.getAttribute('data-id'),
-        probe.getAttribute && probe.getAttribute('aria-label'),
-        probe.getAttribute && probe.getAttribute('title'),
-        probe.id,
-        probe.className,
-        txt
-      ].join(' ');
-
-      if(/\bA-4\b/.test(attrs) || /\bA-7\b/.test(attrs)) return true;
-
-      probe = probe.parentNode;
-      depth++;
-    }
-
-    return false;
-  }
-
-  function bindAccA4A7Off(){
-    var card = document.querySelector('#secDiag .acc-card-a4a7-off-v1698');
-    if(!card || card.getAttribute('data-a4a7-off-bound-v1698') === '1') return;
-    card.setAttribute('data-a4a7-off-bound-v1698', '1');
-
-    card.addEventListener('click', function(ev){
-      if(isAccidentA4A7Target(ev.target)){
-        ev.preventDefault();
-        ev.stopPropagation();
-        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-        return false;
-      }
-    }, true);
-
-    card.addEventListener('pointerdown', function(ev){
-      if(isAccidentA4A7Target(ev.target)){
-        ev.preventDefault();
-        ev.stopPropagation();
-        if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-        return false;
-      }
-    }, true);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindAccA4A7Off, false);
-  }else{
-    bindAccA4A7Off();
-  }
-  window.addEventListener('load', bindAccA4A7Off, false);
 })();
 </script><script>
 /* v17.09 - 선택값 볼드 처리 단일 위임 핸들러

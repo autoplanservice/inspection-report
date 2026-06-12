@@ -12206,7 +12206,7 @@ boot();
     return nb;
   }
 
-  function replaceBadge(id, value, reason){
+  function replaceBadge(id, value){
     var st = ensure(id);
     value = cleanValue(value);
     var old = badge(id);
@@ -12719,12 +12719,12 @@ boot();
       var wrap = input.parentNode;
       if(wrap && wrap.getAttribute('data-v163-focus') !== '1'){
         wrap.setAttribute('data-v163-focus','1');
-        wrap.addEventListener('click', function(event){
+        wrap.addEventListener('click', function(){
           var targetInput = this.querySelector('.insurance-number-input');
           if(!targetInput) return;
           targetInput.focus();
         }, false);
-        wrap.addEventListener('touchend', function(event){
+        wrap.addEventListener('touchend', function(){
           var targetInput = this.querySelector('.insurance-number-input');
           if(!targetInput) return;
           targetInput.focus();
@@ -15360,7 +15360,7 @@ function isVisibleCaptureTarget(el){
     return { cssWidth: cssWidth, dataUrl: output.toDataURL('image/png') };
   }
 
-  function updateProgress(mode, card, total, index){
+  function updateProgress(){
     hideLoading();
   }
 

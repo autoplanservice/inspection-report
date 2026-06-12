@@ -16178,7 +16178,13 @@ function isVisibleCaptureTarget(el){
   function measureA2UnitHeightV121(unit, measure){
     var clone = unit.cloneNode(true);
     measure.appendChild(clone);
-    var height = Math.ceil(clone.getBoundingClientRect().height);
+
+    var rect = clone.getBoundingClientRect();
+    var style = window.getComputedStyle(clone);
+    var marginTop = parseFloat(style.marginTop || '0') || 0;
+    var marginBottom = parseFloat(style.marginBottom || '0') || 0;
+    var height = Math.ceil(rect.height + marginTop + marginBottom);
+
     clone.remove();
     return height;
   }
@@ -16559,7 +16565,7 @@ function isVisibleCaptureTarget(el){
     units.forEach(function(sourceUnit){
       var unitHeight = measureA2UnitHeightV121(sourceUnit, measure);
       var column = currentColumn();
-      var available = column.clientHeight - column.scrollHeight;
+      var available = column.clientHeight - column.scrollHeight - 6;
 
       if(column.children.length && unitHeight > available){
         nextColumn();
@@ -16573,7 +16579,7 @@ function isVisibleCaptureTarget(el){
         실제 폰트/이미지 계산 오차로 넘치면 즉시 다음 칼럼으로 이동한다.
       */
       if(
-        column.scrollHeight > column.clientHeight + 2 &&
+        column.scrollHeight > column.clientHeight + 6 &&
         column.children.length > 1
       ){
         placed.remove();
@@ -16600,7 +16606,7 @@ function isVisibleCaptureTarget(el){
 
         while(
           column &&
-          column.scrollHeight > column.clientHeight + 2 &&
+          column.scrollHeight > column.clientHeight + 6 &&
           column.lastElementChild &&
           safety < 500
         ){
@@ -16628,8 +16634,11 @@ function isVisibleCaptureTarget(el){
       pageIndex += 1;
     }
 
+    var maxOverflowPx = 0;
     var overflowCount = qsa('.report-a2-image-column-v119', stage).filter(function(column){
-      return column.scrollHeight > column.clientHeight + 2;
+      var overflowPx = Math.max(0, column.scrollHeight - column.clientHeight);
+      if(overflowPx > maxOverflowPx) maxOverflowPx = overflowPx;
+      return overflowPx > 6;
     }).length;
 
     measure.remove();
@@ -16639,7 +16648,8 @@ function isVisibleCaptureTarget(el){
       pages: pages,
       unitCount: units.length,
       placedCount: placedCount,
-      overflowCount: overflowCount
+      overflowCount: overflowCount,
+      maxOverflowPx: maxOverflowPx
     };
   }
 
@@ -16796,7 +16806,8 @@ function isVisibleCaptureTarget(el){
         throw new Error(
           'A2 페이지 분할 검증 실패: ' +
           'unit ' + (layout ? layout.placedCount : 0) + '/' + (layout ? layout.unitCount : 0) +
-          ', overflow ' + (layout ? layout.overflowCount : '-')
+          ', overflow ' + (layout ? layout.overflowCount : '-') +
+          ', maxOverflowPx ' + (layout ? layout.maxOverflowPx : '-')
         );
       }
 

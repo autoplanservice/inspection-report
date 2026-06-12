@@ -9496,9 +9496,112 @@ textarea.tread-input-fix-v1724,
 
 
 
-/* v17.30 - 외관 좌/우 측면진단 트레드 입력 스타일 유지
-   영향 범위: exterior_tread_* 입력박스만 적용한다.
+/* v17.29 - 진단일자 달력 이전 작동 방식 복구
+   기준:
+   - v15.9~v16.54 계열의 date-dual-wrap + bi-date-overlay 방식으로 되돌린다.
+   - 자체 날짜 패널, 추가 아이콘, iOS 전용 class는 사용하지 않는다.
+   영향 범위: 진단일자/기존 date-dual-wrap 달력 입력 동기화만 적용한다.
 */
+#secInput .date-dual-wrap{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .date-dual-wrap .date-text-input.date-ymd-input{
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding-right:46px!important;
+}
+
+/* 이전 작동 코드 기준: 실제 date input이 우측 미니달력 영역에 보이면서 직접 터치됨 */
+#secInput .date-dual-wrap .bi-date-overlay{
+  position:absolute!important;
+  right:8px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:30px!important;
+  height:34px!important;
+  opacity:1!important;
+  z-index:4!important;
+  border:0!important;
+  background:transparent!important;
+  padding:0!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  pointer-events:auto!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+  cursor:pointer!important;
+}
+
+/* v17.30 - 진단일자 표시 깨짐 복구 + 트레드 입력박스 타이어 상태확인 스타일화
+   목적:
+   1) 진단일자 우측 date input에서 '월' 등 네이티브 날짜 텍스트가 삐져나오는 현상을 제거한다.
+   2) 추가 아이콘/자체 패널 없이 기존 bi-date-overlay만 사용한다.
+   3) 외관 좌/우 측면진단 트레드 입력박스를 타이어 상태확인 입력박스와 같은 계열의 카드형 입력 스타일로 맞춘다.
+   영향 범위: 진단일자 date-dual-wrap, exterior_tread_* 입력박스만 적용한다.
+   주의: 도면 좌표, 마커 좌표, data-key, localStorage key, 매입오더 출력은 변경하지 않는다.
+*/
+
+/* 진단일자 기존 구조 유지 */
+#secInput .date-old-stable-v1730{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+}
+
+#secInput .date-old-stable-v1730 .date-text-input.date-ymd-input{
+  width:100%!important;
+  min-height:38px!important;
+  padding-right:46px!important;
+  box-sizing:border-box!important;
+}
+
+/* 기존 미니달력 input만 사용하되, 날짜 텍스트가 보이지 않도록 정리 */
+#secInput .date-old-stable-v1730 .bi-date-overlay.date-native-clean-v1730,
+#secInput .date-old-stable-v1730 input[type="date"].bi-date-overlay{
+  position:absolute!important;
+  right:8px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:30px!important;
+  min-width:30px!important;
+  max-width:30px!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  opacity:1!important;
+  z-index:40!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  padding:0!important;
+  margin:0!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-indent:0!important;
+  overflow:hidden!important;
+  pointer-events:auto!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+  cursor:pointer!important;
+}
+
+/* picker indicator만 미니 아이콘처럼 표시 */
+#secInput .date-old-stable-v1730 .bi-date-overlay.date-native-clean-v1730::-webkit-calendar-picker-indicator,
+#secInput .date-old-stable-v1730 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator{
+  opacity:1!important;
+  display:block!important;
+  width:30px!important;
+  height:30px!important;
+  margin:0!important;
+  padding:0!important;
+  cursor:pointer!important;
+}
+
 /* 외관 좌/우 측면진단 트레드 input: 타이어 상태확인 입력박스 계열 스타일로 통일 */
 #secDiag input.tread-as-tire-v1730,
 #secDiag input.exterior-tread-input,
@@ -9562,11 +9665,6 @@ textarea.tread-input-fix-v1724,
   justify-content:center!important;
 }
 
-/* v84 정리4차
-   - v17.36 날짜 처리만 유지한다.
-   - v17.29/v17.30 날짜 CSS 및 이벤트 핸들러는 제거했다.
-   - v17.30의 외관 트레드 입력 스타일은 유지한다.
-*/
 /* v17.36 - date residue clean final
    목적:
    - v17.23~v17.34 날짜 관련 잔재를 제거한 뒤 기존 미니달력 방식만 유지한다.
@@ -12183,60 +12281,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 }
 </style>
 
-
-
-<style>
-/* v85 - iPhone Safari 진단일자 native picker 직접 터치 복구
-   목적:
-   - v84에서 제거된 구형 날짜 핸들러 전체를 되살리지 않는다.
-   - iPhone Safari가 실제 input[type=date]를 직접 터치하도록 우측 달력 영역만 복구한다.
-   - Android 및 텍스트 날짜 동기화는 기존 v17.36 로직을 그대로 유지한다.
-   영향 범위:
-   - #secInput .real-mini-calendar-v1736 내부 native date input만 적용한다.
-*/
-#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay,
-#secInput .real-mini-calendar-v1736 input[type="date"].date-click-layer-v1736{
-  display:block!important;
-  visibility:visible!important;
-  position:absolute!important;
-  right:0!important;
-  top:0!important;
-  transform:none!important;
-  width:48px!important;
-  min-width:48px!important;
-  height:100%!important;
-  min-height:38px!important;
-  opacity:.001!important;
-  z-index:50!important;
-  pointer-events:auto!important;
-  touch-action:manipulation!important;
-  cursor:pointer!important;
-  border:0!important;
-  padding:0!important;
-  margin:0!important;
-  background:transparent!important;
-  color-scheme:light!important;
-  -webkit-appearance:auto!important;
-  appearance:auto!important;
-  text-indent:0!important;
-  letter-spacing:normal!important;
-  overflow:visible!important;
-}
-
-#secInput .real-mini-calendar-v1736 input[type="date"].bi-date-overlay::-webkit-calendar-picker-indicator,
-#secInput .real-mini-calendar-v1736 input[type="date"].date-click-layer-v1736::-webkit-calendar-picker-indicator{
-  display:block!important;
-  position:absolute!important;
-  inset:0!important;
-  width:100%!important;
-  height:100%!important;
-  opacity:1!important;
-  padding:0!important;
-  margin:0!important;
-  cursor:pointer!important;
-}
-</style>
-
 </head>
 <body>
 <div class="app">
@@ -12262,7 +12306,7 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
 </div>
 <div class="basicinfo-v5-field">
 <div class="basicinfo-v5-label">진단일자</div>
-<div class="date-dual-wrap real-mini-calendar-v1736">
+<div class="date-dual-wrap date-old-stable-v1730 real-mini-calendar-v1736">
 <input class="bi-input date-text-input date-ymd-input" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/>
 <input aria-label="진단일자 달력" class="bi-date-overlay date-click-layer-v1736" type="date"/>
 </div>
@@ -16063,6 +16107,160 @@ boot();
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
 })();
 </script><script>
+/* v17.29 - 진단일자 달력 이전 작동 핸들러 복구 */
+(function(){
+  function onlyDigits(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function formatDateText(value){
+    var digits = onlyDigits(value).slice(0, 8);
+    if(digits.length <= 4) return digits;
+    if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
+    return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
+  }
+
+  function syncTextToNative(textInput){
+    var wrap = textInput.closest ? textInput.closest('.date-dual-wrap') : textInput.parentNode;
+    var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
+    if(nativeDate && /^\d{4}-\d{2}-\d{2}$/.test(textInput.value)){
+      nativeDate.value = textInput.value;
+    }
+  }
+
+  function syncNativeToText(dateInput){
+    var wrap = dateInput.closest ? dateInput.closest('.date-dual-wrap') : dateInput.parentNode;
+    var textInput = wrap ? wrap.querySelector('.date-ymd-input') : null;
+    if(textInput){
+      textInput.value = dateInput.value || '';
+      try{
+        textInput.dispatchEvent(new Event('input', {bubbles:true}));
+        textInput.dispatchEvent(new Event('change', {bubbles:true}));
+      }catch(e){}
+    }
+  }
+
+  function openNativeDate(wrap){
+    var picker = wrap ? wrap.querySelector('.bi-date-overlay') : null;
+    if(!picker) return;
+
+    try{
+      if(typeof picker.showPicker === 'function'){
+        picker.showPicker();
+      }else{
+        picker.focus();
+        picker.click();
+      }
+    }catch(error){
+      try{ picker.focus(); }catch(e){}
+      try{ picker.click(); }catch(e){}
+    }
+  }
+
+  function bindDateOldRestoreV1729(){
+    if(document.body.getAttribute('data-date-old-restore-v1729') === '1') return;
+    document.body.setAttribute('data-date-old-restore-v1729', '1');
+
+    var dateInputs = document.querySelectorAll('#secInput .date-ymd-input');
+    for(var i=0;i<dateInputs.length;i++){
+      if(dateInputs[i].getAttribute('data-v1729-date-text') === '1') continue;
+      dateInputs[i].setAttribute('data-v1729-date-text','1');
+      dateInputs[i].setAttribute('maxlength','10');
+      dateInputs[i].setAttribute('inputmode','numeric');
+
+      dateInputs[i].addEventListener('input', function(){
+        this.value = formatDateText(this.value);
+        syncTextToNative(this);
+      }, false);
+
+      dateInputs[i].addEventListener('blur', function(){
+        this.value = formatDateText(this.value);
+        syncTextToNative(this);
+      }, false);
+    }
+
+    var dateOverlays = document.querySelectorAll('#secInput .date-dual-wrap .bi-date-overlay');
+    for(var d=0; d<dateOverlays.length; d++){
+      if(dateOverlays[d].getAttribute('data-v1729-date-overlay') === '1') continue;
+      dateOverlays[d].setAttribute('data-v1729-date-overlay','1');
+
+      dateOverlays[d].addEventListener('input', function(){
+        syncNativeToText(this);
+      }, false);
+
+      dateOverlays[d].addEventListener('change', function(){
+        syncNativeToText(this);
+      }, false);
+    }
+
+    var wraps = document.querySelectorAll('#secInput .date-dual-wrap');
+    for(var w=0; w<wraps.length; w++){
+      (function(wrap){
+        if(wrap.getAttribute('data-v1729-date-touch') === '1') return;
+        wrap.setAttribute('data-v1729-date-touch','1');
+
+        var handler = function(event){
+          var rect = wrap.getBoundingClientRect();
+          var point = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0] : event;
+          var clientX = point && typeof point.clientX === 'number' ? point.clientX : rect.right;
+
+          /* 기존 작동 코드 기준: 우측 미니달력 영역만 반응 */
+          if(clientX < rect.right - 86) return;
+
+          if(event){
+            event.preventDefault();
+            event.stopPropagation();
+          }
+
+          openNativeDate(wrap);
+        };
+
+        wrap.addEventListener('click', handler, true);
+        wrap.addEventListener('touchend', handler, true);
+      })(wraps[w]);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDateOldRestoreV1729, false);
+  }else{
+    bindDateOldRestoreV1729();
+  }
+  window.addEventListener('load', bindDateOldRestoreV1729, false);
+})();
+</script><script>
+/* v17.30 - 진단일자 표시 깨짐 방지 보조 */
+(function(){
+  function bindDateCleanV1730(){
+    var wrap = document.querySelector('#secInput .date-old-stable-v1730');
+    if(!wrap || wrap.getAttribute('data-date-clean-bound-v1730') === '1') return;
+    wrap.setAttribute('data-date-clean-bound-v1730', '1');
+
+    var date = wrap.querySelector('input[type="date"].bi-date-overlay');
+    var text = wrap.querySelector('.date-text-input.date-ymd-input');
+
+    if(date){
+      date.classList.add('date-native-clean-v1730');
+      date.addEventListener('change', function(){
+        if(text && date.value){
+          text.value = date.value;
+          try{
+            text.dispatchEvent(new Event('input', {bubbles:true}));
+            text.dispatchEvent(new Event('change', {bubbles:true}));
+          }catch(e){}
+        }
+      }, false);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindDateCleanV1730, false);
+  }else{
+    bindDateCleanV1730();
+  }
+  window.addEventListener('load', bindDateCleanV1730, false);
+})();
+</script><script>
 /* v17.36 - date residue clean sync */
 (function(){
   function onlyDigits(value){
@@ -16286,76 +16484,7 @@ boot();
       '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>오토베이 현장 매입 진단리포트 - ' + reportTitle + '</title>' +
       '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
-      '
-<style>
-/* v86 - iPhone Safari 날짜 필드 native input 직접 표시
-   목적:
-   - 투명 overlay/달력 아이콘 우회 클릭 방식을 iPhone에서 사용하지 않는다.
-   - iPhone에서는 실제 input[type=date]를 필드 전체에 직접 표시한다.
-   - Android 및 기타 환경은 기존 v17.36 구조를 유지한다.
-*/
-#secInput .real-mini-calendar-v1736.ios-native-date-v86::after{
-  display:none!important;
-  content:none!important;
-}
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 .date-text-input.date-ymd-input{
-  display:none!important;
-}
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"].bi-date-overlay,
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"].date-click-layer-v1736{
-  display:block!important;
-  visibility:visible!important;
-  position:relative!important;
-  inset:auto!important;
-  right:auto!important;
-  top:auto!important;
-  transform:none!important;
-  width:100%!important;
-  min-width:0!important;
-  height:48px!important;
-  min-height:48px!important;
-  opacity:1!important;
-  z-index:auto!important;
-  pointer-events:auto!important;
-  touch-action:auto!important;
-  border:1px solid #cfd6e1!important;
-  border-radius:10px!important;
-  padding:10px 9px!important;
-  margin:0!important;
-  background:#fff!important;
-  color:#111827!important;
-  -webkit-text-fill-color:#111827!important;
-  font-size:14px!important;
-  line-height:24px!important;
-  letter-spacing:normal!important;
-  text-indent:0!important;
-  overflow:visible!important;
-  -webkit-appearance:auto!important;
-  appearance:auto!important;
-}
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-calendar-picker-indicator{
-  display:block!important;
-  opacity:1!important;
-  width:auto!important;
-  height:auto!important;
-  position:static!important;
-  padding:0!important;
-  margin:0!important;
-}
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit,
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-fields-wrapper,
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-text,
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-year-field,
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-month-field,
-#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-day-field{
-  opacity:1!important;
-  color:#111827!important;
-  -webkit-text-fill-color:#111827!important;
-  font-size:14px!important;
-  line-height:24px!important;
-}
-</style>
-</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main></body></html>'
+      '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main></body></html>'
     );
     win.document.close();
     return win;
@@ -18095,43 +18224,10 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
 </script>
 
 
-<script>
-/* v86 - iPhone Safari native date 직접 표시 전환 */
-(function(){
-  /**
-   * iPhone/iPod 환경인지 판별한다.
-   * iPad 데스크톱 UA는 현재 Android 기준 UI와의 충돌을 피하기 위해 제외한다.
-   */
-  function isIPhoneV86(){
-    return /iPhone|iPod/i.test(navigator.userAgent || '');
-  }
-
-  /**
-   * iPhone에서 진단일자 필드를 실제 native date input으로 전환한다.
-   * 기존 v17.36 input/change 동기화 이벤트는 그대로 사용한다.
-   */
-  function enableIPhoneNativeDateV86(){
-    if(!isIPhoneV86()) return;
-    var wrap = document.querySelector('#secInput .real-mini-calendar-v1736');
-    if(!wrap) return;
-    wrap.classList.add('ios-native-date-v86');
-
-    var text = wrap.querySelector('.date-ymd-input');
-    var native = wrap.querySelector('input[type="date"]');
-    if(!native) return;
-
-    if(text && /^\d{4}-\d{2}-\d{2}$/.test(text.value || '')){
-      native.value = text.value;
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', enableIPhoneNativeDateV86, false);
-  }else{
-    enableIPhoneNativeDateV86();
-  }
-  window.addEventListener('pageshow', enableIPhoneNativeDateV86, false);
-})();
-</script>
+<!-- v87 maintenance note
+  - v84의 다른 정리 내용은 유지한다.
+  - 날짜 기능만 iPhone에서 정상 동작하던 v83의 v17.29/v17.30 블록으로 원복했다.
+  - v85/v86 신규 날짜 우회 방식은 포함하지 않는다.
+-->
 </body>
 </html>

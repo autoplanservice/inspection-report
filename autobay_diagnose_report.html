@@ -117,7 +117,7 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .touch-card .st3:checked + .slot .h3{display:flex !important}
 
 .paint-diagram-block{margin:12px 0 14px}
-.paint-diagram-title{font-size:13px;font-weight:900;color:#111827;margin:0 0 8px}
+
 .paint-fig{position:relative;line-height:0;margin:0 auto;border:1px solid #d9dee5;border-radius:12px;overflow:visible;background:#fff;max-width:540px}
 .paint-fig img{display:block;width:100%;height:auto;margin:0;pointer-events:none;-webkit-user-drag:none;user-select:none}
 .paint-dot{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:999px;background:#9ca3af;border:1px solid #6b7280;z-index:5}
@@ -156,7 +156,7 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .field input,.field select,.field textarea{min-width:0;max-width:100%}
 input[type="date"]{-webkit-appearance:none;appearance:none;min-width:0;width:100%;line-height:1.2}
 .paint-diagram-block{margin:12px 0 16px}
-.paint-diagram-title{font-size:13px;font-weight:900;color:#111827;margin:0 0 8px}
+
 .paint-fig{position:relative;line-height:0;margin:0 auto;border:1px solid #d9dee5;border-radius:12px;overflow:visible;background:#fff;max-width:540px}
 .paint-fig img{display:block;width:100%;height:auto;margin:0;pointer-events:none;-webkit-user-drag:none;user-select:none}
 .paint-dot{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:999px;background:#9ca3af;border:1px solid #6b7280;z-index:5;pointer-events:none}
@@ -208,10 +208,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   min-height:24px;
   text-align:left;
 }
-.km-wrap::after{
-  content:"" !important;
-  display:none !important;
-}
+
 .km-wrap input{
   padding-right:9px !important;
 }
@@ -283,9 +280,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   min-height:48px !important;
 }
 .km-wrap::after{content:"" !important;display:none !important}
-.paint-line{
-  height:1.5px !important;
-}
+
 .paint-box{
   width:72px !important;
   height:32px !important;
@@ -3136,9 +3131,7 @@ button{
   gap:8px!important;
 }
 
-.date-dual-wrap{
-  position:relative!important;
-}
+
 
 .bi-date-overlay{
   position:absolute!important;
@@ -3300,9 +3293,7 @@ button{
   grid-template-columns:1.3fr .7fr 1.3fr .8fr !important;
   gap:8px !important;
 }
-.date-dual-wrap{
-  position:relative !important;
-}
+
 .bi-date-overlay{
   position:absolute !important;
   right:10px !important;
@@ -3430,7 +3421,7 @@ button{
  font-weight:900!important;
  align-items:center!important;
 }
-.date-dual-wrap{position:relative!important}
+
 .bi-date-overlay{
  position:absolute!important;
  right:12px!important;
@@ -3560,9 +3551,7 @@ button{
 }
 
 /* 등록일자/제작일자 달력 아이콘 표시 보정 */
-.date-dual-wrap{
-  position:relative !important;
-}
+
 
 .date-dual-wrap .date-text-input{
   padding-right:42px !important;
@@ -3648,9 +3637,7 @@ button{
 
 
 /* v15.7 basicinfo requested fixes: mobile calendar icon, date/mileage/plate/price */
-.date-dual-wrap{
-  position:relative !important;
-}
+
 
 .date-dual-wrap .date-text-input{
   padding-right:46px !important;
@@ -3807,9 +3794,7 @@ button{
 
 /* v15.9 mobile date touch/scanner card/plate alignment fixes */
 /* 모바일에서 달력 아이콘 터치 성공률을 높이기 위해 투명 date input 클릭영역을 우측 전체로 확장한다. */
-.date-dual-wrap{
-  position:relative !important;
-}
+
 .date-dual-wrap .date-text-input{
   padding-right:58px !important;
 }
@@ -16813,5 +16798,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   - 날짜 기능만 iPhone에서 정상 동작하던 v83의 v17.29/v17.30 블록으로 원복했다.
   - v85/v86 신규 날짜 우회 방식은 포함하지 않는다.
 -->
+
+<!-- v97 정리14차: 최종값이 완전히 동일한 독립 CSS 중복 규칙만 제거. 기능/DOM/JS 미변경. -->
 </body>
 </html>

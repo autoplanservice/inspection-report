@@ -10618,8 +10618,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
    도막 상부진단 / 도막 좌·우 측면진단 같은 소라벨은 원본처럼 연한 회색 계열이어야 한다.
    A-1, A-2 등 도면 내부 원형 마커는 건드리지 않는다.
 */
-#reportPrintRootV1773 #secDiag .report-print-cloned-section-v1773 .paint-sub-title,
-#reportPrintRootV1773 #secDiag .report-print-cloned-section-v1773 .paint-section-title,
 #reportPrintRootV1773 #secDiag .report-print-cloned-section-v1773 [class*="paint"][class*="sub"],
 #reportPrintRootV1773 #secDiag .report-print-cloned-section-v1773 [class*="paint"][class*="title"],
 #reportPrintRootV1773 #secDiag .report-print-cloned-section-v1773 [class*="paint"][class*="caption"]{
@@ -10630,6 +10628,13 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
+</style>
+<style>
+/* v92 정리9차 - v17.84/v17.86 중복 selector 정리
+   - v17.84의 .paint-sub-title / .paint-section-title exact selector는
+     바로 뒤 v17.86 규칙이 동일 속성으로 완전히 덮으므로 제거했다.
+   - v17.84의 class*=paint 동적 selector는 PDF clone 시 생성 가능성이 있어 유지한다.
+*/
 </style>
 <style>
 /* v17.86 - 도막 라벨 강제정규화 제거 후 안전 CSS만 유지

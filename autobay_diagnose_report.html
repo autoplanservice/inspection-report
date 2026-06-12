@@ -10172,6 +10172,25 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
   text-decoration:none!important;
   font-size:13px!important;
   font-weight:900!important;
+}.report-a2-image-gallery-meta-v120{
+  margin-top:10px!important;
+  text-align:center!important;
+  font-size:12px!important;
+  color:#64748b!important;
+  line-height:1.5!important;
+}
+
+.report-a2-image-gallery-bulk-v120{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:38px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  padding:0 16px!important;
+  font-weight:900!important;
 }
 
 
@@ -16321,6 +16340,44 @@ function isVisibleCaptureTarget(el){
   /**
    * showA2ImageGalleryV119는 공유를 지원하지 않는 환경에서 이미지 저장 화면을 표시한다.
    */
+  function downloadBlobFileV120(file){
+    var url = URL.createObjectURL(file);
+    var anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = file.name || 'autobay-a2-image.png';
+    anchor.rel = 'noopener';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+
+    setTimeout(function(){
+      URL.revokeObjectURL(url);
+    }, 4000);
+  }
+
+  /**
+   * downloadAllA2ImagesV120는 생성된 모든 이미지를 순차 다운로드한다.
+   * 브라우저 차단 가능성을 줄이기 위해 약간의 간격을 둔다.
+   */
+  function downloadAllA2ImagesV120(files){
+    var chain = Promise.resolve();
+
+    files.forEach(function(file, index){
+      chain = chain.then(function(){
+        downloadBlobFileV120(file);
+        return new Promise(function(resolve){
+          setTimeout(resolve, index === files.length - 1 ? 0 : 220);
+        });
+      });
+    });
+
+    return chain;
+  }
+
+  /**
+   * showA2ImageGalleryV119는 다운로드 전용 결과 패널을 표시한다.
+   * 생성된 전체 페이지를 모두 노출하고 개별/전체 다운로드를 제공한다.
+   */
   function showA2ImageGalleryV119(files){
     var old = qs('.report-a2-image-gallery-v119');
     if(old) old.remove();
@@ -16330,7 +16387,10 @@ function isVisibleCaptureTarget(el){
     gallery.innerHTML =
       '<div class="report-a2-image-gallery-head-v119">' +
         '<div class="report-a2-image-gallery-title-v119">A2 이미지 ' + files.length + '장</div>' +
-        '<button class="report-a2-image-gallery-close-v119" type="button">닫기</button>' +
+        '<div style="display:flex;gap:8px;align-items:center;">' +
+          '<button class="report-a2-image-gallery-bulk-v120" type="button">전체 다운로드</button>' +
+          '<button class="report-a2-image-gallery-close-v119" type="button">닫기</button>' +
+        '</div>' +
       '</div>' +
       '<div class="report-a2-image-gallery-list-v119"></div>';
 
@@ -16343,7 +16403,10 @@ function isVisibleCaptureTarget(el){
       card.innerHTML =
         '<img alt="A2 이미지 ' + (index + 1) + '">' +
         '<div class="report-a2-image-gallery-actions-v119">' +
-          '<a target="_blank" rel="noopener" download="' + (file.name || ('autobay-a2-' + (index + 1) + '.png')) + '">이미지 열기/저장</a>' +
+          '<a target="_blank" rel="noopener" download="' + (file.name || ('autobay-a2-' + (index + 1) + '.png')) + '">다운로드</a>' +
+        '</div>' +
+        '<div class="report-a2-image-gallery-meta-v120">' +
+          (file.name || ('autobay-a2-' + (index + 1) + '.png')) +
         '</div>';
 
       qs('img', card).src = url;
@@ -16351,9 +16414,16 @@ function isVisibleCaptureTarget(el){
       list.appendChild(card);
     });
 
+    qs('.report-a2-image-gallery-bulk-v120', gallery).addEventListener('click', function(){
+      downloadAllA2ImagesV120(files);
+    }, false);
+
     qs('.report-a2-image-gallery-close-v119', gallery).addEventListener('click', function(){
       qsa('img', gallery).forEach(function(image){
         if(image.src.indexOf('blob:') === 0) URL.revokeObjectURL(image.src);
+      });
+      qsa('a[download]', gallery).forEach(function(anchor){
+        if(anchor.href.indexOf('blob:') === 0) URL.revokeObjectURL(anchor.href);
       });
       gallery.remove();
     }, false);
@@ -16362,23 +16432,9 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * deliverA2ImagesV119는 모바일 공유를 우선하고, 불가능하면 저장 갤러리를 연다.
+   * deliverA2ImagesV119는 공유 시트 대신 다운로드 전용 패널만 표시한다.
    */
   function deliverA2ImagesV119(files){
-    if(
-      navigator.share &&
-      navigator.canShare &&
-      navigator.canShare({files:files})
-    ){
-      return navigator.share({
-        files:files,
-        title:'오토베이 A2 진단리포트 이미지'
-      }).catch(function(error){
-        if(error && error.name === 'AbortError') return;
-        showA2ImageGalleryV119(files);
-      });
-    }
-
     showA2ImageGalleryV119(files);
     return Promise.resolve();
   }

@@ -16286,7 +16286,76 @@ boot();
       '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>오토베이 현장 매입 진단리포트 - ' + reportTitle + '</title>' +
       '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
-      '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main></body></html>'
+      '
+<style>
+/* v86 - iPhone Safari 날짜 필드 native input 직접 표시
+   목적:
+   - 투명 overlay/달력 아이콘 우회 클릭 방식을 iPhone에서 사용하지 않는다.
+   - iPhone에서는 실제 input[type=date]를 필드 전체에 직접 표시한다.
+   - Android 및 기타 환경은 기존 v17.36 구조를 유지한다.
+*/
+#secInput .real-mini-calendar-v1736.ios-native-date-v86::after{
+  display:none!important;
+  content:none!important;
+}
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 .date-text-input.date-ymd-input{
+  display:none!important;
+}
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"].bi-date-overlay,
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"].date-click-layer-v1736{
+  display:block!important;
+  visibility:visible!important;
+  position:relative!important;
+  inset:auto!important;
+  right:auto!important;
+  top:auto!important;
+  transform:none!important;
+  width:100%!important;
+  min-width:0!important;
+  height:48px!important;
+  min-height:48px!important;
+  opacity:1!important;
+  z-index:auto!important;
+  pointer-events:auto!important;
+  touch-action:auto!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  padding:10px 9px!important;
+  margin:0!important;
+  background:#fff!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:14px!important;
+  line-height:24px!important;
+  letter-spacing:normal!important;
+  text-indent:0!important;
+  overflow:visible!important;
+  -webkit-appearance:auto!important;
+  appearance:auto!important;
+}
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-calendar-picker-indicator{
+  display:block!important;
+  opacity:1!important;
+  width:auto!important;
+  height:auto!important;
+  position:static!important;
+  padding:0!important;
+  margin:0!important;
+}
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit,
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-text,
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-year-field,
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-month-field,
+#secInput .real-mini-calendar-v1736.ios-native-date-v86 input[type="date"]::-webkit-datetime-edit-day-field{
+  opacity:1!important;
+  color:#111827!important;
+  -webkit-text-fill-color:#111827!important;
+  font-size:14px!important;
+  line-height:24px!important;
+}
+</style>
+</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main></body></html>'
     );
     win.document.close();
     return win;
@@ -18025,5 +18094,44 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
 })();
 </script>
 
+
+<script>
+/* v86 - iPhone Safari native date 직접 표시 전환 */
+(function(){
+  /**
+   * iPhone/iPod 환경인지 판별한다.
+   * iPad 데스크톱 UA는 현재 Android 기준 UI와의 충돌을 피하기 위해 제외한다.
+   */
+  function isIPhoneV86(){
+    return /iPhone|iPod/i.test(navigator.userAgent || '');
+  }
+
+  /**
+   * iPhone에서 진단일자 필드를 실제 native date input으로 전환한다.
+   * 기존 v17.36 input/change 동기화 이벤트는 그대로 사용한다.
+   */
+  function enableIPhoneNativeDateV86(){
+    if(!isIPhoneV86()) return;
+    var wrap = document.querySelector('#secInput .real-mini-calendar-v1736');
+    if(!wrap) return;
+    wrap.classList.add('ios-native-date-v86');
+
+    var text = wrap.querySelector('.date-ymd-input');
+    var native = wrap.querySelector('input[type="date"]');
+    if(!native) return;
+
+    if(text && /^\d{4}-\d{2}-\d{2}$/.test(text.value || '')){
+      native.value = text.value;
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', enableIPhoneNativeDateV86, false);
+  }else{
+    enableIPhoneNativeDateV86();
+  }
+  window.addEventListener('pageshow', enableIPhoneNativeDateV86, false);
+})();
+</script>
 </body>
 </html>

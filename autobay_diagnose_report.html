@@ -10351,10 +10351,6 @@ article.wrapppf-card-fix-v1724{
 #secSubmit{
   display:none;
 }
-#secSubmit .submit-guide-card-v1777 .no{
-  min-width:auto!important;
-  padding:0 8px!important;
-}
 #secSubmit #reportOutputSection{
   margin-top:10px!important;
 }
@@ -10460,6 +10456,11 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-body
    - 이미지 캡처 버튼, PDF 실행, 날짜, 도면 관련 코드는 유지
 */
 
+/* v17.95 - 정리 12차
+   - v17.80에 완전히 덮이는 v17.77 제출 배지 선언 제거
+   - v17.81 동일 selector 선언 병합 및 모바일 중복값 제거
+   - 출력 동작과 최종 계산값은 변경하지 않음
+*/
 /* v17.81 - PDF 저장/닫기 버튼 및 출력 미리보기 외곽 라운드 사각 스타일 */
 .report-print-bar-v1773{
   left:50%!important;
@@ -10515,6 +10516,7 @@ body.report-print-preview-v1773 .report-print-bar-v1773{
 /* PDF 미리보기 전체 외곽도 상단 카드와 같은 라운드 사각 비율로 정리 */
 body.report-print-preview-v1773 #reportPrintRootV1773{
   border-radius:16px!important;
+  padding-bottom:84px!important;
 }
 
 body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-head-v1773,
@@ -10527,10 +10529,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
 }
 
 /* 하단 고정 버튼과 미리보기 마지막 카드가 겹치지 않도록 여백 확보 */
-body.report-print-preview-v1773 #reportPrintRootV1773{
-  padding-bottom:84px!important;
-}
-
 @media (max-width:640px){
   .report-print-bar-v1773{
     left:12px!important;
@@ -10539,12 +10537,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     width:auto!important;
     max-width:none!important;
     transform:none!important;
-    border-radius:16px!important;
-  }
-  .report-print-bar-v1773 button{
-    height:42px!important;
-    border-radius:12px!important;
-    font-size:13px!important;
   }
 }
 

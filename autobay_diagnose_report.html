@@ -117,8 +117,6 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 
 .paint-diagram-block{margin:12px 0 14px}
 
-.paint-fig{position:relative;line-height:0;margin:0 auto;border:1px solid #d9dee5;border-radius:12px;overflow:visible;background:#fff;max-width:540px}
-.paint-fig img{display:block;width:100%;height:auto;margin:0;pointer-events:none;-webkit-user-drag:none;user-select:none}
 .paint-dot{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:999px;background:#9ca3af;border:1px solid #6b7280;z-index:5}
 .paint-line{position:absolute;height:1px;background:#9ca3af;transform:translateY(-50%);z-index:4}
 .paint-line.left{transform:translateY(-50%)}
@@ -153,7 +151,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;min-width:0;width:100
 .paint-diagram-block{margin:12px 0 16px}
 
 .paint-fig{position:relative;line-height:0;margin:0 auto;border:1px solid #d9dee5;border-radius:12px;overflow:visible;background:#fff;max-width:540px}
-.paint-fig img{display:block;width:100%;height:auto;margin:0;pointer-events:none;-webkit-user-drag:none;user-select:none}
 .paint-dot{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:999px;background:#9ca3af;border:1px solid #6b7280;z-index:5;pointer-events:none}
 .paint-part-label{position:absolute;transform:translateY(-50%);font-size:10px;font-weight:900;color:#4b5563;z-index:7;pointer-events:none}
 .paint-line{position:absolute;height:1px;background:#9ca3af;transform:translateY(-50%);z-index:4;pointer-events:none}
@@ -752,10 +749,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   -webkit-tap-highlight-color:transparent !important;
 }
 
-#secDiag .touch-diagram-shell .touch-card .slot.tight{
-  width:42px !important;
-  height:42px !important;
-}
 
 #secDiag .touch-diagram-shell .touch-card .slot .hit{
   position:absolute !important;
@@ -1230,9 +1223,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .paint-native-badge.warn{background:#f59e0b !important;}
 .paint-native-badge.danger{background:#ef4444 !important;}
 
-.paint-native-slot.has-value .paint-native-marker{
-  display:none !important;
-}
 
 .paint-native-panel{
   display:none !important;
@@ -1580,9 +1570,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-.paint-native-panel{
-  padding:10px !important;
-}
 
 .paint-native-row{
   width:100% !important;
@@ -1754,39 +1741,9 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   z-index:2 !important;
 }
 
-.paint-native-badge .paint-w-prefix{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-  font-weight:1000 !important;
-}
-
-.paint-native-badge .paint-value-text{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
 
 /* 사고진단 바퀴 마커 제거 보강: data-part 기반 */
-.report-card-ui [data-part="B-9"],
-.report-card-ui [data-part="B9"],
-.report-card-ui [data-part="B-10"],
-.report-card-ui [data-part="B10"],
-.report-card-ui [data-part="C-9"],
-.report-card-ui [data-part="C9"],
-.report-card-ui [data-part="C-10"],
-.report-card-ui [data-part="C10"]{
-  /* 외판/도막까지 숨기지 않도록 사고진단 DOM 직접 제거가 우선이며, 이 규칙은 보조용 */
-}
 
-.paint-native-badge .paint-w-prefix{
-  color:#111827 !important;
-  -webkit-text-fill-color:#111827 !important;
-  font-weight:1000 !important;
-}
-
-.paint-native-badge .paint-value-text{
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-}
 
 .paint-native-input{
   ime-mode:disabled !important;
@@ -1800,12 +1757,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   contain:layout style paint !important;
 }
 
-.paint-native-badge.has-value{
-  display:flex !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  transform:translate3d(-50%,-50%,0) !important;
-}
 
 .paint-native-slot.has-value .paint-native-badge{
   display:flex !important;
@@ -2761,12 +2712,6 @@ button{
 }
 
 /* 3. 차량번호 입력칸 복구 */
-.plate-wrap{
-  display:flex !important;
-  align-items:center !important;
-  gap:8px !important;
-  width:100% !important;
-}
 
 .plate-input{
   flex:1 1 auto !important;
@@ -2864,29 +2809,12 @@ button{
   gap:8px !important;
 }
 
-.plate-wrap{
-  display:flex !important;
-  align-items:center !important;
-  gap:8px !important;
-  width:100% !important;
-}
 
 .plate-wrap .plate-input{
   flex:1 1 auto !important;
   min-width:0 !important;
 }
 
-.plate-change-btn{
-  flex:0 0 42px !important;
-  width:42px !important;
-  height:48px !important;
-  border-radius:10px !important;
-  border:0 !important;
-  background:#111827 !important;
-  color:#fff !important;
-  font-size:18px !important;
-  font-weight:1000 !important;
-}
 
 .plate-change-badge{
   flex:0 0 auto !important;
@@ -4633,15 +4561,7 @@ button{
 #secDiag .exterior-sunroof-choice.need{border-color:#dc2626;color:#991b1b;background:#fef2f2;}
 #secDiag .exterior-sunroof-choice.clear{border-color:#94a3b8;color:#475569;background:#f8fafc;}
 
-#secDiag .exterior-sunroof-panel{display:none!important;}
-#secDiag .exterior-sunroof-badge{
-  min-width:64px;height:30px;padding:0 12px;border-radius:8px;
-  border:1px solid #0f172a;background:#0f172a;color:#fff;
-  font-size:13px;font-weight:700;line-height:28px;
-  box-shadow:0 2px 8px rgba(15,23,42,.18);cursor:pointer;
-}
 #secDiag .exterior-sunroof-badge[data-state="양호"]{background:#16a34a!important;border-color:#15803d!important;color:#fff!important;}
-#secDiag .exterior-sunroof-badge[data-state="점검"]{background:#dc2626!important;border-color:#b91c1c!important;color:#fff!important;}
 
 #secDiag .exterior-sunroof-panel{display:none!important;}
 #secDiag .exterior-sunroof-badge{
@@ -4860,13 +4780,6 @@ html, body{
   padding-top:0!important;
 }
 
-#secDiag .report-card-ui:nth-of-type(3)::before,
-#secDiag .report-card-ui:nth-of-type(3)::after,
-#secDiag .report-card-ui:nth-of-type(4)::before,
-#secDiag .report-card-ui:nth-of-type(4)::after{
-  display:none!important;
-  content:none!important;
-}
 
 /* 선루프 점검 빨간색을 기존 위험/점검 계열 빨강과 동일 계열로 통일한다. */
 #secDiag .exterior-sunroof-badge[data-state="점검"]{
@@ -4892,9 +4805,6 @@ html, body{
   z-index:auto!important;
 }
 
-body{
-  padding-bottom:24px!important;
-}
 
 /* v16.41 - 도막/외관 카드 위 여백 복구
    목적: v16.40에서 구분선을 제거하면서 함께 사라진 카드 간 상단 여백을 복구한다.
@@ -4907,13 +4817,6 @@ body{
   padding-top:0!important;
 }
 
-#secDiag .report-card-ui:nth-of-type(3)::before,
-#secDiag .report-card-ui:nth-of-type(3)::after,
-#secDiag .report-card-ui:nth-of-type(4)::before,
-#secDiag .report-card-ui:nth-of-type(4)::after{
-  display:none!important;
-  content:none!important;
-}
 
 /* v16.42 - 사고/도막/외관 진단확인 카드 제목부 여백 통일
    목적: 사고 진단확인 카드 기준으로 도막 진단확인, 외관 진단확인 카드의 상단 여백과 제목-첫 도면 간격을 동일하게 맞춘다.
@@ -4939,19 +4842,8 @@ body{
   margin-top:0!important;
 }
 
-#secDiag .report-card-ui:nth-of-type(3),
-#secDiag .report-card-ui:nth-of-type(4){
-  margin-top:18px!important;
-}
 
 /* 도막/외관 카드 구분선 제거 상태 유지 */
-#secDiag .report-card-ui:nth-of-type(3)::before,
-#secDiag .report-card-ui:nth-of-type(3)::after,
-#secDiag .report-card-ui:nth-of-type(4)::before,
-#secDiag .report-card-ui:nth-of-type(4)::after{
-  display:none!important;
-  content:none!important;
-}
 
 /* v16.43 - 사고/도막/외관 진단 도면 라벨 스타일 통일
    목적: 각 진단 카드의 도면 섹션 라벨을 연한 회색 배경 + 검정 폰트로 변경하고,
@@ -5014,11 +4906,6 @@ body{
    영향 범위: 진단 탭의 라벨 스타일과 하단 버튼 DOM만 변경한다.
    주의: 도면 좌표, 저장 key, 기존 localStorage key, 입력 로직은 변경하지 않는다.
 */
-#secDiag .diag-accident-card .diagram-corner-badge,
-#secDiag .diag-paint-card .diagram-corner-badge,
-#secDiag .diag-exterior-card .diagram-corner-badge{
-  font-weight:400!important;
-}
 
 #secDiag .diag-accident-card .customer-note-title,
 #secDiag .diag-exterior-card .customer-note-title{
@@ -5127,11 +5014,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .glass-status-b
 }
 
 /* 선루프 wrapper에는 배경색을 적용하지 않는다. */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-wrap{
-  background:transparent!important;
-  border-color:transparent!important;
-  box-shadow:none!important;
-}
 
 /* 선루프 기본 문구 폰트 크기 */
 html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge{
@@ -5216,11 +5098,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .glass-marker[d
 }
 
 /* 선루프 wrapper는 배경 없이 위치 컨테이너만 담당 */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-wrap{
-  background:transparent!important;
-  border-color:transparent!important;
-  box-shadow:none!important;
-}
 
 /* 선루프 공통 라벨 규격: 전면 라벨과 동일 폰트 크기 */
 html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge{
@@ -5240,22 +5117,8 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 }
 
 /* 선루프 기본 문구만 연한 회색 */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge:not([data-state]),
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge[data-state=""],
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge[data-state="선루프"]{
-  background:#e5e7eb!important;
-  border-color:#cbd5e1!important;
-  color:#111827!important;
-  box-shadow:none!important;
-}
 
 /* 선루프 점검은 기존 빨강 유지 */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge[data-state="점검"]{
-  background:#ef4444!important;
-  border-color:#ef4444!important;
-  color:#ffffff!important;
-  box-shadow:0 2px 8px rgba(15,23,42,.18)!important;
-}
 
 /* v16.50_sunroof_font - 외관 상부진단 선루프 폰트 규격 통일
    목적:
@@ -5308,29 +5171,10 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 }
 
 /* 선루프 기본 문구: 기본 라벨과 동일한 연한회색 */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge:not([data-state]),
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge[data-state=""],
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge[data-state="선루프"]{
-  background:#e5e7eb!important;
-  border-color:#cbd5e1!important;
-  color:#111827!important;
-  box-shadow:none!important;
-}
 
 /* 선루프 점검: 깨짐(금감) 상태 라벨과 동일 계열 빨강 + 동일 폰트 규격 */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-badge[data-state="점검"]{
-  background:#ef4444!important;
-  border-color:#ef4444!important;
-  color:#ffffff!important;
-  box-shadow:0 2px 8px rgba(15,23,42,.18)!important;
-}
 
 /* 선루프 wrapper는 위치 컨테이너만 담당 */
-html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunroof-wrap{
-  background:transparent!important;
-  border-color:transparent!important;
-  box-shadow:none!important;
-}
 
 /* v16.52_sunroof_fix - 선루프 기본/점검 폰트 규격 실제 라벨 기준 재적용
    원인:
@@ -5677,14 +5521,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
   box-sizing:border-box!important;
 }
 
-#secCheck [data-check-card="engine_func"] .engine-func-group .engine-func-row{
-  padding:9px 0!important;
-  border-bottom:1px solid #eef1f5!important;
-}
-
-#secCheck [data-check-card="engine_func"] .engine-func-group .engine-func-row:last-child{
-  border-bottom:0!important;
-}
 
 /* v16.60 - 엔진룸 기능점검 소음/떨림 그룹 테두리 구분
    목적: 소음 여부, 떨림 여부의 하위 항목(예열 전/후/공회전)을 각각 하나의 그룹 박스로 명확히 구분한다.
@@ -5711,9 +5547,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
   border-bottom:1px solid #eef1f5!important;
 }
 
-#secCheck [data-check-card="engine_func"] .engine-func-group .engine-func-row:last-child{
-  border-bottom:0!important;
-}
 
 /* 조향 여부 단독 row는 그룹 박스와 분리된 1행 스타일 유지 */
 #secCheck [data-check-card="engine_func"] .engine-steering-single-row{
@@ -5766,11 +5599,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 }
 
 /* 조향 여부 단독 row는 라벨 박스 구조와 분리 유지 */
-#secCheck [data-check-card="engine_func"] .engine-steering-single-row{
-  border-top:1px solid #eef1f5!important;
-  margin-top:6px!important;
-  padding:10px 0!important;
-}
 
 /* v16.62 - 엔진룸 기능점검 소음/떨림 라벨 테두리 밖 독립 배치
    목적:
@@ -5896,10 +5724,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
 }
 
 /* 점검 탭 클릭 전 기본 선택박스 폰트 볼드 제거 */
-#secCheck .check-radio:not(:checked) + .check-choice,
-#secCheck .ab-check-radio:not(:checked) + .ab-choice{
-  font-weight:400!important;
-}
 
 /* 점검 탭 클릭 후 선택된 선택박스도 과한 볼드가 남지 않도록 기본 굵기 유지 */
 #secCheck .check-radio:checked + .check-choice,
@@ -6424,21 +6248,6 @@ html body #secCheck .pros-card-v1677 label.pros-warranty-label-v1677{
 }
 
 /* 예외: 항목 제목이 아닌 요소는 기존 크기 유지 */
-#secCheck .check-choice,
-#secCheck .ab-choice,
-#secDiag .diagram-corner-badge,
-#secDiag .glass-status-badge,
-#secDiag .exterior-sunroof-badge,
-#secDiag .hit,
-#secDiag .slot label,
-.report-card-ui > h2,
-.report-card-ui > h2 .no,
-input,
-textarea,
-select,
-button{
-  /* font-size는 각 요소 기존 규칙을 따른다. */
-}
 
 /* v16.85 - 전체 입력박스 안내문구 placeholder 폰트사이즈 45% 축소
    목적:
@@ -6481,9 +6290,6 @@ textarea::-ms-input-placeholder{
    영향 범위: 신규 tabOrder, secOrder 페이지, 신규 order_* data-key 입력필드만 적용한다.
    주의: 기존 입력/진단/점검 탭, 도면 좌표, 기존 저장 key, localStorage key는 변경하지 않는다.
 */
-.header{
-  padding-right:58px!important;
-}
 
 .order-open-btn{
   position:absolute!important;
@@ -6516,9 +6322,6 @@ textarea::-ms-input-placeholder{
   outline:2px solid rgba(255,255,255,.38)!important;
 }
 
-#tabOrder:checked ~ #secOrder{
-  display:block!important;
-}
 
 /* 기존 3개 탭과 O 페이지 선택 상태가 충돌하지 않도록 표시 제어 */
 #tabOrder:checked ~ #secInput,
@@ -6762,10 +6565,7 @@ textarea::-ms-input-placeholder{
   #secOrder .order-account{
     grid-template-columns:1fr!important;
   }
-  #secOrder .order-money-date{
-    grid-template-columns:1fr!important;
   }
-}
 
 /* v16.88 - O 버튼 제거 후 메뉴 버튼/매입오더 작성 메뉴 연결
    목적:
@@ -6782,9 +6582,6 @@ textarea::-ms-input-placeholder{
   opacity:0!important;
 }
 
-.header{
-  padding-right:58px!important;
-}
 
 .menu-open-btn{
   position:absolute!important;
@@ -6943,39 +6740,12 @@ textarea::-ms-input-placeholder{
 #secOrder .order-count-textarea .order-count-number{
   min-width:0!important;
 }
-#secOrder .order-count-textarea textarea{
-  min-height:72px!important;
-}
 #secOrder .order-profit-toggle-wrap{
   display:grid!important;
   grid-template-columns:36px minmax(0,1fr)!important;
   gap:6px!important;
   align-items:stretch!important;
   margin-top:14px!important;
-}
-#secOrder .order-profit-toggle{
-  width:36px!important;
-  min-width:36px!important;
-  border:1px solid #d8dee8!important;
-  border-radius:10px!important;
-  background:#ffffff!important;
-  color:#111827!important;
-  font-size:15px!important;
-  font-weight:900!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  touch-action:manipulation!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-#secOrder .order-profit-toggle-wrap .order-profit-title{
-  margin:0!important;
-}
-#secOrder .order-profit-grid[data-profit-open="0"]{
-  display:none!important;
-}
-#secOrder .order-profit-grid[data-profit-open="1"]{
-  display:grid!important;
 }
 #secOrder input[type="date"].order-date-mini-input{
   appearance:auto!important;
@@ -7028,13 +6798,6 @@ textarea::-ms-input-placeholder{
 #secOrder .order-small-unit{
   grid-template-columns:1fr 1fr!important;
   gap:4px!important;
-}
-#secOrder .order-profit-toggle-wrap{
-  margin-top:22px!important;
-  display:grid!important;
-  grid-template-columns:36px minmax(0,1fr)!important;
-  gap:6px!important;
-  align-items:stretch!important;
 }
 #secOrder .order-profit-toggle{
   width:36px!important;
@@ -7095,9 +6858,6 @@ textarea::-ms-input-placeholder{
   color:#111827!important;
 }
 
-#tabExterior:checked ~ #secExterior{
-  display:block!important;
-}
 
 /* 외관 탭 선택 시 다른 섹션 숨김 */
 #tabExterior:checked ~ #secInput,
@@ -7211,18 +6971,7 @@ textarea::-ms-input-placeholder{
 }
 
 /* 등록일자/제작일자: 달력 요소 완전 배제 */
-#secInput .basic-yy-date-field-v1694 .date-dual-wrap,
-#secInput .basic-yy-date-field-v1694 input[type="date"],
-#secInput .basic-yy-date-field-v1694 .bi-date-overlay,
-#secInput .basic-yy-date-field-v1694 .date-picker-btn,
-#secInput .basic-yy-date-field-v1694 .calendar-btn{
-  display:none!important;
-}
 
-#secInput .basic-yy-date-input-v1694{
-  width:100%!important;
-  padding-right:10px!important;
-}
 
 /* 튜닝 추가행: 라벨 높이와 입력박스 높이 동일 */
 #secInput .tuning-row{
@@ -7280,13 +7029,6 @@ textarea::-ms-input-placeholder{
 }
 
 /* 튜닝 불법 선택 시만 빨강 */
-#secInput select.tuning-main.basic-danger-active{
-  background:#ef4444!important;
-  border-color:#ef4444!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-  font-weight:900!important;
-}
 
 /* v16.95 - 튜닝 적법 색상/외관 탭 라벨/반응속도 보정
    목적:
@@ -7803,11 +7545,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 }
 
 /* 수익금 카드의 헤더는 카드 내부에서 단일 라벨 형태 */
-#secOrder .order-profit-card-v1702 .order-profit-toggle-wrap-v1701,
-#secOrder .order-profit-card-v1702 .order-profit-card-head-v1702{
-  display:block!important;
-  margin:0 0 12px 0!important;
-}
 
 /* 수익금 버튼은 라벨 내부 좌측 유지 */
 #secOrder .order-profit-card-v1702 .order-profit-title-v1701{
@@ -8827,21 +8564,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 }
 
 /* 번호판 변경예정 배지 복구 */
-#secInput .plate-change-badge{
-  display:none;
-  align-items:center!important;
-  justify-content:center!important;
-  min-height:24px!important;
-  padding:0 8px!important;
-  border-radius:999px!important;
-  background:#ef4444!important;
-  color:#ffffff!important;
-  -webkit-text-fill-color:#ffffff!important;
-  font-size:12px!important;
-  font-weight:900!important;
-  line-height:1!important;
-  white-space:nowrap!important;
-}
 
 /* 기본정보 위험 선택값 강조 */
 #secInput select.basic-danger-active-v1719,
@@ -9227,11 +8949,6 @@ textarea.tread-input-fix-v1724,
   position:relative!important;
 }
 
-#secInput .date-dual-wrap .date-text-input.date-ymd-input{
-  width:100%!important;
-  box-sizing:border-box!important;
-  padding-right:46px!important;
-}
 
 /* 기존 미니 달력 input만 남김 */
 #secInput .date-dual-wrap input[type="date"].bi-date-overlay{
@@ -10261,10 +9978,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
 }
 
 @media print{
-  .report-print-bar-v1773{
-    display:none!important;
-  }
-  body.report-print-preview-v1773 #reportPrintRootV1773{
+    body.report-print-preview-v1773 #reportPrintRootV1773{
     padding-bottom:0!important;
     border-radius:0!important;
   }

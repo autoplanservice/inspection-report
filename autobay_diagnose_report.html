@@ -47,6 +47,19 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .split-result{display:none;border-radius:14px;border:1px solid #d8dee8;padding:12px;margin-top:10px;background:#fafafa}
 .split-result.show{display:block}
 .split-result h3{font-size:14px;margin:0 0 8px;font-weight:900}
+
+/* v116 - 사고/외관 체크 후 생성되는 고객보고용 결과 레이아웃 숨김 */
+#accidentCustomer,
+#panelCustomer{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
 .taglist{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
 .tag{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;padding:0 10px;font-size:12px;font-weight:900;background:#e5e7eb;color:#111827}
 .tag.customer{background:#fee2e2;color:#991b1b}
@@ -9962,6 +9975,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-v177
 
 body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-title-v1773{
   border-radius:12px!important;
+  text-align:center!important;
+  justify-content:center!important;
+  align-items:center!important;
 }
 
 /* 하단 고정 버튼과 미리보기 마지막 카드가 겹치지 않도록 여백 확보 */
@@ -9977,9 +9993,15 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
 }
 
 @media print{
-    body.report-print-preview-v1773 #reportPrintRootV1773{
+  body.report-print-preview-v1773 #reportPrintRootV1773{
     padding-bottom:0!important;
     border-radius:0!important;
+  }
+
+  body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-title-v1773{
+    text-align:center!important;
+    justify-content:center!important;
+    align-items:center!important;
   }
 }
 /* v17.83 - PDF 출력용 도막 수치 라벨 회색 보정
@@ -15441,6 +15463,24 @@ function isVisibleCaptureTarget(el){
     }
   }
 
+  /**
+   * stripTransientPrintUi는 화면 조작용 임시 UI를 PDF clone에서 제거한다.
+   * 도막 입력 패널은 열림/닫힘 상태와 관계없이 출력물에 포함하지 않는다.
+   */
+  function stripTransientPrintUi(root){
+    if(!root) return;
+
+    qsa(
+      '.paint-native-panel, ' +
+      '.paint-v98-panel, ' +
+      '#accidentCustomer, ' +
+      '#panelCustomer',
+      root
+    ).forEach(function(element){
+      element.remove();
+    });
+  }
+
   function makeReadonlyForPrint(root){
     qsa('input, textarea', root).forEach(function(el){
       if(el.type === 'hidden'){
@@ -15528,6 +15568,7 @@ function isVisibleCaptureTarget(el){
 
     syncFormValuesForClone(src, clone);
     makeReadonlyForPrint(clone);
+    stripTransientPrintUi(clone);
 
     clone.style.setProperty('display','block','important');
     clone.style.setProperty('visibility','visible','important');
@@ -15627,6 +15668,7 @@ function isVisibleCaptureTarget(el){
 
     syncFormValuesForClone(src, clone);
     makeReadonlyForPrint(clone);
+    stripTransientPrintUi(clone);
     /*
       v17.82:
       #secDiag 컨텍스트는 유지하되, 사고/외관 탭별로 불필요한 카드만 제목 기준으로 제거한다.
@@ -15644,6 +15686,7 @@ function isVisibleCaptureTarget(el){
       clone.classList.add('report-print-cloned-section-v1773');
       syncFormValuesForClone(src, clone);
       makeReadonlyForPrint(clone);
+      stripTransientPrintUi(clone);
     }
 
     clone.style.setProperty('display','block','important');
@@ -15732,59 +15775,6 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * findOpenPaintInputPanel은 현재 화면에서 실제로 열려 있는 도막 입력 패널을 찾는다.
-   * 숨김 패널과 A-4/A-7 강제 비활성 패널은 제외한다.
-   */
-  function findOpenPaintInputPanel(){
-    var panels = qsa(
-      '#secDiag .paint-native-panel, ' +
-      '#secDiag .paint-v98-panel, ' +
-      '#secExterior .paint-native-panel, ' +
-      '#secExterior .paint-v98-panel'
-    );
-
-    for(var index = 0; index < panels.length; index += 1){
-      var panel = panels[index];
-      if(panel.getAttribute('aria-hidden') === 'true') continue;
-
-      var style = window.getComputedStyle(panel);
-      var rect = panel.getBoundingClientRect();
-      var opacity = parseFloat(style.opacity || '1');
-
-      if(
-        style.display !== 'none' &&
-        style.visibility !== 'hidden' &&
-        opacity > 0 &&
-        rect.width > 0 &&
-        rect.height > 0
-      ){
-        return panel;
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * blockPrintWhilePaintPanelOpen은 도막 수치 입력창이 열린 상태의 PDF 생성을 차단한다.
-   */
-  function blockPrintWhilePaintPanelOpen(){
-    var panel = findOpenPaintInputPanel();
-    if(!panel) return false;
-
-    var input = qs('.paint-native-input, .paint-v98-input', panel);
-    window.alert('도막수치 입력 창을 닫은 후 PDF를 출력해주세요.');
-
-    if(input && typeof input.focus === 'function'){
-      setTimeout(function(){
-        input.focus();
-      }, 0);
-    }
-
-    return true;
-  }
-
-  /**
    * syncPrintSectionTitleWidths는 각 탭 제목 폭을 해당 탭의 실제 내용 폭과 맞춘다.
    * print media에서 문서 전체 폭으로 늘어나지 않도록 px 단위 inline 폭을 고정한다.
    */
@@ -15832,8 +15822,6 @@ function isVisibleCaptureTarget(el){
   }
 
   function openPreview(mode){
-    if(blockPrintWhilePaintPanelOpen()) return;
-
     repairMainTabHandlersV1784();
     var root = buildReport(mode);
     document.body.classList.add(PREV_CLASS);

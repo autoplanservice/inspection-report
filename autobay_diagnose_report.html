@@ -5,7 +5,6 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport"/>
 <title>오토베이 현장 매입 진단리포트</title>
-<!-- v80 cleanup 1차: 정적 분석상 직접 참조가 0회인 보류 해제 함수 4개 제거. 화면 DOM, data-key, localStorage, 도면 좌표, win.document.write 내부 구조는 미수정. -->
 
 <!--
 BASE CLEANUP NOTE
@@ -15,7 +14,6 @@ BASE CLEANUP NOTE
 - 정리: 중복 doctype, D15 전용 transform 잔재, 비활성 placeholder script, R 검정 잔재
 -->
 <style>
-/* ===== CSS SOURCE BLOCK 01 / 통합 순서 유지 ===== */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
 body{padding:10px 8px 86px;overflow-x:hidden}
@@ -129,8 +127,6 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .paint-box.left{text-align:center}
 .paint-box.right{text-align:center}
 
-
-/* v2.0 도막 연결선/입력박스 보정 */
 .paint-line{
   height:1px;
   background:#9ca3af;
@@ -150,8 +146,6 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
   box-shadow:0 1px 3px rgba(15,23,42,.12);
 }
 
-
-/* v2.1 iPhone layout and paint overlay fixes */
 .grid2 > *, .grid3 > *{min-width:0}
 .field{min-width:0}
 .field input,.field select,.field textarea{min-width:0;max-width:100%}
@@ -165,8 +159,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;min-width:0;width:100
 .paint-line{position:absolute;height:1px;background:#9ca3af;transform:translateY(-50%);z-index:4;pointer-events:none}
 .paint-box{position:absolute;width:62px;height:30px;border:1px solid #9ca3af;border-radius:8px;background:#fff;padding:4px 5px;font-size:12px;text-align:center;z-index:6;box-shadow:0 1px 3px rgba(15,23,42,.12)}
 
-
-/* v2.2 iPhone fixes */
 .grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 .grid2 > .field,.grid3 > .field{min-width:0}
 .field input,.field select,.field textarea{display:block;width:100%;max-width:100%;min-width:0}
@@ -177,8 +169,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .paint-line{height:1.5px;background:#9ca3af}
 .paint-box{width:72px;height:32px;line-height:20px}
 
-
-/* v2.3 final field and paint alignment fixes */
 .report-card-ui .grid2{
   grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
   align-items:start;
@@ -269,12 +259,8 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   box-shadow:0 1px 3px rgba(15,23,42,.12) !important;
 }
 
-
-/* v2.4 paint point label removal */
 .paint-part-label{display:none !important}
 
-
-/* v2.5 base field and side paint fixes */
 .report-card-ui .field input,
 .report-card-ui .field select{
   height:48px !important;
@@ -288,8 +274,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   min-height:32px !important;
 }
 
-
-/* v2.6 side paint fixed target positions */
 .paint-box[data-key="paint_side_B3"],
 .paint-box[data-key="paint_side_B4"],
 .paint-box[data-key="paint_side_C3"],
@@ -307,8 +291,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   z-index:19 !important;
 }
 
-
-/* v2.7 all diagram 130 percent scale */
 .touch-card{
   width:117% !important;
   max-width:none !important;
@@ -359,8 +341,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   right:4px !important;
 }
 
-
-/* v2.8 diagram 117 percent and side paint lane layout */
 .touch-card{
   width:117% !important;
   margin-left:-8.5% !important;
@@ -381,8 +361,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   height:1.5px !important;
 }
 
-
-/* v2.9 bent connector layout for side paint diagram */
 .paint-fig-bent{
   position:relative !important;
 }
@@ -417,8 +395,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:none !important;
 }
 
-
-/* v3.0 paint diagram clean view */
 .paint-diagram-block{
   width:100% !important;
   margin:12px 0 16px !important;
@@ -463,8 +439,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:none !important;
 }
 
-
-/* v3.1 diagram width normalization */
 .paint-diagram-block,
 .touch-card,
 .report-card-ui .card,
@@ -505,8 +479,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:block !important;
 }
 
-
-/* v3.2 paint diagram size restore with matched title width */
 #secDiag .report-card-ui:nth-of-type(3) .paint-diagram-block{
   width:117% !important;
   max-width:none !important;
@@ -540,8 +512,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:block !important;
 }
 
-
-/* v3.3 diagram horizontal crop alignment */
 .touch-card .fig,
 .paint-fig,
 .paint-fig-bent{
@@ -575,8 +545,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   margin-left:-16% !important;
 }
 
-
-/* v3.4 unified diagram layout */
 .paint-diagram-block,
 .touch-card{
   width:100% !important;
@@ -660,8 +628,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   overflow:hidden !important;
 }
 
-
-/* v3.5 touch marker alignment restore + paint crop center */
 .touch-card{
   width:100% !important;
   max-width:100% !important;
@@ -743,8 +709,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:block !important;
 }
 
-
-/* v3.6 touch diagram marker restore and centering */
 #secDiag .touch-diagram-shell .touch-card{
   width:100% !important;
   max-width:100% !important;
@@ -854,8 +818,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   color:#111827 !important;
 }
 
-
-/* v3.7 touch marker coordinate restore */
 /* 사고/외판 터치 도면은 원본 HTML 좌표계와 동일하게 이미지 100% 기준으로 복구한다. */
 #secDiag .touch-diagram-shell .touch-card{
   width:100% !important;
@@ -921,8 +883,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   transform:none !important;
 }
 
-
-/* v3.8 remove stray right side lines */
 #secDiag .touch-card::before,
 #secDiag .touch-card::after,
 #secDiag .fig::before,
@@ -947,8 +907,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:none !important;
 }
 
-
-/* v3.9 accident/exterior touch diagram size match with paint diagram */
 /*
   사고진단/외판진단의 터치 도면은 도막진단과 동일한 시각 크기 기준으로 맞춘다.
   fig 자체를 확대하여 이미지와 slot 좌표계를 함께 확대하므로 회색점/마커 좌표 불일치를 줄인다.
@@ -1066,8 +1024,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   pointer-events:auto !important;
 }
 
-
-/* v4.0 paint title/diagram separated layout */
 #secDiag .report-card-ui:nth-of-type(3) .paint-diagram-title{
   width:100% !important;
   max-width:100% !important;
@@ -1097,10 +1053,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   margin:0 0 14px 0 !important;
 }
 
-
-/* v81 cleanup: removed unused legacy paint-touch/static/dock CSS blocks v4.1~v5.5. Active paint rendering uses v9.8 paint-v98 and v6.8 reset baseline. */
-
-/* v6.8 paint reset baseline */
 #secDiag .report-card-ui:nth-of-type(3) .paint-diagram-block{
   position:relative !important;
   overflow:hidden !important;
@@ -1129,8 +1081,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   display:none !important;
 }
 
-
-/* v9.8 paint: exterior diagram/slot copied as-is, only state/badge added */
 #secDiag .report-card-ui:nth-of-type(3) .paint-v98-shell{position:relative !important;}
 #secDiag .report-card-ui:nth-of-type(3) .paint-v98-slot{z-index:90 !important;}
 #secDiag .report-card-ui:nth-of-type(3) .paint-v98-hit{
@@ -1178,8 +1128,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .paint-v98-w.active{background:#111827 !important;}
 .paint-v98-unit{flex:0 0 auto !important;font-size:14px !important;color:#6b7280 !important;font-weight:800 !important;}
 
-
-/* v11.4 paint native radio-css panel: iPhone first */
 #secDiag .report-card-ui:nth-of-type(3),
 #secDiag .report-card-ui:nth-of-type(3) .paint-v98-shell{
   overflow:visible !important;
@@ -1379,7 +1327,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   font-weight:800 !important;
 }
 
-
 #paintNativeRadio_A4:checked ~ section .paint-native-slot[data-paint-id="A4"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1390,7 +1337,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_A1:checked ~ section .paint-native-slot[data-paint-id="A1"] .paint-native-marker{
   display:block !important;
@@ -1403,7 +1349,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_A5:checked ~ section .paint-native-slot[data-paint-id="A5"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1414,7 +1359,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_A2:checked ~ section .paint-native-slot[data-paint-id="A2"] .paint-native-marker{
   display:block !important;
@@ -1427,7 +1371,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_A6:checked ~ section .paint-native-slot[data-paint-id="A6"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1438,7 +1381,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_A3:checked ~ section .paint-native-slot[data-paint-id="A3"] .paint-native-marker{
   display:block !important;
@@ -1451,7 +1393,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_A7:checked ~ section .paint-native-slot[data-paint-id="A7"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1462,7 +1403,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_B1:checked ~ section .paint-native-slot[data-paint-id="B1"] .paint-native-marker{
   display:block !important;
@@ -1475,7 +1415,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_B2:checked ~ section .paint-native-slot[data-paint-id="B2"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1486,7 +1425,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_B4:checked ~ section .paint-native-slot[data-paint-id="B4"] .paint-native-marker{
   display:block !important;
@@ -1499,7 +1437,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_B3:checked ~ section .paint-native-slot[data-paint-id="B3"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1510,7 +1447,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_B5:checked ~ section .paint-native-slot[data-paint-id="B5"] .paint-native-marker{
   display:block !important;
@@ -1523,7 +1459,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_B6:checked ~ section .paint-native-slot[data-paint-id="B6"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1534,7 +1469,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_B7:checked ~ section .paint-native-slot[data-paint-id="B7"] .paint-native-marker{
   display:block !important;
@@ -1547,7 +1481,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_B8:checked ~ section .paint-native-slot[data-paint-id="B8"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1558,7 +1491,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_C1:checked ~ section .paint-native-slot[data-paint-id="C1"] .paint-native-marker{
   display:block !important;
@@ -1571,7 +1503,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_C2:checked ~ section .paint-native-slot[data-paint-id="C2"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1582,7 +1513,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_C3:checked ~ section .paint-native-slot[data-paint-id="C3"] .paint-native-marker{
   display:block !important;
@@ -1595,7 +1525,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_C4:checked ~ section .paint-native-slot[data-paint-id="C4"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1606,7 +1535,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_C5:checked ~ section .paint-native-slot[data-paint-id="C5"] .paint-native-marker{
   display:block !important;
@@ -1619,7 +1547,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_C6:checked ~ section .paint-native-slot[data-paint-id="C6"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1630,7 +1557,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   visibility:visible !important;
   opacity:1 !important;
 }
-
 
 #paintNativeRadio_C7:checked ~ section .paint-native-slot[data-paint-id="C7"] .paint-native-marker{
   display:block !important;
@@ -1643,7 +1569,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 #paintNativeRadio_C8:checked ~ section .paint-native-slot[data-paint-id="C8"] .paint-native-marker{
   display:block !important;
   visibility:visible !important;
@@ -1655,8 +1580,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
-/* v11.5 paint input visible mobile layout */
 .paint-native-panel{
   padding:10px !important;
 }
@@ -1719,8 +1642,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   text-align:left !important;
 }
 
-
-/* v11.6 paint one-line input panel hard visible */
 .paint-native-panel{
   padding:10px !important;
 }
@@ -1805,8 +1726,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   font-size:13px !important;
 }
 
-
-/* v11.7 paint input unit inside + W label styling + wheel marker adjustments */
 .paint-native-row-one{
   grid-template-columns:74px minmax(100px, 1fr) 44px 54px !important;
 }
@@ -1858,8 +1777,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   /* 외판/도막까지 숨기지 않도록 사고진단 DOM 직접 제거가 우선이며, 이 규칙은 보조용 */
 }
 
-
-/* v11.8 paint iPhone live input reflection */
 .paint-native-badge .paint-w-prefix{
   color:#111827 !important;
   -webkit-text-fill-color:#111827 !important;
@@ -1875,8 +1792,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   ime-mode:disabled !important;
 }
 
-
-/* v11.9 iOS live badge repaint hardening */
 .paint-native-badge{
   transform:translate3d(-50%,-50%,0) !important;
   will-change:contents, transform, opacity !important;
@@ -1898,8 +1813,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
-/* v12.0 event-only iOS input badge */
 .paint-native-badge{
   transform:translate3d(-50%,-50%,0) !important;
   will-change:contents, transform, opacity !important;
@@ -1919,8 +1832,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   user-select:text !important;
 }
 
-
-/* v12.1 iOS badge DOM replacement + simple repaint */
 .paint-native-badge{
   display:flex !important;
   position:absolute !important;
@@ -1967,8 +1878,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   -webkit-text-fill-color:#fff !important;
 }
 
-
-/* v12.3 paint W circle badge */
 .paint-native-badge{
   gap:3px !important;
 }
@@ -1996,8 +1905,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   font-weight:900 !important;
 }
 
-
-/* v12.4 paint side badge overlap fix + exterior side wheel two-state */
 /* 외판진단: B-9/B-10/C-9/C-10의 3번째 상태는 사용하지 않음 */
 #secDiag .report-card-ui:nth-of-type(5) .touch-card:nth-of-type(2) .slot[data-part-code="B9"] .h3,
 #secDiag .report-card-ui:nth-of-type(5) .touch-card:nth-of-type(2) .slot[data-part-code="B10"] .h3,
@@ -2040,8 +1947,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   transform:translate(-14%,-50%) !important;
 }
 
-
-/* v12.7 paint B4/C4 final inline-compatible offset */
 #paintNativeBadge_B4,
 .paint-native-slot[data-paint-id="B4"] .paint-native-badge{
   transform:translate(-94%,-50%) !important;
@@ -2052,8 +1957,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   transform:translate(-14%,-50%) !important;
 }
 
-
-/* v13.2 paint label layer containment */
 #secDiag .report-card-ui:nth-of-type(3) .paint-v98-shell,
 #secDiag .report-card-ui:nth-of-type(3) section.touch-card,
 #secDiag .report-card-ui:nth-of-type(3) section.touch-card .fig{
@@ -2079,8 +1982,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   z-index:5000 !important;
 }
 
-
-/* v13.4 wheel photo/status UI */
 .wheel-photo-box{
   position:relative !important;
   height:118px !important;
@@ -2160,8 +2061,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   color:#fff !important;
 }
 
-
-/* v13.5 wheel/tire status card */
 .wheel-status-control{
   grid-template-columns:repeat(3, 1fr) !important;
   gap:5px !important;
@@ -2204,8 +2103,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   color:#111827 !important;
 }
 
-
-/* v13.8 wheel cycle badge + tire percent input */
 .wheel-cycle-badge{
   position:absolute !important;
   left:50% !important;
@@ -2293,8 +2190,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   pointer-events:none !important;
 }
 
-
-/* v13.9 requested report layout updates */
 #secDiag .touch-diagram-title,
 #secDiag .touch-diagram-subtitle,
 #secDiag .paint-diagram-title,
@@ -2353,9 +2248,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .customer-dot.dot-blue{background:#3b82f6 !important;}
 .customer-dot.active{box-shadow:0 0 0 3px rgba(17,24,39,.18) !important;outline:2px solid #111827 !important;}
 .customer-talk-time{flex:0 0 auto !important;font-size:12px !important;font-weight:900 !important;color:#374151 !important;margin-left:2px !important;}
-
-
-/* v14.1 customer cycle + diagram badge fix + glass status */
 
 /* 고객대화: 단일 클릭 순환 배지 */
 .customer-talk-cycle{
@@ -2485,9 +2377,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   white-space:nowrap !important;
 }
 
-
-/* v14.2 customer/glass/label alignment fixes */
-
 /* 1. 고객대화 선택배지 사각 라운드 */
 .customer-talk-cycle{
   width:auto !important;
@@ -2584,9 +2473,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   top:10px !important;
   transform:none !important;
 }
-
-
-/* v14.3 customer time align + glass scale + diagram label exact fix */
 
 /* 1. 고객대화: 시간배지 우측 끝 고정, 검정 바탕 흰색 폰트 */
 .customer-talk-head{
@@ -2699,8 +2585,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   top:12px !important;
 }
 
-
-/* v14.4 insurance marker title update */
 .customer-talk-head{display:flex!important;align-items:center!important;width:100%!important;gap:8px!important}
 .customer-talk-spacer{flex:1 1 auto!important}
 .customer-talk-cycle{flex:0 0 auto!important;min-width:34px!important;height:26px!important;border-radius:8px!important;background:#111827!important;color:#fff!important;border:0!important}
@@ -2722,8 +2606,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .report-card-ui>h2{display:inline-flex!important;align-items:center!important;width:auto!important;max-width:100%!important;min-height:34px!important;padding:0 12px 0 8px!important;border-radius:11px!important;background:#111827!important;color:#fff!important;font-size:14px!important;font-weight:1000!important;line-height:1!important;margin:0 0 12px!important;box-shadow:0 2px 8px rgba(15,23,42,.16)!important}
 .report-card-ui>h2 .no{background:#fff!important;color:#111827!important;height:22px!important;min-width:22px!important;margin-right:7px!important}
 
-
-/* v14.5 glass side label additional offset */
 .glass-marker[data-glass-pos="B-1"],
 .glass-marker[data-glass-pos="B-2"]{
   transform:translate(calc(-50% + 100%), -50%) !important;
@@ -2734,14 +2616,10 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   transform:translate(calc(-50% - 100%), -50%) !important;
 }
 
-
-/* v14.6 card number normalize */
 .report-card-ui > h2 .no-insurance-hidden{
   display:none !important;
 }
 
-
-/* v14.8 insurance select layout */
 .insurance-history-wrap{
   display:flex!important;
   flex-direction:column!important;
@@ -2795,8 +2673,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   resize:vertical!important;
 }
 
-
-/* v14.9 insurance select width normalize */
 .insurance-select-head{
   justify-content:space-between !important;
 }
@@ -2816,8 +2692,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   }
 }
 
-
-/* v15 basicinfo redesign */
 .basicinfo-v2-wrap{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important}
 .basicinfo-v2-field{border:1px solid #d8dee8!important;border-radius:14px!important;background:#fff!important;padding:12px!important}
 .basicinfo-v2-field.full{grid-column:1 / -1!important}
@@ -2837,9 +2711,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .bi-inline-grid{grid-template-columns:1fr!important}
 .tuning-row{grid-template-columns:1fr!important}
 }
-
-
-/* v15.1 font/title/plate restore */
 
 /* 1. 전체 폰트 통일 */
 html,
@@ -2929,8 +2800,6 @@ button{
   white-space:nowrap !important;
 }
 
-
-/* v15.2 basicinfo flat restore */
 /* 기본정보는 카드 안 카드 구조가 아니라 기존 플랫 2열 폼 구조로 복구 */
 .basicinfo-v2-wrap{
   display:grid !important;
@@ -3083,8 +2952,6 @@ button{
   }
 }
 
-
-/* v15.3 basicinfo detailed restore */
 .basicinfo-v3-wrap{
   display:grid!important;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
@@ -3131,8 +2998,6 @@ button{
   grid-template-columns:1.3fr .7fr 1.3fr .8fr!important;
   gap:8px!important;
 }
-
-
 
 .bi-date-overlay{
   position:absolute!important;
@@ -3245,8 +3110,6 @@ button{
   }
 }
 
-
-/* v15.4 basicinfo missing input final fix */
 .basicinfo-v3-wrap{
   display:grid !important;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
@@ -3366,8 +3229,6 @@ button{
   font-weight:1000 !important;
 }
 
-
-/* v15.5 detailed corrections */
 .basicinfo-v5-wrap{
  display:grid!important;
  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
@@ -3479,9 +3340,6 @@ button{
  font-weight:900!important;
 }
 
-
-/* v15.6 basicinfo alignment/date/tuning fixes */
-
 /* 차량번호/차량이름 같은 행 세로 정렬 */
 .basicinfo-v5-field{
   min-width:0 !important;
@@ -3552,7 +3410,6 @@ button{
 }
 
 /* 등록일자/제작일자 달력 아이콘 표시 보정 */
-
 
 .date-dual-wrap .date-text-input{
   padding-right:42px !important;
@@ -3635,11 +3492,6 @@ button{
   }
 }
 
-
-
-/* v15.7 basicinfo requested fixes: mobile calendar icon, date/mileage/plate/price */
-
-
 .date-dual-wrap .date-text-input{
   padding-right:46px !important;
 }
@@ -3712,8 +3564,6 @@ button{
   text-align:right !important;
 }
 
-
-/* v15.8 basicinfo/wrapppf/card suffix fixes */
 /* 달력 아이콘은 기존 검정 선형 아이콘 대신 현재 카드 UI와 맞는 얇은 배지형 SVG로 교체한다. */
 .date-dual-wrap::after{
   content:"" !important;
@@ -3792,8 +3642,6 @@ button{
   text-align:center !important;
 }
 
-
-/* v15.9 mobile date touch/scanner card/plate alignment fixes */
 /* 모바일에서 달력 아이콘 터치 성공률을 높이기 위해 투명 date input 클릭영역을 우측 전체로 확장한다. */
 
 .date-dual-wrap .date-text-input{
@@ -3894,9 +3742,6 @@ button{
   letter-spacing:-.02em !important;
 }
 
-
-
-/* v16.0 date touch / insurance-special layout fixes */
 /* 날짜 입력 wrapper는 입력창 전체를 클릭 기준으로 삼고, 실제 date input은 오른쪽 터치 레이어로 둔다. */
 .date-dual-wrap{
   position:relative !important;
@@ -4034,7 +3879,6 @@ button{
 }
 
 @media (max-width:420px){
-  /* v16.1: 모바일에서도 보험·특수 이력 라벨은 입력값 위에 유지한다. */
   .insurance-basic-card .insurance-select-head{
     display:flex !important;
     flex-direction:column !important;
@@ -4043,9 +3887,6 @@ button{
   }
 }
 
-
-
-/* v16.2 insurance total input suffix overlap fix */
 .insurance-basic-card .count-suffix-wrap::after,
 .insurance-basic-card .money-suffix-wrap::after{
   right:12px !important;
@@ -4070,9 +3911,6 @@ button{
   color:#6b7280 !important;
 }
 
-
-
-/* v16.3 insurance input focus + customer memo card relocation */
 .insurance-basic-card .unit-suffix-wrap{
   position:relative !important;
   z-index:1 !important;
@@ -4129,9 +3967,6 @@ button{
   min-height:84px !important;
 }
 
-
-
-/* v16.4 insurance suffix/customer label/exterior glass marker fixes */
 /* 보험 총 건수/총 금액 단위 표시는 input 위 레이어로 고정하여 입력 가능 상태와 단위 노출을 동시에 유지한다. */
 .insurance-basic-card .count-suffix-wrap::after{
   content:"건" !important;
@@ -4244,8 +4079,6 @@ button{
   color:#fff !important;
 }
 
-
-/* v16.5 exterior glass label offset + side tread marker fixes */
 /* 외판 상부진단에 추가된 유리상태 라벨만 위치 보정한다. 기존 유리 상태확인 카드와 도면 좌표는 변경하지 않는다. */
 #secDiag .touch-diagram-shell .touch-card .fig .exterior-glass-marker[data-v165-posfix="1"]{
   z-index:180 !important;
@@ -4342,8 +4175,6 @@ button{
   pointer-events:none !important;
 }
 
-
-/* v16.6 exterior precise position override */
 /* 외판 상부 유리 라벨은 기존 transform 이동값이 체감상 부족하여 실제 좌표를 직접 보정한다. */
 #secDiag .touch-diagram-shell .touch-card .fig .exterior-glass-marker[data-v164-exterior-glass="1"][data-glass-pos="A-1"]{
   left:50% !important;
@@ -4371,9 +4202,6 @@ button{
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-9"]{left:80% !important;top:22% !important;}
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-10"]{left:80% !important;top:76% !important;}
 
-
-
-/* v16.7 exterior top glass labels + exact wheel/tread alignment */
 /* 외판 상부진단에 추가된 유리 라벨만 대상으로 좌표를 직접 재보정한다. */
 #secDiag .touch-diagram-shell .touch-card .fig .exterior-glass-marker[data-v164-exterior-glass="1"][data-glass-pos="A-1"]{
   left:50% !important;
@@ -4400,9 +4228,6 @@ button{
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-9"]{left:88.3% !important;top:20.6% !important;}
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-10"]{left:88.3% !important;top:73.6% !important;}
 
-
-
-/* v16.8 exterior label and wheel marker micro-adjust */
 /* 외판 상부진단의 전면/후면 유리 라벨은 현재 v16.7 위치에서 아래로 1.5%만 이동한다. */
 #secDiag .touch-diagram-shell .touch-card .fig .exterior-glass-marker[data-v164-exterior-glass="1"][data-glass-pos="A-1"]{
   left:50% !important;
@@ -4427,9 +4252,6 @@ button{
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-9"]{left:88.3% !important;top:19.7% !important;}
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-10"]{left:88.3% !important;top:72.9% !important;}
 
-
-
-/* v16.9 진단 탭 카드 제거 후 마커 상태/외판 좌표 최종 보정 */
 /* 전체 터치 도면 클릭마커 상태 색상: 빈마크, X 빨강, W 파랑, R 노랑, L 회색 */
 #secDiag .touch-diagram-shell .touch-card .slot .h0,
 #secDiag .touch-diagram-shell .touch-card .slot .h1,
@@ -4491,8 +4313,6 @@ button{
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-9"]{left:88.0% !important;top:20.8% !important;}
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-10"]{left:88.0% !important;top:77.0% !important;}
 
-
-/* v16.10 exterior wheel/tread and printed-label cleanup */
 /* 외판 휠 전용 마커는 일반 X/W/R/L 마커와 분리하여 복원/교환/유지만 순환 표시한다. */
 #secDiag .touch-diagram-shell .touch-card .slot.exterior-wheel-slot .h4{
   display:none !important;
@@ -4546,8 +4366,6 @@ button{
   z-index:160 !important;
 }
 
-
-/* v16.11 source-image cleanup: JPEG 원본에서 인쇄 글자를 제거하고, 흰색 가림막은 사용하지 않는다. */
 #secDiag .touch-diagram-shell .touch-card .fig .diag-text-mask{
   display:none !important;
 }
@@ -4597,8 +4415,6 @@ button{
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-9"]{left:78.1% !important;top:21.090% !important;}
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="C-10"]{left:78.3% !important;top:77.195% !important;}
 
-
-/* v16.12 외판 트레드 입력 간격 / 도막 W 버튼 색상 보정 */
 /* 외판 좌/우 측면진단 트레드 입력박스는 휠 마커와 너무 붙지 않도록 v16.11보다 바깥쪽으로 여유를 둔다. */
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="B-9"]{left:19.6% !important;top:21.090% !important;}
 #secDiag .touch-diagram-shell .touch-card .exterior-tread-wrap[data-v165-tread="B-10"]{left:19.7% !important;top:77.195% !important;}
@@ -4616,8 +4432,6 @@ button{
   background:#2563eb !important;
   color:#fff !important;
 }
-
-
 
 /* v16.13 사고/도막 좌우 측면진단 휠 내부 흰색 원형 마스크
    - 외판 진단확인에는 적용하지 않는다.
@@ -4662,8 +4476,6 @@ button{
   z-index:20 !important;
 }
 
-
-
 /* v16.16 사고/도막 좌우 측면진단 휠 내부 흰색 원형 마스크 재적용
    기존 v16.13의 pseudo-element/drop-shadow 방식은 카드 구조와 높이 계산에 따라 누락될 수 있어,
    실제 fig 내부 span 마스크 4개를 삽입하는 방식으로 고정한다. */
@@ -4692,13 +4504,11 @@ button{
   z-index:130 !important;
 }
 
-/* v16.16 보험·특수 이력 select 선택값 볼드 제거 */
 #secDiag .insurance-basic-card .insurance-select,
 #secDiag .insurance-basic-card .insurance-select option{
   font-weight:400 !important;
 }
 
-/* v16.16 보험·특수 이력 select 선택값 볼드 제거 보강 */
 #secDiag .report-card-ui:first-of-type select,
 #secDiag .insurance-basic-card select,
 #secDiag .insurance-basic-card .insurance-select,
@@ -4706,7 +4516,6 @@ button{
 #secDiag .insurance-basic-card .insurance-select option{
   font-weight:400 !important;
 }
-
 
 /* v16.16 사고/도막 좌우 측면진단 휠 내부 흰색 마스크 미세 보정
    - v16.16의 흰색 원이 휠 내부를 다소 크게 덮어 휠 형상이 뭉개지는 문제를 줄인다.
@@ -4738,8 +4547,6 @@ button{
   top:76.7% !important;
 }
 
-
-/* v16.17 wheel mask exact-center and paint top cleanup */
 /* 사고/도막 좌·우 측면진단 휠 내부 흰색 원형 마스크는 실제 휠 안쪽 원 크기에 맞춰 재산정한다. */
 #secDiag .report-card-ui:nth-of-type(2) .touch-card:nth-of-type(2) .fig .wheel-inner-white-mask,
 #secDiag .report-card-ui:nth-of-type(3) .touch-card:nth-of-type(2) .fig .wheel-inner-white-mask{
@@ -4806,12 +4613,8 @@ button{
   pointer-events:none !important;
 }
 
-
-
-/* v16.18 image-level correction: accident/paint side wheel centers are edited in the image itself. */
 #secDiag .report-card-ui:nth-of-type(2) .touch-card:nth-of-type(2) .fig .wheel-inner-white-mask,
 #secDiag .report-card-ui:nth-of-type(3) .touch-card:nth-of-type(2) .fig .wheel-inner-white-mask{display:none!important;}
-/* v16.18 paint top A4/A7 click markers are removed inline; CSS guard kept for safety. */
 #secDiag .report-card-ui:nth-of-type(3) .touch-card[data-paint-native-section="top"] .paint-native-slot[data-paint-id="A4"],
 #secDiag .report-card-ui:nth-of-type(3) .touch-card[data-paint-native-section="top"] .paint-native-slot[data-paint-id="A7"]{display:none!important;pointer-events:none!important;}
 #secDiag .insurance-basic-card select,
@@ -4819,7 +4622,6 @@ button{
 #secDiag .insurance-basic-card .insurance-select,
 #secDiag .insurance-basic-card .insurance-select option{font-weight:400!important;}
 
-/* v16.21 exterior sunroof marker */
 #secDiag .exterior-sunroof-wrap{position:absolute;left:49.9%;top:56.2%;transform:translate(-50%,-50%);z-index:18;display:flex;flex-direction:column;align-items:center;gap:6px;}
 #secDiag .exterior-sunroof-badge{min-width:64px;height:30px;padding:0 12px;border-radius:8px;border:1px solid #0f172a;background:#0f172a;color:#fff;font-size:13px;font-weight:700;line-height:28px;box-shadow:0 2px 8px rgba(15,23,42,.18);cursor:pointer;}
 #secDiag .exterior-sunroof-badge[data-state="양호"]{background:#16a34a;border-color:#15803d;color:#fff;}
@@ -4831,7 +4633,6 @@ button{
 #secDiag .exterior-sunroof-choice.need{border-color:#dc2626;color:#991b1b;background:#fef2f2;}
 #secDiag .exterior-sunroof-choice.clear{border-color:#94a3b8;color:#475569;background:#f8fafc;}
 
-/* v16.22 - 선루프 클릭마커는 하단 선택패널 없이 클릭할 때마다 양호/점검으로 순환한다. */
 #secDiag .exterior-sunroof-panel{display:none!important;}
 #secDiag .exterior-sunroof-badge{
   min-width:64px;height:30px;padding:0 12px;border-radius:8px;
@@ -4842,9 +4643,6 @@ button{
 #secDiag .exterior-sunroof-badge[data-state="양호"]{background:#16a34a!important;border-color:#15803d!important;color:#fff!important;}
 #secDiag .exterior-sunroof-badge[data-state="점검"]{background:#dc2626!important;border-color:#b91c1c!important;color:#fff!important;}
 
-/* v16.23 - 도막 상부진단 과삭제 복구: A-3 원본 유지, A-4/A-7 표기와 클릭마커만 제거 */
-
-/* v16.24 - 외판 상부진단 A-4/A-7 원복 + 선루프 2단계 순환 */
 #secDiag .exterior-sunroof-panel{display:none!important;}
 #secDiag .exterior-sunroof-badge{
   min-width:64px;height:30px;padding:0 12px;border-radius:8px;
@@ -4857,7 +4655,6 @@ button{
 #secDiag .exterior-sunroof-badge[data-state="선루프"]{background:#0f172a!important;border-color:#0f172a!important;color:#fff!important;}
 #secDiag .exterior-sunroof-badge[data-state="점검"]{background:#dc2626!important;border-color:#b91c1c!important;color:#fff!important;}
 
-/* v16.32 - 도막 상부진단 A-4/A-7 기본 흰색점 */
 #secDiag [data-paint-native-section="top"] .paint-top-default-center-dot{
   position:absolute;
   transform:translate(-50%,-50%);
@@ -4870,7 +4667,6 @@ button{
   pointer-events:none;
 }
 
-/* v16.33 - 도막 상부진단 미사용부(A-4/A-7) 흰색점 제거 및 선택 마커 z-index 보정 */
 #secDiag [data-paint-native-section="top"] .paint-top-default-center-dot{
   display:none!important;
 }
@@ -5058,7 +4854,6 @@ html, body{
    도면 좌표, 저장 key, 클릭 로직은 변경하지 않는다.
 */
 
-/* v16.34에서 추가한 도막/외판 카드 위 구분선을 도막/외관 카드에서는 제거한다. */
 #secDiag .report-card-ui:nth-of-type(3),
 #secDiag .report-card-ui:nth-of-type(4){
   margin-top:0!important;
@@ -5144,7 +4939,6 @@ body{
   margin-top:0!important;
 }
 
-/* v16.41에서 복구한 카드 간 여백은 유지하되, 카드 내부 상단 여백은 위 규칙으로 통일한다. */
 #secDiag .report-card-ui:nth-of-type(3),
 #secDiag .report-card-ui:nth-of-type(4){
   margin-top:18px!important;
@@ -7383,7 +7177,6 @@ textarea::-ms-input-placeholder{
   }
 }
 
-/* v16.94 - 등록/제작일자 순수 입력박스, 튜닝 라벨 고정, 사고/외관 탭 분리 최종 보정 */
 .section{
   display:none!important;
 }
@@ -8317,7 +8110,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   contain:none!important;
 }
 
-/* v17.09 - 단일 볼드 핸들러용 class 유지 */
 .ab-direct-bold-active,
 .ab-ins-bold-active-v1670{
   font-weight:900!important;
@@ -8333,7 +8125,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   touch-action:manipulation!important;
 }
 
-/* v17.10 - 기본정보 중복 핸들러 제거 후 입력 보정 */
 #secInput .basic-yy-date-field-v1694 .date-dual-wrap,
 #secInput .basic-yy-date-field-v1694 input[type="date"],
 #secInput .basic-yy-date-field-v1694 .bi-date-overlay,
@@ -8435,7 +8226,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   box-sizing:border-box!important;
 }
 
-/* v17.12 - 선루프 단일 핸들러 적용 후 클릭 반응 보정 */
 #secDiag .exterior-sunroof-badge{
   touch-action:manipulation!important;
   -webkit-tap-highlight-color:transparent!important;
@@ -8607,7 +8397,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   }
 }
 
-/* v17.14 - 점검 탭 선택 이벤트 위임화 보조 */
 #secCheck .check-choice,
 #secCheck .check-radio,
 #secCheck .memo{
@@ -8748,7 +8537,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   }
 }
 
-/* v17.15 - small cycle 단일 위임 후 클릭 반응 보정 */
 .wheel-status-btn,
 .wheel-cycle-badge,
 .customer-dot,
@@ -9102,7 +8890,6 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
   font-weight:900!important;
 }
 
-/* v17.20 - 복구 2차: plate/memo/danger/sunroof/customer/A4A7 */
 #secInput .plate-change-badge{
   display:none;
   align-items:center!important;
@@ -9479,8 +9266,6 @@ textarea.tread-input-fix-v1724,
   z-index:30!important;
   pointer-events:auto!important;
 }
-
-
 
 /* v17.29 - 진단일자 달력 이전 작동 방식 복구
    기준:
@@ -10161,9 +9946,6 @@ textarea.tread-input-fix-v1724,
     grid-template-columns:1fr;
   }
 }
-
-/* ===== CSS SOURCE BLOCK 02 / 통합 순서 유지 ===== */
-/* v16.19 - 도막 상부 A-4/A-7 클릭마커 강제 제거 */
 #secDiag [data-paint-native-section="top"] .paint-native-slot[data-paint-id="A4"],
 #secDiag [data-paint-native-section="top"] .paint-native-slot[data-paint-id="A7"],
 #secDiag [data-paint-native-section="top"] label.paint-native-hit[data-paint-id="A4"],
@@ -10179,8 +9961,6 @@ textarea.tread-input-fix-v1724,
   display:none!important;
   pointer-events:none!important;
 }
-
-/* ===== CSS SOURCE BLOCK 09 / 통합 순서 유지 ===== */
 /* v17.52 - 번호 변경예정 배지 상시 노출 방지
    기준:
    - 번호 변경예정 배지는 차량번호 체인지아이콘 클릭 시에만 표시한다.
@@ -10207,9 +9987,6 @@ textarea.tread-input-fix-v1724,
   align-items:center!important;
   justify-content:center!important;
 }
-
-/* ===== CSS SOURCE BLOCK 14 / 통합 순서 유지 ===== */
-/* v17.62 - 실제 탭 캡처 버튼 전용 보정 */
 .report-output-card-v1745 .report-output-btns-v1745,
 .report-output-btns-v1745{
   display:grid!important;
@@ -10227,8 +10004,6 @@ textarea.tread-input-fix-v1724,
   color:#111827!important;
   border:1px solid #cfd7e3!important;
 }
-
-/* ===== CSS SOURCE BLOCK 15 / 통합 순서 유지 ===== */
 /* v17.63 - 랩핑/PPF 있음 선택 시 메모박스 표시 복구
    기준:
    - 없음/있음 선택박스는 항상 표시
@@ -10288,8 +10063,6 @@ article.wrapppf-card-fix-v1724{
   visibility:hidden!important;
   opacity:0!important;
 }
-
-/* ===== CSS SOURCE BLOCK 16 / 통합 순서 유지 ===== */
 /* v17.77 - 제출 탭 분리
    목적:
    - 점검 탭 하단에 있던 리포트 출력 카드를 제출 탭으로 이동
@@ -10336,9 +10109,6 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
   background:#ffffff!important;
   color:#111827!important;
 }
-
-/* ===== CSS SOURCE BLOCK 17 / 통합 순서 유지 ===== */
-/* v17.78 - 제출 탭 PDF 전용 전환 */
 #secSubmit #reportOutputSection.report-submit-pdf-only-v1778 .report-output-badge-v1741{
   background:#111827!important;
   color:#fff!important;
@@ -10362,8 +10132,6 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
     grid-template-columns:1fr!important;
   }
 }
-
-/* ===== CSS SOURCE BLOCK 18 / 통합 순서 유지 ===== */
 /* v17.79 - PDF 미리보기 카드 폭을 기존 입력 카드 폭과 동일 기준으로 조정
    목적:
    - 제출 탭 아래 PDF 출력용 clone 카드가 기존 입력 카드보다 넓게 보이는 문제 보정
@@ -10404,9 +10172,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-body
     margin:0!important;
   }
 }
-
-/* ===== CSS SOURCE BLOCK 19 / 통합 순서 유지 ===== */
-/* v17.80 - 제출 탭 문구/배지 정리 */
 #secSubmit .submit-guide-card-v1777 .no{
   width:auto!important;
   min-width:38px!important;
@@ -10427,8 +10192,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-body
   gap:8px!important;
   flex-wrap:wrap!important;
 }
-
-/* ===== CSS SOURCE BLOCK 20 / 통합 순서 유지 ===== */
 /* v17.90 - 정리 7차
    - 현재 DOM/JS에 존재하지 않는 제출 안내 빈 요소 CSS 1건 제거
    - 이미지 캡처 버튼, PDF 실행, 날짜, 도면 관련 코드는 유지
@@ -10439,7 +10202,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-body
    - v17.81 동일 selector 선언 병합 및 모바일 중복값 제거
    - 출력 동작과 최종 계산값은 변경하지 않음
 */
-/* v17.81 - PDF 저장/닫기 버튼 및 출력 미리보기 외곽 라운드 사각 스타일 */
 .report-print-bar-v1773{
   left:50%!important;
   right:auto!important;
@@ -10527,8 +10289,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
     border-radius:0!important;
   }
 }
-
-/* ===== CSS SOURCE BLOCK 21 / 통합 순서 유지 ===== */
 /* v17.83 - PDF 출력용 도막 수치 라벨 회색 보정
    - 현재 사용되는 paint-value 및 동적 paint 계열 selector만 유지
    - 기본 마커의 print-color 보존은 후순위 v17.76 공통 규칙에서 처리
@@ -10561,9 +10321,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
-
-/* ===== CSS SOURCE BLOCK 22 / 통합 순서 유지 ===== */
-/* v17.84 - 제출/PDF 후 탭 중복 활성화 방지 */
 body.report-print-preview-v1773 .header label[for="tabInput"],
 body.report-print-preview-v1773 .header label[for="tabDiag"],
 body.report-print-preview-v1773 .header label[for="tabExterior"],
@@ -10598,8 +10355,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
-
-/* ===== CSS SOURCE BLOCK 23 / 통합 순서 유지 ===== */
 /* v17.86 - 도막 라벨 강제정규화 제거 후 안전 CSS만 유지
    v17.85의 textContent 기반 DOM 변형은 상위 wrapper까지 잡아 도면 전체를 깨뜨렸으므로 제거.
    여기서는 실제 class가 명확한 경우에만 색상 보정한다.
@@ -10613,8 +10368,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
-
-/* ===== CSS SOURCE BLOCK 24 / 통합 순서 유지 ===== */
 /* v93 정리10차 - v17.87 diagram-corner-badge selector 정규화
    - 상위 .diag-paint-card / .diag-exterior-card selector가 모든 하위 배지를 이미 포함하므로
      paint-v98-shell, paint-fig, paint-fig-bent, touch-diagram-shell, fig 경로 중복을 제거했다.
@@ -10635,8 +10388,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
-
-/* ===== CSS SOURCE BLOCK 25 / 통합 순서 유지 ===== */
 /* v69 - 요청사항 반영 안전 보정
    기준: Android 모바일 브라우저 우선, iPhone Safari 호환성 고려.
    범위: 헤더 고정, 기본정보 등급/가격 문구, 외관 W→P 표시, 점검 카드 재배치 후 UI 보정.
@@ -10663,8 +10414,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   font-size:13px !important;
   font-weight:900 !important;
 }
-
-/* ===== CSS SOURCE BLOCK 26 / 통합 순서 유지 ===== */
 /* v70 - 기능작동/보증연장/고정 헤더 안전 보정
    기준:
    - v69를 BASE로 사용한다.
@@ -10754,8 +10503,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   font-size:12px !important;
   font-weight:900 !important;
 }
-
-/* ===== CSS SOURCE BLOCK 27 / 통합 순서 유지 ===== */
 /* v72 - 관리 상태확인 선택 UI 및 sticky header 메뉴 위치 보정
    기준:
    - v71을 BASE로 사용한다.
@@ -10860,9 +10607,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   color:#ffffff !important;
   font-weight:900 !important;
 }
-
-/* ===== CSS SOURCE BLOCK 28 / 통합 순서 유지 ===== */
-/* v17.86 - v17.85 도막 소라벨 강제정규화 제거 */
 .report-mobile-print-wrap-v1773{
   margin-top:14px;
   padding-top:14px;
@@ -11019,7 +10763,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 }
 
-/* v17.74 - 도면/마커 원본 배치 보존 */
 #reportPrintRootV1773 #secDiag,
 #reportPrintRootV1773 #secExterior,
 #reportPrintRootV1773 .fig,
@@ -11038,8 +10781,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   position:relative!important;
 }
 
-
-/* v17.75 - 사고/외관 출력은 #secDiag 컨텍스트를 유지하고 내부 카드만 필터링 */
 #reportPrintRootV1773 .report-print-section-body-v1773 > #secDiag{
   display:block!important;
   visibility:visible!important;
@@ -11049,8 +10790,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   overflow:visible!important;
 }
 
-
-/* v17.76 - 도막 상부 라벨/마커 CSS 보존 */
 #reportPrintRootV1773 #secDiag .paint-label,
 #reportPrintRootV1773 #secDiag .paint-marker,
 #reportPrintRootV1773 #secDiag .paint-value,
@@ -11110,21 +10849,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!--
   v89 정리6차
@@ -11991,13 +11715,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 <input class="memo" data-key="light_1_memo" placeholder="이상 메모 입력"/>
 </div>
 
-
-
-
-
-
-
-
 </article><article class="report-card-ui" data-check-card="function">
 <h2><span class="no">13</span> 기능작동</h2>
 <div class="checkline" data-check-key="function_0">
@@ -12124,12 +11841,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 <div class="checkline" data-check-key="air_0"><div class="check-title">와이퍼작동</div><input class="check-radio ok" data-check="ok" id="air_0_ok" name="air_0_state" type="radio"/><label class="check-choice ok" for="air_0_ok">양호</label><input class="check-radio bad" data-check="bad" id="air_0_bad" name="air_0_state" type="radio"/><label class="check-choice bad" for="air_0_bad">이상</label><input class="memo" data-key="air_0_memo" placeholder="이상 메모 입력"/></div><div class="checkline" data-check-key="air_1"><div class="check-title">워셔액분사</div><input class="check-radio ok" data-check="ok" id="air_1_ok" name="air_1_state" type="radio"/><label class="check-choice ok" for="air_1_ok">양호</label><input class="check-radio bad" data-check="bad" id="air_1_bad" name="air_1_state" type="radio"/><label class="check-choice bad" for="air_1_bad">이상</label><input class="memo" data-key="air_1_memo" placeholder="이상 메모 입력"/></div></article><article class="report-card-ui" data-check-card="media">
 <h2><span class="no">14</span> 멀티미디어 작동</h2>
 
-
-
-
-
-
-
 <div class="checkline" data-check-key="media_0">
 <div class="check-title">네비게이션</div>
 <input class="check-radio ok" data-check="ok" id="media_0_ok" name="media_0_state" type="radio"/>
@@ -12167,11 +11878,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 <input class="memo" data-key="media_6_memo" placeholder="이상 메모 입력"/>
 </div></article><article class="report-card-ui" data-check-card="drive"><h2><span class="no">15</span> 시운전 점검</h2><div class="ab-checkline ab-options-2" data-check-key="drive_0" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">엔진떨림 점검</div><input class="ab-check-radio ok" data-key="drive_0_state" id="drive_0_0" name="drive_0_state" type="radio" value="양호"/><label class="ab-choice ok" for="drive_0_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_0_state" id="drive_0_1" name="drive_0_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_0_1">이상</label><input class="ab-check-memo" data-key="drive_0_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_1" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">미션튕김 점검</div><input class="ab-check-radio ok" data-key="drive_1_state" id="drive_1_0" name="drive_1_state" type="radio" value="양호"/><label class="ab-choice ok" for="drive_1_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_1_state" id="drive_1_1" name="drive_1_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_1_1">이상</label><input class="ab-check-memo" data-key="drive_1_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_2" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">방지턱 점검</div><input class="ab-check-radio ok" data-key="drive_2_state" id="drive_2_0" name="drive_2_state" type="radio" value="양호"/><label class="ab-choice ok" for="drive_2_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_2_state" id="drive_2_1" name="drive_2_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_2_1">이상</label><input class="ab-check-memo" data-key="drive_2_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_3" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">브레이크 점검</div><input class="ab-check-radio ok" data-key="drive_3_state" id="drive_3_0" name="drive_3_state" type="radio" value="양호"/><label class="ab-choice ok" for="drive_3_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_3_state" id="drive_3_1" name="drive_3_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_3_1">이상</label><input class="ab-check-memo" data-key="drive_3_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_4" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">조향 점검</div><input class="ab-check-radio ok" data-key="drive_4_state" id="drive_4_0" name="drive_4_state" type="radio" value="양호"/><label class="ab-choice ok" for="drive_4_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_4_state" id="drive_4_1" name="drive_4_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_4_1">이상</label><input class="ab-check-memo" data-key="drive_4_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div></article><article class="report-card-ui" data-check-card="interior_memo"><h2><span class="no">16</span> 기타 특이사항</h2><div class="field"><label>점검항목에 없는 기타 특이사항이 있는 경우 작성합니다.</label><textarea data-key="interiorSpecialMemo" placeholder="항목에 없는 기타 특이사항을 입력"></textarea></div></article><article class="report-card-ui" data-check-card="owned">
 <h2><span class="no">17</span> 보유확인</h2>
-
-
-
-
-
 
 <div class="checkline" data-check-key="owned_1">
 <div class="check-title">키 개수</div>
@@ -12446,7 +12152,6 @@ function restoreDraft(){
   }
 }
 
-
 /**
  * bindKmInputs는 주행거리 입력 완료 시 실제 입력값에 km를 붙인다.
  */
@@ -12512,7 +12217,6 @@ boot();
     return 'translate(-50%,-50%)';
   }
 
-
   function makeBadgeNode(oldBadge, id, value, isW){
     var nb = oldBadge.cloneNode(false);
     nb.id = 'paintNativeBadge_' + id;
@@ -12557,7 +12261,6 @@ boot();
     var s = slot(id);
 
     if(!old){
-      console.log('[PAINT][NATIVE_BADGE_MISSING]', id);
       return;
     }
 
@@ -12594,7 +12297,6 @@ boot();
       }
     });
 
-    console.log('[PAINT][NATIVE_BADGE_REPLACE]', id, st.w ? ('W ' + value) : value, reason || '');
   }
 
   function commitValue(input, value, reason){
@@ -12611,7 +12313,6 @@ boot();
 
     replaceBadge(id, value, reason);
 
-    console.log('[PAINT][NATIVE_INPUT]', id, value, reason || '');
   }
 
   function predictBeforeInput(input, ev){
@@ -12649,7 +12350,6 @@ boot();
 
     replaceBadge(id, next, 'beforeinput');
 
-    console.log('[PAINT][BEFORE_INPUT]', id, next, type);
   }
 
   function toggleW(btn, ev){
@@ -12671,7 +12371,6 @@ boot();
 
     replaceBadge(id, value, 'w');
 
-    console.log('[PAINT][NATIVE_W]', id, st.w);
     return false;
   }
 
@@ -12730,11 +12429,9 @@ boot();
     var radios = document.querySelectorAll('.paint-native-radio');
     for(var r=0;r<radios.length;r++){
       radios[r].onchange = function(){
-        console.log('[PAINT][NATIVE_RADIO]', this.id, this.checked);
       };
     }
 
-    console.log('[PAINT][NATIVE_BOOT]', radios.length, document.querySelectorAll('.paint-native-panel').length, inputs.length);
   }
 
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, false);
@@ -12780,7 +12477,6 @@ boot();
         if(badge){
           badge.textContent = (nxt === 'base') ? (baseLabels[pos] || pos) : labels[nxt];
         }
-        console.log('[GLASS][STATUS]', pos, nxt);
         return false;
       }, false);
     }
@@ -12806,7 +12502,6 @@ boot();
         this.classList.add('active');
         var memo=group.querySelector('.insurance-memo');
         if(memo){memo.style.display=(this.getAttribute('data-insurance-value')==='있음')?'block':'none';}
-        console.log('[INSURANCE][STATUS]',group.getAttribute('data-insurance-key'),this.getAttribute('data-insurance-value'));
         return false;
       },false);
     }
@@ -12851,7 +12546,6 @@ boot();
           memo.style.display = vals.indexOf(value)!==-1 ? 'block' : 'none';
         }
 
-        console.log('[INSURANCE][STATUS]', key, value);
       };
 
       sels[i].addEventListener('change', handler, false);
@@ -12901,7 +12595,6 @@ boot();
       picker.focus();
       try{ picker.click(); }catch(ignore){}
     }
-    console.log('[BASIC][DATE_ICON][v16.0]', picker.getAttribute('aria-label') || 'date');
   }
 
   /**
@@ -12956,7 +12649,6 @@ boot();
           var vals = (memo.getAttribute('data-memo-values') || '').split(',');
           memo.style.display = vals.indexOf(value) !== -1 ? 'block' : 'none';
         }
-        console.log('[INSURANCE][SPECIAL][v16.0]', key, value);
       };
       selects[i].addEventListener('change', sync, false);
       sync.call(selects[i]);
@@ -13005,7 +12697,6 @@ boot();
           restoreTargets[r].el.value = restoreTargets[r].display;
         }
       }, 0);
-      console.log('[AB_DIAG][SAVE_NUMERIC_PATCH][v16.0]', inputs.length);
     }, true);
   }
 
@@ -13080,7 +12771,6 @@ boot();
           var targetInput = this.querySelector('.insurance-number-input');
           if(!targetInput) return;
           targetInput.focus();
-          console.log('[INSURANCE][TOTAL_INPUT][v16.3]', targetInput.getAttribute('data-key'));
         }, false);
         wrap.addEventListener('touchend', function(event){
           var targetInput = this.querySelector('.insurance-number-input');
@@ -13145,7 +12835,6 @@ boot();
       }, false);
     }
     if(inputs.length){
-      console.log('[EXTERIOR][TREAD][v16.5]', inputs.length);
     }
   }
 
@@ -13183,10 +12872,8 @@ boot();
     });
     return result;
   };
-  console.log('[MARKER][STATE][v16.9]', 'X/W/R/L/empty');
 })();
 </script><script>
-/* v16.55 - 장점 > 추가장착(튜닝) 단일 항목 추가/삭제 핸들러 */
 (function(){
   function reindexProsTuningRows(rows){
     if(!rows) return;
@@ -13289,7 +12976,6 @@ boot();
   window.addEventListener('load', bindProsTuningSingle, false);
 })();
 </script><script>
-/* v16.64 - 기본정보 위험 선택값 class 토글 */
 (function(){
   function applyBasicDangerSelect(select){
     if(!select) return;
@@ -13366,7 +13052,6 @@ boot();
   window.addEventListener('load', bindCheckFastClick, false);
 })();
 </script><script>
-/* v16.88 - 메뉴 항목 클릭 후 메뉴 닫기 */
 (function(){
   function bindHeaderMenu(){
     var toggle = document.getElementById('menuToggle');
@@ -13394,7 +13079,6 @@ boot();
   window.addEventListener('load', bindHeaderMenu, false);
 })();
 </script><script>
-/* v16.94 - 등록/제작일자 YY-MM-DD, 튜닝 추가행 라벨 고정 */
 (function(){
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
@@ -13599,7 +13283,6 @@ boot();
   window.addEventListener('load', bindV1694, false);
 })();
 </script><script>
-/* v16.95 - 튜닝 main 적법/불법 색상 class 및 반응속도 보정 */
 (function(){
   function applyTuningMainColor(){
     var sel = document.querySelector('#secInput select.tuning-main');
@@ -13734,7 +13417,6 @@ boot();
   window.addEventListener('load', bindV1695, false);
 })();
 </script><script>
-/* v16.97 - 탭 전환 경량화 */
 (function(){
   function setActiveTab(tabName){
     document.body.classList.add('ab-tab-fast-v1697');
@@ -13798,7 +13480,6 @@ boot();
   window.addEventListener('load', bindFastTabs, false);
 })();
 </script><script>
-/* v16.98 - 사고 상부진단 A-4/A-7 클릭 이벤트 차단 */
 (function(){
   function normalizeText(text){
     return (text || '').replace(/\s+/g,' ').trim();
@@ -14234,7 +13915,6 @@ boot();
   window.addEventListener('load', bindPaintSideStabilizerV1713, false);
 })();
 </script><script>
-/* v17.17 - 매입오더 count select + money toggle 통합 핸들러 */
 (function(){
   function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
 
@@ -14643,7 +14323,6 @@ boot();
   window.addEventListener('load', bindMarkerStableV1718, false);
 })();
 </script><script>
-/* v17.20 - 복구 2차 단일 핸들러 */
 (function(){
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
@@ -14912,7 +14591,6 @@ boot();
   }, false);
 })();
 </script><script>
-/* v17.21 - 번호 변경예정 배지 문구 최종 보정 */
 (function(){
   function fixPlateBadgeText(){
     var badge = document.querySelector('#secInput .plate-change-badge');
@@ -14963,7 +14641,6 @@ boot();
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
 })();
 </script><script>
-/* v17.29 - 진단일자 달력 이전 작동 핸들러 복구 */
 (function(){
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
@@ -15085,7 +14762,6 @@ boot();
   window.addEventListener('load', bindDateOldRestoreV1729, false);
 })();
 </script><script>
-/* v17.30 - 진단일자 표시 깨짐 방지 보조 */
 (function(){
   function bindDateCleanV1730(){
     var wrap = document.querySelector('#secInput .date-old-stable-v1730');
@@ -15117,7 +14793,6 @@ boot();
   window.addEventListener('load', bindDateCleanV1730, false);
 })();
 </script><script>
-/* v17.36 - date residue clean sync */
 (function(){
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
@@ -15167,7 +14842,6 @@ boot();
   window.addEventListener('load', bindDateCleanV1736, false);
 })();
 </script><script>
-/* v17.39 - 외관 트레드 최종 구조 방어: inline style 제거만 수행 */
 (function(){
   function cleanExteriorTreadV1739(){
     var inputs = document.querySelectorAll('#secDiag input[data-key^="exterior_tread_"], #secDiag input.exterior-tread-input');
@@ -15213,7 +14887,6 @@ boot();
   setTimeout(cleanExteriorTreadV1739, 100);
 })();
 </script><script>
-/* v17.52 - 번호 변경예정 배지 초기상태 보정 */
 (function(){
   function normalizePlateBadgeV1752(){
     var badge = document.querySelector('#secInput .plate-change-badge');
@@ -15259,9 +14932,7 @@ boot();
   window.addEventListener('load', bindPlateBadgeV1752, false);
 })();
 </script><script>
-/* v17.68 - 외관/수리 탭 실제 표시 카드 스캔 보정 */
 (function(){
-  var REPORT_DEBUG = true;
   var LOADING_ID = 'reportRealCaptureLoadingV1762';
   var BODY_FLAG = 'data-real-tab-capture-v1762';
 
@@ -15277,11 +14948,6 @@ boot();
     {no:'03', title:'외관/수리', tab:'exterior', section:'#secExterior', fallbackSection:'#secDiag', groupSelector:'article.diag-paint-card, article.diag-exterior-card, article.tire-state-card-v1696, article.report-card-ui, .report-card-ui, .touch-card, .card', scanByText:true, companyHideL:true},
     {no:'04', title:'점검', tab:'check', section:'#secCheck', companyHideL:false}
   ];
-
-  function log(){
-    if(!REPORT_DEBUG || !window.console) return;
-    try{ console.log.apply(console, arguments); }catch(e){}
-  }
   function qs(sel, root){ return (root || document).querySelector(sel); }
   function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
@@ -15605,8 +15271,6 @@ function isVisibleCaptureTarget(el){
     marker.style.height = Math.ceil(maxBottom - minTop) + 'px';
     marker.__captureSourceCards = candidates;
 
-    log('[REPORT][EXTERIOR][V1768]', 'candidates=', candidates.length, 'bbox=', marker.style.width, marker.style.height);
-
     return marker;
   }
 
@@ -15816,7 +15480,6 @@ function isVisibleCaptureTarget(el){
 
   function updateProgress(mode, card, total, index){
     hideLoading();
-    log('[REPORT][REALCAPTURE][PROGRESS]', mode, index + '/' + total, card.no, card.title);
   }
 
   async function generateRealTabCaptureReport(mode){
@@ -15833,7 +15496,6 @@ function isVisibleCaptureTarget(el){
       stream = await requestDisplayStream();
       video = createVideoFromStream(stream);
       await waitVideoReady(video);
-      log('[REPORT][REALCAPTURE][STREAM]', 'video=', video.videoWidth + 'x' + video.videoHeight, 'viewport=', window.innerWidth + 'x' + window.innerHeight, 'dpr=', window.devicePixelRatio);
 
       hideLoading();
       await waitFrame(2);
@@ -15939,14 +15601,7 @@ function isVisibleCaptureTarget(el){
   window.addEventListener('load', bootRealCapture, false);
 })();
 </script><script>
-/* v17.63 - 랩핑/PPF 있음 메모박스 표시 방어 로직 */
 (function(){
-  var DEBUG = true;
-
-  function log(){
-    if(!DEBUG || !window.console) return;
-    try{ console.log.apply(console, arguments); }catch(e){}
-  }
 
   function qsa(sel, root){
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
@@ -16018,7 +15673,6 @@ function isVisibleCaptureTarget(el){
   function applyWrapPpfMemoV1763(){
     var card = findWrapPpfCard();
     if(!card){
-      log('[WRAPPPF][V1763] card not found');
       return;
     }
 
@@ -16026,7 +15680,6 @@ function isVisibleCaptureTarget(el){
     var memo = findMemo(card);
 
     if(!select || !memo){
-      log('[WRAPPPF][V1763] missing select/memo', !!select, !!memo);
       return;
     }
 
@@ -16056,7 +15709,6 @@ function isVisibleCaptureTarget(el){
       memo.style.setProperty('opacity', '0', 'important');
     }
 
-    log('[WRAPPPF][V1763]', 'on=', on, 'value=', select.value, 'memo=', !!memo);
   }
 
   function bindWrapPpfMemoV1763(){
@@ -16095,7 +15747,6 @@ function isVisibleCaptureTarget(el){
 </script>
 
 <script>
-/* v17.86 - v17.85 도막 소라벨 강제정규화 제거 */
 (function(){
   var ROOT_ID = 'reportPrintRootV1773';
   var BAR_ID = 'reportPrintBarV1773';
@@ -16252,7 +15903,6 @@ function isVisibleCaptureTarget(el){
     return outer;
   }
 
-
   function textOfPrintNode(el){
     return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim();
   }
@@ -16311,7 +15961,6 @@ function isVisibleCaptureTarget(el){
       removePrintCards(collectCardsByTitle(clone, /보험|특수\s*이력|보험·특수|사고\s*진단확인|사고진단|사고\s*진단/));
     }
   }
-
 
   function cloneFilteredDiagSection(title, mode){
     var src = qs('#secDiag');
@@ -16588,7 +16237,6 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
-/* v17.77 - 제출 탭 body class 보정 */
 (function(){
   function bindSubmitTabV1777(){
     var submit = document.getElementById('tabSubmit');
@@ -16613,7 +16261,6 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
-/* v17.78 - 제출 탭 PDF 전용 버튼 바인딩 */
 (function(){
   function bindSubmitPdfButtonsV1778(){
     var customer = document.getElementById('btnCustomerSubmitPdfV1778');
@@ -16723,7 +16370,6 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 
-
 <script>
 /* v73 - 관리 상태확인(내역서 보유) 저장값 동기화 및 캡처창 코드노출 방지
    목적:
@@ -16806,13 +16452,11 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 
-
 <!-- v87 maintenance note
   - v84의 다른 정리 내용은 유지한다.
   - 날짜 기능만 iPhone에서 정상 동작하던 v83의 v17.29/v17.30 블록으로 원복했다.
   - v85/v86 신규 날짜 우회 방식은 포함하지 않는다.
 -->
 
-<!-- v97 정리14차: 최종값이 완전히 동일한 독립 CSS 중복 규칙만 제거. 기능/DOM/JS 미변경. -->
 </body>
 </html>

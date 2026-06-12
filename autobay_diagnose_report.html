@@ -10001,6 +10001,50 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
   print-color-adjust:exact!important;
 }
 
+
+/* v115 - PDF 도막 수치 배지 색상 보존
+   포괄적인 paint/value 회색 규칙보다 뒤에서 실제 도막 배지 상태색을 복원한다. */
+#reportPrintRootV1773 #secDiag .paint-native-badge.has-value,
+#reportPrintRootV1773 #secDiag .paint-v98-badge.has-value{
+  color:#ffffff!important;
+  border:0!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+
+#reportPrintRootV1773 #secDiag .paint-native-badge.has-value.base,
+#reportPrintRootV1773 #secDiag .paint-v98-badge.has-value.base{
+  background:#94a3b8!important;
+}
+
+#reportPrintRootV1773 #secDiag .paint-native-badge.has-value.warn,
+#reportPrintRootV1773 #secDiag .paint-v98-badge.has-value.warn{
+  background:#f59e0b!important;
+}
+
+#reportPrintRootV1773 #secDiag .paint-native-badge.has-value.danger,
+#reportPrintRootV1773 #secDiag .paint-v98-badge.has-value.danger{
+  background:#ef4444!important;
+}
+
+#reportPrintRootV1773 #secDiag .paint-native-badge .paint-value-text,
+#reportPrintRootV1773 #secDiag .paint-native-badge .paint-w-prefix,
+#reportPrintRootV1773 #secDiag .paint-v98-badge .paint-value-text,
+#reportPrintRootV1773 #secDiag .paint-v98-badge .paint-w-prefix{
+  border:0!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+
+#reportPrintRootV1773 #secDiag .paint-native-badge .paint-value-text,
+#reportPrintRootV1773 #secDiag .paint-v98-badge .paint-value-text{
+  background:transparent!important;
+  color:#ffffff!important;
+  -webkit-text-fill-color:#ffffff!important;
+  border-radius:0!important;
+  padding:0!important;
+}
+
 /* 경고/재도장/고수치 계열은 회색으로 덮지 않음 */
 #reportPrintRootV1773 #secDiag .warn,
 #reportPrintRootV1773 #secDiag .warning,
@@ -15687,6 +15731,88 @@ function isVisibleCaptureTarget(el){
     return root;
   }
 
+  /**
+   * findOpenPaintInputPanel은 현재 화면에서 실제로 열려 있는 도막 입력 패널을 찾는다.
+   * 숨김 패널과 A-4/A-7 강제 비활성 패널은 제외한다.
+   */
+  function findOpenPaintInputPanel(){
+    var panels = qsa(
+      '#secDiag .paint-native-panel, ' +
+      '#secDiag .paint-v98-panel, ' +
+      '#secExterior .paint-native-panel, ' +
+      '#secExterior .paint-v98-panel'
+    );
+
+    for(var index = 0; index < panels.length; index += 1){
+      var panel = panels[index];
+      if(panel.getAttribute('aria-hidden') === 'true') continue;
+
+      var style = window.getComputedStyle(panel);
+      var rect = panel.getBoundingClientRect();
+      var opacity = parseFloat(style.opacity || '1');
+
+      if(
+        style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        opacity > 0 &&
+        rect.width > 0 &&
+        rect.height > 0
+      ){
+        return panel;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * blockPrintWhilePaintPanelOpen은 도막 수치 입력창이 열린 상태의 PDF 생성을 차단한다.
+   */
+  function blockPrintWhilePaintPanelOpen(){
+    var panel = findOpenPaintInputPanel();
+    if(!panel) return false;
+
+    var input = qs('.paint-native-input, .paint-v98-input', panel);
+    window.alert('도막수치 입력 창을 닫은 후 PDF를 출력해주세요.');
+
+    if(input && typeof input.focus === 'function'){
+      setTimeout(function(){
+        input.focus();
+      }, 0);
+    }
+
+    return true;
+  }
+
+  /**
+   * syncPrintSectionTitleWidths는 각 탭 제목 폭을 해당 탭의 실제 내용 폭과 맞춘다.
+   * print media에서 문서 전체 폭으로 늘어나지 않도록 px 단위 inline 폭을 고정한다.
+   */
+  function syncPrintSectionTitleWidths(root){
+    if(!root) return;
+
+    qsa('.report-print-section-v1773', root).forEach(function(section){
+      var title = qs('.report-print-section-title-v1773', section);
+      var body = qs('.report-print-section-body-v1773', section);
+      if(!title || !body) return;
+
+      var content = body.firstElementChild;
+      var contentRect = content ? content.getBoundingClientRect() : null;
+      var bodyRect = body.getBoundingClientRect();
+      var width = contentRect && contentRect.width > 0
+        ? contentRect.width
+        : bodyRect.width;
+
+      if(width > 0){
+        title.style.setProperty('width', Math.ceil(width) + 'px', 'important');
+        title.style.setProperty('max-width', '100%', 'important');
+        title.style.setProperty('box-sizing', 'border-box', 'important');
+        title.style.setProperty('margin-left', '0', 'important');
+        title.style.setProperty('margin-right', '0', 'important');
+      }
+    });
+  }
+
   function buildBar(){
     var bar = document.createElement('div');
     bar.id = BAR_ID;
@@ -15706,12 +15832,24 @@ function isVisibleCaptureTarget(el){
   }
 
   function openPreview(mode){
+    if(blockPrintWhilePaintPanelOpen()) return;
+
     repairMainTabHandlersV1784();
-    buildReport(mode);
+    var root = buildReport(mode);
     document.body.classList.add(PREV_CLASS);
     buildBar();
     window.scrollTo(0,0);
+
+    syncPrintSectionTitleWidths(root);
+
+    if(window.requestAnimationFrame){
+      window.requestAnimationFrame(function(){
+        syncPrintSectionTitleWidths(root);
+      });
+    }
+
     setTimeout(function(){
+      syncPrintSectionTitleWidths(root);
       window.print();
     }, 450);
   }

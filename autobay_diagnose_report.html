@@ -10466,6 +10466,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 .report-print-a4-grid-v136{
   display:block;
 }
+.report-print-a4-exterior-canvas-v137{
+  display:block;
+}
 .report-print-columns-v118{
   display:block;
 }
@@ -10777,9 +10780,28 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     width:100%!important;
   }
 
+  /*
+    v137 - 사고 도면 제목 배지 원본 스타일 복구
+    v136에서 숨겼던 title/subtitle을 다시 표시하고,
+    원본의 연회색 배지 비율을 출력 페이지에서도 유지한다.
+  */
   #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .touch-diagram-title,
-  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .touch-diagram-subtitle{
-    display:none!important;
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .touch-diagram-subtitle,
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .diagram-corner-badge{
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:auto!important;
+    min-height:26px!important;
+    padding:4px 10px!important;
+    border:1px solid #d8dee8!important;
+    border-radius:9px!important;
+    background:#eef1f5!important;
+    color:#374151!important;
+    box-shadow:none!important;
+    font-size:11px!important;
+    font-weight:800!important;
+    line-height:1!important;
   }
 
   #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card section.touch-card{
@@ -10787,9 +10809,13 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     max-width:none!important;
     margin:0!important;
     padding:0!important;
-    overflow:visible!important;
+    overflow:hidden!important;
     page-break-inside:avoid!important;
     break-inside:avoid!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .fig{
+    overflow:hidden!important;
   }
 
   #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card section.touch-card:nth-of-type(1){
@@ -10805,47 +10831,108 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     grid-row:2!important;
   }
 
-  /* 3페이지: 도막/외관/타이어 원본 카드를 2열로 배치 */
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 .report-print-section-v1773{
-    grid-column:1 / -1!important;
-  }
-
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag{
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    gap:4mm 8mm!important;
-    align-items:start!important;
-  }
-
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag > .diag-paint-card{
-    grid-column:1!important;
-    grid-row:1 / span 2!important;
-  }
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag > .diag-exterior-card{
-    grid-column:2!important;
-    grid-row:1!important;
-  }
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag > .tire-state-card-v1696{
-    grid-column:2!important;
-    grid-row:2!important;
-  }
-
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 .touch-diagram-shell{
-    margin:0!important;
-    width:100%!important;
-  }
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 section.touch-card,
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 .touch-card .fig,
-  #reportPrintRootV1773 .report-print-a4-accident-v136 .touch-card .fig{
-    width:100%!important;
-    max-width:none!important;
-  }
-  #reportPrintRootV1773 .report-print-a4-exterior-v136 .touch-card .fig img,
-  #reportPrintRootV1773 .report-print-a4-accident-v136 .touch-card .fig img{
+  /*
+    v137 - 3페이지 외관/수리 고정 캔버스
+    원본 카드 내부 요소는 이동하지 않는다.
+    1120px 원본 배치 캔버스를 인쇄 흐름에서 absolute로 분리한 뒤
+    캔버스 전체만 균일 축소해 A4 한 페이지 안에 표시한다.
+  */
+  #reportPrintRootV1773 .report-print-a4-exterior-v136{
+    position:relative!important;
     display:block!important;
     width:100%!important;
+    height:277mm!important;
+    min-height:277mm!important;
+    max-height:277mm!important;
+    overflow:hidden!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 .report-print-a4-grid-v136{
+    display:block!important;
+    position:static!important;
+    width:100%!important;
+    height:100%!important;
+    overflow:hidden!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137{
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+    width:1120px!important;
     height:auto!important;
-    max-width:none!important;
+    transform:scale(.64)!important;
+    transform-origin:top left!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 > .report-print-section-v1773{
+    display:block!important;
+    width:1120px!important;
+    max-width:1120px!important;
+    margin:0!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 .report-print-section-title-v1773{
+    display:block!important;
+    width:1120px!important;
+    max-width:1120px!important;
+    margin:0 0 14px!important;
+    box-sizing:border-box!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 #secDiag{
+    display:grid!important;
+    grid-template-columns:540px 540px!important;
+    grid-template-rows:auto auto!important;
+    gap:18px 40px!important;
+    align-items:start!important;
+    width:1120px!important;
+    max-width:1120px!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 #secDiag > .diag-paint-card{
+    grid-column:1!important;
+    grid-row:1 / span 2!important;
+    width:540px!important;
+    max-width:540px!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 #secDiag > .diag-exterior-card{
+    grid-column:2!important;
+    grid-row:1!important;
+    width:540px!important;
+    max-width:540px!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 #secDiag > .tire-state-card-v1696{
+    grid-column:2!important;
+    grid-row:2!important;
+    width:540px!important;
+    max-width:540px!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 article.report-card-ui,
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 .touch-diagram-shell,
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 section.touch-card,
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 .touch-card .fig{
+    box-sizing:border-box!important;
+    overflow:visible!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  /* 원본 도면 제목 배지 스타일 유지 */
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 .touch-diagram-title,
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 .touch-diagram-subtitle,
+  #reportPrintRootV1773 .report-print-a4-exterior-canvas-v137 .diagram-corner-badge{
+    background:#eef1f5!important;
+    border-color:#d8dee8!important;
+    color:#374151!important;
+    box-shadow:none!important;
   }
 
   /* 4페이지 이후 점검은 기존 2열 흐름 */
@@ -16107,7 +16194,16 @@ function isVisibleCaptureTarget(el){
     var exteriorGrid = document.createElement('div');
     exteriorGrid.className = 'report-print-a4-grid-v136';
     exteriorPage.appendChild(exteriorGrid);
-    exteriorGrid.appendChild(cloneExteriorSection());
+
+    /*
+      v137:
+      외관/수리 원본 section은 고정 캔버스 안에 그대로 넣는다.
+      카드 내부 DOM과 도면 좌표 기준은 변경하지 않는다.
+    */
+    var exteriorCanvas = document.createElement('div');
+    exteriorCanvas.className = 'report-print-a4-exterior-canvas-v137';
+    exteriorGrid.appendChild(exteriorCanvas);
+    exteriorCanvas.appendChild(cloneExteriorSection());
 
     /* 4페이지 이후: 점검 */
     var checkPage = document.createElement('section');

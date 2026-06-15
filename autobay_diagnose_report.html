@@ -10459,7 +10459,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   margin:8px 0 0;
 }
 .report-print-a4-first-v132,
-.report-print-a4-first-flow-v132{
+.report-print-a4-first-flow-v132,
+.report-print-a4-diagram-page-v133,
+.report-print-a4-diagram-flow-v133{
   display:block;
 }
 .report-print-columns-v118{
@@ -10651,6 +10653,85 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     page-break-inside:auto!important;
     break-inside:auto!important;
     -webkit-column-break-inside:auto!important;
+  }
+
+  /*
+    v133 - 사고/외관 전용 A4 페이지
+    큰 카드 wrapper가 통째로 다음 칼럼으로 밀려 빈 공간이 생기지 않도록
+    섹션 제목은 상단에 두고 실제 카드 본문만 두 칼럼으로 흐르게 한다.
+  */
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133:last-of-type{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 > .report-print-section-v1773{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .report-print-section-title-v1773{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0 0 8px!important;
+    page-break-after:avoid!important;
+    break-after:avoid!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .report-print-section-body-v1773{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    column-count:2!important;
+    column-gap:8mm!important;
+    column-fill:auto!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .report-print-section-body-v1773 > #secDiag{
+    display:block!important;
+    width:100%!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  /* 큰 사고/외관 카드 자체는 칼럼 분할을 허용한다. */
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .report-print-section-body-v1773 article,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .report-print-section-body-v1773 .report-card-ui,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .report-print-section-body-v1773 .touch-card{
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+    -webkit-column-break-inside:auto!important;
+    overflow:visible!important;
+  }
+
+  /* 실제 도면 하나는 중간에서 잘리지 않고 다음 칼럼으로 이동한다. */
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .fig,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .paint-fig,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .paint-fig-bent,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .touch-diagram-shell,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .diagram-wrap,
+  #reportPrintRootV1773 .report-print-a4-diagram-page-v133 .paint-diagram-block{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+    -webkit-column-break-inside:avoid!important;
   }
 
   #reportPrintRootV1773 .report-print-columns-v118{
@@ -15863,22 +15944,14 @@ function isVisibleCaptureTarget(el){
     var m = String(now.getMonth()+1).padStart(2,'0');
     var d = String(now.getDate()).padStart(2,'0');
 
-    var head = document.createElement('section');
-    head.className = 'report-print-head-v1773';
-    head.innerHTML =
-      '<div class="report-print-title-v1773">오토베이 현장 매입 진단리포트</div>' +
-      '<p class="report-print-sub-v1773">' + (mode === 'company' ? '회사보고용 PDF 저장' : '고객보고용 PDF 저장') + ' · ' + y + '-' + m + '-' + d + '</p>';
-
     /*
-      v132:
-      1페이지는 헤더 + 기본정보 + 사고 intro(2, 3번)만 먼저 배치한다.
-      이때 기본정보 카드가 좌측에서 시작해 공간이 부족하면 우측으로 이어질 수 있도록
-      첫 페이지 전용 wrapper 안에서 순차 2열 흐름을 사용한다.
+      v133:
+      1페이지의 메인 헤더 행은 제거한다.
+      첫 페이지는 기본정보와 사고 intro(2, 3번 보험·특수 이력)만 순차 2열로 배치한다.
     */
     var firstPage = document.createElement('div');
     firstPage.className = 'report-print-a4-first-v132';
     root.appendChild(firstPage);
-    firstPage.appendChild(head);
 
     var firstFlow = document.createElement('div');
     firstFlow.className = 'report-print-a4-first-flow-v132';
@@ -15891,16 +15964,31 @@ function isVisibleCaptureTarget(el){
     if(accidentIntroNode) firstFlow.appendChild(accidentIntroNode);
 
     /*
-      2페이지 이후는 사고 4번 도면, 외관/수리, 점검을 기존 2열 연속 흐름으로 출력한다.
+      2페이지는 사고 4번 도면만 전용 2열 페이지에 배치한다.
+      섹션 전체를 일반 column item으로 넣지 않으므로 좌측의 과도한 빈 공간이 생기지 않는다.
+    */
+    var accidentPage = document.createElement('div');
+    accidentPage.className = 'report-print-a4-diagram-page-v133 accident-page-v133';
+    root.appendChild(accidentPage);
+
+    var accidentDetailNode = cloneAccidentPartSectionV132('detail');
+    if(accidentDetailNode) accidentPage.appendChild(accidentDetailNode);
+
+    /*
+      3페이지는 외관/수리 전체를 전용 2열 페이지에 배치한다.
+      도막/외관/타이어 카드가 같은 페이지 안에서 좌우로 이어진다.
+    */
+    var exteriorPage = document.createElement('div');
+    exteriorPage.className = 'report-print-a4-diagram-page-v133 exterior-page-v133';
+    root.appendChild(exteriorPage);
+    exteriorPage.appendChild(cloneExteriorSection());
+
+    /*
+      4페이지 이후에는 점검 항목만 기존 2열 연속 흐름으로 출력한다.
     */
     var columns = document.createElement('div');
     columns.className = 'report-print-columns-v118';
     root.appendChild(columns);
-
-    var accidentDetailNode = cloneAccidentPartSectionV132('detail');
-    if(accidentDetailNode) columns.appendChild(accidentDetailNode);
-
-    columns.appendChild(cloneExteriorSection());
 
     var checkNode = cloneSection('점검', '#secCheck');
     if(checkNode) columns.appendChild(checkNode);

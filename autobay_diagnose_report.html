@@ -11025,6 +11025,93 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     height:0!important;
   }
 
+  /*
+    v146 - 사고 2페이지 외곽선 전용 마감
+    배치·도면·마커·제목 배지는 유지하고,
+    사고 도면을 둘러싼 중복 외곽선과 스크롤 흔적만 제거한다.
+  */
+  #reportPrintPagesV141 .report-print-page2-v141,
+  #reportPrintPagesV141 .report-print-page2-flow-v141,
+  #reportPrintPagesV141 .report-print-page2-left-v144,
+  #reportPrintPagesV141 .report-print-page2-right-v144{
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:#fff!important;
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+  }
+
+  #reportPrintPagesV141 .report-print-page2-left-v144,
+  #reportPrintPagesV141 .report-print-page2-right-v144{
+    overflow:clip!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-card-v146{
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-shell-v146{
+    margin-left:0!important;
+    margin-right:0!important;
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    overflow:visible!important;
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-block-v146{
+    border:0!important;
+    border-top:0!important;
+    border-right:0!important;
+    border-bottom:0!important;
+    border-left:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    overflow:visible!important;
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-block-v146::before,
+  #reportPrintPagesV141 .report-print-accident-block-v146::after,
+  #reportPrintPagesV141 .report-print-accident-block-v146 .fig::before,
+  #reportPrintPagesV141 .report-print-accident-block-v146 .fig::after{
+    content:none!important;
+    display:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-block-v146 .fig{
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintPagesV141 .report-print-page2-v141 *,
+  #reportPrintPagesV141 .report-print-page2-v141 *::before,
+  #reportPrintPagesV141 .report-print-page2-v141 *::after{
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+  }
+
+  #reportPrintPagesV141 .report-print-page2-v141 *::-webkit-scrollbar{
+    display:none!important;
+    width:0!important;
+    height:0!important;
+    background:transparent!important;
+  }
+
   .report-print-bar-v1773{
     display:none!important;
   }
@@ -16281,7 +16368,16 @@ function isVisibleCaptureTarget(el){
       var diagramCardsV144 = diagramShellV144 ? qsa(':scope > .touch-card', diagramShellV144) : [];
 
       if(diagramCardV144){
-        diagramCardV144.classList.add('report-print-accident-scrollfix-v145');
+        diagramCardV144.classList.add(
+          'report-print-accident-scrollfix-v145',
+          'report-print-accident-card-v146'
+        );
+        if(diagramShellV144){
+          diagramShellV144.classList.add('report-print-accident-shell-v146');
+        }
+        diagramCardsV144.forEach(function(cardV146){
+          cardV146.classList.add('report-print-accident-block-v146');
+        });
       }
 
       var leftSectionV144 = document.createElement('section');
@@ -16297,8 +16393,12 @@ function isVisibleCaptureTarget(el){
 
       if(diagramCardV144){
         var rightDiagramCardV144 = diagramCardV144.cloneNode(false);
-        rightDiagramCardV144.classList.add('report-print-accident-scrollfix-v145');
+        rightDiagramCardV144.classList.add(
+          'report-print-accident-scrollfix-v145',
+          'report-print-accident-card-v146'
+        );
         var rightShellV144 = diagramShellV144.cloneNode(false);
+        rightShellV144.classList.add('report-print-accident-shell-v146');
 
         diagramCardsV144.slice(1).forEach(function(cardV144){
           rightShellV144.appendChild(cardV144);
@@ -16420,7 +16520,17 @@ function isVisibleCaptureTarget(el){
       var accidentDiagramCardV145 = qs('.touch-diagram-shell', accidentNode);
       accidentDiagramCardV145 = accidentDiagramCardV145 ? accidentDiagramCardV145.closest('article, .report-card-ui') : null;
       if(accidentDiagramCardV145){
-        accidentDiagramCardV145.classList.add('report-print-accident-scrollfix-v145');
+        accidentDiagramCardV145.classList.add(
+          'report-print-accident-scrollfix-v145',
+          'report-print-accident-card-v146'
+        );
+        var accidentShellV146 = qs('.touch-diagram-shell', accidentDiagramCardV145);
+        if(accidentShellV146){
+          accidentShellV146.classList.add('report-print-accident-shell-v146');
+          qsa(':scope > .touch-card', accidentShellV146).forEach(function(cardV146){
+            cardV146.classList.add('report-print-accident-block-v146');
+          });
+        }
       }
       columns.appendChild(accidentNode);
     }

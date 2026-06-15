@@ -10906,6 +10906,49 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     line-height:0!important;
   }
 
+  /*
+    v142 - 2페이지 사고 도면 잘림 최소 보정
+    카드/도면 DOM은 유지하고, 인쇄 전용 페이지 안에서 fig 폭과 간격만 줄인다.
+  */
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card{
+    margin-bottom:4px!important;
+    padding-top:4px!important;
+    padding-bottom:4px!important;
+  }
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card:nth-of-type(1) .fig{
+    width:100%!important;
+    margin-left:0!important;
+  }
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card:nth-of-type(2) .fig{
+    width:106%!important;
+    margin-left:-3%!important;
+  }
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card:nth-of-type(3) .fig{
+    width:100%!important;
+    margin-left:0!important;
+  }
+
+  /*
+    v142 - 3페이지 도막/외관 측면 도면 하단 잘림 최소 보정
+    좌우 카드의 원본 selector 문맥은 유지하고 fig만 같은 비율로 줄인다.
+  */
+  #reportPrintPagesV141 .report-print-page3-layout-v141 .touch-diagram-shell .touch-card{
+    margin-bottom:4px!important;
+    padding-top:4px!important;
+    padding-bottom:4px!important;
+  }
+  #reportPrintPagesV141 .report-print-page3-layout-v141 .touch-diagram-shell .touch-card:nth-of-type(1) .fig{
+    width:104%!important;
+    margin-left:-2%!important;
+  }
+  #reportPrintPagesV141 .report-print-page3-layout-v141 .touch-diagram-shell .touch-card:nth-of-type(2) .fig{
+    width:110%!important;
+    margin-left:-5%!important;
+  }
+  #reportPrintPagesV141 .report-print-page3-layout-v141 .report-card-ui{
+    margin-bottom:4px!important;
+  }
+
   .report-print-bar-v1773{
     display:none!important;
   }

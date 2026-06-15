@@ -10580,26 +10580,23 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 
 /*
-  v144 - PDF 버튼 클릭 시 생성되는 출력 복사본의 도면 외곽선 정리
-  화면 원본은 건드리지 않고 #reportPrintRootV1773 내부 도면에만 적용한다.
+  v145 - 사고 출력 복사본 CSS 원복
+  v118 원본의 border/background/box-shadow/padding은 그대로 유지한다.
+  PDF 복사본에서 보이던 세로 스크롤 흔적만 최소 제어한다.
 */
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .touch-diagram-shell,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .touch-card,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .fig,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .paint-fig,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .paint-fig-bent,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .diagram-wrap,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .paint-diagram-block{
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  background:transparent!important;
-}
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .touch-card,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .fig,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .paint-fig,
-#reportPrintRootV1773 .report-print-clean-diagrams-v144 .paint-fig-bent{
+#reportPrintRootV1773 .report-print-accident-scrollfix-v145,
+#reportPrintRootV1773 .report-print-accident-scrollfix-v145 .touch-diagram-shell,
+#reportPrintRootV1773 .report-print-accident-scrollfix-v145 .touch-card,
+#reportPrintRootV1773 .report-print-accident-scrollfix-v145 .fig{
   overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  scrollbar-width:none!important;
+}
+#reportPrintRootV1773 .report-print-accident-scrollfix-v145 *::-webkit-scrollbar{
+  display:none!important;
+  width:0!important;
+  height:0!important;
 }
 
 @media print{
@@ -10622,44 +10619,36 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     background:#fff!important;
   }
   /*
-    v143 - 2페이지 사고 도면 좌측 시작 및 도면 외곽선 정리
-    touch-diagram-shell 전체를 분리 금지하지 않고, 각 touch-card만 분리 금지한다.
-    이에 따라 보험이력 아래 남는 좌측 공간에서 사고진단 제목과 첫 도면이 시작한다.
+    v145 - 사고 페이지 배치는 유지하고 시각 CSS는 v118 원본으로 복구한다.
+    분할 규칙과 스크롤 흔적 제거만 유지한다.
   */
   #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell{
     break-inside:auto!important;
     page-break-inside:auto!important;
     -webkit-column-break-inside:auto!important;
-    border:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
-    margin:0!important;
-    padding:0!important;
+    overflow:visible!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
+    scrollbar-width:none!important;
   }
 
   #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card{
     break-inside:avoid!important;
     page-break-inside:avoid!important;
     -webkit-column-break-inside:avoid!important;
-    border:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
     overflow:visible!important;
+    scrollbar-width:none!important;
   }
 
   #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card .fig{
-    border:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
     overflow:visible!important;
+    scrollbar-width:none!important;
   }
 
-  #reportPrintPagesV141 .report-print-page2-flow-v141 .report-print-accident-diagram-card-v143{
-    border:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
-    padding-left:0!important;
-    padding-right:0!important;
+  #reportPrintPagesV141 .report-print-page2-flow-v141 *::-webkit-scrollbar{
+    display:none!important;
+    width:0!important;
+    height:0!important;
   }
 
   .report-print-bar-v1773{
@@ -11018,22 +11007,19 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 
   /*
-    v144 - 인쇄 전용 복사본에서도 동일한 도면 외곽선 정리 유지
+    v145 - 인쇄 전용 사고 복사본은 스크롤 흔적만 제거한다.
+    카드와 도면의 시각 CSS는 v118 원본 cascade를 사용한다.
   */
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .touch-diagram-shell,
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .touch-card,
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .fig,
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .paint-fig,
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .paint-fig-bent,
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .diagram-wrap,
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 .paint-diagram-block{
-    border:0!important;
-    outline:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
+  #reportPrintPagesV141 .report-print-accident-scrollfix-v145,
+  #reportPrintPagesV141 .report-print-accident-scrollfix-v145 .touch-diagram-shell,
+  #reportPrintPagesV141 .report-print-accident-scrollfix-v145 .touch-card,
+  #reportPrintPagesV141 .report-print-accident-scrollfix-v145 .fig{
+    overflow:visible!important;
+    overflow-x:visible!important;
+    overflow-y:visible!important;
     scrollbar-width:none!important;
   }
-  #reportPrintPagesV141 .report-print-clean-diagrams-v144 *::-webkit-scrollbar{
+  #reportPrintPagesV141 .report-print-accident-scrollfix-v145 *::-webkit-scrollbar{
     display:none!important;
     width:0!important;
     height:0!important;
@@ -16295,7 +16281,7 @@ function isVisibleCaptureTarget(el){
       var diagramCardsV144 = diagramShellV144 ? qsa(':scope > .touch-card', diagramShellV144) : [];
 
       if(diagramCardV144){
-        diagramCardV144.classList.add('report-print-clean-diagrams-v144');
+        diagramCardV144.classList.add('report-print-accident-scrollfix-v145');
       }
 
       var leftSectionV144 = document.createElement('section');
@@ -16311,7 +16297,7 @@ function isVisibleCaptureTarget(el){
 
       if(diagramCardV144){
         var rightDiagramCardV144 = diagramCardV144.cloneNode(false);
-        rightDiagramCardV144.classList.add('report-print-clean-diagrams-v144');
+        rightDiagramCardV144.classList.add('report-print-accident-scrollfix-v145');
         var rightShellV144 = diagramShellV144.cloneNode(false);
 
         diagramCardsV144.slice(1).forEach(function(cardV144){
@@ -16431,23 +16417,22 @@ function isVisibleCaptureTarget(el){
 
     var accidentNode = cloneFilteredDiagSection('사고', 'accident');
     if(accidentNode){
-      var accidentDiagramCardV144 = qs('.touch-diagram-shell', accidentNode);
-      accidentDiagramCardV144 = accidentDiagramCardV144 ? accidentDiagramCardV144.closest('article, .report-card-ui') : null;
-      if(accidentDiagramCardV144){
-        accidentDiagramCardV144.classList.add('report-print-clean-diagrams-v144');
+      var accidentDiagramCardV145 = qs('.touch-diagram-shell', accidentNode);
+      accidentDiagramCardV145 = accidentDiagramCardV145 ? accidentDiagramCardV145.closest('article, .report-card-ui') : null;
+      if(accidentDiagramCardV145){
+        accidentDiagramCardV145.classList.add('report-print-accident-scrollfix-v145');
       }
       columns.appendChild(accidentNode);
     }
 
-    var exteriorNodeV144 = cloneExteriorSection();
-    if(exteriorNodeV144){
-      qsa('.touch-diagram-shell, .paint-diagram-block', exteriorNodeV144).forEach(function(diagramNodeV144){
-        var cardV144 = diagramNodeV144.closest('article, .report-card-ui');
-        if(cardV144){
-          cardV144.classList.add('report-print-clean-diagrams-v144');
-        }
-      });
-      columns.appendChild(exteriorNodeV144);
+    /*
+      v145:
+      외관/수리 복사본에는 별도 clean 클래스를 추가하지 않는다.
+      v118 원본 CSS를 그대로 사용한다.
+    */
+    var exteriorNodeV145 = cloneExteriorSection();
+    if(exteriorNodeV145){
+      columns.appendChild(exteriorNodeV145);
     }
 
     var checkNode = cloneSection('점검', '#secCheck');

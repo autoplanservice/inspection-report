@@ -9836,214 +9836,126 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
   color:#111827!important;
   border:1px solid #cfd7e3!important;
 }
-#secSubmit .report-viewer-title-v128{
+#secSubmit .report-paged-view-title-v130{
   margin-top:14px!important;
 }
-#secSubmit .report-viewer-btns-v128{
+#secSubmit .report-paged-view-btns-v130{
   margin-top:8px!important;
 }
-#secSubmit #btnCustomerReportViewerV128{
+#secSubmit #btnCustomerPagedViewV130{
   background:#111827!important;
   border-color:#111827!important;
   color:#fff!important;
 }
-#secSubmit #btnCompanyReportViewerV128{
+#secSubmit #btnCompanyPagedViewV130{
   background:#fff!important;
   border:1px solid #cfd7e3!important;
   color:#111827!important;
 }
 
 /*
-  v128 - 모바일 전체화면 검수리포트 뷰어
-  PDF/canvas 변환 없이 출력 DOM을 그대로 표시한다.
+  v130 - Paged.js 기반 A2 동일 2열 뷰어
+  부모 문서에서는 전체화면 도구와 iframe만 관리한다.
+  실제 페이지 분할은 iframe 내부 Paged.js가 담당한다.
 */
-body.report-viewer-open-v128{
+body.report-paged-view-open-v130{
   overflow:hidden!important;
 }
-#reportViewerOverlayV128{
+#reportPagedViewOverlayV130{
   position:fixed!important;
   inset:0!important;
-  z-index:100020!important;
+  z-index:100030!important;
   display:flex!important;
   flex-direction:column!important;
   background:#dfe4ea!important;
   color:#111827!important;
   font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif!important;
 }
-#reportViewerToolbarV128{
-  position:relative!important;
-  z-index:2!important;
+#reportPagedViewToolbarV130{
   flex:0 0 auto!important;
   display:flex!important;
   align-items:center!important;
-  gap:8px!important;
+  gap:7px!important;
   min-height:58px!important;
   padding:8px 10px!important;
   background:#fff!important;
   border-bottom:1px solid #d8e0ea!important;
-  box-shadow:0 2px 10px rgba(15,23,42,.08)!important;
+  box-shadow:0 2px 10px rgba(15,23,42,.09)!important;
 }
-#reportViewerToolbarV128 .report-viewer-title-text-v128{
-  min-width:0!important;
+#reportPagedViewToolbarV130 .report-paged-view-name-v130{
   flex:1 1 auto!important;
+  min-width:0!important;
   overflow:hidden!important;
   text-overflow:ellipsis!important;
   white-space:nowrap!important;
   font-size:14px!important;
   font-weight:1000!important;
 }
-#reportViewerToolbarV128 button{
+#reportPagedViewToolbarV130 .report-paged-page-count-v130{
+  flex:0 0 auto!important;
+  min-width:42px!important;
+  text-align:center!important;
+  color:#475569!important;
+  font-size:12px!important;
+  font-weight:900!important;
+}
+#reportPagedViewToolbarV130 button{
   flex:0 0 auto!important;
   min-width:40px!important;
   height:40px!important;
-  padding:0 11px!important;
+  padding:0 10px!important;
   border-radius:10px!important;
   border:1px solid #cbd5e1!important;
   background:#fff!important;
   color:#111827!important;
   font-size:13px!important;
   font-weight:900!important;
+  line-height:1!important;
 }
-#reportViewerToolbarV128 #reportViewerCloseV128{
+#reportPagedViewToolbarV130 #reportPagedViewCloseV130{
   background:#111827!important;
   border-color:#111827!important;
   color:#fff!important;
 }
-#reportViewerViewportV128{
-  position:relative!important;
+#reportPagedViewFrameV130{
   flex:1 1 auto!important;
+  display:block!important;
   width:100%!important;
   min-height:0!important;
-  overflow:auto!important;
-  overscroll-behavior:contain!important;
-  -webkit-overflow-scrolling:touch!important;
-  touch-action:pan-x pan-y pinch-zoom!important;
+  border:0!important;
+  background:#dfe4ea!important;
 }
-#reportViewerSizerV128{
-  position:relative!important;
-  display:block!important;
-  min-width:100%!important;
-}
-#reportViewerStageV128{
-  position:absolute!important;
-  left:0!important;
-  top:0!important;
-  width:1120px!important;
-  transform-origin:top left!important;
-  padding:22px!important;
-  box-sizing:border-box!important;
-}
-#reportViewerStageV128 .report-viewer-page-v128{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-  gap:28px!important;
-  align-items:start!important;
-  width:1076px!important;
-  min-height:1522px!important;
-  margin:0 0 24px!important;
-  padding:22px!important;
-  box-sizing:border-box!important;
-  background:#f3f5f7!important;
-  border:1px solid #cfd7e3!important;
-  border-radius:18px!important;
-  box-shadow:0 6px 22px rgba(15,23,42,.12)!important;
-  overflow:visible!important;
-}
-#reportViewerStageV128 .report-viewer-page-head-v128{
-  grid-column:1 / -1!important;
-  display:block!important;
-  width:100%!important;
-  padding:13px 15px!important;
-  margin:0!important;
-  border:1px solid #d8e0ea!important;
+#reportPagedViewLoadingV130{
+  position:fixed!important;
+  left:50%!important;
+  top:50%!important;
+  z-index:100031!important;
+  transform:translate(-50%,-50%)!important;
+  min-width:280px!important;
+  max-width:90vw!important;
+  padding:15px 17px!important;
   border-radius:14px!important;
-  box-sizing:border-box!important;
-  background:#fff!important;
-}
-#reportViewerStageV128 .report-viewer-page-head-v128 .title{
-  margin:0 0 4px!important;
-  font-size:18px!important;
-  line-height:1.2!important;
-  font-weight:1000!important;
-}
-#reportViewerStageV128 .report-viewer-page-head-v128 .sub{
-  margin:0!important;
-  font-size:12px!important;
-  line-height:1.35!important;
-  font-weight:900!important;
-  color:#374151!important;
-}
-#reportViewerStageV128 .report-viewer-column-v128{
-  display:block!important;
-  width:100%!important;
-  min-width:0!important;
-  overflow:visible!important;
-}
-#reportViewerStageV128 .report-print-section-v1773{
-  display:block!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-#reportViewerStageV128 .report-print-section-title-v1773{
-  display:block!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:0 0 10px!important;
-  box-sizing:border-box!important;
+  background:#111827!important;
+  color:#fff!important;
+  box-shadow:0 12px 32px rgba(15,23,42,.35)!important;
   text-align:center!important;
-}
-#reportViewerStageV128 .report-print-section-body-v1773,
-#reportViewerStageV128 .report-print-section-body-v1773 > section,
-#reportViewerStageV128 .report-print-section-body-v1773 > article,
-#reportViewerStageV128 .report-print-section-body-v1773 .report-card-ui,
-#reportViewerStageV128 .report-print-section-body-v1773 .touch-card{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  width:100%!important;
-  max-width:none!important;
-  height:auto!important;
-  max-height:none!important;
-  overflow:visible!important;
-  box-sizing:border-box!important;
-}
-#reportViewerStageV128 .report-viewer-check-shell-v128{
-  display:block!important;
-  width:100%!important;
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
-  box-sizing:border-box!important;
-}
-#reportViewerStageV128 .report-viewer-check-shell-v128 > article,
-#reportViewerStageV128 .report-viewer-check-shell-v128 > .report-card-ui,
-#reportViewerStageV128 .report-viewer-check-shell-v128 > .touch-card{
-  display:block!important;
-  width:100%!important;
-  max-width:none!important;
-  height:auto!important;
-  max-height:none!important;
-  overflow:visible!important;
-  box-sizing:border-box!important;
-}
-#reportViewerStageV128 input,
-#reportViewerStageV128 textarea,
-#reportViewerStageV128 select,
-#reportViewerStageV128 button{
-  pointer-events:none!important;
+  white-space:pre-line!important;
+  font-size:13px!important;
+  line-height:1.5!important;
+  font-weight:900!important;
 }
 @media (max-width:640px){
-  #reportViewerToolbarV128{
-    gap:6px!important;
-    padding:7px 8px!important;
+  #reportPagedViewToolbarV130{
+    gap:5px!important;
+    padding:7px 7px!important;
   }
-  #reportViewerToolbarV128 button{
-    min-width:38px!important;
+  #reportPagedViewToolbarV130 button{
+    min-width:36px!important;
     height:38px!important;
-    padding:0 9px!important;
+    padding:0 8px!important;
+  }
+  #reportPagedViewToolbarV130 .report-paged-view-name-v130{
+    font-size:12px!important;
   }
 }
 @media (max-width:640px){
@@ -11944,14 +11856,14 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 <button class="report-output-btn-v1741 customer" id="btnCustomerSubmitPdfV1778" type="button">고객보고용 PDF 저장</button>
 <button class="report-output-btn-v1741 company" id="btnCompanySubmitPdfV1778" type="button">회사보고용 PDF 저장</button>
 </div>
-<div class="report-output-title-v1741 report-viewer-title-v128">
+<div class="report-output-title-v1741 report-paged-view-title-v130">
 <span class="report-output-badge-v1741">VIEW</span>
-<span>모바일 검수리포트 보기</span>
+<span>A2 동일 2열 리포트 보기</span>
 </div>
-<div class="report-output-desc-v1741">PDF나 이미지로 변환하지 않고 출력용 HTML을 그대로 전체화면에서 표시합니다. 확대해도 글자와 도면이 선명하게 유지됩니다.</div>
-<div class="report-output-btns-v1744 report-output-btns-v1745 report-viewer-btns-v128">
-<button class="report-output-btn-v1741 customer" id="btnCustomerReportViewerV128" type="button">고객용 리포트 보기</button>
-<button class="report-output-btn-v1741 company" id="btnCompanyReportViewerV128" type="button">회사용 리포트 보기</button>
+<div class="report-output-desc-v1741">기존 PDF 출력용 DOM을 분해하거나 재배치하지 않고, 인쇄용 CSS를 화면 페이지로 변환해 표시합니다.</div>
+<div class="report-output-btns-v1744 report-output-btns-v1745 report-paged-view-btns-v130">
+<button class="report-output-btn-v1741 customer" id="btnCustomerPagedViewV130" type="button">고객용 A2 리포트 보기</button>
+<button class="report-output-btn-v1741 company" id="btnCompanyPagedViewV130" type="button">회사용 A2 리포트 보기</button>
 </div>
 <div class="report-mobile-print-wrap-v1773" style="display:none!important"></div>
 </section></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>탁송,온라인 매입</label><select class="order-select" data-key="order_online_delivery"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-count-detail-v1717" data-count-prefix="order_accident"><select class="order-select order-count-select-v1717" data-key="order_accident_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_accident_memo" placeholder="사고 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-count-detail-v1717" data-count-prefix="order_outer"><select class="order-select order-count-select-v1717" data-key="order_outer_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_outer_memo" placeholder="외판 내용 입력" rows="2"></textarea></div></div><div class="order-field full"><label>수리</label><div class="order-count-detail-v1717" data-count-prefix="order_repair"><select class="order-select order-count-select-v1717" data-key="order_repair_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_repair_memo" placeholder="수리 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_deposit_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_balance_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>인수일</label><div class="order-inline order-month-day"><select class="order-select order-month" data-key="order_takeover_date_month"><option value="">월</option><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select><select class="order-select order-day" data-key="order_takeover_date_day"><option value="">일</option><option value="1">1일</option><option value="2">2일</option><option value="3">3일</option><option value="4">4일</option><option value="5">5일</option><option value="6">6일</option><option value="7">7일</option><option value="8">8일</option><option value="9">9일</option><option value="10">10일</option><option value="11">11일</option><option value="12">12일</option><option value="13">13일</option><option value="14">14일</option><option value="15">15일</option><option value="16">16일</option><option value="17">17일</option><option value="18">18일</option><option value="19">19일</option><option value="20">20일</option><option value="21">21일</option><option value="22">22일</option><option value="23">23일</option><option value="24">24일</option><option value="25">25일</option><option value="26">26일</option><option value="27">27일</option><option value="28">28일</option><option value="29">29일</option><option value="30">30일</option><option value="31">31일</option></select></div></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section>
@@ -16228,32 +16140,57 @@ function isVisibleCaptureTarget(el){
 </script>
 <script>
 (function(){
-  var OVERLAY_ID_V128 = 'reportViewerOverlayV128';
-  var BASE_STAGE_WIDTH_V128 = 1120;
-  var viewerScaleV128 = 1;
+  var OVERLAY_ID_V130 = 'reportPagedViewOverlayV130';
+  var FRAME_ID_V130 = 'reportPagedViewFrameV130';
+  var LOADING_ID_V130 = 'reportPagedViewLoadingV130';
+  var viewerScaleV130 = 1;
 
   /**
-   * qsV128은 단일 요소 조회 함수다.
+   * qsV130은 단일 요소 조회 함수다.
    */
-  function qsV128(selector, root){
+  function qsV130(selector, root){
     return (root || document).querySelector(selector);
   }
 
   /**
-   * qsaV128은 요소 목록을 배열로 반환한다.
+   * qsaV130은 요소 목록을 배열로 반환한다.
    */
-  function qsaV128(selector, root){
+  function qsaV130(selector, root){
     return Array.prototype.slice.call((root || document).querySelectorAll(selector));
   }
 
   /**
-   * closeReportViewerV128은 뷰어와 임시 출력 DOM을 정리한다.
+   * showLoadingV130은 페이지 변환 진행 상태를 표시한다.
    */
-  function closeReportViewerV128(){
-    var overlay = document.getElementById(OVERLAY_ID_V128);
+  function showLoadingV130(message){
+    var box = document.getElementById(LOADING_ID_V130);
+
+    if(!box){
+      box = document.createElement('div');
+      box.id = LOADING_ID_V130;
+      document.body.appendChild(box);
+    }
+
+    box.textContent = message || 'A2 리포트 페이지 구성 중...';
+  }
+
+  /**
+   * hideLoadingV130은 진행 상태를 제거한다.
+   */
+  function hideLoadingV130(){
+    var box = document.getElementById(LOADING_ID_V130);
+    if(box) box.remove();
+  }
+
+  /**
+   * closePagedViewV130은 전체화면 뷰어를 종료하고 출력 clone 상태를 정리한다.
+   */
+  function closePagedViewV130(){
+    var overlay = document.getElementById(OVERLAY_ID_V130);
     if(overlay) overlay.remove();
 
-    document.body.classList.remove('report-viewer-open-v128');
+    hideLoadingV130();
+    document.body.classList.remove('report-paged-view-open-v130');
 
     if(typeof window.__closeReportPrintV1773 === 'function'){
       try{ window.__closeReportPrintV1773(); }catch(error){}
@@ -16261,400 +16198,384 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * sectionTitleV128은 출력 섹션 제목을 반환한다.
+   * collectCurrentStylesV130은 v118 문서의 실제 CSS 선언 순서를 그대로 수집한다.
    */
-  function sectionTitleV128(section){
-    var title = qsV128('.report-print-section-title-v1773', section);
-    return String(title ? title.textContent : '')
-      .replace(/\s+/g, ' ')
-      .trim();
+  function collectCurrentStylesV130(){
+    return qsaV130('style').map(function(styleNode){
+      return styleNode.textContent || '';
+    }).join('\n');
   }
 
   /**
-   * collectOutputSectionsV128은 출력 DOM에서 네 개 탭 섹션을 구분한다.
+   * escapeHtmlTextV130은 iframe HTML에 삽입되는 문자열을 안전하게 변환한다.
    */
-  function collectOutputSectionsV128(root){
-    var result = {
-      basic: null,
-      accident: null,
-      exterior: null,
-      check: null
-    };
-
-    qsaV128('.report-print-section-v1773', root).forEach(function(section){
-      var title = sectionTitleV128(section);
-
-      if(title === '기본') result.basic = section;
-      else if(title === '사고') result.accident = section;
-      else if(title === '외관/수리') result.exterior = section;
-      else if(title === '점검') result.check = section;
-    });
-
-    return result;
+  function escapeHtmlTextV130(value){
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   /**
-   * normalizeViewerSectionV128은 출력 섹션의 고정 폭 inline 값을 뷰어 칼럼에 맞춘다.
+   * buildOverlayV130은 상단 도구와 독립 iframe을 만든다.
    */
-  function normalizeViewerSectionV128(section){
-    if(!section) return null;
-
-    section.style.setProperty('width', '100%', 'important');
-    section.style.setProperty('max-width', 'none', 'important');
-    section.style.setProperty('margin', '0', 'important');
-    section.style.setProperty('height', 'auto', 'important');
-    section.style.setProperty('max-height', 'none', 'important');
-    section.style.setProperty('overflow', 'visible', 'important');
-
-    var title = qsV128('.report-print-section-title-v1773', section);
-    if(title){
-      title.style.setProperty('width', '100%', 'important');
-      title.style.setProperty('max-width', 'none', 'important');
-      title.style.setProperty('margin-left', '0', 'important');
-      title.style.setProperty('margin-right', '0', 'important');
-    }
-
-    return section;
-  }
-
-  /**
-   * extractCheckCardsV128은 점검 탭의 번호 카드 목록을 반환한다.
-   */
-  function extractCheckCardsV128(checkSection){
-    if(!checkSection) return [];
-
-    var body = qsV128('.report-print-section-body-v1773', checkSection);
-    var content = body ? body.firstElementChild : null;
-    if(!content) return [];
-
-    var direct = Array.prototype.slice.call(content.children).filter(function(child){
-      return !!(
-        child &&
-        child.matches &&
-        child.matches('article, .report-card-ui, .touch-card, .card')
-      );
-    });
-
-    if(direct.length) return direct;
-
-    return qsaV128('article.report-card-ui, article.touch-card, article', content);
-  }
-
-  /**
-   * cardNumberV128은 점검 카드 제목의 번호를 읽는다.
-   */
-  function cardNumberV128(card){
-    var numberNode = qsV128('h1 .no, h2 .no, h3 .no, .no', card);
-    var value = String(numberNode ? numberNode.textContent : '')
-      .replace(/[^\d]/g, '');
-
-    if(value) return parseInt(value, 10);
-
-    var text = String(card.textContent || '').trim();
-    var match = text.match(/^(\d{1,2})\s/);
-    return match ? parseInt(match[1], 10) : 0;
-  }
-
-  /**
-   * createViewerPageV128은 모바일 화면에 표시할 A2 비율 페이지를 만든다.
-   */
-  function createViewerPageV128(stage, mode, pageNo, showHead){
-    var page = document.createElement('section');
-    page.className = 'report-viewer-page-v128';
-    page.setAttribute('data-viewer-page-v128', String(pageNo));
-
-    if(showHead){
-      var now = new Date();
-      var yyyy = now.getFullYear();
-      var mm = String(now.getMonth() + 1).padStart(2, '0');
-      var dd = String(now.getDate()).padStart(2, '0');
-
-      var head = document.createElement('header');
-      head.className = 'report-viewer-page-head-v128';
-      head.innerHTML =
-        '<div class="title">오토베이 현장 매입 진단리포트</div>' +
-        '<p class="sub">' +
-          (mode === 'company' ? '회사보고용 리포트' : '고객보고용 리포트') +
-          ' · ' + yyyy + '-' + mm + '-' + dd +
-        '</p>';
-      page.appendChild(head);
-    }
-
-    var left = document.createElement('div');
-    left.className = 'report-viewer-column-v128';
-
-    var right = document.createElement('div');
-    right.className = 'report-viewer-column-v128';
-
-    page.appendChild(left);
-    page.appendChild(right);
-    stage.appendChild(page);
-
-    return {
-      page: page,
-      left: left,
-      right: right
-    };
-  }
-
-  /**
-   * createCheckSectionV128은 지정한 점검 카드만 포함하는 출력 섹션을 만든다.
-   */
-  function createCheckSectionV128(sourceSection, cards, showTitle){
-    var section = document.createElement('section');
-    section.className = 'report-print-section-v1773';
-
-    if(showTitle){
-      var title = document.createElement('div');
-      title.className = 'report-print-section-title-v1773';
-      title.textContent = '점검';
-      section.appendChild(title);
-    }
-
-    var body = document.createElement('div');
-    body.className = 'report-print-section-body-v1773';
-
-    var sourceBody = qsV128('.report-print-section-body-v1773', sourceSection);
-    var sourceContent = sourceBody ? sourceBody.firstElementChild : null;
-    var content = sourceContent
-      ? sourceContent.cloneNode(false)
-      : document.createElement('section');
-
-    content.removeAttribute('id');
-    content.classList.add('report-viewer-check-shell-v128');
-
-    cards.forEach(function(card){
-      content.appendChild(card.cloneNode(true));
-    });
-
-    body.appendChild(content);
-    section.appendChild(body);
-
-    return normalizeViewerSectionV128(section);
-  }
-
-  /**
-   * splitCheckCardsV128은 첨부 A2 PDF 구성과 동일하게 점검 카드를 나눈다.
-   */
-  function splitCheckCardsV128(cards){
-    var groups = {
-      page2: [],
-      page3Left: [],
-      page3Right: []
-    };
-
-    cards.forEach(function(card, index){
-      var number = cardNumberV128(card);
-
-      if(number >= 8 && number <= 9){
-        groups.page2.push(card);
-      }else if(number >= 10 && number <= 13){
-        groups.page3Left.push(card);
-      }else if(number >= 14){
-        groups.page3Right.push(card);
-      }else if(index < 2){
-        groups.page2.push(card);
-      }else if(index < 6){
-        groups.page3Left.push(card);
-      }else{
-        groups.page3Right.push(card);
-      }
-    });
-
-    return groups;
-  }
-
-  /**
-   * updateViewerScaleV128은 현재 배율과 스테이지 실제 점유 크기를 동기화한다.
-   */
-  function updateViewerScaleV128(scale){
-    var viewport = document.getElementById('reportViewerViewportV128');
-    var sizer = document.getElementById('reportViewerSizerV128');
-    var stage = document.getElementById('reportViewerStageV128');
-
-    if(!viewport || !sizer || !stage) return;
-
-    viewerScaleV128 = Math.max(0.22, Math.min(scale, 1.4));
-    stage.style.transform = 'scale(' + viewerScaleV128 + ')';
-
-    var stageHeight = Math.ceil(stage.scrollHeight * viewerScaleV128);
-    var stageWidth = Math.ceil(BASE_STAGE_WIDTH_V128 * viewerScaleV128);
-
-    sizer.style.width = Math.max(stageWidth, viewport.clientWidth) + 'px';
-    sizer.style.height = stageHeight + 'px';
-
-    var label = document.getElementById('reportViewerScaleV128');
-    if(label){
-      label.textContent = Math.round(viewerScaleV128 * 100) + '%';
-    }
-  }
-
-  /**
-   * fitViewerWidthV128은 현재 모바일 화면 너비에 리포트 전체 폭을 맞춘다.
-   */
-  function fitViewerWidthV128(){
-    var viewport = document.getElementById('reportViewerViewportV128');
-    if(!viewport) return;
-
-    var available = Math.max(240, viewport.clientWidth - 16);
-    updateViewerScaleV128(available / BASE_STAGE_WIDTH_V128);
-    viewport.scrollTo(0, 0);
-  }
-
-  /**
-   * buildViewerOverlayV128은 전체화면 뷰어 UI를 만든다.
-   */
-  function buildViewerOverlayV128(mode){
-    closeReportViewerV128();
-
-    if(typeof window.__buildReportRootV1773 !== 'function'){
-      throw new Error('print build function missing');
-    }
-
-    var sourceRoot = window.__buildReportRootV1773(mode);
-    var sections = collectOutputSectionsV128(sourceRoot);
-
-    if(!sections.basic || !sections.accident || !sections.exterior || !sections.check){
-      throw new Error('required report section missing');
-    }
+  function buildOverlayV130(mode){
+    closePagedViewV130();
 
     var overlay = document.createElement('div');
-    overlay.id = OVERLAY_ID_V128;
+    overlay.id = OVERLAY_ID_V130;
 
     var toolbar = document.createElement('div');
-    toolbar.id = 'reportViewerToolbarV128';
+    toolbar.id = 'reportPagedViewToolbarV130';
     toolbar.innerHTML =
-      '<div class="report-viewer-title-text-v128">오토베이 검수리포트</div>' +
-      '<button id="reportViewerMinusV128" type="button">−</button>' +
-      '<button id="reportViewerScaleV128" type="button">100%</button>' +
-      '<button id="reportViewerPlusV128" type="button">＋</button>' +
-      '<button id="reportViewerCloseV128" type="button">닫기</button>';
+      '<div class="report-paged-view-name-v130">' +
+        (mode === 'company' ? '회사용 A2 검수리포트' : '고객용 A2 검수리포트') +
+      '</div>' +
+      '<div class="report-paged-page-count-v130" id="reportPagedPageCountV130">준비</div>' +
+      '<button id="reportPagedMinusV130" type="button" aria-label="축소">−</button>' +
+      '<button id="reportPagedFitV130" type="button" aria-label="화면 맞춤">맞춤</button>' +
+      '<button id="reportPagedPlusV130" type="button" aria-label="확대">＋</button>' +
+      '<button id="reportPagedViewCloseV130" type="button">닫기</button>';
 
-    var viewport = document.createElement('div');
-    viewport.id = 'reportViewerViewportV128';
+    var frame = document.createElement('iframe');
+    frame.id = FRAME_ID_V130;
+    frame.setAttribute('title', '오토베이 A2 검수리포트');
+    frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
 
-    var sizer = document.createElement('div');
-    sizer.id = 'reportViewerSizerV128';
-
-    var stage = document.createElement('main');
-    stage.id = 'reportViewerStageV128';
-
-    sizer.appendChild(stage);
-    viewport.appendChild(sizer);
     overlay.appendChild(toolbar);
-    overlay.appendChild(viewport);
+    overlay.appendChild(frame);
     document.body.appendChild(overlay);
-    document.body.classList.add('report-viewer-open-v128');
+    document.body.classList.add('report-paged-view-open-v130');
 
-    var page1 = createViewerPageV128(stage, mode, 1, true);
-    var page2 = createViewerPageV128(stage, mode, 2, false);
-    var page3 = createViewerPageV128(stage, mode, 3, false);
-
-    page1.left.appendChild(
-      normalizeViewerSectionV128(sections.basic.cloneNode(true))
-    );
-    page1.right.appendChild(
-      normalizeViewerSectionV128(sections.accident.cloneNode(true))
-    );
-    page2.left.appendChild(
-      normalizeViewerSectionV128(sections.exterior.cloneNode(true))
+    qsV130('#reportPagedViewCloseV130', toolbar).addEventListener(
+      'click',
+      closePagedViewV130,
+      false
     );
 
-    var checkCards = extractCheckCardsV128(sections.check);
-    var checkGroups = splitCheckCardsV128(checkCards);
+    qsV130('#reportPagedMinusV130', toolbar).addEventListener(
+      'click',
+      function(){ applyScaleV130(viewerScaleV130 - 0.1); },
+      false
+    );
 
-    page2.right.appendChild(
-      createCheckSectionV128(sections.check, checkGroups.page2, true)
+    qsV130('#reportPagedPlusV130', toolbar).addEventListener(
+      'click',
+      function(){ applyScaleV130(viewerScaleV130 + 0.1); },
+      false
     );
-    page3.left.appendChild(
-      createCheckSectionV128(sections.check, checkGroups.page3Left, false)
+
+    qsV130('#reportPagedFitV130', toolbar).addEventListener(
+      'click',
+      fitPagedViewV130,
+      false
     );
-    page3.right.appendChild(
-      createCheckSectionV128(sections.check, checkGroups.page3Right, false)
-    );
+
+    return frame;
+  }
+
+  /**
+   * applyScaleV130은 iframe 내부 Paged.js 페이지 배율을 변경한다.
+   */
+  function applyScaleV130(scale){
+    var frame = document.getElementById(FRAME_ID_V130);
+    if(!frame || !frame.contentWindow) return;
+
+    viewerScaleV130 = Math.max(0.18, Math.min(scale, 1.35));
+
+    if(typeof frame.contentWindow.__applyPagedScaleV130 === 'function'){
+      frame.contentWindow.__applyPagedScaleV130(viewerScaleV130);
+    }
+  }
+
+  /**
+   * fitPagedViewV130은 A2 페이지 한 장의 가로 폭을 모바일 화면에 맞춘다.
+   */
+  function fitPagedViewV130(){
+    var frame = document.getElementById(FRAME_ID_V130);
+    if(!frame || !frame.contentWindow) return;
+
+    if(typeof frame.contentWindow.__fitPagedWidthV130 === 'function'){
+      viewerScaleV130 = frame.contentWindow.__fitPagedWidthV130();
+    }
+  }
+
+  /**
+   * writeViewerDocumentV130은 원본 출력 root와 원본 CSS를 독립 iframe에 기록한다.
+   */
+  function writeViewerDocumentV130(frame, mode, reportHtml, sourceCss){
+    var frameDoc = frame.contentDocument;
+    var baseHref = escapeHtmlTextV130(document.baseURI);
+    var titleText = mode === 'company'
+      ? '회사용 A2 검수리포트'
+      : '고객용 A2 검수리포트';
 
     /*
-      화면용 clone을 만든 뒤 임시 원본 출력 root만 제거한다.
-      회사 모드 L 마커 숨김 스타일은 clone에 이미 복사된 상태다.
+      기존 @media print에서만 적용되던 핵심 A2 규칙을 Paged.js 화면 페이지에서도
+      동일하게 적용한다. 섹션이나 카드는 다시 분리하지 않는다.
     */
-    if(typeof window.__closeReportPrintV1773 === 'function'){
-      try{ window.__closeReportPrintV1773(); }catch(error){}
+    var pagedCss = [
+      '@page{size:A2 portrait;margin:10mm;}',
+      'html,body{margin:0!important;padding:0!important;background:#dfe4ea!important;color:#111827!important;}',
+      'body{overflow:auto!important;-webkit-overflow-scrolling:touch!important;}',
+      '#reportPagedSourceV130{display:none!important;}',
+      '#reportPagedTargetV130{display:block!important;min-height:100vh!important;padding:14px 0 28px!important;box-sizing:border-box!important;}',
+      '#reportPrintRootV1773{display:block!important;max-width:none!important;width:100%!important;padding:0!important;margin:0!important;background:#fff!important;}',
+      '#reportPrintRootV1773 .report-print-columns-v118{display:block!important;column-count:2!important;column-gap:18mm!important;column-fill:auto!important;width:100%!important;}',
+      '#reportPrintRootV1773 .report-print-section-v1773{display:block!important;width:100%!important;max-width:none!important;page-break-inside:auto!important;break-inside:auto!important;-webkit-column-break-inside:auto!important;margin-bottom:16px!important;}',
+      '#reportPrintRootV1773 .report-print-section-title-v1773{page-break-after:avoid!important;break-after:avoid!important;-webkit-column-break-after:avoid!important;}',
+      '#reportPrintRootV1773 .report-print-section-body-v1773 article,#reportPrintRootV1773 .report-print-section-body-v1773 .report-card-ui,#reportPrintRootV1773 .report-print-section-body-v1773 .touch-card,#reportPrintRootV1773 .report-print-section-body-v1773 .fig,#reportPrintRootV1773 .report-print-section-body-v1773 .paint-fig,#reportPrintRootV1773 .report-print-section-body-v1773 .paint-fig-bent,#reportPrintRootV1773 .report-print-section-body-v1773 .touch-diagram-shell{page-break-inside:avoid!important;break-inside:avoid!important;-webkit-column-break-inside:avoid!important;}',
+      '.pagedjs_pages{display:block!important;width:max-content!important;min-width:100%!important;margin:0!important;transform-origin:top left!important;}',
+      '.pagedjs_page{margin:0 auto 18px!important;background:#fff!important;box-shadow:0 8px 24px rgba(15,23,42,.16)!important;}',
+      '.pagedjs_pagebox{box-shadow:none!important;}',
+      '#pagedScaleSizerV130{position:relative!important;display:block!important;min-width:100%!important;margin:0 auto!important;}',
+      '@media(max-width:640px){#reportPagedTargetV130{padding-top:10px!important;}.pagedjs_page{margin-bottom:12px!important;}}'
+    ].join('\n');
+
+    frameDoc.open();
+    frameDoc.write(
+      '<!doctype html><html lang="ko"><head>' +
+      '<meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">' +
+      '<base href="' + baseHref + '">' +
+      '<title>' + escapeHtmlTextV130(titleText) + '</title>' +
+      '<style>' + sourceCss.replace(/<\/style/gi, '<\\/style') + '</style>' +
+      '<style id="reportPagedViewCssV130">' + pagedCss + '</style>' +
+      '</head><body>' +
+      '<div id="reportPagedSourceV130">' + reportHtml + '</div>' +
+      '<main id="reportPagedTargetV130"></main>' +
+      '</body></html>'
+    );
+    frameDoc.close();
+
+    var frameWin = frame.contentWindow;
+    frameWin.PagedConfig = { auto:false };
+
+    var script = frameDoc.createElement('script');
+    script.src = 'https://unpkg.com/pagedjs/dist/paged.polyfill.js';
+    script.async = true;
+
+    script.onload = function(){
+      renderPagedDocumentV130(frame, mode);
+    };
+
+    script.onerror = function(){
+      console.error('[REPORT][PAGED_VIEW][ERROR]', 'Paged.js load failed');
+      hideLoadingV130();
+      alert('A2 페이지 변환 모듈을 불러오지 못했습니다. 네트워크 상태를 확인해 주세요.');
+      closePagedViewV130();
+    };
+
+    frameDoc.head.appendChild(script);
+  }
+
+  /**
+   * installScaleControllerV130은 생성된 Paged.js 페이지 묶음의 배율을 관리한다.
+   */
+  function installScaleControllerV130(frame){
+    var frameWin = frame.contentWindow;
+    var frameDoc = frame.contentDocument;
+    var target = frameDoc.getElementById('reportPagedTargetV130');
+    var pages = target ? target.querySelector('.pagedjs_pages') : null;
+
+    if(!target || !pages){
+      throw new Error('paged pages missing');
     }
-    document.body.classList.add('report-viewer-open-v128');
 
-    qsV128('#reportViewerCloseV128', toolbar).addEventListener(
-      'click',
-      closeReportViewerV128,
-      false
-    );
+    var sizer = frameDoc.createElement('div');
+    sizer.id = 'pagedScaleSizerV130';
+    pages.parentNode.insertBefore(sizer, pages);
+    sizer.appendChild(pages);
 
-    qsV128('#reportViewerMinusV128', toolbar).addEventListener(
-      'click',
-      function(){ updateViewerScaleV128(viewerScaleV128 - 0.1); },
-      false
-    );
+    function applyScale(scale){
+      scale = Math.max(0.18, Math.min(scale, 1.35));
 
-    qsV128('#reportViewerPlusV128', toolbar).addEventListener(
-      'click',
-      function(){ updateViewerScaleV128(viewerScaleV128 + 0.1); },
-      false
-    );
+      /*
+        transform은 원본 페이지 내부 CSS 계산을 변경하지 않는다.
+        즉 Paged.js가 완료한 A2 페이지를 시각적으로만 확대·축소한다.
+      */
+      pages.style.transform = 'scale(' + scale + ')';
+      pages.style.transformOrigin = 'top left';
 
-    qsV128('#reportViewerScaleV128', toolbar).addEventListener(
-      'click',
-      fitViewerWidthV128,
-      false
-    );
+      var rawWidth = Math.max(
+        pages.scrollWidth,
+        pages.getBoundingClientRect().width / scale
+      );
+      var rawHeight = Math.max(
+        pages.scrollHeight,
+        pages.getBoundingClientRect().height / scale
+      );
 
-    window.addEventListener('resize', fitViewerWidthV128, { once:true });
+      sizer.style.width = Math.ceil(rawWidth * scale) + 'px';
+      sizer.style.height = Math.ceil(rawHeight * scale) + 'px';
 
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        fitViewerWidthV128();
-      });
+      if(sizer.offsetWidth < frameWin.innerWidth){
+        sizer.style.marginLeft = Math.floor(
+          (frameWin.innerWidth - sizer.offsetWidth) / 2
+        ) + 'px';
+      }else{
+        sizer.style.marginLeft = '0';
+      }
+
+      return scale;
+    }
+
+    function fitWidth(){
+      var firstPage = pages.querySelector('.pagedjs_page');
+      if(!firstPage) return applyScale(1);
+
+      var pageWidth = firstPage.getBoundingClientRect().width;
+      var currentTransform = pages.style.transform.match(/scale\(([^)]+)\)/);
+      var currentScale = currentTransform
+        ? parseFloat(currentTransform[1]) || 1
+        : 1;
+      var rawPageWidth = pageWidth / currentScale;
+      var available = Math.max(240, frameWin.innerWidth - 20);
+
+      frameWin.scrollTo(0, 0);
+      return applyScale(available / rawPageWidth);
+    }
+
+    frameWin.__applyPagedScaleV130 = applyScale;
+    frameWin.__fitPagedWidthV130 = fitWidth;
+
+    frameWin.addEventListener('resize', function(){
+      fitWidth();
+    }, false);
+
+    return fitWidth();
+  }
+
+  /**
+   * renderPagedDocumentV130은 원본 출력 DOM 전체를 Paged.js Previewer에 전달한다.
+   */
+  function renderPagedDocumentV130(frame, mode){
+    var frameWin = frame.contentWindow;
+    var frameDoc = frame.contentDocument;
+    var source = frameDoc.getElementById('reportPagedSourceV130');
+    var target = frameDoc.getElementById('reportPagedTargetV130');
+
+    if(
+      !source ||
+      !target ||
+      !frameWin.Paged ||
+      typeof frameWin.Paged.Previewer !== 'function'
+    ){
+      console.error('[REPORT][PAGED_VIEW][ERROR]', 'Previewer unavailable');
+      hideLoadingV130();
+      alert('A2 페이지 뷰어를 시작하지 못했습니다.');
+      closePagedViewV130();
+      return;
+    }
+
+    console.log('[REPORT][PAGED_VIEW][PAGINATION_START]');
+    showLoadingV130('A2 2열 페이지 구성 중...\n잠시만 기다려 주세요.');
+
+    var previewer = new frameWin.Paged.Previewer();
+
+    previewer.preview(source.innerHTML, [], target).then(function(flow){
+      var total = Number(flow && flow.total) || qsaV130(
+        '.pagedjs_page',
+        frameDoc
+      ).length;
+
+      console.log('[REPORT][PAGED_VIEW][PAGINATION_DONE]', total);
+      console.log('[REPORT][PAGED_VIEW][PAGE_COUNT]', total);
+
+      var countNode = document.getElementById('reportPagedPageCountV130');
+      if(countNode){
+        countNode.textContent = total + '쪽';
+      }
+
+      viewerScaleV130 = installScaleControllerV130(frame);
+      hideLoadingV130();
+    }).catch(function(error){
+      console.error('[REPORT][PAGED_VIEW][ERROR]', error);
+      hideLoadingV130();
+      alert('A2 2열 페이지 구성 중 오류가 발생했습니다.');
+      closePagedViewV130();
     });
   }
 
   /**
-   * bindViewerButtonsV128은 제출 탭 버튼을 전체화면 뷰어와 연결한다.
+   * openPagedViewV130은 v118 원본 출력 DOM을 생성한 뒤 HTML 문자열만 iframe에 전달한다.
+   * 섹션·카드 분리, 위치 재계산, clone 재조립은 수행하지 않는다.
    */
-  function bindViewerButtonsV128(){
-    var customer = document.getElementById('btnCustomerReportViewerV128');
-    var company = document.getElementById('btnCompanyReportViewerV128');
+  function openPagedViewV130(mode){
+    try{
+      console.log('[REPORT][PAGED_VIEW][INIT]', mode);
+      closePagedViewV130();
 
-    if(customer && customer.getAttribute('data-bind-v128') !== '1'){
-      customer.setAttribute('data-bind-v128', '1');
+      if(typeof window.__buildReportRootV1773 !== 'function'){
+        throw new Error('buildReport function missing');
+      }
+
+      showLoadingV130('기존 출력용 리포트 생성 중...');
+
+      var reportRoot = window.__buildReportRootV1773(mode);
+
+      if(!reportRoot || reportRoot.id !== 'reportPrintRootV1773'){
+        throw new Error('report root missing');
+      }
+
+      console.log('[REPORT][PAGED_VIEW][BUILD_ROOT_OK]');
+
+      /*
+        생성 완료된 출력 root 전체를 그대로 직렬화한다.
+        내부 섹션이나 카드를 꺼내거나 재배치하지 않는다.
+      */
+      var reportHtml = reportRoot.outerHTML;
+      var sourceCss = collectCurrentStylesV130();
+
+      if(typeof window.__closeReportPrintV1773 === 'function'){
+        window.__closeReportPrintV1773();
+      }
+
+      var frame = buildOverlayV130(mode);
+      writeViewerDocumentV130(frame, mode, reportHtml, sourceCss);
+    }catch(error){
+      console.error('[REPORT][PAGED_VIEW][ERROR]', error);
+      hideLoadingV130();
+      closePagedViewV130();
+      alert('A2 리포트 화면을 생성하지 못했습니다.');
+    }
+  }
+
+  /**
+   * bindPagedViewButtonsV130은 제출 탭 버튼을 A2 뷰어에 연결한다.
+   */
+  function bindPagedViewButtonsV130(){
+    var customer = document.getElementById('btnCustomerPagedViewV130');
+    var company = document.getElementById('btnCompanyPagedViewV130');
+
+    if(customer && customer.getAttribute('data-bind-v130') !== '1'){
+      customer.setAttribute('data-bind-v130', '1');
       customer.addEventListener('click', function(){
-        try{
-          buildViewerOverlayV128('customer');
-        }catch(error){
-          console.error('[REPORT][VIEWER_V128][ERROR]', error);
-          alert('고객용 리포트 화면을 생성하지 못했습니다.');
-        }
+        openPagedViewV130('customer');
       }, false);
     }
 
-    if(company && company.getAttribute('data-bind-v128') !== '1'){
-      company.setAttribute('data-bind-v128', '1');
+    if(company && company.getAttribute('data-bind-v130') !== '1'){
+      company.setAttribute('data-bind-v130', '1');
       company.addEventListener('click', function(){
-        try{
-          buildViewerOverlayV128('company');
-        }catch(error){
-          console.error('[REPORT][VIEWER_V128][ERROR]', error);
-          alert('회사용 리포트 화면을 생성하지 못했습니다.');
-        }
+        openPagedViewV130('company');
       }, false);
     }
   }
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', bindViewerButtonsV128, false);
+    document.addEventListener(
+      'DOMContentLoaded',
+      bindPagedViewButtonsV130,
+      false
+    );
   }else{
-    bindViewerButtonsV128();
+    bindPagedViewButtonsV130();
   }
 
-  window.__openReportViewerV128 = buildViewerOverlayV128;
-  window.__closeReportViewerV128 = closeReportViewerV128;
+  window.__openPagedReportViewV130 = openPagedViewV130;
+  window.__closePagedReportViewV130 = closePagedViewV130;
 })();
 </script>
 <script>

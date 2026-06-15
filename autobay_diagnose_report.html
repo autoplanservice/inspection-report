@@ -10459,9 +10459,11 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   margin:8px 0 0;
 }
 .report-print-a4-first-v132,
-.report-print-a4-first-flow-v132,
-.report-print-a4-fixed-grid-v135,
-.report-print-a4-section-page-v135{
+.report-print-a4-first-flow-v132{
+  display:block;
+}
+.report-print-a4-page-v136,
+.report-print-a4-grid-v136{
   display:block;
 }
 .report-print-columns-v118{
@@ -10614,74 +10616,45 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 
   /*
-    v135 - A4 페이지별 원본 섹션 유지
-    카드 내부 DOM을 재배치하지 않고 섹션 전체에만 균일 축소를 적용한다.
+    v132 - A4 출력 보정
+    1페이지는 헤더 + 기본정보 + 사고 3번 보험·특수 이력까지 출력한다.
+    첫 페이지는 고정 좌/우 박스가 아니라 순차 2열 흐름을 사용한다.
+    따라서 기본정보 카드가 좌측에서 시작해 공간이 부족하면 우측으로 이어지고,
+    보험·특수 이력 카드는 남는 하단 공간에 이어서 배치된다.
   */
   #reportPrintRootV1773 .report-print-a4-first-v132{
     display:block!important;
     width:100%!important;
-    margin:0!important;
+    margin:0 0 12px!important;
     padding:0!important;
     page-break-after:always!important;
     break-after:page!important;
   }
 
-  #reportPrintRootV1773 .report-print-a4-fixed-grid-v135{
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132{
+    display:block!important;
+    width:100%!important;
+    column-count:2!important;
     column-gap:8mm!important;
-    align-items:start!important;
-    width:100%!important;
+    column-fill:auto!important;
   }
 
-  #reportPrintRootV1773 .report-print-a4-fixed-grid-v135 > .report-print-section-v1773{
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 > .report-print-section-v1773{
     display:block!important;
     width:100%!important;
     max-width:none!important;
-    margin:0!important;
-    page-break-inside:avoid!important;
-    break-inside:avoid!important;
+    margin:0 0 12px!important;
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+    -webkit-column-break-inside:auto!important;
   }
 
-  #reportPrintRootV1773 .report-print-a4-section-page-v135{
-    display:block!important;
-    width:100%!important;
-    margin:0!important;
-    padding:0!important;
-    page-break-after:always!important;
-    break-after:page!important;
-    overflow:visible!important;
-  }
-
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 > .report-print-section-v1773{
-    display:block!important;
-    width:100%!important;
-    max-width:none!important;
-    margin:0 auto!important;
-    page-break-inside:avoid!important;
-    break-inside:avoid!important;
-    transform-origin:top center!important;
-  }
-
-  /* 사고·외관은 내부 DOM을 유지한 채 섹션 전체만 축소한다. */
-  #reportPrintRootV1773 .report-print-a4-accident-page-v135 > .report-print-section-v1773{
-    zoom:.68!important;
-  }
-
-  #reportPrintRootV1773 .report-print-a4-exterior-page-v135 > .report-print-section-v1773{
-    zoom:.61!important;
-  }
-
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 article,
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 .report-card-ui,
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 .touch-card,
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 .fig,
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 .paint-fig,
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 .paint-fig-bent,
-  #reportPrintRootV1773 .report-print-a4-section-page-v135 .touch-diagram-shell{
-    page-break-inside:avoid!important;
-    break-inside:avoid!important;
-    overflow:visible!important;
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 .report-print-section-body-v1773 article,
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 .report-print-section-body-v1773 .report-card-ui,
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 .report-print-section-body-v1773 .touch-card{
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+    -webkit-column-break-inside:auto!important;
   }
 
   #reportPrintRootV1773 .report-print-columns-v118{
@@ -10723,6 +10696,163 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   .report-print-head-v1773{
     page-break-inside:avoid;
     break-inside:avoid;
+  }
+
+  /*
+    v136 - A4 페이지별 원본 카드 고정 배치
+    사고/외관 페이지에서는 column-count, transform, zoom을 사용하지 않는다.
+    각 원본 카드와 도면 내부 DOM은 그대로 유지하고 부모 폭만 A4 칼럼에 맞춘다.
+  */
+  #reportPrintRootV1773 .report-print-a4-page-v136{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-page-v136:last-child{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-grid-v136{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    column-gap:8mm!important;
+    row-gap:4mm!important;
+    align-items:start!important;
+    width:100%!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-page-v136 .report-print-section-v1773{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-page-v136 .report-print-section-title-v1773{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-page-v136 #secInput,
+  #reportPrintRootV1773 .report-print-a4-page-v136 #secDiag{
+    width:100%!important;
+    max-width:none!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-page-v136 article.report-card-ui{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    box-sizing:border-box!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  /* 1페이지: 기본정보 좌측 / 랩핑·안내·보험이력 우측 */
+  #reportPrintRootV1773 .report-print-a4-first-v136 .report-print-a4-grid-v136 > .report-print-section-v1773{
+    grid-column:auto!important;
+  }
+
+  /* 2페이지: 사고 4번 원본 카드 */
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .report-print-section-v1773{
+    grid-column:1 / -1!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .touch-diagram-shell{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    gap:4mm 8mm!important;
+    align-items:start!important;
+    margin:0!important;
+    width:100%!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .touch-diagram-title,
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card .touch-diagram-subtitle{
+    display:none!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card section.touch-card{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card section.touch-card:nth-of-type(1){
+    grid-column:1!important;
+    grid-row:1!important;
+  }
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card section.touch-card:nth-of-type(2){
+    grid-column:2!important;
+    grid-row:1 / span 2!important;
+  }
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .diag-accident-card section.touch-card:nth-of-type(3){
+    grid-column:1!important;
+    grid-row:2!important;
+  }
+
+  /* 3페이지: 도막/외관/타이어 원본 카드를 2열로 배치 */
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 .report-print-section-v1773{
+    grid-column:1 / -1!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:4mm 8mm!important;
+    align-items:start!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag > .diag-paint-card{
+    grid-column:1!important;
+    grid-row:1 / span 2!important;
+  }
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag > .diag-exterior-card{
+    grid-column:2!important;
+    grid-row:1!important;
+  }
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 #secDiag > .tire-state-card-v1696{
+    grid-column:2!important;
+    grid-row:2!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 .touch-diagram-shell{
+    margin:0!important;
+    width:100%!important;
+  }
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 section.touch-card,
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 .touch-card .fig,
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .touch-card .fig{
+    width:100%!important;
+    max-width:none!important;
+  }
+  #reportPrintRootV1773 .report-print-a4-exterior-v136 .touch-card .fig img,
+  #reportPrintRootV1773 .report-print-a4-accident-v136 .touch-card .fig img{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    max-width:none!important;
+  }
+
+  /* 4페이지 이후 점검은 기존 2열 흐름 */
+  #reportPrintRootV1773 .report-print-a4-check-v136 .report-print-columns-v118{
+    column-count:2!important;
+    column-gap:8mm!important;
+    column-fill:auto!important;
   }
 }
 </style>
@@ -15852,6 +15982,48 @@ function isVisibleCaptureTarget(el){
     return node;
   }
 
+  /**
+   * cloneBasicPartSectionV136은 #secInput에서 필요한 카드만 남긴다.
+   * basic: 1 기본정보
+   * side: 2 랩핑/PPF + 안내 카드
+   */
+  function cloneBasicPartSectionV136(part){
+    var node = cloneSection(part === 'basic' ? '기본' : '사고', '#secInput');
+    if(!node) return null;
+
+    var clone = qs('.report-print-section-body-v1773 > #secInput', node);
+    if(!clone) return node;
+
+    qsa(':scope > article', clone).forEach(function(card, index){
+      var keep = part === 'basic' ? index === 0 : index > 0;
+      if(!keep) card.remove();
+    });
+
+    return node;
+  }
+
+  /**
+   * mergeIntroSectionsV136은 랩핑/안내 카드 뒤에 보험이력 카드를 붙여
+   * 1페이지 우측의 사고 섹션 하나로 만든다.
+   */
+  function mergeIntroSectionsV136(){
+    var side = cloneBasicPartSectionV136('side');
+    var insurance = cloneAccidentPartSectionV132('intro');
+    if(!side) return insurance;
+    if(!insurance) return side;
+
+    var sideBody = qs('.report-print-section-body-v1773 > #secInput', side);
+    var insuranceClone = qs('.report-print-section-body-v1773 > #secDiag', insurance);
+
+    if(sideBody && insuranceClone){
+      qsa(':scope > article', insuranceClone).forEach(function(card){
+        sideBody.appendChild(card);
+      });
+    }
+
+    return side;
+  }
+
   function cloneExteriorSection(){
     /*
       v17.75:
@@ -15895,44 +16067,56 @@ function isVisibleCaptureTarget(el){
     var d = String(now.getDate()).padStart(2,'0');
 
     /*
-      v135:
+      v136:
       메인 헤더는 출력하지 않는다.
-      1페이지는 기본과 사고 2/3번을 고정 좌우 배치한다.
+      A4 페이지별로 들어갈 원본 카드만 명시적으로 배치한다.
     */
-    var firstPage = document.createElement('div');
-    firstPage.className = 'report-print-a4-first-v132';
+
+    /* 1페이지: 기본정보 / 랩핑·안내·보험이력 */
+    var firstPage = document.createElement('section');
+    firstPage.className = 'report-print-a4-page-v136 report-print-a4-first-v136';
     root.appendChild(firstPage);
 
     var firstGrid = document.createElement('div');
-    firstGrid.className = 'report-print-a4-fixed-grid-v135';
+    firstGrid.className = 'report-print-a4-grid-v136';
     firstPage.appendChild(firstGrid);
 
-    var basicNode = cloneSection('기본', '#secInput');
+    var basicNode = cloneBasicPartSectionV136('basic');
     if(basicNode) firstGrid.appendChild(basicNode);
 
-    var accidentIntroNode = cloneAccidentPartSectionV132('intro');
-    if(accidentIntroNode) firstGrid.appendChild(accidentIntroNode);
+    var introNode = mergeIntroSectionsV136();
+    if(introNode) firstGrid.appendChild(introNode);
 
-    /* 2페이지: 사고 4번 원본 섹션 전체 */
-    var accidentPage = document.createElement('div');
-    accidentPage.className = 'report-print-a4-section-page-v135 report-print-a4-accident-page-v135';
+    /* 2페이지: 사고 4번 원본 카드 */
+    var accidentPage = document.createElement('section');
+    accidentPage.className = 'report-print-a4-page-v136 report-print-a4-accident-v136';
     root.appendChild(accidentPage);
 
-    var accidentDetailNode = cloneAccidentPartSectionV132('detail');
-    if(accidentDetailNode) accidentPage.appendChild(accidentDetailNode);
+    var accidentGrid = document.createElement('div');
+    accidentGrid.className = 'report-print-a4-grid-v136';
+    accidentPage.appendChild(accidentGrid);
 
-    /* 3페이지: 외관/수리 원본 섹션 전체 */
-    var exteriorPage = document.createElement('div');
-    exteriorPage.className = 'report-print-a4-section-page-v135 report-print-a4-exterior-page-v135';
+    var accidentDetailNode = cloneAccidentPartSectionV132('detail');
+    if(accidentDetailNode) accidentGrid.appendChild(accidentDetailNode);
+
+    /* 3페이지: 외관/수리 5·6·7 원본 카드 */
+    var exteriorPage = document.createElement('section');
+    exteriorPage.className = 'report-print-a4-page-v136 report-print-a4-exterior-v136';
     root.appendChild(exteriorPage);
 
-    var exteriorNode = cloneExteriorSection();
-    if(exteriorNode) exteriorPage.appendChild(exteriorNode);
+    var exteriorGrid = document.createElement('div');
+    exteriorGrid.className = 'report-print-a4-grid-v136';
+    exteriorPage.appendChild(exteriorGrid);
+    exteriorGrid.appendChild(cloneExteriorSection());
 
-    /* 4페이지 이후: 점검만 기존 2열 흐름 */
+    /* 4페이지 이후: 점검 */
+    var checkPage = document.createElement('section');
+    checkPage.className = 'report-print-a4-page-v136 report-print-a4-check-v136';
+    root.appendChild(checkPage);
+
     var columns = document.createElement('div');
     columns.className = 'report-print-columns-v118';
-    root.appendChild(columns);
+    checkPage.appendChild(columns);
 
     var checkNode = cloneSection('점검', '#secCheck');
     if(checkNode) columns.appendChild(checkNode);

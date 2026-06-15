@@ -10458,6 +10458,10 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   line-height:1.45;
   margin:8px 0 0;
 }
+.report-print-a4-first-v131,
+.report-print-a4-first-columns-v131{
+  display:block;
+}
 .report-print-columns-v118{
   display:block;
 }
@@ -10580,6 +10584,11 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 
 @media print{
+  @page{
+    size:A4 portrait;
+    margin:8mm;
+  }
+
   html,body{
     margin:0!important;
     padding:0!important;
@@ -10603,13 +10612,39 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 
   /*
-    v118 - A2 출력 전용 2쪽 좌/우 배치
-    기존 세로형 카드 폭과 비율은 유지하고, 출력 흐름만 두 개의 세로 칼럼으로 나눈다.
+    v131 - A4 첫 페이지 배치 보정
+    1페이지는 헤더 + 기본정보 + 사고 3번 보험·특수 이력까지 고정한다.
+    이후 사고 4번 도면부터는 기존 2열 연속 흐름을 유지한다.
   */
+  #reportPrintRootV1773 .report-print-a4-first-v131{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-first-columns-v131{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    column-gap:8mm!important;
+    align-items:start!important;
+    width:100%!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-first-columns-v131 > .report-print-section-v1773{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
   #reportPrintRootV1773 .report-print-columns-v118{
     display:block!important;
     column-count:2!important;
-    column-gap:18mm!important;
+    column-gap:8mm!important;
     column-fill:auto!important;
     width:100%!important;
   }
@@ -15743,6 +15778,26 @@ function isVisibleCaptureTarget(el){
     return outer;
   }
 
+  /**
+   * cloneAccidentPartSectionV131은 사고 출력 clone을 3번 보험카드와
+   * 4번 사고 진단카드로 분리한다.
+   */
+  function cloneAccidentPartSectionV131(part){
+    var node = cloneFilteredDiagSection('사고', 'accident');
+    if(!node) return null;
+
+    var clone = qs('.report-print-section-body-v1773 > #secDiag', node);
+    if(!clone) return node;
+
+    if(part === 'intro'){
+      removePrintCards(collectCardsByTitle(clone, /사고\s*진단확인|사고진단/));
+    }else{
+      removePrintCards(collectCardsByTitle(clone, /보험\s*[·ㆍ/]?\s*특수\s*이력|보험·특수\s*이력|전손·침수·전소|보험이력\s*총\s*건수/));
+    }
+
+    return node;
+  }
+
   function cloneExteriorSection(){
     /*
       v17.75:
@@ -15790,22 +15845,37 @@ function isVisibleCaptureTarget(el){
     head.innerHTML =
       '<div class="report-print-title-v1773">오토베이 현장 매입 진단리포트</div>' +
       '<p class="report-print-sub-v1773">' + (mode === 'company' ? '회사보고용 PDF 저장' : '고객보고용 PDF 저장') + ' · ' + y + '-' + m + '-' + d + '</p>';
-    root.appendChild(head);
 
     /*
-      v118:
-      A2 한 장에 기존 세로형 출력 2쪽이 좌/우로 흐르도록
-      기본/사고/외관·수리/점검 섹션을 전용 columns wrapper에 넣는다.
+      v131:
+      A4 1페이지에 헤더, 기본정보, 사고 3번 보험·특수 이력까지
+      좌우로 고정 배치한다.
+    */
+    var firstPage = document.createElement('div');
+    firstPage.className = 'report-print-a4-first-v131';
+    root.appendChild(firstPage);
+    firstPage.appendChild(head);
+
+    var firstColumns = document.createElement('div');
+    firstColumns.className = 'report-print-a4-first-columns-v131';
+    firstPage.appendChild(firstColumns);
+
+    var basicNode = cloneSection('기본', '#secInput');
+    if(basicNode) firstColumns.appendChild(basicNode);
+
+    var accidentIntroNode = cloneAccidentPartSectionV131('intro');
+    if(accidentIntroNode) firstColumns.appendChild(accidentIntroNode);
+
+    /*
+      2페이지부터는 사고 4번 도면, 외관/수리, 점검을
+      기존 2열 연속 흐름으로 출력한다.
     */
     var columns = document.createElement('div');
     columns.className = 'report-print-columns-v118';
     root.appendChild(columns);
 
-    var basicNode = cloneSection('기본', '#secInput');
-    if(basicNode) columns.appendChild(basicNode);
-
-    var accidentNode = cloneFilteredDiagSection('사고', 'accident');
-    if(accidentNode) columns.appendChild(accidentNode);
+    var accidentDetailNode = cloneAccidentPartSectionV131('detail');
+    if(accidentDetailNode) columns.appendChild(accidentDetailNode);
 
     columns.appendChild(cloneExteriorSection());
 

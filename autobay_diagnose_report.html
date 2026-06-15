@@ -10458,8 +10458,8 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   line-height:1.45;
   margin:8px 0 0;
 }
-.report-print-a4-first-v131,
-.report-print-a4-first-columns-v131{
+.report-print-a4-first-v132,
+.report-print-a4-first-flow-v132{
   display:block;
 }
 .report-print-columns-v118{
@@ -10612,33 +10612,45 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 
   /*
-    v131 - A4 첫 페이지 배치 보정
-    1페이지는 헤더 + 기본정보 + 사고 3번 보험·특수 이력까지 고정한다.
-    이후 사고 4번 도면부터는 기존 2열 연속 흐름을 유지한다.
+    v132 - A4 출력 보정
+    1페이지는 헤더 + 기본정보 + 사고 3번 보험·특수 이력까지 출력한다.
+    첫 페이지는 고정 좌/우 박스가 아니라 순차 2열 흐름을 사용한다.
+    따라서 기본정보 카드가 좌측에서 시작해 공간이 부족하면 우측으로 이어지고,
+    보험·특수 이력 카드는 남는 하단 공간에 이어서 배치된다.
   */
-  #reportPrintRootV1773 .report-print-a4-first-v131{
+  #reportPrintRootV1773 .report-print-a4-first-v132{
     display:block!important;
     width:100%!important;
-    margin:0!important;
+    margin:0 0 12px!important;
     padding:0!important;
     page-break-after:always!important;
     break-after:page!important;
   }
 
-  #reportPrintRootV1773 .report-print-a4-first-columns-v131{
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    column-gap:8mm!important;
-    align-items:start!important;
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132{
+    display:block!important;
     width:100%!important;
+    column-count:2!important;
+    column-gap:8mm!important;
+    column-fill:auto!important;
   }
 
-  #reportPrintRootV1773 .report-print-a4-first-columns-v131 > .report-print-section-v1773{
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 > .report-print-section-v1773{
+    display:block!important;
     width:100%!important;
     max-width:none!important;
-    margin:0!important;
-    page-break-inside:avoid!important;
-    break-inside:avoid!important;
+    margin:0 0 12px!important;
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+    -webkit-column-break-inside:auto!important;
+  }
+
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 .report-print-section-body-v1773 article,
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 .report-print-section-body-v1773 .report-card-ui,
+  #reportPrintRootV1773 .report-print-a4-first-flow-v132 .report-print-section-body-v1773 .touch-card{
+    page-break-inside:auto!important;
+    break-inside:auto!important;
+    -webkit-column-break-inside:auto!important;
   }
 
   #reportPrintRootV1773 .report-print-columns-v118{
@@ -15779,10 +15791,11 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * cloneAccidentPartSectionV131은 사고 출력 clone을 3번 보험카드와
-   * 4번 사고 진단카드로 분리한다.
+   * cloneAccidentPartSectionV132는 사고 출력 clone을 목적별로 분리한다.
+   * intro 모드에서는 2 랩핑/PPF, 안내 문구, 3 보험·특수 이력만 남기고,
+   * detail 모드에서는 4 사고 진단확인 카드만 남긴다.
    */
-  function cloneAccidentPartSectionV131(part){
+  function cloneAccidentPartSectionV132(part){
     var node = cloneFilteredDiagSection('사고', 'accident');
     if(!node) return null;
 
@@ -15790,9 +15803,19 @@ function isVisibleCaptureTarget(el){
     if(!clone) return node;
 
     if(part === 'intro'){
-      removePrintCards(collectCardsByTitle(clone, /사고\s*진단확인|사고진단/));
+      removePrintCards(
+        collectCardsByTitle(
+          clone,
+          /사고\s*진단확인|사고진단|사고\s*진단/
+        )
+      );
     }else{
-      removePrintCards(collectCardsByTitle(clone, /보험\s*[·ㆍ/]?\s*특수\s*이력|보험·특수\s*이력|전손·침수·전소|보험이력\s*총\s*건수/));
+      removePrintCards(
+        collectCardsByTitle(
+          clone,
+          /랩핑\s*\/\s*PPF|랩핑\s*\/PPF|보험\s*[·ㆍ/]?\s*특수\s*이력|보험·특수\s*이력|전손·침수·전소|보험이력\s*총\s*건수|미확정\s*여부|용도이력|위\s*항목\s*확인\s*후\s*진단스캐너/
+        )
+      );
     }
 
     return node;
@@ -15847,34 +15870,34 @@ function isVisibleCaptureTarget(el){
       '<p class="report-print-sub-v1773">' + (mode === 'company' ? '회사보고용 PDF 저장' : '고객보고용 PDF 저장') + ' · ' + y + '-' + m + '-' + d + '</p>';
 
     /*
-      v131:
-      A4 1페이지에 헤더, 기본정보, 사고 3번 보험·특수 이력까지
-      좌우로 고정 배치한다.
+      v132:
+      1페이지는 헤더 + 기본정보 + 사고 intro(2, 3번)만 먼저 배치한다.
+      이때 기본정보 카드가 좌측에서 시작해 공간이 부족하면 우측으로 이어질 수 있도록
+      첫 페이지 전용 wrapper 안에서 순차 2열 흐름을 사용한다.
     */
     var firstPage = document.createElement('div');
-    firstPage.className = 'report-print-a4-first-v131';
+    firstPage.className = 'report-print-a4-first-v132';
     root.appendChild(firstPage);
     firstPage.appendChild(head);
 
-    var firstColumns = document.createElement('div');
-    firstColumns.className = 'report-print-a4-first-columns-v131';
-    firstPage.appendChild(firstColumns);
+    var firstFlow = document.createElement('div');
+    firstFlow.className = 'report-print-a4-first-flow-v132';
+    firstPage.appendChild(firstFlow);
 
     var basicNode = cloneSection('기본', '#secInput');
-    if(basicNode) firstColumns.appendChild(basicNode);
+    if(basicNode) firstFlow.appendChild(basicNode);
 
-    var accidentIntroNode = cloneAccidentPartSectionV131('intro');
-    if(accidentIntroNode) firstColumns.appendChild(accidentIntroNode);
+    var accidentIntroNode = cloneAccidentPartSectionV132('intro');
+    if(accidentIntroNode) firstFlow.appendChild(accidentIntroNode);
 
     /*
-      2페이지부터는 사고 4번 도면, 외관/수리, 점검을
-      기존 2열 연속 흐름으로 출력한다.
+      2페이지 이후는 사고 4번 도면, 외관/수리, 점검을 기존 2열 연속 흐름으로 출력한다.
     */
     var columns = document.createElement('div');
     columns.className = 'report-print-columns-v118';
     root.appendChild(columns);
 
-    var accidentDetailNode = cloneAccidentPartSectionV131('detail');
+    var accidentDetailNode = cloneAccidentPartSectionV132('detail');
     if(accidentDetailNode) columns.appendChild(accidentDetailNode);
 
     columns.appendChild(cloneExteriorSection());

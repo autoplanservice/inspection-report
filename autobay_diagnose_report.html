@@ -8,7 +8,7 @@
 
 <!--
 BASE CLEANUP NOTE
-- 기준: 업로드한 현재 HTML 코드
+- 기준: 사용자가 업로드한 현재 HTML 코드
 - 환경: Android 모바일 브라우저 기준, iPhone Safari 호환성 고려
 - 유지: L 상태, R 노랑, 기존 localStorage key, radio + label 구조
 - 정리: 중복 doctype, D15 전용 transform 잔재, 비활성 placeholder script, R 검정 잔재
@@ -10598,6 +10598,47 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     margin:0!important;
     background:#fff!important;
   }
+  /*
+    v143 - 2페이지 사고 도면 좌측 시작 및 도면 외곽선 정리
+    touch-diagram-shell 전체를 분리 금지하지 않고, 각 touch-card만 분리 금지한다.
+    이에 따라 보험이력 아래 남는 좌측 공간에서 사고진단 제목과 첫 도면이 시작한다.
+  */
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell{
+    break-inside:auto!important;
+    page-break-inside:auto!important;
+    -webkit-column-break-inside:auto!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card{
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+    -webkit-column-break-inside:avoid!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .touch-diagram-shell .touch-card .fig{
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintPagesV141 .report-print-page2-flow-v141 .report-print-accident-diagram-card-v143{
+    border:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
   .report-print-bar-v1773{
     display:none!important;
   }
@@ -16187,6 +16228,19 @@ function isVisibleCaptureTarget(el){
         accidentFlow,
         /랩핑\s*\/\s*PPF|랩핑\s*\/PPF|위\s*항목\s*확인\s*후\s*진단스캐너/
       );
+
+      /*
+        v143: 완성된 사고 출력 복사본에서 도면을 포함한 카드에만 식별 클래스를 부여한다.
+        카드 내부 DOM과 도면/마커 좌표는 변경하지 않는다.
+      */
+      var accidentDiagramShellV143 = qs('.touch-diagram-shell', accidentFlow);
+      if(accidentDiagramShellV143){
+        var accidentDiagramCardV143 = accidentDiagramShellV143.closest('article, .report-card-ui');
+        if(accidentDiagramCardV143){
+          accidentDiagramCardV143.classList.add('report-print-accident-diagram-card-v143');
+        }
+      }
+
       page2Flow.appendChild(accidentFlow);
     }
     page2.appendChild(page2Flow);
@@ -16697,7 +16751,7 @@ function isVisibleCaptureTarget(el){
 
 <!-- v87 maintenance note
   - v84의 다른 정리 내용은 유지한다.
-  - 날짜 기능만 iPhone에서 정상 동작하던 v83의 v17.29/v17.30 블록으로 원복
+  - 날짜 기능만 iPhone에서 정상 동작하던 v83의 v17.29/v17.30 블록으로 원복했다.
   - v85/v86 신규 날짜 우회 방식은 포함하지 않는다.
 -->
 

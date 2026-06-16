@@ -10598,19 +10598,33 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     margin:0;
   }
 
-  /* 기존 출력 복사본과 앱 화면은 인쇄에서 완전히 제외한다. */
-  body > *{
+  /*
+    v153 - 인쇄 대상 완전 분리
+    화면 미리보기 selector보다 높은 우선순위로 기존 복사본과 하단 바를 제거한다.
+  */
+  html body.report-print-preview-v1773 > *{
     display:none!important;
   }
-  body > #reportPrintPagesV141{
+
+  html body.report-print-preview-v1773 > #reportPrintPagesV141{
     display:block!important;
+    visibility:visible!important;
+    position:static!important;
   }
-  html body #reportPrintRootV1773{
+
+  html body.report-print-preview-v1773 > #reportPrintRootV1773,
+  html body.report-print-preview-v1773 > .report-print-bar-v1773,
+  html body.report-print-preview-v1773 > #reportPrintBarV1773{
     display:none!important;
     visibility:hidden!important;
-    position:absolute!important;
-    left:-100000px!important;
-    top:0!important;
+    position:static!important;
+    width:0!important;
+    height:0!important;
+    min-width:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
   }
 
   #reportPrintPagesV141{
@@ -10628,9 +10642,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   #reportPrintPagesV141 .report-print-page-v141{
     display:block!important;
     width:100%!important;
-    height:297mm!important;
-    min-height:297mm!important;
-    max-height:297mm!important;
+    height:296mm!important;
+    min-height:296mm!important;
+    max-height:296mm!important;
     margin:0!important;
     padding:0!important;
     box-sizing:border-box!important;
@@ -10669,7 +10683,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   #reportPrintPagesV141 .report-print-page1-flow-v141{
     display:block!important;
     width:100%!important;
-    height:270mm!important;
+    height:269mm!important;
     column-count:2!important;
     column-gap:8mm!important;
     column-fill:auto!important;
@@ -10708,7 +10722,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     column-gap:8mm!important;
     align-items:start!important;
     width:100%!important;
-    height:281mm!important;
+    height:280mm!important;
     overflow:hidden!important;
   }
   #reportPrintPagesV141 .report-print-page2-left-v152,
@@ -10737,7 +10751,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     gap:5mm 8mm!important;
     align-items:start!important;
     width:100%!important;
-    height:281mm!important;
+    height:280mm!important;
     overflow:hidden!important;
   }
   #reportPrintPagesV141 .report-print-page3-left-v141,
@@ -10767,6 +10781,15 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 
   /* 4페이지 이후: 점검만 자동 좌/우/다음 페이지 흐름. */
+  #reportPrintPagesV141 .report-print-continuation-v141{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+
   #reportPrintPagesV141 .report-print-auto-v141{
     display:block!important;
     width:100%!important;
@@ -10847,8 +10870,16 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 
 
 
-  .report-print-bar-v1773{
+  html body.report-print-preview-v1773 .report-print-bar-v1773,
+  html body.report-print-preview-v1773 #reportPrintBarV1773{
     display:none!important;
+    visibility:hidden!important;
+    position:static!important;
+    width:0!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
   }
 }
 

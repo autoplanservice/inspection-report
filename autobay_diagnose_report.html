@@ -11189,6 +11189,31 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 </style>
 
+
+<style id="reportPrintAccidentLeftAlignV166">
+@media print{
+  /*
+    v166 - 사고 2페이지 좌측 도면 상단 정렬 보정
+    목적:
+    - 좌측 도면 시작점을 우측 도면 시작점과 더 가깝게 맞춘다.
+    원칙:
+    - transform 미사용
+    - 좌측 사고 진단 카드 내부 shell의 margin-top만 미세 조정
+    - 다른 페이지와 도면 크기는 변경하지 않음
+  */
+  #reportPrintPagesV141
+  .report-print-accident-leftcard-v166{
+    padding-top:6px!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-leftcard-v166
+  .touch-diagram-shell{
+    margin-top:-14px!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -16514,6 +16539,7 @@ function isVisibleCaptureTarget(el){
         diagramCardsV157.slice(0,2).forEach(function(cardV157){
           diagramShellV157.appendChild(cardV157);
         });
+        diagramCardV157.classList.add('report-print-accident-leftcard-v166');
         leftContextV157.appendChild(diagramCardV157);
 
         var rightSectionV157 = document.createElement('section');

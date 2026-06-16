@@ -11039,6 +11039,32 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 </style>
 
+
+<style id="reportPrintAccidentBadgeV159">
+@media print{
+  /*
+    v159 - 사고 도면 배지 색상 통일
+    좌/우 분리 후 nth-of-type 순서 변화와 무관하게
+    상부·측면·하부 배지에 같은 스타일을 직접 적용한다.
+  */
+  #reportPrintPagesV141 .report-print-accident-top-v157 .diagram-corner-badge,
+  #reportPrintPagesV141 .report-print-accident-side-v157 .diagram-corner-badge,
+  #reportPrintPagesV141 .report-print-accident-bottom-v157 .diagram-corner-badge{
+    background:#e9edf2!important;
+    background-color:#e9edf2!important;
+    background-image:none!important;
+    color:#27313d!important;
+    border:1px solid #cfd6df!important;
+    border-radius:8px!important;
+    box-shadow:none!important;
+    text-shadow:none!important;
+    filter:none!important;
+    opacity:1!important;
+    font-weight:400!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">

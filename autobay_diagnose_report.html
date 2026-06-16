@@ -11190,26 +11190,19 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 </style>
 
 
-<style id="reportPrintAccidentLeftAlignV166">
+
+
+
+<style id="reportPrintAccidentRightAlignV167">
 @media print{
   /*
-    v166 - 사고 2페이지 좌측 도면 상단 정렬 보정
-    목적:
-    - 좌측 도면 시작점을 우측 도면 시작점과 더 가깝게 맞춘다.
-    원칙:
-    - transform 미사용
-    - 좌측 사고 진단 카드 내부 shell의 margin-top만 미세 조정
-    - 다른 페이지와 도면 크기는 변경하지 않음
+    v167 - 사고 2페이지 우측 도면 시작선 정렬
+    좌측 사고 상부진단의 실제 시작선에 맞춰
+    우측 사고 하부진단 카드만 아래로 보정한다.
   */
   #reportPrintPagesV141
-  .report-print-accident-leftcard-v166{
-    padding-top:6px!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-leftcard-v166
-  .touch-diagram-shell{
-    margin-top:-14px!important;
+  .report-print-accident-rightcard-v167{
+    margin-top:36px!important;
   }
 }
 </style>
@@ -16539,7 +16532,6 @@ function isVisibleCaptureTarget(el){
         diagramCardsV157.slice(0,2).forEach(function(cardV157){
           diagramShellV157.appendChild(cardV157);
         });
-        diagramCardV157.classList.add('report-print-accident-leftcard-v166');
         leftContextV157.appendChild(diagramCardV157);
 
         var rightSectionV157 = document.createElement('section');
@@ -16549,6 +16541,9 @@ function isVisibleCaptureTarget(el){
         var rightContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
         rightContextV157.id = 'secDiag';
 
+        rightDiagramCardV157.classList.add(
+          'report-print-accident-rightcard-v167'
+        );
         rightContextV157.appendChild(rightDiagramCardV157);
 
         if(insuranceCardV157){

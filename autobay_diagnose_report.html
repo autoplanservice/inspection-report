@@ -11215,7 +11215,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
     grid-template-rows:auto minmax(0,1fr)!important;
     column-gap:8mm!important;
-    row-gap:6px!important;
+    row-gap:4px!important;
     align-items:start!important;
     margin-top:8px!important;
   }
@@ -11227,9 +11227,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     display:flex!important;
     align-items:center!important;
     justify-content:flex-start!important;
-    min-height:34px!important;
+    min-height:32px!important;
     margin:0!important;
-    padding:0 0 0 10px!important;
+    padding:0!important;
   }
 
   #reportPrintPagesV141
@@ -11294,6 +11294,57 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   #reportPrintPagesV141
   .report-print-page2-right-v157 .report-print-section-v1773{
     margin-top:0!important;
+  }
+}
+</style>
+
+
+<style id="reportPrintAccidentPageFineTuneV174">
+@media print{
+  /*
+    v174 - 사고 페이지 배지 간격 및 하부진단 높이 최종 보정
+
+    목적:
+    1) 4 사고 진단확인 배지 위치/간격을 다른 카드 제목 배지 계열과 맞춘다.
+    2) 사고 하부진단 카드 하단선을 사고 상부진단 카드 하단선과 맞춘다.
+
+    범위:
+    - 사고 페이지의 공통 헤더와 사고 하부진단 카드만 대상
+    - 외관/수리, 도막, 보험이력, 점검 페이지는 변경하지 않음
+  */
+
+  #reportPrintPagesV141
+  .report-print-page2-common-header-v170{
+    padding-left:0!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-page2-common-header-v170 > h2{
+    margin:0 0 10px 0!important;
+  }
+
+  /*
+    하부진단 원본 도면은 세로 비율이 상부진단과 달라 카드 하단선이 짧아 보인다.
+    카드 자체 높이를 상부진단 카드와 맞추고, 내부 fig를 중앙 기준으로 배치한다.
+  */
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157{
+    min-height:322px!important;
+    height:322px!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157 > .fig{
+    width:130%!important;
+    margin:0 0 0 -15%!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157 > .fig > img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
   }
 }
 </style>

@@ -11155,6 +11155,40 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 </style>
 
+
+<style id="reportPrintLegacyTitleGuardV162">
+@media print{
+  /*
+    v162 - 방어 규칙
+    정상 경로에서는 JS가 해당 요소를 DOM에서 제거한다.
+    동적 재생성 예외에서도 공간/배경/테두리가 남지 않도록 완전 차단한다.
+  */
+  #reportPrintPagesV141 .touch-diagram-title,
+  #reportPrintPagesV141 .touch-diagram-subtitle,
+  #reportPrintPagesV141 .paint-diagram-title{
+    display:none!important;
+    visibility:hidden!important;
+    width:0!important;
+    min-width:0!important;
+    max-width:0!important;
+    height:0!important;
+    min-height:0!important;
+    max-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+    background-image:none!important;
+    filter:none!important;
+    overflow:hidden!important;
+    opacity:0!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -16269,6 +16303,28 @@ function isVisibleCaptureTarget(el){
 
 
   /**
+   * removeLegacyDiagramTitlesV162는 인쇄 복사본에 남아 있는
+   * 구형 도면 제목 바를 DOM에서 실제 제거한다.
+   *
+   * 제거 대상:
+   * - .touch-diagram-title
+   * - .touch-diagram-subtitle
+   * - .paint-diagram-title
+   *
+   * .diagram-corner-badge와 도면 이미지/마커는 제거하지 않는다.
+   */
+  function removeLegacyDiagramTitlesV162(root){
+    if(!root) return;
+
+    qsa(
+      '.touch-diagram-title, .touch-diagram-subtitle, .paint-diagram-title',
+      root
+    ).forEach(function(titleNode){
+      titleNode.remove();
+    });
+  }
+
+  /**
    * markOuterDiagnosticCardV158은 지정 제목의 최상위 진단 카드를 표시한다.
    * 내부 도면 카드(touch-card / paint-diagram-block)는 변경하지 않는다.
    */
@@ -16411,6 +16467,7 @@ function isVisibleCaptureTarget(el){
     var accidentFlowV157 = clonePrintSectionV141(reportRoot, '사고');
     if(accidentFlowV157){
       removeSectionTitleV141(accidentFlowV157);
+      removeLegacyDiagramTitlesV162(accidentFlowV157);
       removeCardsByTitleV141(
         accidentFlowV157,
         /랩핑\s*\/\s*PPF|랩핑\s*\/PPF|위\s*항목\s*확인\s*후\s*진단스캐너/
@@ -16495,6 +16552,7 @@ function isVisibleCaptureTarget(el){
     var paint = clonePrintSectionV141(reportRoot, '외관/수리');
     if(paint){
       removeSectionTitleV141(paint);
+      removeLegacyDiagramTitlesV162(paint);
       removeCardsByTitleV141(paint, /외관\s*진단확인|외관진단|타이어\s*상태확인|타이어상태/);
       markOuterDiagnosticCardV158(paint, /도막\s*진단확인|도막진단/);
       paintWrap.appendChild(paint);
@@ -16505,6 +16563,7 @@ function isVisibleCaptureTarget(el){
     var exterior = clonePrintSectionV141(reportRoot, '외관/수리');
     if(exterior){
       removeSectionTitleV141(exterior);
+      removeLegacyDiagramTitlesV162(exterior);
       removeCardsByTitleV141(exterior, /도막\s*진단확인|도막진단|타이어\s*상태확인|타이어상태/);
       markOuterDiagnosticCardV158(exterior, /외관\s*진단확인|외관진단/);
       exteriorWrap.appendChild(exterior);

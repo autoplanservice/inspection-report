@@ -10896,80 +10896,105 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 
 
 
-<style id="reportPrintPage2PreserveV156">
+
+
+
+<style id="reportPrintAccidentV157">
 @media print{
-  #reportPrintPagesV141 .report-print-page2-v141{
-    height:296mm!important;
-    min-height:296mm!important;
-    max-height:296mm!important;
+  #reportPrintPagesV141 .report-print-page2-flow-v157{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    column-gap:8mm!important;
+    align-items:start!important;
+    width:100%!important;
+    height:280mm!important;
     overflow:hidden!important;
   }
 
-  #reportPrintPagesV141 .report-print-page2-preserve-v156,
-  #reportPrintPagesV141 .report-print-page2-preserve-v156 > .report-print-section-body-v1773{
+  #reportPrintPagesV141 .report-print-page2-left-v157,
+  #reportPrintPagesV141 .report-print-page2-right-v157{
     display:block!important;
     width:100%!important;
-    margin:0!important;
-    padding:0!important;
-    border:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
+    min-width:0!important;
+    height:100%!important;
+    overflow:hidden!important;
   }
 
-  #reportPrintPagesV141 .report-print-page2-context-v156{
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    grid-template-rows:auto auto auto!important;
-    column-gap:8mm!important;
-    row-gap:8px!important;
-    align-items:start!important;
-    width:100%!important;
-    margin:0!important;
-    padding:0!important;
-    overflow:visible!important;
-  }
-
-  #reportPrintPagesV141 .report-print-page2-insurance-v156{
-    grid-column:1!important;
-    grid-row:1!important;
-    width:100%!important;
-    margin:0!important;
+  #reportPrintPagesV141 .report-print-page2-flow-v157 .report-print-section-v1773,
+  #reportPrintPagesV141 .report-print-page2-flow-v157 .report-print-section-body-v1773,
+  #reportPrintPagesV141 .report-print-page2-flow-v157 #secDiag,
+  #reportPrintPagesV141 .report-print-page2-flow-v157 article,
+  #reportPrintPagesV141 .report-print-page2-flow-v157 .touch-card{
     break-inside:avoid!important;
-  }
-
-  #reportPrintPagesV141 .report-print-page2-diagram-card-v156,
-  #reportPrintPagesV141 .report-print-page2-shell-v156{
-    display:contents!important;
-  }
-
-  #reportPrintPagesV141 .report-print-page2-top-v156{
-    grid-column:1!important;
-    grid-row:2 / span 2!important;
-    width:100%!important;
-    margin:0!important;
-    break-inside:avoid!important;
-  }
-
-  #reportPrintPagesV141 .report-print-page2-side-v156{
-    grid-column:2!important;
-    grid-row:1 / span 2!important;
-    width:100%!important;
-    margin:0 0 8px!important;
-    break-inside:avoid!important;
-  }
-
-  #reportPrintPagesV141 .report-print-page2-bottom-v156{
-    grid-column:2!important;
-    grid-row:3!important;
-    width:100%!important;
-    margin:0!important;
-    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+    -webkit-column-break-inside:avoid!important;
   }
 
   /*
-    도면 내부에는 별도 width/margin/overflow/border 규칙을 적용하지 않는다.
-    v118 원본 #secDiag CSS가 그대로 적용된다.
+    외관/수리에서 정상인 원본 도면 크기와 동일한 값.
   */
+  #reportPrintPagesV141 .report-print-accident-top-v157{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0 auto 8px!important;
+    overflow:hidden!important;
+  }
+  #reportPrintPagesV141 .report-print-accident-top-v157 > .fig{
+    width:118%!important;
+    max-width:none!important;
+    margin-left:-9%!important;
+    margin-right:0!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-side-v157{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0 auto 8px!important;
+    overflow:hidden!important;
+  }
+  #reportPrintPagesV141 .report-print-accident-side-v157 > .fig{
+    width:128%!important;
+    max-width:none!important;
+    margin-left:-14%!important;
+    margin-right:0!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-bottom-v157{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0 auto 8px!important;
+    overflow:hidden!important;
+  }
+  #reportPrintPagesV141 .report-print-accident-bottom-v157 > .fig{
+    width:122%!important;
+    max-width:none!important;
+    margin-left:-11%!important;
+    margin-right:0!important;
+    overflow:visible!important;
+  }
+
+  #reportPrintPagesV141 .report-print-accident-top-v157 > .fig > img,
+  #reportPrintPagesV141 .report-print-accident-side-v157 > .fig > img,
+  #reportPrintPagesV141 .report-print-accident-bottom-v157 > .fig > img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  /*
+    인쇄 시 가로로 번져 보이던 얼룩은 도면 배지의 그림자이다.
+    배지 색상·위치·크기는 유지하고 그림자만 제거한다.
+  */
+  #reportPrintPagesV141 .diagram-corner-badge{
+    box-shadow:none!important;
+    filter:none!important;
+    text-shadow:none!important;
+  }
 }
 </style>
 
@@ -16181,57 +16206,95 @@ function isVisibleCaptureTarget(el){
     page1.appendChild(page1Flow);
 
     /*
-      v156 - 2페이지
-      사고 섹션 원본 복사본 하나만 사용한다.
-      도면 카드와 shell을 재복제하지 않고 CSS Grid로 위치만 지정한다.
-      #secDiag 문맥, touch-card 순서, nth-of-type 기준을 그대로 유지한다.
+      v157 - 2페이지
+      좌측: 보험이력 + 사고 상부진단
+      우측: 사고 좌/우 측면진단 + 사고 하부진단
+
+      사고 도면은 외관/수리와 동일한 원본 크기값을 역할 클래스로 고정한다.
     */
     var page2 = createPrintPageV141(printRoot, 'report-print-page2-v141');
     appendPageTitleV141(page2, '사고');
 
-    var accidentFlow = clonePrintSectionV141(reportRoot, '사고');
-    if(accidentFlow){
-      removeSectionTitleV141(accidentFlow);
+    var page2FlowV157 = document.createElement('div');
+    page2FlowV157.className = 'report-print-page2-flow-v157';
+
+    var page2LeftV157 = document.createElement('div');
+    page2LeftV157.className = 'report-print-page2-left-v157';
+
+    var page2RightV157 = document.createElement('div');
+    page2RightV157.className = 'report-print-page2-right-v157';
+
+    var accidentFlowV157 = clonePrintSectionV141(reportRoot, '사고');
+    if(accidentFlowV157){
+      removeSectionTitleV141(accidentFlowV157);
       removeCardsByTitleV141(
-        accidentFlow,
+        accidentFlowV157,
         /랩핑\s*\/\s*PPF|랩핑\s*\/PPF|위\s*항목\s*확인\s*후\s*진단스캐너/
       );
 
-      accidentFlow.classList.add('report-print-page2-preserve-v156');
+      var accidentBodyV157 = qs('.report-print-section-body-v1773', accidentFlowV157);
+      var accidentContextV157 = accidentBodyV157 ? accidentBodyV157.firstElementChild : null;
+      var insuranceCardV157 = accidentContextV157 ? qs('.insurance-basic-card', accidentContextV157) : null;
+      var diagramShellV157 = accidentContextV157 ? qs('.touch-diagram-shell', accidentContextV157) : null;
+      var diagramCardV157 = diagramShellV157 ? diagramShellV157.closest('article, .report-card-ui') : null;
+      var diagramCardsV157 = diagramShellV157 ? qsa(':scope > .touch-card', diagramShellV157) : [];
 
-      var accidentBodyV156 = qs('.report-print-section-body-v1773', accidentFlow);
-      var accidentContextV156 = accidentBodyV156 ? accidentBodyV156.firstElementChild : null;
-      var insuranceCardV156 = accidentContextV156 ? qs('.insurance-basic-card', accidentContextV156) : null;
-      var diagramShellV156 = accidentContextV156 ? qs('.touch-diagram-shell', accidentContextV156) : null;
-      var diagramCardV156 = diagramShellV156 ? diagramShellV156.closest('article, .report-card-ui') : null;
-      var diagramCardsV156 = diagramShellV156 ? qsa(':scope > .touch-card', diagramShellV156) : [];
-
-      if(accidentContextV156){
-        accidentContextV156.classList.add('report-print-page2-context-v156');
-      }
-      if(insuranceCardV156){
-        insuranceCardV156.classList.add('report-print-page2-insurance-v156');
-      }
-      if(diagramCardV156){
-        diagramCardV156.classList.add('report-print-page2-diagram-card-v156');
-      }
-      if(diagramShellV156){
-        diagramShellV156.classList.add('report-print-page2-shell-v156');
-      }
-
-      diagramCardsV156.forEach(function(cardV156, indexV156){
-        cardV156.classList.add('report-print-page2-diagram-v156');
-        if(indexV156 === 0){
-          cardV156.classList.add('report-print-page2-top-v156');
-        }else if(indexV156 === 1){
-          cardV156.classList.add('report-print-page2-side-v156');
+      diagramCardsV157.forEach(function(cardV157, indexV157){
+        if(indexV157 === 0){
+          cardV157.classList.add('report-print-accident-top-v157');
+        }else if(indexV157 === 1){
+          cardV157.classList.add('report-print-accident-side-v157');
         }else{
-          cardV156.classList.add('report-print-page2-bottom-v156');
+          cardV157.classList.add('report-print-accident-bottom-v157');
         }
       });
 
-      page2.appendChild(accidentFlow);
+      var leftSectionV157 = document.createElement('section');
+      leftSectionV157.className = 'report-print-section-v1773';
+      var leftBodyV157 = document.createElement('div');
+      leftBodyV157.className = 'report-print-section-body-v1773';
+      var leftContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
+      leftContextV157.id = 'secDiag';
+
+      if(insuranceCardV157){
+        leftContextV157.appendChild(insuranceCardV157);
+      }
+
+      if(diagramCardV157 && diagramShellV157){
+        var rightDiagramCardV157 = diagramCardV157.cloneNode(false);
+        var rightShellV157 = diagramShellV157.cloneNode(false);
+
+        diagramCardsV157.slice(1).forEach(function(cardV157){
+          rightShellV157.appendChild(cardV157);
+        });
+        rightDiagramCardV157.appendChild(rightShellV157);
+
+        diagramCardsV157.slice(0,1).forEach(function(cardV157){
+          diagramShellV157.appendChild(cardV157);
+        });
+        leftContextV157.appendChild(diagramCardV157);
+
+        var rightSectionV157 = document.createElement('section');
+        rightSectionV157.className = 'report-print-section-v1773';
+        var rightBodyV157 = document.createElement('div');
+        rightBodyV157.className = 'report-print-section-body-v1773';
+        var rightContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
+        rightContextV157.id = 'secDiag';
+
+        rightContextV157.appendChild(rightDiagramCardV157);
+        rightBodyV157.appendChild(rightContextV157);
+        rightSectionV157.appendChild(rightBodyV157);
+        page2RightV157.appendChild(rightSectionV157);
+      }
+
+      leftBodyV157.appendChild(leftContextV157);
+      leftSectionV157.appendChild(leftBodyV157);
+      page2LeftV157.appendChild(leftSectionV157);
     }
+
+    page2FlowV157.appendChild(page2LeftV157);
+    page2FlowV157.appendChild(page2RightV157);
+    page2.appendChild(page2FlowV157);
 
     /* 3페이지: 좌측 도막, 우측 외관, 하단 전체 타이어. */
     var page3 = createPrintPageV141(printRoot, 'report-print-page3-v141');

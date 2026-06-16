@@ -11202,7 +11202,24 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   */
   #reportPrintPagesV141
   .report-print-accident-rightcard-v167{
-    margin-top:49px!important;
+    margin-top:46px!important;
+  }
+}
+</style>
+
+
+<style id="reportPrintAccidentPageTopAdjustV169">
+@media print{
+  /*
+    v169 - 사고 2페이지 상단 여백 및 선정렬 재보정
+    - 사고 페이지 좌측 배지부터 카드 섹션 전체를 메인헤더 아래로 조금 더 올린다.
+    - 우측 사고 하부진단은 상부진단 시작선에 맞게 재조정한다.
+    - transform은 사용하지 않는다.
+  */
+  #reportPrintPagesV141
+  .report-print-page2-v141
+  .report-print-page2-flow-v157{
+    margin-top:-16px!important;
   }
 }
 </style>

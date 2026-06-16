@@ -10680,13 +10680,26 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 
   /* 1페이지: 기본정보는 자동 2열 흐름. */
+  /*
+    v154 - 1페이지 빈 페이지 방지
+    페이지 wrapper 안에서 헤더가 차지한 나머지 높이만 flow가 사용한다.
+  */
+  #reportPrintPagesV141 .report-print-page1-v141{
+    display:grid!important;
+    grid-template-rows:auto minmax(0,1fr)!important;
+    row-gap:0!important;
+  }
+
   #reportPrintPagesV141 .report-print-page1-flow-v141{
     display:block!important;
     width:100%!important;
-    height:269mm!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
     column-count:2!important;
     column-gap:8mm!important;
     column-fill:auto!important;
+    overflow:hidden!important;
   }
   #reportPrintPagesV141 .report-print-page1-flow-v141 .report-print-section-v1773,
   #reportPrintPagesV141 .report-print-page1-flow-v141 .report-print-section-body-v1773,
@@ -10852,8 +10865,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   #reportPrintPagesV141 .touch-diagram-shell,
   #reportPrintPagesV141 .diagram-wrap,
   #reportPrintPagesV141 .paint-diagram-block{
-    border-color:#eef2f6!important;
-    overflow:visible!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+    background-image:none!important;
     contain:none!important;
   }
   #reportPrintPagesV141 .fig,
@@ -10898,8 +10912,13 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
      - JavaScript / DOM / 저장키 / 날짜 / PDF 실행 로직 미수정
 -->
 
-<style id="reportPrintDiagramFinalV152">
+<style id="reportPrintDiagramFinalV154">
 @media print{
+  /*
+    v154 - 원본 도면 크롭 복구
+    복사본에서 정상인 역할별 이미지 확대/중앙 크롭 값을 인쇄 페이지에도 동일 적용한다.
+  */
+
   #reportPrintPagesV141 .report-print-diagram-clean-v152,
   #reportPrintPagesV141 .report-print-diagram-clean-v152.touch-card,
   #reportPrintPagesV141 .report-print-diagram-clean-v152.paint-diagram-block,
@@ -10910,72 +10929,108 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     min-width:0!important;
     margin-left:0!important;
     margin-right:0!important;
+    padding:0!important;
     box-sizing:border-box!important;
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
     overflow:visible!important;
     scrollbar-width:none!important;
     -ms-overflow-style:none!important;
   }
 
-  #reportPrintPagesV141 .report-print-diagram-top-v152 > .fig,
-  #reportPrintPagesV141 .report-print-diagram-side-v152 > .fig,
-  #reportPrintPagesV141 .report-print-diagram-bottom-v152 > .fig,
-  #reportPrintPagesV141 .report-print-diagram-top-v152 > .paint-fig,
-  #reportPrintPagesV141 .report-print-diagram-side-v152 > .paint-fig,
-  #reportPrintPagesV141 .report-print-diagram-bottom-v152 > .paint-fig,
-  #reportPrintPagesV141 .report-print-diagram-top-v152 > .paint-fig-bent,
-  #reportPrintPagesV141 .report-print-diagram-side-v152 > .paint-fig-bent,
-  #reportPrintPagesV141 .report-print-diagram-bottom-v152 > .paint-fig-bent{
+  /*
+    실제 크롭이 일어나는 fig 좌표계.
+    원본 이미지의 흐린 상단 여백이 보이지 않도록 overflow:hidden을 사용한다.
+  */
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .fig,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .paint-fig,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .paint-fig-bent{
     display:block!important;
+    position:relative!important;
     width:100%!important;
-    max-width:none!important;
+    max-width:100%!important;
     min-width:0!important;
     margin:0!important;
     padding:0!important;
     border:0!important;
+    border-radius:0!important;
     outline:0!important;
     box-shadow:none!important;
     background:#fff!important;
-    overflow:visible!important;
+    background-image:none!important;
+    filter:none!important;
+    overflow:hidden!important;
     box-sizing:border-box!important;
   }
 
-  #reportPrintPagesV141 .report-print-diagram-clean-v152 .fig > img,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152 .paint-fig > img,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152 .paint-fig-bent > img{
+  /*
+    원본 복사본과 동일한 역할별 이미지 크롭.
+    상부 118%, 측면 132%, 하부 122%.
+  */
+  #reportPrintPagesV141 .report-print-diagram-top-v152 > .fig > img,
+  #reportPrintPagesV141 .report-print-diagram-top-v152 > .paint-fig > img,
+  #reportPrintPagesV141 .report-print-diagram-top-v152 > .paint-fig-bent > img{
     display:block!important;
-    width:100%!important;
+    width:118%!important;
     max-width:none!important;
     height:auto!important;
-    margin:0!important;
+    margin:-0px 0 0 -9%!important;
     padding:0!important;
   }
 
-  #reportPrintPagesV141 .report-print-diagram-clean-v152.touch-card,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152.paint-diagram-block{
-    border:0!important;
-    outline:0!important;
-    box-shadow:none!important;
-    background:transparent!important;
+  #reportPrintPagesV141 .report-print-diagram-side-v152 > .fig > img,
+  #reportPrintPagesV141 .report-print-diagram-side-v152 > .paint-fig > img,
+  #reportPrintPagesV141 .report-print-diagram-side-v152 > .paint-fig-bent > img{
+    display:block!important;
+    width:132%!important;
+    max-width:none!important;
+    height:auto!important;
+    margin:0 0 0 -16%!important;
+    padding:0!important;
   }
 
+  #reportPrintPagesV141 .report-print-diagram-bottom-v152 > .fig > img,
+  #reportPrintPagesV141 .report-print-diagram-bottom-v152 > .paint-fig > img,
+  #reportPrintPagesV141 .report-print-diagram-bottom-v152 > .paint-fig-bent > img{
+    display:block!important;
+    width:122%!important;
+    max-width:none!important;
+    height:auto!important;
+    margin:0 0 0 -11%!important;
+    padding:0!important;
+  }
+
+  /* 상단 얼룩을 만들 수 있는 내부 장식/그림자/배경을 원인 요소에서 제거 */
   #reportPrintPagesV141 .report-print-diagram-clean-v152::before,
   #reportPrintPagesV141 .report-print-diagram-clean-v152::after,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152.touch-card::before,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152.touch-card::after,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152.paint-diagram-block::before,
-  #reportPrintPagesV141 .report-print-diagram-clean-v152.paint-diagram-block::after{
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .fig::before,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .fig::after,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .paint-fig::before,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .paint-fig::after,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .paint-fig-bent::before,
+  #reportPrintPagesV141 .report-print-diagram-clean-v152 > .paint-fig-bent::after{
     content:none!important;
     display:none!important;
+    border:0!important;
+    box-shadow:none!important;
+    background:none!important;
+    filter:none!important;
   }
 
+  /* 도면 제목 배지는 원본 연회색 스타일 유지 */
   #reportPrintPagesV141 .report-print-diagram-clean-v152 .diagram-corner-badge{
     background:#e5e7eb!important;
     background-color:#e5e7eb!important;
+    background-image:none!important;
     color:#111827!important;
     border:1px solid #cbd5e1!important;
     box-shadow:none!important;
     text-shadow:none!important;
+    filter:none!important;
     font-weight:400!important;
+    z-index:5000!important;
   }
 
   #reportPrintPagesV141 .report-print-diagram-clean-v152,

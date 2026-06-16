@@ -10670,62 +10670,52 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     font-weight:400!important;
   }
   /*
-    v149 - 사고·도막·외관 도면 역할별 크기 통일
+    v150 - 인쇄 도면 크기 원인 수정
+    확대와 음수 여백을 제거하고 사고·도막·외관 모두 동일한 100% 폭을 사용한다.
   */
   #reportPrintPagesV141 .report-print-diagram-top-v147 .fig,
   #reportPrintPagesV141 .report-print-diagram-top-v147 .paint-fig,
-  #reportPrintPagesV141 .report-print-diagram-top-v147 .paint-fig-bent{
-    width:104%!important;
-    max-width:none!important;
-    margin-left:-2%!important;
-    margin-right:0!important;
-  }
+  #reportPrintPagesV141 .report-print-diagram-top-v147 .paint-fig-bent,
   #reportPrintPagesV141 .report-print-diagram-side-v147 .fig,
   #reportPrintPagesV141 .report-print-diagram-side-v147 .paint-fig,
-  #reportPrintPagesV141 .report-print-diagram-side-v147 .paint-fig-bent{
-    width:110%!important;
-    max-width:none!important;
-    margin-left:-5%!important;
-    margin-right:0!important;
-  }
+  #reportPrintPagesV141 .report-print-diagram-side-v147 .paint-fig-bent,
   #reportPrintPagesV141 .report-print-diagram-bottom-v147 .fig,
   #reportPrintPagesV141 .report-print-diagram-bottom-v147 .paint-fig,
   #reportPrintPagesV141 .report-print-diagram-bottom-v147 .paint-fig-bent{
-    width:104%!important;
+    width:100%!important;
     max-width:none!important;
-    margin-left:-2%!important;
+    margin-left:0!important;
     margin-right:0!important;
   }
   #reportPrintPagesV141 .report-print-diagram-clean-v147 *::-webkit-scrollbar{
     display:none!important;
     width:0!important;
     height:0!important;
+    background:transparent!important;
   }
 
   /*
-    v149 - 도면 상단 얼룩 제거
+    v150 - 사고·도막·외관 인쇄 도면 컨테이너 기준 통일
   */
-  #reportPrintPagesV141 .report-print-top-clean-host-v149{
-    position:relative!important;
-    overflow:hidden!important;
-    background:#fff!important;
+  #reportPrintPagesV141 .report-print-diagram-clean-v147,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .touch-diagram-shell,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .paint-v98-shell,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .touch-card,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .paint-diagram-block{
+    width:100%!important;
+    max-width:none!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
   }
-  #reportPrintPagesV141 .report-print-top-clean-v149{
-    position:absolute!important;
-    left:0!important;
-    right:0!important;
-    top:0!important;
-    height:11px!important;
-    z-index:100!important;
-    display:block!important;
-    background:#fff!important;
-    border:0!important;
-    outline:0!important;
-    box-shadow:none!important;
-    pointer-events:none!important;
-  }
-  #reportPrintPagesV141 .report-print-top-clean-host-v149 .diagram-corner-badge{
-    z-index:5000!important;
+
+  #reportPrintPagesV141 .report-print-diagram-clean-v147::before,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147::after,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .touch-card::before,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .touch-card::after,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .paint-diagram-block::before,
+  #reportPrintPagesV141 .report-print-diagram-clean-v147 .paint-diagram-block::after{
+    content:none!important;
+    display:none!important;
   }
 
   .report-print-bar-v1773{
@@ -16183,25 +16173,8 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * markPrintPageDiagramCardsV148은 실제 인쇄 페이지 복제본에서만 역할 클래스를 부여한다.
+   * markPrintPageDiagramCardsV148은 실제 인쇄 페이지 복제본에 도면 역할 클래스만 부여한다.
    */
-  /**
-   * addDiagramTopCleanV149는 실제 인쇄 페이지의 도면 상단 얼룩을 덮는다.
-   */
-  function addDiagramTopCleanV149(block){
-    if(!block) return;
-
-    var fig = qs('.fig, .paint-fig, .paint-fig-bent', block);
-    if(!fig || qs(':scope > .report-print-top-clean-v149', fig)) return;
-
-    fig.classList.add('report-print-top-clean-host-v149');
-
-    var clean = document.createElement('span');
-    clean.className = 'report-print-top-clean-v149';
-    clean.setAttribute('aria-hidden', 'true');
-    fig.insertBefore(clean, fig.firstChild);
-  }
-
   function markPrintPageDiagramCardsV148(section){
     if(!section) return;
 
@@ -16215,10 +16188,8 @@ function isVisibleCaptureTarget(el){
           item.classList.add('report-print-diagram-top-v147');
         }else if(index === 1){
           item.classList.add('report-print-diagram-side-v147');
-          addDiagramTopCleanV149(item);
         }else{
           item.classList.add('report-print-diagram-bottom-v147');
-          addDiagramTopCleanV149(item);
         }
       });
     });
@@ -16234,10 +16205,6 @@ function isVisibleCaptureTarget(el){
             ? 'report-print-diagram-top-v147'
             : 'report-print-diagram-side-v147'
         );
-
-        if(index > 0){
-          addDiagramTopCleanV149(item);
-        }
       });
     });
   }

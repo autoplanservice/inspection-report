@@ -16446,11 +16446,12 @@ function isVisibleCaptureTarget(el){
     page1.appendChild(page1Flow);
 
     /*
-      v157 - 2페이지
-      좌측: 보험이력 + 사고 상부진단
-      우측: 사고 좌/우 측면진단 + 사고 하부진단
+      v165 - 2페이지
+      좌측: 사고 상부진단 + 사고 좌/우 측면진단
+      우측: 사고 하부진단 + 보험이력
 
       사고 도면은 외관/수리와 동일한 원본 크기값을 역할 클래스로 고정한다.
+      정렬감을 위해 좌측에 도면 2장, 우측에 도면 1장 후 보험이력을 배치한다.
     */
     var page2 = createPrintPageV141(printRoot, 'report-print-page2-v141');
     appendPageTitleV141(page2, '사고');
@@ -16501,20 +16502,16 @@ function isVisibleCaptureTarget(el){
       var leftContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
       leftContextV157.id = 'secDiag';
 
-      if(insuranceCardV157){
-        leftContextV157.appendChild(insuranceCardV157);
-      }
-
       if(diagramCardV157 && diagramShellV157){
         var rightDiagramCardV157 = diagramCardV157.cloneNode(false);
         var rightShellV157 = diagramShellV157.cloneNode(false);
 
-        diagramCardsV157.slice(1).forEach(function(cardV157){
+        diagramCardsV157.slice(2).forEach(function(cardV157){
           rightShellV157.appendChild(cardV157);
         });
         rightDiagramCardV157.appendChild(rightShellV157);
 
-        diagramCardsV157.slice(0,1).forEach(function(cardV157){
+        diagramCardsV157.slice(0,2).forEach(function(cardV157){
           diagramShellV157.appendChild(cardV157);
         });
         leftContextV157.appendChild(diagramCardV157);
@@ -16527,6 +16524,11 @@ function isVisibleCaptureTarget(el){
         rightContextV157.id = 'secDiag';
 
         rightContextV157.appendChild(rightDiagramCardV157);
+
+        if(insuranceCardV157){
+          rightContextV157.appendChild(insuranceCardV157);
+        }
+
         rightBodyV157.appendChild(rightContextV157);
         rightSectionV157.appendChild(rightBodyV157);
         page2RightV157.appendChild(rightSectionV157);

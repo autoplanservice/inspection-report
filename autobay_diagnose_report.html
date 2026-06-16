@@ -10998,6 +10998,47 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 </style>
 
+
+<style id="reportPrintOuterCardBorderV158">
+@media print{
+  /*
+    v158 - 상위 진단 카드 외곽선만 제거한다.
+    내부 도면 카드의 테두리와 모서리는 원본 그대로 유지한다.
+  */
+  #reportPrintPagesV141 .report-print-outer-card-borderless-v158{
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+
+  /*
+    내부 도면 외곽선은 유지한다.
+    사고: touch-card
+    도막: paint-diagram-block / paint-fig
+    외관: touch-card
+  */
+  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .touch-card{
+    border:1px solid #d9dee5!important;
+    border-radius:10px!important;
+    background:#fff!important;
+  }
+
+  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .paint-diagram-block{
+    border:1px solid #d9dee5!important;
+    border-radius:10px!important;
+    background:#fff!important;
+    overflow:hidden!important;
+  }
+
+  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .paint-fig,
+  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .paint-fig-bent{
+    border:0!important;
+    background:#fff!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -16112,6 +16153,33 @@ function isVisibleCaptureTarget(el){
 
 
   /**
+   * markOuterDiagnosticCardV158은 지정 제목의 최상위 진단 카드를 표시한다.
+   * 내부 도면 카드(touch-card / paint-diagram-block)는 변경하지 않는다.
+   */
+  function markOuterDiagnosticCardV158(section, titleRegex){
+    if(!section) return null;
+
+    var body = qs('.report-print-section-body-v1773', section);
+    var context = body ? body.firstElementChild : section;
+    var found = null;
+
+    qsa('article.report-card-ui, .report-card-ui', context).some(function(card){
+      var heading = qs('h2', card);
+      var title = (heading ? heading.textContent : '').replace(/\s+/g, ' ').trim();
+
+      if(titleRegex.test(title)){
+        card.classList.add('report-print-outer-card-borderless-v158');
+        found = card;
+        return true;
+      }
+
+      return false;
+    });
+
+    return found;
+  }
+
+  /**
    * removePrintPagesV141은 이전 인쇄 전용 페이지를 제거한다.
    */
   function removePrintPagesV141(){
@@ -16239,6 +16307,10 @@ function isVisibleCaptureTarget(el){
       var diagramCardV157 = diagramShellV157 ? diagramShellV157.closest('article, .report-card-ui') : null;
       var diagramCardsV157 = diagramShellV157 ? qsa(':scope > .touch-card', diagramShellV157) : [];
 
+      if(diagramCardV157){
+        diagramCardV157.classList.add('report-print-outer-card-borderless-v158');
+      }
+
       diagramCardsV157.forEach(function(cardV157, indexV157){
         if(indexV157 === 0){
           cardV157.classList.add('report-print-accident-top-v157');
@@ -16308,6 +16380,7 @@ function isVisibleCaptureTarget(el){
     if(paint){
       removeSectionTitleV141(paint);
       removeCardsByTitleV141(paint, /외관\s*진단확인|외관진단|타이어\s*상태확인|타이어상태/);
+      markOuterDiagnosticCardV158(paint, /도막\s*진단확인|도막진단/);
       paintWrap.appendChild(paint);
     }
 
@@ -16317,6 +16390,7 @@ function isVisibleCaptureTarget(el){
     if(exterior){
       removeSectionTitleV141(exterior);
       removeCardsByTitleV141(exterior, /도막\s*진단확인|도막진단|타이어\s*상태확인|타이어상태/);
+      markOuterDiagnosticCardV158(exterior, /외관\s*진단확인|외관진단/);
       exteriorWrap.appendChild(exterior);
     }
 

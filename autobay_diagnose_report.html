@@ -10899,8 +10899,34 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 
 
 
-<style id="reportPrintAccidentV157">
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="reportPrintDiagramUnifiedV161">
 @media print{
+  /*
+    v161 - 도면 출력 CSS 단일화
+
+    원칙:
+    1) 페이지 배치와 도면 렌더링을 분리한다.
+    2) 상위 진단 카드 외곽선만 제거한다.
+    3) 내부 도면 카드 외곽선은 유지한다.
+    4) clipping은 도면 카드 한 곳에서만 담당한다.
+    5) fig/이미지에는 중복 shadow·filter·overflow를 적용하지 않는다.
+  */
+
+  /* ----------------------------------------------------------
+     A. 사고 페이지 2열 배치
+     ---------------------------------------------------------- */
   #reportPrintPagesV141 .report-print-page2-flow-v157{
     display:grid!important;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
@@ -10920,91 +10946,22 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     overflow:hidden!important;
   }
 
-  #reportPrintPagesV141 .report-print-page2-flow-v157 .report-print-section-v1773,
-  #reportPrintPagesV141 .report-print-page2-flow-v157 .report-print-section-body-v1773,
-  #reportPrintPagesV141 .report-print-page2-flow-v157 #secDiag,
-  #reportPrintPagesV141 .report-print-page2-flow-v157 article,
-  #reportPrintPagesV141 .report-print-page2-flow-v157 .touch-card{
+  #reportPrintPagesV141 .report-print-page2-flow-v157
+  .report-print-section-v1773,
+  #reportPrintPagesV141 .report-print-page2-flow-v157
+  .report-print-section-body-v1773,
+  #reportPrintPagesV141 .report-print-page2-flow-v157
+  #secDiag,
+  #reportPrintPagesV141 .report-print-page2-flow-v157
+  article{
     break-inside:avoid!important;
     page-break-inside:avoid!important;
     -webkit-column-break-inside:avoid!important;
   }
 
-  /*
-    외관/수리에서 정상인 원본 도면 크기와 동일한 값.
-  */
-  #reportPrintPagesV141 .report-print-accident-top-v157{
-    width:100%!important;
-    max-width:100%!important;
-    margin:0 auto 8px!important;
-    overflow:hidden!important;
-  }
-  #reportPrintPagesV141 .report-print-accident-top-v157 > .fig{
-    width:118%!important;
-    max-width:none!important;
-    margin-left:-9%!important;
-    margin-right:0!important;
-    overflow:visible!important;
-  }
-
-  #reportPrintPagesV141 .report-print-accident-side-v157{
-    width:100%!important;
-    max-width:100%!important;
-    margin:0 auto 8px!important;
-    overflow:hidden!important;
-  }
-  #reportPrintPagesV141 .report-print-accident-side-v157 > .fig{
-    width:128%!important;
-    max-width:none!important;
-    margin-left:-14%!important;
-    margin-right:0!important;
-    overflow:visible!important;
-  }
-
-  #reportPrintPagesV141 .report-print-accident-bottom-v157{
-    width:100%!important;
-    max-width:100%!important;
-    margin:0 auto 8px!important;
-    overflow:hidden!important;
-  }
-  #reportPrintPagesV141 .report-print-accident-bottom-v157 > .fig{
-    width:122%!important;
-    max-width:none!important;
-    margin-left:-11%!important;
-    margin-right:0!important;
-    overflow:visible!important;
-  }
-
-  #reportPrintPagesV141 .report-print-accident-top-v157 > .fig > img,
-  #reportPrintPagesV141 .report-print-accident-side-v157 > .fig > img,
-  #reportPrintPagesV141 .report-print-accident-bottom-v157 > .fig > img{
-    display:block!important;
-    width:100%!important;
-    max-width:100%!important;
-    height:auto!important;
-    margin:0!important;
-    padding:0!important;
-  }
-
-  /*
-    인쇄 시 가로로 번져 보이던 얼룩은 도면 배지의 그림자이다.
-    배지 색상·위치·크기는 유지하고 그림자만 제거한다.
-  */
-  #reportPrintPagesV141 .diagram-corner-badge{
-    box-shadow:none!important;
-    filter:none!important;
-    text-shadow:none!important;
-  }
-}
-</style>
-
-
-<style id="reportPrintOuterCardBorderV158">
-@media print{
-  /*
-    v158 - 상위 진단 카드 외곽선만 제거한다.
-    내부 도면 카드의 테두리와 모서리는 원본 그대로 유지한다.
-  */
+  /* ----------------------------------------------------------
+     B. 상위 진단 카드 외곽선만 제거
+     ---------------------------------------------------------- */
   #reportPrintPagesV141 .report-print-outer-card-borderless-v158{
     border:0!important;
     outline:0!important;
@@ -11012,55 +10969,188 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     background:transparent!important;
   }
 
-  /*
-    내부 도면 외곽선은 유지한다.
-    사고: touch-card
-    도막: paint-diagram-block / paint-fig
-    외관: touch-card
-  */
-  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .touch-card{
+  /* ----------------------------------------------------------
+     C. 내부 도면 카드 공통 베이스
+     clipping은 이 두 카드에서만 담당한다.
+     ---------------------------------------------------------- */
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .touch-card,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block,
+  #reportPrintPagesV141
+  .report-print-accident-top-v157,
+  #reportPrintPagesV141
+  .report-print-accident-side-v157,
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157{
+    display:block!important;
+    position:relative!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0 auto 8px!important;
+    padding:0!important;
+    box-sizing:border-box!important;
     border:1px solid #d9dee5!important;
     border-radius:10px!important;
+    outline:0!important;
+    box-shadow:none!important;
+    filter:none!important;
     background:#fff!important;
-  }
-
-  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .paint-diagram-block{
-    border:1px solid #d9dee5!important;
-    border-radius:10px!important;
-    background:#fff!important;
-    overflow:hidden!important;
-  }
-
-  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .paint-fig,
-  #reportPrintPagesV141 .report-print-outer-card-borderless-v158 .paint-fig-bent{
-    border:0!important;
-    background:#fff!important;
-  }
-}
-</style>
-
-
-<style id="reportPrintAccidentBadgeV159">
-@media print{
-  /*
-    v159 - 사고 도면 배지 색상 통일
-    좌/우 분리 후 nth-of-type 순서 변화와 무관하게
-    상부·측면·하부 배지에 같은 스타일을 직접 적용한다.
-  */
-  #reportPrintPagesV141 .report-print-accident-top-v157 .diagram-corner-badge,
-  #reportPrintPagesV141 .report-print-accident-side-v157 .diagram-corner-badge,
-  #reportPrintPagesV141 .report-print-accident-bottom-v157 .diagram-corner-badge{
-    background:#e9edf2!important;
-    background-color:#e9edf2!important;
     background-image:none!important;
-    color:#27313d!important;
-    border:1px solid #cfd6df!important;
-    border-radius:8px!important;
+    overflow:hidden!important;
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+  }
+
+  /* ----------------------------------------------------------
+     D. fig 계열은 좌표계만 담당
+     별도의 border/clipping/shadow를 갖지 않는다.
+     ---------------------------------------------------------- */
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .touch-card > .fig,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block > .paint-fig,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block > .paint-fig-bent,
+  #reportPrintPagesV141
+  .report-print-accident-top-v157 > .fig,
+  #reportPrintPagesV141
+  .report-print-accident-side-v157 > .fig,
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157 > .fig{
+    display:block!important;
+    position:relative!important;
+    max-width:none!important;
+    min-width:0!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    background:#fff!important;
+    background-image:none!important;
+    overflow:visible!important;
+    box-sizing:border-box!important;
+  }
+
+  /* 사고 도면은 외관/수리와 동일한 원본 역할별 크기 */
+  #reportPrintPagesV141
+  .report-print-accident-top-v157 > .fig{
+    width:118%!important;
+    margin:0 0 0 -9%!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-side-v157 > .fig{
+    width:128%!important;
+    margin:0 0 0 -14%!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157 > .fig{
+    width:122%!important;
+    margin:0 0 0 -11%!important;
+  }
+
+  /* 이미지에는 추가 clipping/그림자를 적용하지 않는다. */
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .touch-card > .fig > img,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block
+  > .paint-fig > img,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block
+  > .paint-fig-bent > img,
+  #reportPrintPagesV141
+  .report-print-accident-top-v157 > .fig > img,
+  #reportPrintPagesV141
+  .report-print-accident-side-v157 > .fig > img,
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157 > .fig > img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    filter:none!important;
+    transform:none!important;
+    background:#fff!important;
+    background-image:none!important;
+  }
+
+  /* ----------------------------------------------------------
+     E. 도면 배지
+     색상은 기존 기준값, 그림자/필터만 완전 제거한다.
+     ---------------------------------------------------------- */
+  html body.report-print-preview-v1773
+  #reportPrintPagesV141
+  #secDiag
+  .diagram-corner-badge{
+    background:#e5e7eb!important;
+    background-color:#e5e7eb!important;
+    background-image:none!important;
+    color:#111827!important;
+    border:1px solid #cbd5e1!important;
     box-shadow:none!important;
     text-shadow:none!important;
     filter:none!important;
+    backdrop-filter:none!important;
     opacity:1!important;
-    font-weight:400!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  /* ----------------------------------------------------------
+     F. 도면 내부 가상 장식과 스크롤바 제거
+     ---------------------------------------------------------- */
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .touch-card::before,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .touch-card::after,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block::before,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-diagram-block::after,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .fig::before,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .fig::after,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-fig::before,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-fig::after,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-fig-bent::before,
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 .paint-fig-bent::after{
+    content:none!important;
+    display:none!important;
+    border:0!important;
+    outline:0!important;
+    box-shadow:none!important;
+    filter:none!important;
+    background:none!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 *{
+    scrollbar-width:none!important;
+    -ms-overflow-style:none!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-outer-card-borderless-v158 *::-webkit-scrollbar{
+    display:none!important;
+    width:0!important;
+    height:0!important;
+    background:transparent!important;
   }
 }
 </style>

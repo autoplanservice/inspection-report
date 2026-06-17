@@ -11408,6 +11408,38 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     zoom:1!important;
   }
 
+
+  /*
+    v186 - iPhone 메인 페이지 제목 행 높이 축소
+
+    기존 공통 규칙:
+    - padding: 10px 12px
+    - margin-bottom: 4mm
+
+    iPhone에서는 이 높이가 각 페이지의 유효 콘텐츠 영역을 줄이므로,
+    제목 바의 시각 스타일은 유지하면서 세로 여백만 축소한다.
+  */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page-title-v141{
+    margin:0 0 2mm!important;
+    padding:5px 10px!important;
+    min-height:0!important;
+    line-height:1.15!important;
+    font-size:14px!important;
+  }
+
+  /*
+    외관/수리 페이지의 도면 행과 타이어 행 사이 세로 간격도
+    iPhone에서만 5mm에서 3mm로 축소한다.
+  */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-v141
+  .report-print-page3-layout-v141{
+    row-gap:3mm!important;
+  }
+
 </style>
 
 </head>
@@ -17432,7 +17464,7 @@ function isVisibleCaptureTarget(el){
     );
     var availableHeight = Math.max(
       1,
-      a4Height - usedTop - 8
+      a4Height - usedTop - 4
     );
     var naturalHeight = layout.scrollHeight ||
       layoutRect.height;

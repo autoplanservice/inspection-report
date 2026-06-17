@@ -18483,7 +18483,24 @@ function isVisibleCaptureTarget(el){
   /** 저장된 JSON을 화면 전체에 복원하고 관련 input/change 이벤트를 발생시킨다. */
   function restoreReportV197(data){if(!data||!Array.isArray(data.controls))throw new Error('저장 JSON 형식이 올바르지 않습니다.');restoreDynamicV197(data.dynamic);var root=document.getElementById('reportAppV194'),all=Array.prototype.slice.call(root.querySelectorAll('input,select,textarea,[contenteditable="true"]'));data.controls.forEach(function(rec){var el=findElementV197(rec.key,all);if(!el)return;if(el.type==='checkbox'||el.type==='radio')el.checked=!!rec.checked;else if(el.isContentEditable)el.textContent=rec.text||'';else el.value=rec.value==null?'':rec.value;try{el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}catch(e){}});(data.attributes||[]).forEach(function(rec){var el=findElementV197(rec.key,Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]')));if(!el)return;if(rec.dataValue!==null)el.setAttribute('data-value',rec.dataValue);if(rec.talkLevel!==null)el.setAttribute('data-talk-level',rec.talkLevel);if(rec.text!==undefined)el.textContent=rec.text;});currentRecordV197={diagnosisId:data.diagnosisId||'',revision:Number(data.revision||0),stage:data.stage||'',entryMode:data.entryMode||''};document.body.setAttribute('data-entry-mode-v194',data.entryMode||'LOAD_EXISTING');document.body.setAttribute('data-entry-stage-v194',data.stage||'FIELD_IN_PROGRESS');console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V197]',currentRecordV197);}
   /** 기본정보에서 시트 색인용 메타데이터를 읽는다. */
-  function getMetaV197(){return{vehicleNumber:normalizeVehicleNoV197((document.querySelector('input[placeholder="차량번호 입력"]')||{}).value),oldVehicleNumber:'',vehicleName:String((document.querySelector('input[placeholder="차량이름 입력"]')||{}).value||'').trim(),manager:String((document.querySelector('input[placeholder="담당자 입력"]')||{}).value||'').trim()};}
+  /**
+   * 기본정보 영역에서 서버 저장용 핵심 메타데이터를 읽는다.
+   * 첫 진입 화면과 매입오더에 동일한 placeholder가 있으므로 #secInput 범위로 제한한다.
+   * @returns {{vehicleNumber:string, oldVehicleNumber:string, vehicleName:string, manager:string}}
+   */
+  function getMetaV197(){
+    var basicSection = document.getElementById('secInput');
+    var vehicleInput = basicSection ? basicSection.querySelector('input[placeholder="차량번호 입력"]') : null;
+    var vehicleNameInput = basicSection ? basicSection.querySelector('input[placeholder="차량이름 입력"]') : null;
+    var managerInput = basicSection ? basicSection.querySelector('input[placeholder="담당자 입력"]') : null;
+
+    return {
+      vehicleNumber: normalizeVehicleNoV197(vehicleInput ? vehicleInput.value : ''),
+      oldVehicleNumber: '',
+      vehicleName: String(vehicleNameInput ? vehicleNameInput.value : '').trim(),
+      manager: String(managerInput ? managerInput.value : '').trim()
+    };
+  }
   /** 현재 진입 모드에 맞는 상태로 전체 JSON을 저장한다. */
   function saveV197(){if(busyV197)return;var meta=getMetaV197();if(!meta.vehicleNumber){setStatusV197('차량번호를 입력해 주세요.',true);return;}if(!meta.manager){setStatusV197('담당자를 입력해 주세요.',true);return;}busyV197=true;setStatusV197('전체 항목을 JSON으로 저장하고 있습니다.',false);var report=collectReportV197();apiV197('saveReport',{diagnosisId:currentRecordV197.diagnosisId||'',revision:String(currentRecordV197.revision||0),vehicleNumber:meta.vehicleNumber,oldVehicleNumber:meta.oldVehicleNumber,vehicleName:meta.vehicleName,manager:meta.manager,stage:report.stage,jsonData:JSON.stringify(report)}).then(function(r){currentRecordV197.diagnosisId=r.diagnosisId;currentRecordV197.revision=Number(r.revision||1);report.diagnosisId=r.diagnosisId;report.revision=currentRecordV197.revision;setStatusV197('저장 완료 · '+r.diagnosisId+' · 수정버전 '+r.revision,false);updateMetaV197();console.log('[AB_DIAG][SHEET_SAVE_COMPLETE_V197]',r);}).catch(function(e){setStatusV197(e.message||'저장 실패',true);console.error('[AB_DIAG][SHEET_SAVE_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
   /** 차량번호로 가장 최근 저장 건을 조회하고 복원한다. */

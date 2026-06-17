@@ -18582,12 +18582,29 @@ function isVisibleCaptureTarget(el){
    * @returns {Object}
    */
   function collectCycleStateV203(){
+    /*
+     * 보증연장 값은 화면에 표시되는 순환 버튼을 최우선으로 읽는다.
+     * 불러오기 이후 hidden input과 버튼값이 어긋난 상태로 재저장되는 문제를 방지한다.
+     */
     var warrantyInput=document.querySelector('[data-key="prosWarrantyLevel"]');
+    var warrantyButton=document.querySelector('[data-pros-warranty-cycle="1"]');
     var inspectorButton=document.querySelector('.customer-talk-cycle:not([data-pros-warranty-cycle="1"])');
     var inspectorValue=inspectorButton?(inspectorButton.getAttribute('data-value')||inspectorButton.getAttribute('data-talk-level')||'0'):'0';
     if(!/^[0-5]$/.test(inspectorValue))inspectorValue='0';
-    var warrantyValue=warrantyInput?String(warrantyInput.value||''):'';
+
+    var warrantyValue=warrantyButton?
+      String(warrantyButton.getAttribute('data-value')||warrantyButton.getAttribute('data-talk-level')||warrantyButton.textContent||''):
+      String(warrantyInput?warrantyInput.value||'':'');
+    if(warrantyValue==='선택'||warrantyValue==='0')warrantyValue='';
     if(!/^[1-5]$/.test(warrantyValue))warrantyValue='';
+
+    /* 저장 직전 버튼값을 hidden input에도 동일하게 반영한다. */
+    if(warrantyInput)warrantyInput.value=warrantyValue;
+    if(warrantyButton){
+      warrantyButton.setAttribute('data-value',warrantyValue||'0');
+      warrantyButton.setAttribute('data-talk-level',warrantyValue||'0');
+      warrantyButton.textContent=warrantyValue||'선택';
+    }
     return{warranty:warrantyValue,inspector:inspectorValue};
   }
 
@@ -18615,7 +18632,7 @@ function isVisibleCaptureTarget(el){
     var stage=document.body.getAttribute('data-entry-stage-v194')||(entryMode==='PRE_INPUT'?'PRE_INPUT':'FIELD_IN_PROGRESS');
     var report={
       schemaVersion:3,
-      reportVersion:'v203',
+      reportVersion:'v207',
       diagnosisId:currentRecordV197.diagnosisId||'',
       revision:currentRecordV197.revision||0,
       entryMode:entryMode,
@@ -18667,21 +18684,36 @@ function isVisibleCaptureTarget(el){
   function restoreCycleStateV203(state){
     state=state||{};
     var warranty=/^[1-5]$/.test(String(state.warranty||''))?String(state.warranty):'';
-    var warrantyInput=document.querySelector('[data-key="prosWarrantyLevel"]');
-    var warrantyButton=document.querySelector('[data-pros-warranty-cycle="1"]');
-    if(warrantyInput)warrantyInput.value=warranty;
-    if(warrantyButton){
-      warrantyButton.setAttribute('data-value',warranty||'0');
-      warrantyButton.setAttribute('data-talk-level',warranty||'0');
-      warrantyButton.textContent=warranty||'선택';
+    var inspector=/^[0-5]$/.test(String(state.inspector||'0'))?String(state.inspector):'0';
+
+    /** 보증연장과 검수자 코멘트 버튼을 저장값으로 동기화한다. */
+    function applyCycleValuesV207(){
+      var warrantyInput=document.querySelector('[data-key="prosWarrantyLevel"]');
+      var warrantyButton=document.querySelector('[data-pros-warranty-cycle="1"]');
+      if(warrantyInput)warrantyInput.value=warranty;
+      if(warrantyButton){
+        warrantyButton.setAttribute('data-value',warranty||'0');
+        warrantyButton.setAttribute('data-talk-level',warranty||'0');
+        warrantyButton.textContent=warranty||'선택';
+      }
+
+      var inspectorButton=document.querySelector('.customer-talk-cycle:not([data-pros-warranty-cycle="1"])');
+      if(inspectorButton){
+        inspectorButton.setAttribute('data-value',inspector);
+        inspectorButton.setAttribute('data-talk-level',inspector);
+        inspectorButton.textContent=inspector==='0'?'선택':inspector;
+      }
     }
 
-    var inspector=/^[0-5]$/.test(String(state.inspector||'0'))?String(state.inspector):'0';
-    var inspectorButton=document.querySelector('.customer-talk-cycle:not([data-pros-warranty-cycle="1"])');
-    if(inspectorButton){
-      inspectorButton.setAttribute('data-value',inspector);
-      inspectorButton.setAttribute('data-talk-level',inspector);
-      inspectorButton.textContent=inspector==='0'?'선택':inspector;
+    /* 즉시 복원하고, 후속 초기화 코드가 값을 되돌리는 경우를 막기 위해 다음 프레임에 재동기화한다. */
+    applyCycleValuesV207();
+    if(typeof requestAnimationFrame==='function'){
+      requestAnimationFrame(function(){
+        applyCycleValuesV207();
+        setTimeout(applyCycleValuesV207,60);
+      });
+    }else{
+      setTimeout(applyCycleValuesV207,60);
     }
   }
 

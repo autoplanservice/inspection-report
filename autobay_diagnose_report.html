@@ -17073,7 +17073,7 @@ function isVisibleCaptureTarget(el){
 
 
   /**
-   * syncAccidentPage2GeometryV179는 사고 상부/하부 도면의 실제 렌더 높이를 비교해
+   * applyAccidentPage2GeometryV180는 사고 상부/하부 도면의 실제 렌더 높이를 비교해
    * 하부 도면 전체(fig + 이미지 + 마커)를 비례 확대하고 외곽선 높이도 맞춘다.
    *
    * 기존 실패 원인:
@@ -17081,7 +17081,7 @@ function isVisibleCaptureTarget(el){
    * - 같은 width 비율을 적용해도 실제 세로 높이는 같아지지 않는다.
    * - 카드 외곽선 높이만 맞추면 내부 도면 크기는 그대로 남는다.
    */
-  function syncAccidentPage2GeometryV179(){
+  function applyAccidentPage2GeometryV180(){
     var page2 = document.querySelector(
       '#reportPrintPagesV141 .report-print-page2-v141'
     );
@@ -17170,18 +17170,69 @@ function isVisibleCaptureTarget(el){
     }
   }
 
-  window.addEventListener(
-    'beforeprint',
-    syncAccidentPage2GeometryV179,
-    false
-  );
+  /**
+   * waitForAccidentPageImagesV180은 사고 페이지 출력 복사본의
+   * 상부·하부 도면 이미지가 완전히 디코딩될 때까지 기다린다.
+   */
+  async function waitForAccidentPageImagesV180(){
+    var page2 = document.querySelector(
+      '#reportPrintPagesV141 .report-print-page2-v141'
+    );
+    if(!page2) return;
+
+    var images = Array.prototype.slice.call(
+      page2.querySelectorAll(
+        '.report-print-accident-top-v157 img,' +
+        '.report-print-accident-bottom-v157 img'
+      )
+    );
+
+    await Promise.all(images.map(function(image){
+      if(image.decode){
+        return image.decode().catch(function(){});
+      }
+
+      if(image.complete){
+        return Promise.resolve();
+      }
+
+      return new Promise(function(resolve){
+        image.addEventListener('load', resolve, {once:true});
+        image.addEventListener('error', resolve, {once:true});
+      });
+    }));
+  }
+
+  /**
+   * syncAccidentPage2GeometryV180은 이미지 디코딩과 최종 레이아웃
+   * 확정 후 사고 상부·하부진단 외곽선 높이를 다시 동기화한다.
+   */
+  async function syncAccidentPage2GeometryV180(){
+    await waitForAccidentPageImagesV180();
+
+    await new Promise(function(resolve){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(resolve);
+      });
+    });
+
+    applyAccidentPage2GeometryV180();
+  }
+
+  window.addEventListener('beforeprint', function(){
+    /*
+      beforeprint는 비동기 완료를 기다리지 않으므로,
+      이미 디코딩된 이미지 기준으로 즉시 한 번 더 적용한다.
+    */
+    applyAccidentPage2GeometryV180();
+  }, false);
 
   async function openPreview(mode){
     repairMainTabHandlersV1784();
     await prepareDiagramImagesForPrintV164();
     var root = buildReport(mode);
     buildPrintPagesFromCopyV141(root);
-    syncAccidentPage2GeometryV179();
+    await syncAccidentPage2GeometryV180();
     document.body.classList.add(PREV_CLASS);
     buildBar();
     window.scrollTo(0,0);
@@ -17190,13 +17241,14 @@ function isVisibleCaptureTarget(el){
 
     if(window.requestAnimationFrame){
       window.requestAnimationFrame(function(){
-        syncAccidentPage2GeometryV179();
-        syncPrintSectionTitleWidths(root);
+        syncAccidentPage2GeometryV180().then(function(){
+          syncPrintSectionTitleWidths(root);
+        });
       });
     }
 
-    setTimeout(function(){
-      syncAccidentPage2GeometryV179();
+    setTimeout(async function(){
+      await syncAccidentPage2GeometryV180();
       syncPrintSectionTitleWidths(root);
       window.print();
     }, 450);

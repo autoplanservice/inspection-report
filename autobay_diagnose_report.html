@@ -18445,8 +18445,62 @@ function isVisibleCaptureTarget(el){
 
 <style>
 /* v197 Google Sheets 저장·불러오기 도구막대 */
-.ab-dbbar-v197{position:sticky;top:0;z-index:115;background:#fff;border:1px solid #d8dee8;border-radius:14px;padding:10px;margin:0 0 10px;box-shadow:0 4px 14px rgba(15,23,42,.08)}
-.ab-dbbar-row-v197{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ab-dbbar-v197 button{height:40px;border:0;border-radius:10px;font-size:13px;font-weight:900}.ab-db-save-v197{background:#111827;color:#fff}.ab-db-load-v197{background:#e5e7eb;color:#111827}.ab-db-status-v197{margin-top:7px;font-size:11px;font-weight:800;color:#6b7280;line-height:1.4;word-break:break-all}.ab-db-status-v197.error{color:#b91c1c}.ab-db-meta-v197{font-size:11px;color:#4b5563;margin-bottom:7px;font-weight:800}
+/* v206: 메인 리포트에서는 저장 기능만 우측 하단 플로팅으로 제공한다. */
+.ab-dbbar-v197{
+  position:fixed;
+  right:12px;
+  bottom:calc(94px + env(safe-area-inset-bottom, 0px));
+  z-index:2147482500;
+  width:min(230px, calc(100vw - 24px));
+  margin:0;
+  padding:0;
+  background:transparent;
+  border:0;
+  pointer-events:none;
+}
+.ab-dbbar-row-v197{display:flex;justify-content:flex-end;width:100%}
+.ab-dbbar-v197 button{
+  pointer-events:auto;
+  min-width:166px;
+  height:48px;
+  padding:0 18px;
+  border:0;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:900;
+  box-shadow:0 8px 24px rgba(15,23,42,.28);
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.ab-db-save-v197{background:#111827;color:#fff}
+.ab-db-save-v197:disabled{opacity:.65}
+.ab-db-status-v197{
+  display:none;
+  width:100%;
+  margin:0 0 8px;
+  padding:10px 12px;
+  border:1px solid #d8dee8;
+  border-radius:12px;
+  background:rgba(255,255,255,.98);
+  color:#374151;
+  font-size:12px;
+  font-weight:900;
+  line-height:1.45;
+  text-align:left;
+  word-break:keep-all;
+  box-shadow:0 6px 20px rgba(15,23,42,.18);
+  pointer-events:none;
+}
+.ab-db-status-v197.show{display:block}
+.ab-db-status-v197.error{border-color:#fecaca;background:#fff7f7;color:#b91c1c}
+.ab-db-meta-v197{display:none!important}
+@media (max-width:430px){
+  .ab-dbbar-v197{right:10px;bottom:calc(92px + env(safe-area-inset-bottom, 0px));width:min(220px, calc(100vw - 20px))}
+  .ab-dbbar-v197 button{min-width:158px;height:48px}
+}
+@media print{
+  .ab-dbbar-v197{display:none!important}
+}
 </style>
 <script>
 (function(){
@@ -18464,8 +18518,23 @@ function isVisibleCaptureTarget(el){
   function normalizeVehicleNoV197(v){return String(v||'').replace(/\s+/g,'').replace(/-/g,'').trim();}
   /** CSS selector에 사용할 문자열을 안전하게 이스케이프한다. */
   function cssEscapeV197(v){return window.CSS&&CSS.escape?CSS.escape(String(v)):String(v).replace(/(["\\])/g,'\\$1');}
-  /** 상태 안내문구를 갱신한다. */
-  function setStatusV197(msg,isError){var el=document.getElementById('abDbStatusV197');if(!el)return;el.textContent=msg||'';el.classList.toggle('error',!!isError);}
+  /** 저장 안내 토스트를 자동으로 닫기 위한 타이머 식별자이다. */
+  var statusTimerV206=0;
+  /** 상태 안내문구를 플로팅 버튼 위에 표시한다. */
+  function setStatusV197(msg,isError){
+    var el=document.getElementById('abDbStatusV197');
+    if(!el)return;
+    if(statusTimerV206){window.clearTimeout(statusTimerV206);statusTimerV206=0;}
+    el.textContent=msg||'';
+    el.classList.toggle('error',!!isError);
+    el.classList.toggle('show',!!msg);
+    if(msg){
+      statusTimerV206=window.setTimeout(function(){
+        el.classList.remove('show');
+        statusTimerV206=0;
+      },isError?6500:4200);
+    }
+  }
   /** 현재 인증 토큰을 반환한다. */
   function getTokenV197(){try{return sessionStorage.getItem(DB_TOKEN_KEY_V197)||'';}catch(e){return '';}}
   /** Apps Script에 form-urlencoded 요청을 전송한다. */
@@ -18844,8 +18913,18 @@ function isVisibleCaptureTarget(el){
   function loadByVehicleV197(vehicleNumber){if(busyV197)return Promise.resolve();busyV197=true;setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);return apiV197('loadByVehicle',{vehicleNumber:normalizeVehicleNoV197(vehicleNumber)}).then(function(r){restoreReportV197(r.data);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);updateMetaV197();}).catch(function(e){setStatusV197(e.message||'불러오기 실패',true);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);console.error('[AB_DIAG][SHEET_LOAD_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
   /** 도구막대의 현재 진단 메타정보를 갱신한다. */
   function updateMetaV197(){var el=document.getElementById('abDbMetaV197');if(el)el.textContent=currentRecordV197.diagnosisId?('진단ID '+currentRecordV197.diagnosisId+' / 수정버전 '+currentRecordV197.revision):'아직 서버에 저장되지 않은 신규 진단';}
-  /** 저장·불러오기 도구막대를 기존 앱 상단에 삽입한다. */
-  function installToolbarV197(){var app=document.getElementById('reportAppV194');if(!app||document.getElementById('abDbBarV197'))return;var bar=document.createElement('div');bar.id='abDbBarV197';bar.className='ab-dbbar-v197';bar.innerHTML='<div class="ab-db-meta-v197" id="abDbMetaV197"></div><div class="ab-dbbar-row-v197"><button class="ab-db-save-v197" id="abDbSaveV197" type="button">현재 데이터 저장</button><button class="ab-db-load-v197" id="abDbLoadV197" type="button">차량번호 불러오기</button></div><div class="ab-db-status-v197" id="abDbStatusV197" aria-live="polite"></div>';var header=app.querySelector('.header');if(header&&header.nextSibling)app.insertBefore(bar,header.nextSibling);else app.insertBefore(bar,app.firstChild);document.getElementById('abDbSaveV197').addEventListener('click',saveV197);document.getElementById('abDbLoadV197').addEventListener('click',function(){var m=getMetaV197();if(!m.vehicleNumber){setStatusV197('기본정보의 차량번호를 먼저 입력해 주세요.',true);return;}loadByVehicleV197(m.vehicleNumber);});updateMetaV197();}
+  /** 현재 데이터 저장 버튼을 기존 앱 안에 플로팅 요소로 삽입한다. */
+  function installToolbarV197(){
+    var app=document.getElementById('reportAppV194');
+    if(!app||document.getElementById('abDbBarV197'))return;
+    var bar=document.createElement('div');
+    bar.id='abDbBarV197';
+    bar.className='ab-dbbar-v197';
+    bar.innerHTML='<div class="ab-db-status-v197" id="abDbStatusV197" aria-live="polite"></div><div class="ab-db-meta-v197" id="abDbMetaV197"></div><div class="ab-dbbar-row-v197"><button class="ab-db-save-v197" id="abDbSaveV197" type="button">현재 데이터 저장</button></div>';
+    app.appendChild(bar);
+    document.getElementById('abDbSaveV197').addEventListener('click',saveV197);
+    updateMetaV197();
+  }
   /** 첫 진입 화면의 기존 데이터 불러오기 이벤트를 실제 API와 연결한다. */
   function bindEntryLoadV197(){document.addEventListener('ab-diag-request-load-v194',function(ev){ev.preventDefault();var vehicleNumber=ev.detail&&ev.detail.vehicleNumber||'';loadByVehicleV197(vehicleNumber);},false);}
   /** 외부 디버깅 및 테스트용 공개 API이다. */

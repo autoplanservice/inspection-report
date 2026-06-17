@@ -11553,12 +11553,104 @@ body.ab-entry-active-v194{overflow:hidden!important}
   #entryVehicleLoadBtnV194{width:100%}
 }
 
+
+/* v195 - Apps Script 비밀번호 인증 화면 */
+#passwordGateScreenV195{
+  position:fixed;
+  inset:0;
+  z-index:2147483640;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+  padding:24px 14px 40px;
+  background:#f3f4f6;
+}
+#passwordGateScreenV195[hidden]{display:none!important}
+.password-gate-card-v195{
+  width:100%;
+  max-width:420px;
+  padding:24px 18px;
+  border:1px solid #d8dee8;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 14px 40px rgba(15,23,42,.16);
+}
+.password-gate-title-v195{
+  margin:0 0 7px;
+  font-size:21px;
+  line-height:1.35;
+  font-weight:1000;
+  letter-spacing:-.04em;
+  color:#111827;
+}
+.password-gate-desc-v195{
+  margin:0 0 16px;
+  font-size:13px;
+  line-height:1.55;
+  color:#6b7280;
+}
+.password-gate-label-v195{
+  display:block;
+  margin:0 0 7px;
+  font-size:12px;
+  font-weight:900;
+  color:#374151;
+}
+.password-gate-row-v195{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 88px;
+  gap:8px;
+}
+#passwordInputV195{
+  height:46px!important;
+  min-height:46px!important;
+  background:#fff!important;
+}
+#passwordVerifyBtnV195{
+  height:46px;
+  border:0;
+  border-radius:11px;
+  background:#111827;
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+#passwordVerifyBtnV195:disabled{opacity:.55;cursor:default}
+.password-gate-message-v195{
+  min-height:20px;
+  margin-top:8px;
+  font-size:12px;
+  line-height:1.5;
+  color:#6b7280;
+}
+body.ab-password-active-v195{overflow:hidden!important}
+@media (max-width:380px){
+  .password-gate-row-v195{grid-template-columns:1fr}
+  #passwordVerifyBtnV195{width:100%}
+}
+
 </style>
 
 
 </head>
-<body class="ab-entry-active-v194">
-<div id="entryModeScreenV194" role="dialog" aria-modal="true" aria-labelledby="entryModeTitleV194">
+<body class="ab-entry-active-v194 ab-password-active-v195">
+
+<div id="passwordGateScreenV195" role="dialog" aria-modal="true" aria-labelledby="passwordGateTitleV195">
+  <div class="password-gate-card-v195">
+    <h1 class="password-gate-title-v195" id="passwordGateTitleV195">오토베이 진단리포트 로그인</h1>
+    <p class="password-gate-desc-v195">등록된 비밀번호를 확인한 뒤 진단리포트에 진입합니다.</p>
+    <label class="password-gate-label-v195" for="passwordInputV195">비밀번호</label>
+    <div class="password-gate-row-v195">
+      <input id="passwordInputV195" type="password" autocomplete="current-password" placeholder="비밀번호 입력"/>
+      <button id="passwordVerifyBtnV195" type="button">확인</button>
+    </div>
+    <div class="password-gate-message-v195" id="passwordGateMessageV195" aria-live="polite"></div>
+  </div>
+</div>
+<div id="entryModeScreenV194" hidden role="dialog" aria-modal="true" aria-labelledby="entryModeTitleV194">
   <div class="entry-mode-card-v194">
     <h1 class="entry-mode-brand-v194" id="entryModeTitleV194">오토베이 현장 매입 진단리포트</h1>
     <p class="entry-mode-desc-v194">작업 방식을 선택한 뒤 진단리포트를 시작합니다.</p>
@@ -18169,6 +18261,178 @@ function isVisibleCaptureTarget(el){
     document.addEventListener('DOMContentLoaded', bindEntryModeScreenV194, false);
   }else{
     bindEntryModeScreenV194();
+  }
+})();
+</script>
+
+
+<script>
+(function(){
+  'use strict';
+
+  /**
+   * PASSWORD_WEB_APP_URL_V195는 비밀번호를 검증할 Apps Script 웹앱 배포 URL이다.
+   * 웹앱 배포가 끝난 뒤 실제 /exec URL로 교체한다.
+   */
+  var PASSWORD_WEB_APP_URL_V195 = '';
+
+  /**
+   * PASSWORD_SESSION_KEY_V195는 현재 브라우저 탭에서 인증 성공 여부만 보관한다.
+   * 실제 비밀번호는 브라우저 저장소에 저장하지 않는다.
+   */
+  var PASSWORD_SESSION_KEY_V195 = 'AB_DIAG_PASSWORD_VERIFIED_V195';
+
+  /**
+   * setPasswordMessageV195는 비밀번호 인증 화면의 안내문구를 표시한다.
+   *
+   * @param {string} message 표시할 문구
+   * @param {boolean} isError 오류 여부
+   */
+  function setPasswordMessageV195(message, isError){
+    var element = document.getElementById('passwordGateMessageV195');
+    if(!element) return;
+    element.textContent = message || '';
+    element.style.color = isError ? '#b91c1c' : '#6b7280';
+  }
+
+  /**
+   * showEntryModeAfterPasswordV195는 인증 완료 후 비밀번호 화면을 닫고
+   * 첫 진입 모드 선택 화면을 표시한다.
+   */
+  function showEntryModeAfterPasswordV195(){
+    var passwordScreen = document.getElementById('passwordGateScreenV195');
+    var entryScreen = document.getElementById('entryModeScreenV194');
+    if(passwordScreen) passwordScreen.hidden = true;
+    if(entryScreen) entryScreen.hidden = false;
+    document.body.classList.remove('ab-password-active-v195');
+    document.body.classList.add('ab-entry-active-v194');
+
+    console.log('[AB_DIAG][PASSWORD_VERIFIED_V195]', {
+      verifiedAt: new Date().toISOString()
+    });
+  }
+
+  /**
+   * verifyPasswordWithAppsScriptV195는 입력한 비밀번호를 Apps Script에 전송해 검증한다.
+   * 비밀번호는 응답 수신 후 입력창에서 즉시 제거한다.
+   *
+   * @param {string} password 사용자가 입력한 비밀번호
+   * @returns {Promise<boolean>} 인증 성공 여부
+   */
+  function verifyPasswordWithAppsScriptV195(password){
+    if(!PASSWORD_WEB_APP_URL_V195){
+      setPasswordMessageV195('Apps Script 웹앱 URL이 아직 설정되지 않았습니다.', true);
+      return Promise.resolve(false);
+    }
+
+    var body = new URLSearchParams();
+    body.set('action', 'verifyPassword');
+    body.set('password', password);
+
+    return fetch(PASSWORD_WEB_APP_URL_V195, {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+      body: body.toString(),
+      redirect: 'follow',
+      cache: 'no-store'
+    }).then(function(response){
+      if(!response.ok) throw new Error('HTTP_' + response.status);
+      return response.json();
+    }).then(function(result){
+      return !!(result && result.ok === true && result.verified === true);
+    });
+  }
+
+  /**
+   * requestPasswordVerificationV195는 입력값을 검사하고 인증 요청을 한 번만 실행한다.
+   */
+  function requestPasswordVerificationV195(){
+    var input = document.getElementById('passwordInputV195');
+    var button = document.getElementById('passwordVerifyBtnV195');
+    var password = input ? String(input.value || '') : '';
+
+    if(!password){
+      setPasswordMessageV195('비밀번호를 입력해 주세요.', true);
+      if(input) input.focus();
+      return;
+    }
+
+    if(button && button.disabled) return;
+    if(button) button.disabled = true;
+    setPasswordMessageV195('비밀번호를 확인하고 있습니다.', false);
+
+    verifyPasswordWithAppsScriptV195(password).then(function(verified){
+      if(input) input.value = '';
+      if(!verified){
+        setPasswordMessageV195('비밀번호가 일치하지 않습니다.', true);
+        if(input) input.focus();
+        return;
+      }
+
+      try{
+        sessionStorage.setItem(PASSWORD_SESSION_KEY_V195, '1');
+      }catch(error){
+        console.warn('[AB_DIAG][PASSWORD_SESSION_SAVE_FAIL_V195]', error);
+      }
+
+      setPasswordMessageV195('', false);
+      showEntryModeAfterPasswordV195();
+    }).catch(function(error){
+      if(input) input.value = '';
+      setPasswordMessageV195('비밀번호 확인 중 연결 오류가 발생했습니다.', true);
+      console.error('[AB_DIAG][PASSWORD_VERIFY_FAIL_V195]', error);
+      if(input) input.focus();
+    }).finally(function(){
+      if(button) button.disabled = false;
+    });
+  }
+
+  /**
+   * bindPasswordGateV195는 비밀번호 화면 이벤트를 한 번만 연결한다.
+   */
+  function bindPasswordGateV195(){
+    if(document.body.getAttribute('data-password-bound-v195') === '1') return;
+    document.body.setAttribute('data-password-bound-v195', '1');
+
+    var input = document.getElementById('passwordInputV195');
+    var button = document.getElementById('passwordVerifyBtnV195');
+
+    if(button) button.addEventListener('click', requestPasswordVerificationV195, false);
+    if(input){
+      input.addEventListener('keydown', function(event){
+        if(event.key === 'Enter'){
+          event.preventDefault();
+          requestPasswordVerificationV195();
+        }
+      }, false);
+    }
+
+    try{
+      if(sessionStorage.getItem(PASSWORD_SESSION_KEY_V195) === '1'){
+        showEntryModeAfterPasswordV195();
+        return;
+      }
+    }catch(error){
+      console.warn('[AB_DIAG][PASSWORD_SESSION_READ_FAIL_V195]', error);
+    }
+
+    if(input) setTimeout(function(){ input.focus(); }, 0);
+  }
+
+  /**
+   * AB_DIAG_PASSWORD_V195는 웹앱 URL 설정과 수동 인증 해제를 위한 공개 제어 API이다.
+   */
+  window.AB_DIAG_PASSWORD_V195 = {
+    setWebAppUrl: function(url){ PASSWORD_WEB_APP_URL_V195 = String(url || '').trim(); },
+    clearSession: function(){
+      try{ sessionStorage.removeItem(PASSWORD_SESSION_KEY_V195); }catch(error){}
+    }
+  };
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindPasswordGateV195, false);
+  }else{
+    bindPasswordGateV195();
   }
 })();
 </script>

@@ -11465,12 +11465,128 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     display:none!important;
   }
 }
+
+
+/* v194 - 첫 진입 모드 선택 화면 */
+#entryModeScreenV194{
+  position:fixed;
+  inset:0;
+  z-index:2147483600;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  overflow:auto;
+  padding:24px 14px 40px;
+  background:#f3f4f6;
+}
+#entryModeScreenV194[hidden]{display:none!important}
+.entry-mode-card-v194{
+  width:100%;
+  max-width:560px;
+  margin:auto;
+  padding:22px 18px;
+  border:1px solid #d8dee8;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:0 14px 40px rgba(15,23,42,.14);
+}
+.entry-mode-brand-v194{
+  margin:0 0 6px;
+  font-size:21px;
+  line-height:1.35;
+  font-weight:1000;
+  letter-spacing:-.04em;
+  color:#111827;
+}
+.entry-mode-desc-v194{
+  margin:0 0 18px;
+  font-size:13px;
+  line-height:1.55;
+  color:#6b7280;
+}
+.entry-mode-list-v194{display:grid;gap:10px}
+.entry-mode-btn-v194{
+  width:100%;
+  min-height:76px;
+  padding:14px 15px;
+  border:1px solid #cfd6e1;
+  border-radius:14px;
+  background:#fff;
+  color:#111827;
+  text-align:left;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.entry-mode-btn-v194:active{transform:scale(.995)}
+.entry-mode-btn-v194.primary{background:#111827;border-color:#111827;color:#fff}
+.entry-mode-btn-title-v194{display:block;font-size:16px;font-weight:1000;line-height:1.3}
+.entry-mode-btn-desc-v194{display:block;margin-top:5px;font-size:12px;line-height:1.45;opacity:.78}
+.entry-load-panel-v194{
+  display:none;
+  margin-top:12px;
+  padding:12px;
+  border:1px solid #d8dee8;
+  border-radius:14px;
+  background:#f9fafb;
+}
+.entry-load-panel-v194.show{display:block}
+.entry-load-label-v194{display:block;margin:0 0 7px;font-size:12px;font-weight:900;color:#374151}
+.entry-load-row-v194{display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:8px}
+#entryVehicleNoV194{height:44px!important;min-height:44px!important;background:#fff!important}
+#entryVehicleLoadBtnV194{height:44px;border:0;border-radius:11px;background:#111827;color:#fff;font-size:13px;font-weight:900}
+.entry-load-message-v194{min-height:18px;margin-top:7px;font-size:12px;line-height:1.45;color:#6b7280}
+.entry-mode-current-v194{
+  display:none;
+  margin:-2px 0 10px;
+  padding:8px 10px;
+  border-radius:10px;
+  background:#e0f2fe;
+  color:#075985;
+  font-size:12px;
+  font-weight:900;
+}
+body.ab-entry-active-v194{overflow:hidden!important}
+#reportAppV194[hidden]{display:none!important}
+@media (max-width:380px){
+  .entry-load-row-v194{grid-template-columns:1fr}
+  #entryVehicleLoadBtnV194{width:100%}
+}
+
 </style>
 
 
 </head>
-<body>
-<div class="app">
+<body class="ab-entry-active-v194">
+<div id="entryModeScreenV194" role="dialog" aria-modal="true" aria-labelledby="entryModeTitleV194">
+  <div class="entry-mode-card-v194">
+    <h1 class="entry-mode-brand-v194" id="entryModeTitleV194">오토베이 현장 매입 진단리포트</h1>
+    <p class="entry-mode-desc-v194">작업 방식을 선택한 뒤 진단리포트를 시작합니다.</p>
+    <div class="entry-mode-list-v194">
+      <button class="entry-mode-btn-v194" id="entryPreInputBtnV194" type="button">
+        <span class="entry-mode-btn-title-v194">사전입력 시작</span>
+        <span class="entry-mode-btn-desc-v194">차량 방문 전 확인 가능한 정보를 먼저 입력하고 저장합니다.</span>
+      </button>
+      <button class="entry-mode-btn-v194 primary" id="entryDirectFieldBtnV194" type="button">
+        <span class="entry-mode-btn-title-v194">현장 바로입력</span>
+        <span class="entry-mode-btn-desc-v194">사전입력 없이 현장에서 전체 진단을 바로 시작합니다.</span>
+      </button>
+      <button class="entry-mode-btn-v194" id="entryExistingBtnV194" type="button" aria-expanded="false" aria-controls="entryLoadPanelV194">
+        <span class="entry-mode-btn-title-v194">기존 데이터 불러오기</span>
+        <span class="entry-mode-btn-desc-v194">차량번호로 저장된 사전입력 또는 현장진행 데이터를 조회합니다.</span>
+      </button>
+    </div>
+    <div class="entry-load-panel-v194" id="entryLoadPanelV194">
+      <label class="entry-load-label-v194" for="entryVehicleNoV194">차량번호</label>
+      <div class="entry-load-row-v194">
+        <input id="entryVehicleNoV194" type="text" inputmode="text" autocomplete="off" placeholder="차량번호 입력"/>
+        <button id="entryVehicleLoadBtnV194" type="button">불러오기</button>
+      </div>
+      <div class="entry-load-message-v194" id="entryLoadMessageV194" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+<div class="app" id="reportAppV194" hidden>
 <input checked="" class="tab-radio" id="tabInput" name="mainTabs" type="radio"/>
 <input class="tab-radio" id="tabDiag" name="mainTabs" type="radio"/><input class="tab-radio" id="tabExterior" name="mainTabs" type="radio"/>
 <input class="tab-radio" id="tabCheck" name="mainTabs" type="radio"/><input class="tab-radio" id="tabSubmit" name="mainTabs" type="radio"/><input class="tab-radio" id="tabOrder" name="mainTabs" type="radio"/>
@@ -17889,6 +18005,173 @@ function isVisibleCaptureTarget(el){
   - 날짜 기능만 iPhone에서 정상 동작하던 v83의 v17.29/v17.30 블록으로 원복했다.
   - v85/v86 신규 날짜 우회 방식은 포함하지 않는다.
 -->
+
+
+<script>
+(function(){
+  'use strict';
+
+  /**
+   * ENTRY_SESSION_KEY_V194는 현재 브라우저 탭에서 선택한 최초 진입 모드를 보관한다.
+   * 브라우저 탭을 닫으면 자동으로 제거되며 기존 localStorage key에는 영향을 주지 않는다.
+   */
+  var ENTRY_SESSION_KEY_V194 = 'AB_DIAG_ENTRY_MODE_V194';
+
+  /**
+   * ENTRY_STAGE_SESSION_KEY_V194는 현재 브라우저 탭의 진행단계를 보관한다.
+   */
+  var ENTRY_STAGE_SESSION_KEY_V194 = 'AB_DIAG_ENTRY_STAGE_V194';
+
+  /**
+   * normalizeVehicleNumberV194는 차량번호 조회 시 공백과 하이픈을 제거한다.
+   *
+   * @param {string} value 사용자가 입력한 차량번호
+   * @returns {string} 조회용으로 정규화한 차량번호
+   */
+  function normalizeVehicleNumberV194(value){
+    return String(value || '').replace(/\s+/g, '').replace(/-/g, '').trim();
+  }
+
+  /**
+   * setEntryLoadMessageV194는 기존 데이터 조회 패널의 안내문구를 갱신한다.
+   *
+   * @param {string} message 표시할 문구
+   * @param {boolean} isError 오류 문구 여부
+   */
+  function setEntryLoadMessageV194(message, isError){
+    var element = document.getElementById('entryLoadMessageV194');
+    if(!element) return;
+    element.textContent = message || '';
+    element.style.color = isError ? '#b91c1c' : '#6b7280';
+  }
+
+  /**
+   * enterReportV194는 선택한 진입 모드와 진행단계를 sessionStorage에 기록하고
+   * 기존 진단리포트 DOM을 표시한다.
+   *
+   * @param {'PRE_INPUT'|'DIRECT_FIELD'|'LOAD_EXISTING'} entryMode 최초 진입 방식
+   * @param {'PRE_INPUT'|'FIELD_IN_PROGRESS'} stage 현재 진행단계
+   */
+  function enterReportV194(entryMode, stage){
+    try{
+      sessionStorage.setItem(ENTRY_SESSION_KEY_V194, entryMode);
+      sessionStorage.setItem(ENTRY_STAGE_SESSION_KEY_V194, stage);
+    }catch(error){
+      console.warn('[AB_DIAG][ENTRY_SESSION_SAVE_FAIL_V194]', error);
+    }
+
+    var screen = document.getElementById('entryModeScreenV194');
+    var app = document.getElementById('reportAppV194');
+    if(screen) screen.hidden = true;
+    if(app) app.hidden = false;
+    document.body.classList.remove('ab-entry-active-v194');
+    document.body.setAttribute('data-entry-mode-v194', entryMode);
+    document.body.setAttribute('data-entry-stage-v194', stage);
+
+    console.log('[AB_DIAG][ENTRY_MODE_SELECTED_V194]', {
+      entryMode: entryMode,
+      stage: stage,
+      selectedAt: new Date().toISOString()
+    });
+  }
+
+  /**
+   * requestExistingReportV194는 차량번호 기반 Google Sheets 조회를 요청하는
+   * 사용자 정의 이벤트를 발생시킨다. API 연동 모듈은 이 이벤트를 받아 처리한다.
+   */
+  function requestExistingReportV194(){
+    var input = document.getElementById('entryVehicleNoV194');
+    var vehicleNumber = normalizeVehicleNumberV194(input ? input.value : '');
+
+    if(!vehicleNumber){
+      setEntryLoadMessageV194('차량번호를 입력해 주세요.', true);
+      if(input) input.focus();
+      return;
+    }
+
+    setEntryLoadMessageV194('저장 데이터를 조회하고 있습니다.', false);
+
+    var event;
+    try{
+      event = new CustomEvent('ab-diag-request-load-v194', {
+        detail: { vehicleNumber: vehicleNumber },
+        cancelable: true
+      });
+    }catch(error){
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent('ab-diag-request-load-v194', true, true, {vehicleNumber:vehicleNumber});
+    }
+
+    var handled = !document.dispatchEvent(event);
+    if(!handled){
+      setEntryLoadMessageV194('Google Sheets 연결 모듈 적용 후 차량번호 조회가 활성화됩니다.', true);
+      console.warn('[AB_DIAG][LOAD_HANDLER_MISSING_V194]', {vehicleNumber:vehicleNumber});
+    }
+  }
+
+  /**
+   * bindEntryModeScreenV194는 첫 진입 화면의 버튼 이벤트를 한 번만 연결한다.
+   */
+  function bindEntryModeScreenV194(){
+    if(document.body.getAttribute('data-entry-mode-bound-v194') === '1') return;
+    document.body.setAttribute('data-entry-mode-bound-v194', '1');
+
+    var preButton = document.getElementById('entryPreInputBtnV194');
+    var directButton = document.getElementById('entryDirectFieldBtnV194');
+    var existingButton = document.getElementById('entryExistingBtnV194');
+    var loadPanel = document.getElementById('entryLoadPanelV194');
+    var loadButton = document.getElementById('entryVehicleLoadBtnV194');
+    var vehicleInput = document.getElementById('entryVehicleNoV194');
+
+    if(preButton){
+      preButton.addEventListener('click', function(){
+        enterReportV194('PRE_INPUT', 'PRE_INPUT');
+      }, false);
+    }
+
+    if(directButton){
+      directButton.addEventListener('click', function(){
+        enterReportV194('DIRECT_FIELD', 'FIELD_IN_PROGRESS');
+      }, false);
+    }
+
+    if(existingButton && loadPanel){
+      existingButton.addEventListener('click', function(){
+        var shouldShow = !loadPanel.classList.contains('show');
+        loadPanel.classList.toggle('show', shouldShow);
+        existingButton.setAttribute('aria-expanded', shouldShow ? 'true' : 'false');
+        setEntryLoadMessageV194('', false);
+        if(shouldShow && vehicleInput) setTimeout(function(){ vehicleInput.focus(); }, 0);
+      }, false);
+    }
+
+    if(loadButton) loadButton.addEventListener('click', requestExistingReportV194, false);
+    if(vehicleInput){
+      vehicleInput.addEventListener('keydown', function(event){
+        if(event.key === 'Enter'){
+          event.preventDefault();
+          requestExistingReportV194();
+        }
+      }, false);
+    }
+  }
+
+  /**
+   * AB_DIAG_ENTRY_V194는 후속 Google Sheets 연동 모듈에서 사용하는 공개 진입 제어 API이다.
+   */
+  window.AB_DIAG_ENTRY_V194 = {
+    enterReport: enterReportV194,
+    setLoadMessage: setEntryLoadMessageV194,
+    normalizeVehicleNumber: normalizeVehicleNumberV194
+  };
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindEntryModeScreenV194, false);
+  }else{
+    bindEntryModeScreenV194();
+  }
+})();
+</script>
 
 </body>
 </html>

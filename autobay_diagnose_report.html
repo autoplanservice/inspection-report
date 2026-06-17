@@ -11190,43 +11190,54 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 </style>
 
 
-<style id="reportPrintIOSV183">
+
+<style id="reportPrintIOSV190">
 @media print{
   @page{
     size:A4 portrait;
     margin:0;
   }
 
-
   /*
-    v183 - V165 기준 iPhone/Safari 전용 인쇄 보정
-    body.report-print-ios-v183 클래스가 있을 때만 적용한다.
+    v190 - V165 기준 iPhone/Safari 출력 전용 규칙
+
+    원칙:
+    - 하나의 @media print 블록만 사용
+    - transform/absolute 기반 외관 높이 보정 미사용
+    - 실제 DOM 크기를 줄여 Safari 페이지 분할 기준 자체를 줄임
+    - 웹/안드로이드에는 적용하지 않음
   */
 
-  body.report-print-ios-v183 #reportPrintPagesV141{
-    width:210mm!important;
-    max-width:210mm!important;
+  body.report-print-ios-v183{
     margin:0!important;
     padding:0!important;
   }
 
+  body.report-print-ios-v183 #reportPrintPagesV141{
+    display:block!important;
+    width:210mm!important;
+    max-width:210mm!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
   /*
-    Safari에서는 고정 mm 높이 + page-break-after 조합이
-    각 콘텐츠 페이지 뒤에 빈 페이지를 추가한다.
-    따라서 높이는 콘텐츠 기준으로 두고,
-    두 번째 페이지부터 page-break-before만 사용한다.
+    두 번째 페이지부터 Safari 상단 안전여백을 페이지 wrapper 자체로 상쇄한다.
+    메인헤더 margin이 아니라 전체 페이지 내용을 함께 위로 이동한다.
   */
   body.report-print-ios-v183
   #reportPrintPagesV141
   .report-print-page-v141{
     display:block!important;
+    position:relative!important;
     width:210mm!important;
     height:auto!important;
     min-height:0!important;
     max-height:none!important;
-    overflow:visible!important;
     margin:0!important;
     padding:0!important;
+    overflow:visible!important;
     box-sizing:border-box!important;
     page-break-before:always!important;
     break-before:page!important;
@@ -11243,13 +11254,46 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     break-before:auto!important;
   }
 
-  /* 기본 페이지를 CSS column이 아닌 실제 2열 grid로 고정한다. */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page-v141:not(:first-child){
+    top:-8mm!important;
+    margin-bottom:-8mm!important;
+  }
+
+  /*
+    메인헤더 네 모서리 동일 라운드.
+  */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page-title-v141{
+    display:block!important;
+    width:calc(100% - 4mm)!important;
+    margin:0 2mm 2mm 2mm!important;
+    padding:5px 10px!important;
+    border-radius:10px!important;
+    overflow:hidden!important;
+    clip-path:none!important;
+    box-sizing:border-box!important;
+    line-height:1.15!important;
+    font-size:14px!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-head-v1773{
+    margin:0 0 2mm!important;
+    padding:6px 8px!important;
+    overflow:visible!important;
+  }
+
+  /* 기본정보: 실제 2열 DOM */
   body.report-print-ios-v183
   #reportPrintPagesV141
   .report-print-page1-flow-v141{
     display:grid!important;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    column-gap:8mm!important;
+    column-gap:6mm!important;
     align-items:start!important;
     width:100%!important;
     height:auto!important;
@@ -11263,8 +11307,8 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   body.report-print-ios-v183
   #reportPrintPagesV141
   .report-print-ios-basic-right-v183{
-    min-width:0!important;
     width:100%!important;
+    min-width:0!important;
   }
 
   body.report-print-ios-v183
@@ -11276,19 +11320,40 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     margin-top:0!important;
   }
 
+  /* 사고: V165 구조 유지, 데스크톱 고정 높이만 해제 */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page2-flow-v157{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page2-left-v157,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page2-right-v157{
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+
   /*
-    외관/수리 원본 규칙의 280mm 고정 높이와 1fr 행은
-    Safari에서 상단 행을 불필요하게 늘려 측면도면/타이어를 다음 장으로 민다.
-    iOS에서는 모든 행과 래퍼를 실제 콘텐츠 높이로 계산한다.
+    외관/수리:
+    transform/absolute/zoom 없이 실제 카드와 도면 크기를 축소한다.
   */
   body.report-print-ios-v183
   #reportPrintPagesV141
-  .report-print-page3-v141
   .report-print-page3-layout-v141{
     display:grid!important;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
     grid-template-rows:auto auto!important;
-    gap:5mm 8mm!important;
+    column-gap:6mm!important;
+    row-gap:1.5mm!important;
     align-items:start!important;
     width:100%!important;
     height:auto!important;
@@ -11318,16 +11383,64 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     grid-column:1 / -1!important;
   }
 
-  /* iPhone 전용 점검 페이지는 명시적 2열 grid로 구성한다. */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-left-v141 .touch-card,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-right-v141 .touch-card{
+    width:94%!important;
+    max-width:94%!important;
+    margin:0 auto 4px!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-left-v141 .fig,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-right-v141 .fig,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-left-v141 .paint-fig,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-right-v141 .paint-fig,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-left-v141 .paint-fig-bent,
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-right-v141 .paint-fig-bent{
+    width:92%!important;
+    max-width:92%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-tire-v141 .report-card-ui{
+    margin:2px 0 0!important;
+    padding:8px!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page3-tire-v141 .wheel-box{
+    height:56px!important;
+  }
+
+  /* 점검: 명시적 2열 3페이지 */
   body.report-print-ios-v183
   #reportPrintPagesV141
   .report-print-ios-check-grid-v183{
     display:grid!important;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    column-gap:8mm!important;
+    column-gap:6mm!important;
     align-items:start!important;
     width:100%!important;
-    zoom:.9!important;
+    zoom:.94!important;
   }
 
   body.report-print-ios-v183
@@ -11339,213 +11452,24 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 
   body.report-print-ios-v183
   #reportPrintPagesV141
-  .report-print-ios-check-column-v183
-  .report-card-ui{
+  .report-print-ios-check-column-v183 .report-card-ui{
     break-inside:avoid!important;
     page-break-inside:avoid!important;
     margin-top:0!important;
-    margin-bottom:10px!important;
+    margin-bottom:8px!important;
   }
 
   body.report-print-ios-v183
   #reportPrintPagesV141
-  .report-print-continuation-v141{
-    display:none!important;
-  }
-
+  .report-print-continuation-v141,
   body.report-print-ios-v183
   #reportPrintPagesV141
   .report-print-ios-empty-v183{
     display:none!important;
   }
 }
-
-  /*
-    v185 - iPhone 사고 페이지 빈 페이지 방지
-    데스크톱용 280mm/100% 높이와 overflow hidden을 iOS에서 해제한다.
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page2-flow-v157{
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-  }
-
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page2-left-v157,
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page2-right-v157{
-    height:auto!important;
-    min-height:0!important;
-    max-height:none!important;
-    overflow:visible!important;
-  }
-
-  /*
-    v185 외관/수리 실측 축소 wrapper
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-ios-exterior-fit-v185{
-    position:relative!important;
-    display:block!important;
-    width:100%!important;
-    min-width:0!important;
-    overflow:hidden!important;
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-ios-exterior-fit-v185
-  > .report-print-page3-layout-v141{
-    transform-origin:top left!important;
-    zoom:1!important;
-  }
-
-
-  /*
-    v186 - iPhone 메인 페이지 제목 행 높이 축소
-
-    기존 공통 규칙:
-    - padding: 10px 12px
-    - margin-bottom: 4mm
-
-    iPhone에서는 이 높이가 각 페이지의 유효 콘텐츠 영역을 줄이므로,
-    제목 바의 시각 스타일은 유지하면서 세로 여백만 축소한다.
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-title-v141{
-    margin:0 0 2mm!important;
-    padding:5px 10px!important;
-    min-height:0!important;
-    line-height:1.15!important;
-    font-size:14px!important;
-  }
-
-  /*
-    외관/수리 페이지의 도면 행과 타이어 행 사이 세로 간격도
-    iPhone에서만 5mm에서 3mm로 축소한다.
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page3-v141
-  .report-print-page3-layout-v141{
-    row-gap:3mm!important;
-  }
-
-
-  /*
-    v188 - iPhone 출력 여백 및 메인헤더 대칭 보정
-  */
-
-  body.report-print-ios-v183{
-    margin:0!important;
-    padding:0!important;
-  }
-
-  /*
-    Safari의 바깥 안전여백을 줄이되 V187처럼 과도하게 확장하지 않는다.
-    좌우 각각 1mm만 확장하여 클리핑 위험을 최소화한다.
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141{
-    width:212mm!important;
-    max-width:212mm!important;
-    margin-left:-1mm!important;
-    margin-right:0!important;
-    padding:0!important;
-  }
-
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-v141{
-    width:212mm!important;
-    max-width:212mm!important;
-    margin:0!important;
-    padding:0!important;
-  }
-
-  /*
-    메인헤더:
-    - 좌상/우상/좌하/우하 동일 반경
-    - 좌우 폭과 시작점을 대칭 처리
-    - 부모 clipping 방지
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-title-v141{
-    display:block!important;
-    width:calc(100% - 2mm)!important;
-    margin:0 1mm 2mm 1mm!important;
-    padding:5px 10px!important;
-    border-radius:10px!important;
-    overflow:hidden!important;
-    clip-path:none!important;
-    box-sizing:border-box!important;
-    line-height:1.15!important;
-    font-size:14px!important;
-  }
-
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-v141,
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-head-v1773{
-    overflow:visible!important;
-  }
-
-  /*
-    외관/수리 wrapper는 축소된 높이만 문서 흐름에 남긴다.
-    실제 layout absolute 전환은 JS 측정 완료 후에만 수행한다.
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-ios-exterior-fit-v185{
-    position:relative!important;
-    display:block!important;
-    width:100%!important;
-    min-width:0!important;
-    overflow:hidden!important;
-    break-inside:avoid!important;
-    page-break-inside:avoid!important;
-  }
-
-
-  /*
-    v189 - iPhone 모든 메인헤더를 페이지 상단에 밀착
-
-    Safari PDF가 페이지 상단에 남기는 안전 여백을
-    메인헤더의 음수 상단 margin으로 상쇄한다.
-    메인헤더 아래 간격과 라운드 스타일은 유지한다.
-  */
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-title-v141{
-    margin:-8mm 1mm 2mm 1mm!important;
-  }
-
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-v141{
-    padding-top:0!important;
-  }
-
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-v141
-  > .report-print-page-title-v141:first-child{
-    margin-top:-8mm!important;
-  }
-
 </style>
+
 
 </head>
 <body>
@@ -17510,209 +17434,6 @@ function isVisibleCaptureTarget(el){
 
 
   /**
-   * fitIOSExteriorPageV185는 외관/수리 페이지의 실제 렌더 높이를 측정하고,
-   * A4 한 페이지에 들어가도록 transform과 wrapper 높이를 함께 보정한다.
-   *
-   * zoom은 문서 흐름 높이를 안정적으로 줄이지 못하므로 사용하지 않는다.
-   */
-  function fitIOSExteriorPageV185(printRoot){
-    if(!printRoot) return;
-
-    var page = qs(
-      '.report-print-page3-v141',
-      printRoot
-    );
-    var layout = page
-      ? qs('.report-print-page3-layout-v141', page)
-      : null;
-
-    if(!page || !layout) return;
-
-    var wrapper = layout.parentElement;
-
-    if(
-      !wrapper ||
-      !wrapper.classList.contains(
-        'report-print-ios-exterior-fit-v185'
-      )
-    ){
-      wrapper = document.createElement('div');
-      wrapper.className =
-        'report-print-ios-exterior-fit-v185';
-
-      layout.parentNode.insertBefore(wrapper, layout);
-      wrapper.appendChild(layout);
-    }
-
-    /*
-      측정 전에는 반드시 normal flow 상태로 복구한다.
-      CSS에서 absolute를 선적용하지 않고 여기서만 제어한다.
-    */
-    layout.style.removeProperty('transform');
-    layout.style.removeProperty('width');
-    layout.style.removeProperty('height');
-    layout.style.removeProperty('position');
-    layout.style.removeProperty('top');
-    layout.style.removeProperty('left');
-    layout.style.removeProperty('right');
-
-    wrapper.style.removeProperty('height');
-    wrapper.style.removeProperty('min-height');
-    wrapper.style.removeProperty('max-height');
-    wrapper.style.removeProperty('overflow');
-
-    layout.style.setProperty(
-      'position',
-      'static',
-      'important'
-    );
-
-    /* normal flow 상태의 실제 높이를 확정한다. */
-    void layout.offsetHeight;
-
-    var pageRect = page.getBoundingClientRect();
-    var layoutRect = layout.getBoundingClientRect();
-    var pageWidth = pageRect.width || page.offsetWidth;
-
-    if(!pageWidth || !layoutRect.height) return;
-
-    /*
-      A4 세로 높이는 현재 CSS 페이지 폭을 기준으로 비례 계산한다.
-      하단 안전 여백 8px을 제외한다.
-    */
-    var a4Height = pageWidth * (297 / 210);
-    var usedTop = Math.max(
-      0,
-      layoutRect.top - pageRect.top
-    );
-    var availableHeight = Math.max(
-      1,
-      a4Height - usedTop - 4
-    );
-    var naturalHeight = Math.max(
-      layout.scrollHeight || 0,
-      layout.offsetHeight || 0,
-      layoutRect.height || 0
-    );
-
-    if(!naturalHeight) return;
-
-    var scale = Math.min(
-      1,
-      availableHeight / naturalHeight
-    );
-
-    /*
-      과도한 부동소수점 오차를 피하면서,
-      실제 문서 흐름 높이도 함께 줄인다.
-    */
-    scale = Math.floor(scale * 10000) / 10000;
-
-    /*
-      측정 완료 후에만 layout을 normal flow에서 제거한다.
-      Safari는 wrapper의 축소된 높이만 페이지 분할 기준으로 사용한다.
-    */
-    layout.style.setProperty(
-      'position',
-      'absolute',
-      'important'
-    );
-    layout.style.setProperty(
-      'top',
-      '0',
-      'important'
-    );
-    layout.style.setProperty(
-      'left',
-      '0',
-      'important'
-    );
-    layout.style.setProperty(
-      'transform',
-      'scale(' + scale + ')',
-      'important'
-    );
-    layout.style.setProperty(
-      'width',
-      (100 / scale) + '%',
-      'important'
-    );
-
-    wrapper.style.setProperty(
-      'position',
-      'relative',
-      'important'
-    );
-    wrapper.style.setProperty(
-      'height',
-      Math.ceil(naturalHeight * scale) + 'px',
-      'important'
-    );
-    wrapper.style.setProperty(
-      'min-height',
-      Math.ceil(naturalHeight * scale) + 'px',
-      'important'
-    );
-    wrapper.style.setProperty(
-      'max-height',
-      Math.ceil(naturalHeight * scale) + 'px',
-      'important'
-    );
-    wrapper.style.setProperty(
-      'overflow',
-      'hidden',
-      'important'
-    );
-  }
-
-  /**
-   * stabilizeIOSExteriorPageV185는 이미지 디코딩과 레이아웃 확정 후
-   * 외관/수리 실측 축소를 실행한다.
-   */
-  async function stabilizeIOSExteriorPageV185(printRoot){
-    if(!printRoot) return;
-
-    var page = qs(
-      '.report-print-page3-v141',
-      printRoot
-    );
-    if(!page) return;
-
-    var images = qsa('img', page);
-
-    await Promise.all(images.map(function(image){
-      if(image.decode){
-        return image.decode().catch(function(){});
-      }
-
-      if(image.complete){
-        return Promise.resolve();
-      }
-
-      return new Promise(function(resolve){
-        image.addEventListener(
-          'load',
-          resolve,
-          {once:true}
-        );
-        image.addEventListener(
-          'error',
-          resolve,
-          {once:true}
-        );
-      });
-    }));
-
-    await new Promise(function(resolve){
-      requestAnimationFrame(function(){
-        requestAnimationFrame(resolve);
-      });
-    });
-
-    fitIOSExteriorPageV185(printRoot);
-  }
-
-  /**
    * prepareIOSPrintPagesV183은 V165 출력 구조를 유지하면서
    * iPhone에서만 명시적인 페이지 구성으로 변환한다.
    */
@@ -17730,7 +17451,6 @@ function isVisibleCaptureTarget(el){
 
     prepareIOSBasicPageV183(printRoot);
     prepareIOSCheckPagesV183(printRoot);
-    fitIOSExteriorPageV185(printRoot);
     removeEmptyIOSPrintPagesV183(printRoot);
   }
 
@@ -17740,10 +17460,6 @@ function isVisibleCaptureTarget(el){
     var root = buildReport(mode);
     var printRoot = buildPrintPagesFromCopyV141(root);
     prepareIOSPrintPagesV183(printRoot);
-
-    if(isIOSPrintV183()){
-      await stabilizeIOSExteriorPageV185(printRoot);
-    }
 
     document.body.classList.add(PREV_CLASS);
     buildBar();
@@ -17757,16 +17473,8 @@ function isVisibleCaptureTarget(el){
       });
     }
 
-    setTimeout(async function(){
+    setTimeout(function(){
       if(isIOSPrintV183()){
-        await stabilizeIOSExteriorPageV185(printRoot);
-
-        await new Promise(function(resolve){
-          requestAnimationFrame(function(){
-            requestAnimationFrame(resolve);
-          });
-        });
-
         removeEmptyIOSPrintPagesV183(printRoot);
       }
 

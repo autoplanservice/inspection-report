@@ -8,6 +8,7 @@
 
 <!--
 BASE CLEANUP NOTE
+- v193: 고객용 미선택 마커 오변환 및 회사용 R/L 미표시 수정
 - 기준: 사용자가 업로드한 현재 HTML 코드
 - 환경: Android 모바일 브라우저 기준, iPhone Safari 호환성 고려
 - 유지: L 상태, R 노랑, 기존 localStorage key, radio + label 구조
@@ -16299,6 +16300,18 @@ function isVisibleCaptureTarget(el){
         c.checked = o.checked;
         if(o.checked) c.setAttribute('checked','checked');
         else c.removeAttribute('checked');
+
+        /*
+          v193:
+          출력 복제본의 radio가 원본 DOM과 같은 name을 유지하면 동일 문서 안에서
+          하나의 radio 그룹으로 합쳐져 선택 상태가 해제될 수 있다.
+          출력 복제본은 조작하지 않으므로 원본 name은 data 속성에 보존하고
+          실제 name은 제거하여 회사보고용 R/L 선택 상태를 안정적으로 유지한다.
+        */
+        if(o.type === 'radio'){
+          c.setAttribute('data-print-radio-name-v193', o.name || '');
+          c.removeAttribute('name');
+        }
         continue;
       }
 
@@ -16341,79 +16354,92 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * buildCustomerMarkerMapV192는 고객보고용 PDF 한 번의 생성 과정에서
-   * R/L 선택 마커별 W/P 변환 결과를 고정한다.
+   * collectSlotStateRadiosV193는 하나의 마커 slot 바로 앞에 배치된
+   * st0~st4 radio만 역방향으로 수집한다.
+   * figure 전체를 검색하지 않으므로 다른 마커의 radio가 섞이지 않는다.
+   *
+   * @param {Element} slot 마커 slot 요소
+   * @returns {HTMLInputElement[]} 해당 slot의 상태 radio 배열
+   */
+  function collectSlotStateRadiosV193(slot){
+    var radios = [];
+    var previous = slot ? slot.previousElementSibling : null;
+
+    while(previous && previous.matches && previous.matches('input[type="radio"].st')){
+      radios.unshift(previous);
+      previous = previous.previousElementSibling;
+    }
+
+    return radios;
+  }
+
+  /**
+   * getPrintRadioKeyV193는 출력 복제 과정에서 보존한 원본 radio name을 반환한다.
+   * name 제거 전 값을 data-print-radio-name-v193에 저장하므로 원본 DOM은 변경하지 않는다.
+   *
+   * @param {HTMLInputElement[]} radios 하나의 slot에 속한 상태 radio 배열
+   * @returns {string} 마커별 고유 키
+   */
+  function getPrintRadioKeyV193(radios){
+    var first = radios && radios.length ? radios[0] : null;
+    return first ? (first.getAttribute('data-print-radio-name-v193') || first.id || '') : '';
+  }
+
+  /**
+   * buildCustomerMarkerMapV193은 고객보고용 PDF 한 번의 생성 과정에서
+   * 실제로 R 또는 L이 선택된 마커만 W/P 중 하나로 변환한다.
+   * st0, X(st1), W(st2)는 변환 대상에서 제외한다.
    *
    * @param {Element} root 출력용 복제 DOM의 최상위 요소
-   * @returns {Object<string, string>} radio name별 W 또는 P 변환표
+   * @returns {Object<string, string>} 마커별 W 또는 P 변환표
    */
-  function buildCustomerMarkerMapV192(root){
+  function buildCustomerMarkerMapV193(root){
     var markerMap = {};
     if(!root) return markerMap;
 
     qsa('.touch-diagram-shell .slot', root).forEach(function(slot, slotIndex){
-      var figure = slot.parentElement;
-      if(!figure) return;
-
-      var radios = qsa('input[type="radio"]', figure).filter(function(radio){
-        return radio.name && radio.name === getSlotRadioNameV192(slot);
-      });
+      var radios = collectSlotStateRadiosV193(slot);
       var selected = radios.filter(function(radio){ return radio.checked; })[0] || null;
-      if(!selected) return;
 
-      var selectedLabelSelector = selected.classList.contains('st3') ? '.h3 span' : '.h4 span';
-      var selectedLabel = slot.querySelector(selectedLabelSelector);
-      var selectedState = String(selectedLabel ? selectedLabel.textContent : '').replace(/\s+/g, '').trim();
-      if(selectedState !== 'R' && selectedState !== 'L') return;
+      /* 미선택(st0), X(st1), W(st2)는 절대 고객용 랜덤 변환하지 않는다. */
+      if(!selected || (!selected.classList.contains('st3') && !selected.classList.contains('st4'))){
+        return;
+      }
 
-      var markerKey = selected.name || ('marker-' + slotIndex);
+      var selectedState = selected.classList.contains('st3') ? 'R' : 'L';
+      var markerKey = getPrintRadioKeyV193(radios) || ('marker-' + slotIndex);
+
       if(!markerMap[markerKey]){
         markerMap[markerKey] = Math.random() < 0.5 ? 'W' : 'P';
       }
+
+      slot.setAttribute('data-customer-source-marker-v193', selectedState);
     });
 
     return markerMap;
   }
 
   /**
-   * getSlotRadioNameV192는 slot 바로 앞에 배치된 상태 radio 그룹의 name을 찾는다.
-   * 기존 radio id/name과 DOM 순서를 변경하지 않고 조회만 수행한다.
-   *
-   * @param {Element} slot 마커 slot 요소
-   * @returns {string} 상태 radio 그룹명
-   */
-  function getSlotRadioNameV192(slot){
-    var previous = slot ? slot.previousElementSibling : null;
-    while(previous){
-      if(previous.matches && previous.matches('input[type="radio"].st')){
-        return previous.name || '';
-      }
-      if(previous.classList && previous.classList.contains('slot')) break;
-      previous = previous.previousElementSibling;
-    }
-    return '';
-  }
-
-  /**
-   * applyCustomerMarkerMapV192는 고객보고용 복제 DOM에서만
-   * R/L 선택값을 W/P 표시로 바꾼다. 원본 DOM과 localStorage 상태는 변경하지 않는다.
+   * applyCustomerMarkerMapV193은 고객보고용 출력 복제본에서만
+   * R/L 선택 마커를 W/P 표시로 변경한다.
+   * 원본 radio, 원본 DOM, localStorage 값에는 영향을 주지 않는다.
    *
    * @param {Element} root 출력용 복제 DOM의 최상위 요소
-   * @param {Object<string, string>} markerMap radio name별 W/P 변환표
+   * @param {Object<string, string>} markerMap 마커별 W/P 변환표
    */
-  function applyCustomerMarkerMapV192(root, markerMap){
+  function applyCustomerMarkerMapV193(root, markerMap){
     if(!root) return;
 
     qsa('.touch-diagram-shell .slot', root).forEach(function(slot){
-      var radioName = getSlotRadioNameV192(slot);
-      var targetState = radioName ? markerMap[radioName] : '';
+      var radios = collectSlotStateRadiosV193(slot);
+      var markerKey = getPrintRadioKeyV193(radios);
+      var targetState = markerKey ? markerMap[markerKey] : '';
       if(!targetState) return;
 
-      var figure = slot.parentElement;
-      var radios = figure ? qsa('input[type="radio"]', figure).filter(function(radio){
-        return radio.name === radioName;
-      }) : [];
-      var displayRadio = radios.filter(function(radio){ return radio.classList.contains('st2'); })[0] || null;
+      var displayRadio = radios.filter(function(radio){
+        return radio.classList.contains('st2');
+      })[0] || null;
+      if(!displayRadio) return;
 
       radios.forEach(function(radio){
         radio.checked = radio === displayRadio;
@@ -16423,10 +16449,10 @@ function isVisibleCaptureTarget(el){
 
       var displayText = slot.querySelector('.h2 span');
       if(displayText) displayText.textContent = targetState;
-      slot.setAttribute('data-customer-marker-v192', targetState);
+      slot.setAttribute('data-customer-marker-v193', targetState);
     });
 
-    console.log('[AB_DIAG][CUSTOMER_MARKER_MAP_V192]', markerMap);
+    console.log('[AB_DIAG][CUSTOMER_MARKER_MAP_V193]', markerMap);
   }
 
   function removeReportRoot(){
@@ -16966,10 +16992,10 @@ function isVisibleCaptureTarget(el){
     document.body.appendChild(root);
 
     if(mode === 'customer'){
-      var customerMarkerMapV192 = buildCustomerMarkerMapV192(root);
-      applyCustomerMarkerMapV192(root, customerMarkerMapV192);
+      var customerMarkerMapV193 = buildCustomerMarkerMapV193(root);
+      applyCustomerMarkerMapV193(root, customerMarkerMapV193);
     }else{
-      console.log('[AB_DIAG][COMPANY_MARKER_KEEP_V192]', 'R/L 원본 상태 유지');
+      console.log('[AB_DIAG][COMPANY_MARKER_KEEP_V193]', 'R/L 원본 상태 유지');
     }
 
     return root;

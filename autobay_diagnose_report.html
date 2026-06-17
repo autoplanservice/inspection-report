@@ -11051,8 +11051,8 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 
   #reportPrintPagesV141
   .report-print-accident-bottom-v157 > .fig{
-    width:118%!important;
-    margin:0 0 0 -9%!important;
+    width:122%!important;
+    margin:0 0 0 -11%!important;
   }
 
   /* 이미지에는 추가 clipping/그림자를 적용하지 않는다. */
@@ -11188,313 +11188,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-<style id="reportPrintAccidentStructuralAlignV170">
-@media print{
-  /*
-    v170 - 사고 페이지 구조 정렬
-
-    공통 사고 진단확인 헤더를 2열 위에 한 번만 배치하고,
-    좌측 상부진단과 우측 하부진단을 같은 grid row에서 시작시킨다.
-    픽셀 margin 보정은 사용하지 않는다.
-  */
-  #reportPrintPagesV141
-  .report-print-page2-v141
-  .report-print-page2-flow-v157{
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    grid-template-rows:auto minmax(0,1fr)!important;
-    column-gap:8mm!important;
-    row-gap:0!important;
-    align-items:start!important;
-    margin-top:8px!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-common-header-v170{
-    grid-column:1 / -1!important;
-    grid-row:1!important;
-    display:flex!important;
-    align-items:flex-start!important;
-    justify-content:flex-start!important;
-    min-height:0!important;
-    margin:0!important;
-    padding:0 0 12px 14px!important;
-    box-sizing:border-box!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-common-header-v170 > h2{
-    margin:0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-common-header-v170 > h2{
-    position:relative!important;
-    display:inline-flex!important;
-    align-items:center!important;
-    width:auto!important;
-    min-height:32px!important;
-    padding:0 12px 0 8px!important;
-    border-radius:10px!important;
-    background:#111827!important;
-    color:#fff!important;
-    font-size:13px!important;
-    font-weight:1000!important;
-    line-height:1!important;
-    margin:0!important;
-    box-shadow:0 2px 8px rgba(15,23,42,.16)!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-common-header-v170 > h2 .no{
-    display:inline-flex!important;
-    align-items:center!important;
-    justify-content:center!important;
-    width:20px!important;
-    min-width:20px!important;
-    height:20px!important;
-    margin-right:7px!important;
-    border-radius:999px!important;
-    background:#fff!important;
-    color:#111827!important;
-    font-size:11px!important;
-    font-weight:1000!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-left-v157{
-    grid-column:1!important;
-    grid-row:2!important;
-    margin:0!important;
-    padding:0!important;
-    align-self:start!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-right-v157{
-    grid-column:2!important;
-    grid-row:2!important;
-    margin:0!important;
-    padding:0!important;
-    align-self:start!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-left-v157 .report-print-section-v1773,
-  #reportPrintPagesV141
-  .report-print-page2-right-v157 .report-print-section-v1773{
-    margin-top:0!important;
-  }
-}
-</style>
-
-
-
-
-
-<style id="reportPrintAccidentNativeCardV178">
-@media print{
-  /*
-    v178 - 사고 배지를 일반 카드와 동일한 원래 DOM 구조로 복구한다.
-  */
-  #reportPrintPagesV141
-  .report-print-page2-v141
-  .report-print-page2-flow-v157{
-    grid-template-rows:minmax(0,1fr)!important;
-    row-gap:0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-left-v157,
-  #reportPrintPagesV141
-  .report-print-page2-right-v157{
-    grid-row:1!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-common-header-v170{
-    display:none!important;
-  }
-
-  /*
-    좌측은 실제 4 사고 진단확인 h2,
-    우측은 같은 h2의 숨김 복사본을 사용하므로 높이와 하단 간격이 동일하다.
-  */
-  #reportPrintPagesV141
-  .report-print-accident-heading-spacer-v178{
-    visibility:hidden!important;
-    pointer-events:none!important;
-  }
-
-  /*
-    상위 사고 카드의 테두리/배경은 제거하지만
-    원래 카드 padding 14px과 h2 margin-bottom 12px은 유지한다.
-  */
-  #reportPrintPagesV141
-  .report-print-page2-left-v157
-  .report-print-outer-card-borderless-v158,
-  #reportPrintPagesV141
-  .report-print-page2-right-v157
-  .report-print-outer-card-borderless-v158{
-    padding:14px!important;
-    margin:0!important;
-  }
-}
-</style>
-
-
-
-<style id="reportPrintAccidentGridV182">
-@media print{
-  /*
-    v182 사고 페이지
-    - 좌측: 상부 + 좌/우 측면을 하나의 카드 흐름으로 유지
-    - 우측 상단: 하부진단
-    - 우측 하단: 보험이력
-  */
-  #reportPrintPagesV141
-  .report-print-page2-grid-v182{
-    display:grid!important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    grid-template-rows:auto auto!important;
-    column-gap:8mm!important;
-    row-gap:8px!important;
-    width:100%!important;
-    margin-top:8px!important;
-    align-items:start!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-left-cell-v182{
-    grid-column:1!important;
-    grid-row:1 / span 2!important;
-    min-width:0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-cell-v182{
-    grid-column:2!important;
-    grid-row:1!important;
-    min-width:0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-insurance-cell-v182{
-    grid-column:2!important;
-    grid-row:2!important;
-    min-width:0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-page2-grid-v182
-  .report-print-section-v1773,
-  #reportPrintPagesV141
-  .report-print-page2-grid-v182
-  .report-print-section-body-v1773{
-    width:100%!important;
-    min-width:0!important;
-  }
-
-  /*
-    좌측은 사고 진단확인 카드 흐름 그대로 유지
-    => 도막 진단확인처럼 위/아래가 붙은 느낌 유지
-  */
-  #reportPrintPagesV141
-  .report-print-accident-left-shell-v182{
-    margin:0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-left-shell-v182
-  .touch-card{
-    margin:0 0 8px 0!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-left-shell-v182
-  .touch-card:last-child{
-    margin-bottom:0!important;
-  }
-
-  /*
-    우측 하부진단은 별도 셸이므로
-    원래 nth-of-type(3) 규칙을 클래스 기반으로 복구한다.
-  */
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182{
-    width:100%!important;
-    max-width:100%!important;
-    margin:0!important;
-    overflow:hidden!important;
-    box-sizing:border-box!important;
-    background:#fff!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182 .fig{
-    width:122%!important;
-    max-width:none!important;
-    margin-left:-11%!important;
-    margin-right:0!important;
-    overflow:visible!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182 .fig img{
-    width:100%!important;
-    max-width:100%!important;
-    margin:0!important;
-    height:auto!important;
-    display:block!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182 .slot{
-    width:36px!important;
-    height:36px!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182 .slot.tight{
-    width:51px!important;
-    height:51px!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182 .slot .hit span{
-    width:27px!important;
-    height:27px!important;
-    font-size:13px!important;
-  }
-
-  #reportPrintPagesV141
-  .report-print-accident-under-card-v182 .fig .diagram-corner-badge{
-    left:calc(11% + 10px)!important;
-  }
-
-  /*
-    우측 하부진단 카드와 보험카드의 간격/폭 안정화
-  */
-  #reportPrintPagesV141
-  .report-print-accident-under-shell-v182,
-  #reportPrintPagesV141
-  .report-print-accident-insurance-shell-v182{
-    margin:0!important;
-  }
-}
-</style>
-
 
 </head>
 <body>
@@ -16753,166 +16446,102 @@ function isVisibleCaptureTarget(el){
     page1.appendChild(page1Flow);
 
     /*
-      v182 - 2페이지
-      원인 기준 구조 수정
+      v165 - 2페이지
+      좌측: 사고 상부진단 + 사고 좌/우 측면진단
+      우측: 사고 하부진단 + 보험이력
 
-      - 좌측: 사고 진단확인 카드 안에
-        상부진단 + 좌/우 측면진단을 원래 흐름대로 유지
-      - 우측 상단: 사고 하부진단
-      - 우측 하단: 보험·특수 이력
-
-      하부진단은 별도 셸로 빠지더라도
-      원래 nth-of-type(3) 시각 규칙을
-      클래스 기반으로 복구한다.
+      사고 도면은 외관/수리와 동일한 원본 크기값을 역할 클래스로 고정한다.
+      정렬감을 위해 좌측에 도면 2장, 우측에 도면 1장 후 보험이력을 배치한다.
     */
-    var page2 = createPrintPageV141(
-      printRoot,
-      'report-print-page2-v141'
-    );
+    var page2 = createPrintPageV141(printRoot, 'report-print-page2-v141');
     appendPageTitleV141(page2, '사고');
 
-    var page2GridV182 = document.createElement('div');
-    page2GridV182.className = 'report-print-page2-grid-v182';
+    var page2FlowV157 = document.createElement('div');
+    page2FlowV157.className = 'report-print-page2-flow-v157';
 
-    var accidentFlowV182 = clonePrintSectionV141(
-      reportRoot,
-      '사고'
-    );
+    var page2LeftV157 = document.createElement('div');
+    page2LeftV157.className = 'report-print-page2-left-v157';
 
-    if(accidentFlowV182){
-      removeSectionTitleV141(accidentFlowV182);
-      removeLegacyDiagramTitlesV162(accidentFlowV182);
+    var page2RightV157 = document.createElement('div');
+    page2RightV157.className = 'report-print-page2-right-v157';
+
+    var accidentFlowV157 = clonePrintSectionV141(reportRoot, '사고');
+    if(accidentFlowV157){
+      removeSectionTitleV141(accidentFlowV157);
+      removeLegacyDiagramTitlesV162(accidentFlowV157);
       removeCardsByTitleV141(
-        accidentFlowV182,
+        accidentFlowV157,
         /랩핑\s*\/\s*PPF|랩핑\s*\/PPF|위\s*항목\s*확인\s*후\s*진단스캐너/
       );
 
-      var accidentBodyV182 = qs(
-        '.report-print-section-body-v1773',
-        accidentFlowV182
-      );
-      var accidentContextV182 = accidentBodyV182
-        ? accidentBodyV182.firstElementChild
-        : null;
-      var insuranceCardV182 = accidentContextV182
-        ? qs('.insurance-basic-card', accidentContextV182)
-        : null;
-      var diagramShellV182 = accidentContextV182
-        ? qs('.touch-diagram-shell', accidentContextV182)
-        : null;
-      var diagramCardV182 = diagramShellV182
-        ? diagramShellV182.closest(
-          'article, .report-card-ui'
-        )
-        : null;
-      var diagramCardsV182 = diagramShellV182
-        ? qsa(':scope > .touch-card', diagramShellV182)
-        : [];
+      var accidentBodyV157 = qs('.report-print-section-body-v1773', accidentFlowV157);
+      var accidentContextV157 = accidentBodyV157 ? accidentBodyV157.firstElementChild : null;
+      var insuranceCardV157 = accidentContextV157 ? qs('.insurance-basic-card', accidentContextV157) : null;
+      var diagramShellV157 = accidentContextV157 ? qs('.touch-diagram-shell', accidentContextV157) : null;
+      var diagramCardV157 = diagramShellV157 ? diagramShellV157.closest('article, .report-card-ui') : null;
+      var diagramCardsV157 = diagramShellV157 ? qsa(':scope > .touch-card', diagramShellV157) : [];
 
-      if(
-        diagramCardV182 &&
-        diagramShellV182 &&
-        diagramCardsV182.length >= 3
-      ){
-        /*
-          좌측 카드:
-          원래 사고 진단확인 카드 DOM을 그대로 재활용하되
-          상부(1번) + 좌/우 측면(2번)만 남긴다.
-        */
-        var leftOuterV182 = diagramCardV182;
-        leftOuterV182.classList.add(
-          'report-print-outer-card-borderless-v158'
-        );
-
-        var leftShellV182 = diagramShellV182;
-        leftShellV182.classList.add(
-          'report-print-accident-left-shell-v182'
-        );
-        leftShellV182.innerHTML = '';
-        leftShellV182.appendChild(diagramCardsV182[0]);
-        leftShellV182.appendChild(diagramCardsV182[1]);
-
-        /*
-          우측 상단 하부진단:
-          원래 3번 카드만 별도 셸에 넣되
-          시각 규칙은 nth-of-type(3) 기준을 클래스 기반으로 복구.
-        */
-        var underOuterV182 = diagramCardV182.cloneNode(false);
-        underOuterV182.classList.add(
-          'report-print-outer-card-borderless-v158'
-        );
-
-        var underShellV182 = diagramShellV182.cloneNode(false);
-        underShellV182.classList.add(
-          'report-print-accident-under-shell-v182'
-        );
-
-        var underCardV182 = diagramCardsV182[2];
-        underCardV182.classList.add(
-          'report-print-accident-under-card-v182'
-        );
-        underShellV182.appendChild(underCardV182);
-        underOuterV182.appendChild(underShellV182);
-
-        /*
-          보험이력 셸
-        */
-        var insuranceShellV182 = document.createElement('div');
-        insuranceShellV182.className =
-          'report-print-accident-insurance-shell-v182';
-        if(insuranceCardV182){
-          insuranceShellV182.appendChild(insuranceCardV182);
-        }
-
-        function wrapPrintCellV182(nodeV182, classNameV182){
-          var cellV182 = document.createElement('div');
-          cellV182.className = classNameV182;
-
-          var sectionV182 = document.createElement('section');
-          sectionV182.className = 'report-print-section-v1773';
-
-          var bodyV182 = document.createElement('div');
-          bodyV182.className =
-            'report-print-section-body-v1773';
-
-          var contextV182 = accidentContextV182
-            ? accidentContextV182.cloneNode(false)
-            : document.createElement('section');
-          contextV182.id = 'secDiag';
-
-          if(nodeV182){
-            contextV182.appendChild(nodeV182);
-          }
-
-          bodyV182.appendChild(contextV182);
-          sectionV182.appendChild(bodyV182);
-          cellV182.appendChild(sectionV182);
-
-          return cellV182;
-        }
-
-        page2GridV182.appendChild(
-          wrapPrintCellV182(
-            leftOuterV182,
-            'report-print-accident-left-cell-v182'
-          )
-        );
-        page2GridV182.appendChild(
-          wrapPrintCellV182(
-            underOuterV182,
-            'report-print-accident-under-cell-v182'
-          )
-        );
-        page2GridV182.appendChild(
-          wrapPrintCellV182(
-            insuranceShellV182,
-            'report-print-accident-insurance-cell-v182'
-          )
-        );
+      if(diagramCardV157){
+        diagramCardV157.classList.add('report-print-outer-card-borderless-v158');
       }
+
+      diagramCardsV157.forEach(function(cardV157, indexV157){
+        if(indexV157 === 0){
+          cardV157.classList.add('report-print-accident-top-v157');
+        }else if(indexV157 === 1){
+          cardV157.classList.add('report-print-accident-side-v157');
+        }else{
+          cardV157.classList.add('report-print-accident-bottom-v157');
+        }
+      });
+
+      var leftSectionV157 = document.createElement('section');
+      leftSectionV157.className = 'report-print-section-v1773';
+      var leftBodyV157 = document.createElement('div');
+      leftBodyV157.className = 'report-print-section-body-v1773';
+      var leftContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
+      leftContextV157.id = 'secDiag';
+
+      if(diagramCardV157 && diagramShellV157){
+        var rightDiagramCardV157 = diagramCardV157.cloneNode(false);
+        var rightShellV157 = diagramShellV157.cloneNode(false);
+
+        diagramCardsV157.slice(2).forEach(function(cardV157){
+          rightShellV157.appendChild(cardV157);
+        });
+        rightDiagramCardV157.appendChild(rightShellV157);
+
+        diagramCardsV157.slice(0,2).forEach(function(cardV157){
+          diagramShellV157.appendChild(cardV157);
+        });
+        leftContextV157.appendChild(diagramCardV157);
+
+        var rightSectionV157 = document.createElement('section');
+        rightSectionV157.className = 'report-print-section-v1773';
+        var rightBodyV157 = document.createElement('div');
+        rightBodyV157.className = 'report-print-section-body-v1773';
+        var rightContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
+        rightContextV157.id = 'secDiag';
+
+        rightContextV157.appendChild(rightDiagramCardV157);
+
+        if(insuranceCardV157){
+          rightContextV157.appendChild(insuranceCardV157);
+        }
+
+        rightBodyV157.appendChild(rightContextV157);
+        rightSectionV157.appendChild(rightBodyV157);
+        page2RightV157.appendChild(rightSectionV157);
+      }
+
+      leftBodyV157.appendChild(leftContextV157);
+      leftSectionV157.appendChild(leftBodyV157);
+      page2LeftV157.appendChild(leftSectionV157);
     }
 
-    page2.appendChild(page2GridV182);
+    page2FlowV157.appendChild(page2LeftV157);
+    page2FlowV157.appendChild(page2RightV157);
+    page2.appendChild(page2FlowV157);
 
     /* 3페이지: 좌측 도막, 우측 외관, 하단 전체 타이어. */
     var page3 = createPrintPageV141(printRoot, 'report-print-page3-v141');
@@ -17261,11 +16890,6 @@ function isVisibleCaptureTarget(el){
     }));
   }
 
-
-
-
-
-
   async function openPreview(mode){
     repairMainTabHandlersV1784();
     await prepareDiagramImagesForPrintV164();
@@ -17283,8 +16907,8 @@ function isVisibleCaptureTarget(el){
       });
     }
 
-    setTimeout(async function(){
-        syncPrintSectionTitleWidths(root);
+    setTimeout(function(){
+      syncPrintSectionTitleWidths(root);
       window.print();
     }, 450);
   }

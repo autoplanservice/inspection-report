@@ -18444,39 +18444,56 @@ function isVisibleCaptureTarget(el){
 
 
 <style>
-/* v197 Google Sheets 저장·불러오기 도구막대 */
-/* v206: 메인 리포트에서는 저장 기능만 우측 하단 플로팅으로 제공한다. */
+/* v208: 모바일·웹 공통 저장 아이콘 플로팅 버튼 */
 .ab-dbbar-v197{
-  position:fixed;
-  right:12px;
-  bottom:calc(94px + env(safe-area-inset-bottom, 0px));
-  z-index:2147482500;
-  width:min(230px, calc(100vw - 24px));
-  margin:0;
-  padding:0;
-  background:transparent;
-  border:0;
-  pointer-events:none;
+  position:fixed !important;
+  right:max(12px, env(safe-area-inset-right, 0px)) !important;
+  bottom:calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+  z-index:2147483000 !important;
+  width:auto !important;
+  max-width:calc(100vw - 24px) !important;
+  margin:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-end !important;
+  pointer-events:none !important;
+  visibility:visible !important;
+  opacity:1 !important;
 }
-.ab-dbbar-row-v197{display:flex;justify-content:flex-end;width:100%}
+.ab-dbbar-row-v197{
+  display:flex !important;
+  justify-content:flex-end !important;
+  width:auto !important;
+}
 .ab-dbbar-v197 button{
-  pointer-events:auto;
-  min-width:166px;
-  height:48px;
-  padding:0 18px;
-  border:0;
-  border-radius:999px;
-  font-size:14px;
-  font-weight:900;
-  box-shadow:0 8px 24px rgba(15,23,42,.28);
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;
+  pointer-events:auto !important;
+  width:48px !important;
+  min-width:48px !important;
+  height:48px !important;
+  min-height:48px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:999px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:0 8px 24px rgba(15,23,42,.30) !important;
+  -webkit-tap-highlight-color:transparent !important;
+  touch-action:manipulation !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
 }
-.ab-db-save-v197{background:#111827;color:#fff}
-.ab-db-save-v197:disabled{opacity:.65}
+.ab-db-save-v197{background:#111827 !important;color:#fff !important}
+.ab-db-save-v197:disabled{opacity:.55 !important}
+.ab-db-save-v197 svg{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
 .ab-db-status-v197{
   display:none;
-  width:100%;
+  width:min(280px, calc(100vw - 28px));
   margin:0 0 8px;
   padding:10px 12px;
   border:1px solid #d8dee8;
@@ -18491,12 +18508,40 @@ function isVisibleCaptureTarget(el){
   box-shadow:0 6px 20px rgba(15,23,42,.18);
   pointer-events:none;
 }
-.ab-db-status-v197.show{display:block}
+.ab-db-status-v197.show{display:block !important}
 .ab-db-status-v197.error{border-color:#fecaca;background:#fff7f7;color:#b91c1c}
 .ab-db-meta-v197{display:none!important}
 @media (max-width:430px){
-  .ab-dbbar-v197{right:10px;bottom:calc(92px + env(safe-area-inset-bottom, 0px));width:min(220px, calc(100vw - 20px))}
-  .ab-dbbar-v197 button{min-width:158px;height:48px}
+  .ab-dbbar-v197{
+    right:max(10px, env(safe-area-inset-right, 0px)) !important;
+    bottom:calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .ab-dbbar-v197 button{
+    width:46px !important;
+    min-width:46px !important;
+    height:46px !important;
+    min-height:46px !important;
+  }
+  .ab-db-save-v197 svg{width:21px;height:21px}
+}
+/* v209: Android Chrome에서 이전 상단형 저장바 스타일이 복원되어도 플로팅 위치를 강제한다. */
+@media screen and (max-width:900px){
+  body > #abDbBarV197[data-floating-save-v209="1"]{
+    position:fixed !important;
+    top:auto !important;
+    left:auto !important;
+    right:12px !important;
+    bottom:calc(92px + env(safe-area-inset-bottom, 0px)) !important;
+    width:auto !important;
+    height:auto !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    transform:none !important;
+    z-index:2147483000 !important;
+  }
 }
 @media print{
   .ab-dbbar-v197{display:none!important}
@@ -18945,24 +18990,60 @@ function isVisibleCaptureTarget(el){
   function loadByVehicleV197(vehicleNumber){if(busyV197)return Promise.resolve();busyV197=true;setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);return apiV197('loadByVehicle',{vehicleNumber:normalizeVehicleNoV197(vehicleNumber)}).then(function(r){restoreReportV197(r.data);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);updateMetaV197();}).catch(function(e){setStatusV197(e.message||'불러오기 실패',true);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);console.error('[AB_DIAG][SHEET_LOAD_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
   /** 도구막대의 현재 진단 메타정보를 갱신한다. */
   function updateMetaV197(){var el=document.getElementById('abDbMetaV197');if(el)el.textContent=currentRecordV197.diagnosisId?('진단ID '+currentRecordV197.diagnosisId+' / 수정버전 '+currentRecordV197.revision):'아직 서버에 저장되지 않은 신규 진단';}
-  /** 현재 데이터 저장 버튼을 기존 앱 안에 플로팅 요소로 삽입한다. */
+  /**
+   * 기존 상단형 저장바가 남아 있어도 제거한 뒤 body 직속 플로팅 아이콘으로 다시 생성한다.
+   * Android Chrome의 BFCache 복원 화면에서도 동일한 구조를 강제한다.
+   */
   function installToolbarV197(){
     var app=document.getElementById('reportAppV194');
-    if(!app||document.getElementById('abDbBarV197'))return;
+    if(!app||!document.body)return;
+
+    var previousBar=document.getElementById('abDbBarV197');
+    if(previousBar&&previousBar.parentNode){
+      previousBar.parentNode.removeChild(previousBar);
+    }
+
     var bar=document.createElement('div');
     bar.id='abDbBarV197';
     bar.className='ab-dbbar-v197';
-    bar.innerHTML='<div class="ab-db-status-v197" id="abDbStatusV197" aria-live="polite"></div><div class="ab-db-meta-v197" id="abDbMetaV197"></div><div class="ab-dbbar-row-v197"><button class="ab-db-save-v197" id="abDbSaveV197" type="button">현재 데이터 저장</button></div>';
-    app.appendChild(bar);
-    document.getElementById('abDbSaveV197').addEventListener('click',saveV197);
+    bar.setAttribute('data-floating-save-v209','1');
+    bar.innerHTML='<div class="ab-db-status-v197" id="abDbStatusV197" aria-live="polite"></div><div class="ab-db-meta-v197" id="abDbMetaV197"></div><div class="ab-dbbar-row-v197"><button class="ab-db-save-v197" id="abDbSaveV197" type="button" aria-label="현재 데이터 저장" title="현재 데이터 저장"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5z"></path><path d="M8 4v6h8V4"></path><path d="M8 20v-6h8v6"></path></svg></button></div>';
+
+    /* Android와 iPhone 모두 상위 레이아웃의 영향을 받지 않도록 body 직속에 둔다. */
+    document.body.appendChild(bar);
+
+    /* 외부 CSS나 복원된 이전 스타일보다 우선하도록 핵심 위치값을 inline important로 고정한다. */
+    bar.style.setProperty('position','fixed','important');
+    bar.style.setProperty('right','12px','important');
+    bar.style.setProperty('bottom','calc(92px + env(safe-area-inset-bottom, 0px))','important');
+    bar.style.setProperty('left','auto','important');
+    bar.style.setProperty('top','auto','important');
+    bar.style.setProperty('width','auto','important');
+    bar.style.setProperty('height','auto','important');
+    bar.style.setProperty('display','flex','important');
+    bar.style.setProperty('visibility','visible','important');
+    bar.style.setProperty('opacity','1','important');
+    bar.style.setProperty('z-index','2147483000','important');
+    bar.style.setProperty('transform','none','important');
+
+    var saveButton=document.getElementById('abDbSaveV197');
+    if(saveButton){
+      saveButton.addEventListener('click',saveV197);
+    }
     updateMetaV197();
   }
   /** 첫 진입 화면의 기존 데이터 불러오기 이벤트를 실제 API와 연결한다. */
   function bindEntryLoadV197(){document.addEventListener('ab-diag-request-load-v194',function(ev){ev.preventDefault();var vehicleNumber=ev.detail&&ev.detail.vehicleNumber||'';loadByVehicleV197(vehicleNumber);},false);}
   /** 외부 디버깅 및 테스트용 공개 API이다. */
   window.AB_DIAG_DB_V197={collect:collectReportV197,restore:restoreReportV197,save:saveV197,loadByVehicle:loadByVehicleV197,getCurrent:function(){return currentRecordV197;}};
+  /** 저장 모듈을 초기화하고 Android 뒤로가기 캐시 복원 시 저장 아이콘 위치를 다시 정규화한다. */
   function bootV197(){installToolbarV197();bindEntryLoadV197();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootV197,false);else bootV197();
+  window.addEventListener('pageshow',function(event){
+    if(event.persisted||document.getElementById('abDbBarV197')){
+      installToolbarV197();
+    }
+  },false);
 })();
 </script>
 

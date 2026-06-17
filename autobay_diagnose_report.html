@@ -18492,64 +18492,171 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * 진단리포트 전체 상태를 셀 용량에 맞는 압축 JSON 구조로 수집한다.
-   * v: 일반 입력값 [DOM순번, 값]
-   * c: 체크된 radio/checkbox의 DOM순번
-   * a: data-value/data-talk-level 요소 상태 [DOM순번, dataValue, talkLevel, 표시문자]
+   * 외관 상부진단의 유리 6개와 선루프 상태를 안정적인 위치키로 수집한다.
+   * @returns {Object}
+   */
+  function collectExteriorTopStateV203(){
+    var glass={};
+    Array.prototype.slice.call(document.querySelectorAll('#secDiag .exterior-glass-marker[data-glass-pos]')).forEach(function(marker){
+      var pos=marker.getAttribute('data-glass-pos')||'';
+      if(pos)glass[pos]=marker.getAttribute('data-glass-state')||'base';
+    });
+    var sunroofField=document.querySelector('[data-key="exteriorSunroofState"]');
+    return{
+      glass:glass,
+      sunroof:sunroofField&&sunroofField.value==='점검'?'점검':''
+    };
+  }
+
+  /**
+   * 보증연장과 검수자 코멘트의 순환 선택값을 명시적으로 수집한다.
+   * @returns {Object}
+   */
+  function collectCycleStateV203(){
+    var warrantyInput=document.querySelector('[data-key="prosWarrantyLevel"]');
+    var inspectorButton=document.querySelector('.customer-talk-cycle:not([data-pros-warranty-cycle="1"])');
+    var inspectorValue=inspectorButton?(inspectorButton.getAttribute('data-value')||inspectorButton.getAttribute('data-talk-level')||'0'):'0';
+    if(!/^[0-5]$/.test(inspectorValue))inspectorValue='0';
+    var warrantyValue=warrantyInput?String(warrantyInput.value||''):'';
+    if(!/^[1-5]$/.test(warrantyValue))warrantyValue='';
+    return{warranty:warrantyValue,inspector:inspectorValue};
+  }
+
+  /**
+   * 진단리포트 전체 상태를 요소별 안정 키로 수집한다.
+   * GZIP 저장을 사용하므로 DOM 순번 대신 id/data-key/name 기반 키를 저장한다.
    * @returns {Object}
    */
   function collectReportV197(){
-    var root=document.getElementById('reportAppV194');
     var controls=getReportControlsV201();
+    var counts={};
     var values=[];
     var checked=[];
 
     controls.forEach(function(el,index){
+      var key=elementKeyV197(el,index,counts);
       if(el.type==='radio'||el.type==='checkbox'){
-        if(el.checked)checked.push(index);
+        if(el.checked)checked.push(key);
         return;
       }
-      values.push([index,el.isContentEditable?String(el.textContent||''):String(el.value==null?'':el.value)]);
-    });
-
-    var attributes=[];
-    Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]')).forEach(function(el,index){
-      attributes.push([
-        index,
-        el.hasAttribute('data-value')?el.getAttribute('data-value'):null,
-        el.hasAttribute('data-talk-level')?el.getAttribute('data-talk-level'):null,
-        String(el.textContent||'')
-      ]);
+      values.push([key,el.isContentEditable?String(el.textContent||''):String(el.value==null?'':el.value)]);
     });
 
     var entryMode=document.body.getAttribute('data-entry-mode-v194')||'';
     var stage=document.body.getAttribute('data-entry-stage-v194')||(entryMode==='PRE_INPUT'?'PRE_INPUT':'FIELD_IN_PROGRESS');
     var report={
-      schemaVersion:2,
-      reportVersion:'v202',
+      schemaVersion:3,
+      reportVersion:'v203',
       diagnosisId:currentRecordV197.diagnosisId||'',
       revision:currentRecordV197.revision||0,
       entryMode:entryMode,
       stage:stage,
-      v:values,
+      k:values,
       c:checked,
-      a:attributes,
       dynamic:collectDynamicV197(),
+      exteriorTop:collectExteriorTopStateV203(),
+      cycles:collectCycleStateV203(),
       savedAt:new Date().toISOString()
     };
 
-    console.log('[AB_DIAG][JSON_COLLECT_V201]',{
+    console.log('[AB_DIAG][JSON_COLLECT_V203]',{
       controls:controls.length,
       values:values.length,
       checked:checked.length,
+      glass:Object.keys(report.exteriorTop.glass||{}).length,
       jsonLength:JSON.stringify(report).length
     });
     return report;
   }
 
+  /** 외관 상부진단의 유리 및 선루프 상태를 화면에 복원한다. */
+  function restoreExteriorTopStateV203(state){
+    state=state||{};
+    var labels={base:'',crack:'깨짐(금감)',stone:'스톤칩',tint:'선팅불량'};
+    var baseLabels={'A-1':'전면','A-2':'후면','B-1':'(전)운전석','B-2':'(후)운전석','C-1':'(전)보조석','C-2':'(후)보조석'};
+    Array.prototype.slice.call(document.querySelectorAll('#secDiag .exterior-glass-marker[data-glass-pos]')).forEach(function(marker){
+      var pos=marker.getAttribute('data-glass-pos')||'';
+      var value=state.glass&&state.glass[pos]?String(state.glass[pos]):'base';
+      if(!/^(base|crack|stone|tint)$/.test(value))value='base';
+      marker.setAttribute('data-glass-state',value);
+      var badge=marker.querySelector('.glass-status-badge');
+      if(badge)badge.textContent=value==='base'?(baseLabels[pos]||pos):(labels[value]||'');
+    });
+
+    var sunroofValue=state.sunroof==='점검'?'점검':'';
+    var sunroofField=document.querySelector('[data-key="exteriorSunroofState"]');
+    var sunroofBadge=document.querySelector('#secDiag .exterior-sunroof-badge');
+    if(sunroofField)sunroofField.value=sunroofValue;
+    if(sunroofBadge){
+      sunroofBadge.textContent=sunroofValue||'선루프';
+      sunroofBadge.setAttribute('data-state',sunroofValue);
+      sunroofBadge.classList.toggle('sunroof-check-active-v1720',sunroofValue==='점검');
+    }
+  }
+
+  /** 보증연장과 검수자 코멘트 순환 선택값을 0~5 범위로 복원한다. */
+  function restoreCycleStateV203(state){
+    state=state||{};
+    var warranty=/^[1-5]$/.test(String(state.warranty||''))?String(state.warranty):'';
+    var warrantyInput=document.querySelector('[data-key="prosWarrantyLevel"]');
+    var warrantyButton=document.querySelector('[data-pros-warranty-cycle="1"]');
+    if(warrantyInput)warrantyInput.value=warranty;
+    if(warrantyButton){
+      warrantyButton.setAttribute('data-value',warranty||'0');
+      warrantyButton.setAttribute('data-talk-level',warranty||'0');
+      warrantyButton.textContent=warranty||'선택';
+    }
+
+    var inspector=/^[0-5]$/.test(String(state.inspector||'0'))?String(state.inspector):'0';
+    var inspectorButton=document.querySelector('.customer-talk-cycle:not([data-pros-warranty-cycle="1"])');
+    if(inspectorButton){
+      inspectorButton.setAttribute('data-value',inspector);
+      inspectorButton.setAttribute('data-talk-level',inspector);
+      inspectorButton.textContent=inspector==='0'?'선택':inspector;
+    }
+  }
+
   /**
-   * 압축 JSON(v2)을 화면 전체에 복원한다.
-   * 동적 행을 먼저 구성한 뒤 DOM 순번 기준으로 모든 값과 선택 상태를 복원한다.
+   * 안정 키 JSON(v3)을 화면 전체에 복원한다.
+   * 동적 행 구성 후 각 컨트롤을 id/data-key/name 기반 키로 재탐색한다.
+   * @param {Object} data 저장된 진단 JSON
+   */
+  function restoreStableReportV203(data){
+    restoreDynamicV197(data.dynamic);
+    var root=document.getElementById('reportAppV194');
+    var controls=getReportControlsV201();
+
+    controls.forEach(function(el){
+      if(el.type==='radio'||el.type==='checkbox')el.checked=false;
+    });
+
+    (data.k||[]).forEach(function(item){
+      var el=findElementV197(String(item[0]||''),controls);
+      if(!el)return;
+      var value=item[1]==null?'':String(item[1]);
+      if(el.isContentEditable)el.textContent=value;
+      else el.value=value;
+    });
+
+    (data.c||[]).forEach(function(key){
+      var el=findElementV197(String(key||''),controls);
+      if(el&&(el.type==='radio'||el.type==='checkbox'))el.checked=true;
+    });
+
+    controls.forEach(function(el){
+      try{
+        el.dispatchEvent(new Event('input',{bubbles:true}));
+        el.dispatchEvent(new Event('change',{bubbles:true}));
+      }catch(error){}
+    });
+
+    restoreExteriorTopStateV203(data.exteriorTop);
+    restoreCycleStateV203(data.cycles);
+  }
+
+  /**
+   * 기존 DOM 순번 JSON(v2)을 화면 전체에 복원한다.
+   * 과거 저장 데이터 호환 목적으로만 유지한다.
    * @param {Object} data 저장된 진단 JSON
    */
   function restoreCompactReportV201(data){
@@ -18593,14 +18700,23 @@ function isVisibleCaptureTarget(el){
 
   /**
    * 저장된 JSON을 화면 전체에 복원한다.
-   * 신규 압축 형식(v2)과 기존 상세 형식(v1)을 모두 지원한다.
+   * 안정 키 형식(v3), DOM 순번 형식(v2), 기존 상세 형식(v1)을 모두 지원한다.
    * @param {Object} data 저장된 진단 JSON
    */
   function restoreReportV197(data){
     if(!data)throw new Error('저장 JSON 형식이 올바르지 않습니다.');
 
-    if(Number(data.schemaVersion||0)>=2&&Array.isArray(data.v)&&Array.isArray(data.c)){
+    if(Number(data.schemaVersion||0)>=3&&Array.isArray(data.k)&&Array.isArray(data.c)){
+      restoreStableReportV203(data);
+    }else if(Number(data.schemaVersion||0)>=2&&Array.isArray(data.v)&&Array.isArray(data.c)){
       restoreCompactReportV201(data);
+      /* v2에는 외관 상부 상태가 저장되지 않았으므로 존재하는 명시 상태만 보완한다. */
+      if(data.exteriorTop)restoreExteriorTopStateV203(data.exteriorTop);
+      if(data.cycles)restoreCycleStateV203(data.cycles);
+      else restoreCycleStateV203({
+        warranty:(document.querySelector('[data-key="prosWarrantyLevel"]')||{}).value||'',
+        inspector:'0'
+      });
     }else if(Array.isArray(data.controls)){
       restoreDynamicV197(data.dynamic);
       var root=document.getElementById('reportAppV194');
@@ -18623,6 +18739,8 @@ function isVisibleCaptureTarget(el){
         if(rec.talkLevel!==null)el.setAttribute('data-talk-level',rec.talkLevel);
         if(rec.text!==undefined)el.textContent=rec.text;
       });
+      if(data.exteriorTop)restoreExteriorTopStateV203(data.exteriorTop);
+      if(data.cycles)restoreCycleStateV203(data.cycles);
     }else{
       throw new Error('저장 JSON 형식이 올바르지 않습니다.');
     }
@@ -18630,7 +18748,7 @@ function isVisibleCaptureTarget(el){
     currentRecordV197={diagnosisId:data.diagnosisId||'',revision:Number(data.revision||0),stage:data.stage||'',entryMode:data.entryMode||''};
     document.body.setAttribute('data-entry-mode-v194',data.entryMode||'LOAD_EXISTING');
     document.body.setAttribute('data-entry-stage-v194',data.stage||'FIELD_IN_PROGRESS');
-    console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V201]',currentRecordV197);
+    console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V203]',currentRecordV197);
   }
   /** 기본정보에서 시트 색인용 메타데이터를 읽는다. */
   /**

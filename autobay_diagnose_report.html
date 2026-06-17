@@ -11353,6 +11353,120 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
 }
 </style>
 
+
+<style id="reportPrintAccidentGridV181">
+@media print{
+  /*
+    v181 - 사고 페이지 동일 Grid 행 정렬
+  */
+  #reportPrintPagesV141
+  .report-print-page2-grid-v181{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    grid-template-rows:auto auto!important;
+    column-gap:8mm!important;
+    row-gap:8px!important;
+    align-items:stretch!important;
+    width:100%!important;
+    margin-top:8px!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-top-cell-v181{
+    grid-column:1!important;
+    grid-row:1!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-bottom-cell-v181{
+    grid-column:2!important;
+    grid-row:1!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-side-cell-v181{
+    grid-column:1!important;
+    grid-row:2!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-insurance-cell-v181{
+    grid-column:2!important;
+    grid-row:2!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-page2-grid-v181
+  > div,
+  #reportPrintPagesV141
+  .report-print-page2-grid-v181
+  .report-print-section-v1773,
+  #reportPrintPagesV141
+  .report-print-page2-grid-v181
+  .report-print-section-body-v1773,
+  #reportPrintPagesV141
+  .report-print-page2-grid-v181
+  #secDiag,
+  #reportPrintPagesV141
+  .report-print-page2-grid-v181
+  .report-print-accident-card-v181{
+    height:100%!important;
+    min-height:0!important;
+    box-sizing:border-box!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-card-v181{
+    display:flex!important;
+    flex-direction:column!important;
+    padding:14px!important;
+    margin:0!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-card-v181
+  > h2{
+    flex:0 0 auto!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-card-v181
+  .touch-diagram-shell{
+    display:flex!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-card-v181
+  .touch-card{
+    flex:1 1 auto!important;
+    height:100%!important;
+    min-height:0!important;
+    margin-bottom:0!important;
+  }
+
+  #reportPrintPagesV141
+  .report-print-accident-heading-spacer-v181{
+    visibility:hidden!important;
+    pointer-events:none!important;
+    flex:0 0 auto!important;
+  }
+
+  /*
+    상부·하부는 같은 Grid 행에서 stretch되므로
+    외곽선 높이가 구조적으로 동일하다.
+  */
+  #reportPrintPagesV141
+  .report-print-accident-top-v157,
+  #reportPrintPagesV141
+  .report-print-accident-bottom-v157{
+    height:100%!important;
+    min-height:100%!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -16610,119 +16724,212 @@ function isVisibleCaptureTarget(el){
     page1.appendChild(page1Flow);
 
     /*
-      v165 - 2페이지
-      좌측: 사고 상부진단 + 사고 좌/우 측면진단
-      우측: 사고 하부진단 + 보험이력
+      v181 - 2페이지
+      동일 Grid 행 기준 배치
 
-      사고 도면은 외관/수리와 동일한 원본 크기값을 역할 클래스로 고정한다.
-      정렬감을 위해 좌측에 도면 2장, 우측에 도면 1장 후 보험이력을 배치한다.
+      1행:
+      - 좌측: 사고 상부진단
+      - 우측: 사고 하부진단
+
+      2행:
+      - 좌측: 사고 좌/우 측면진단
+      - 우측: 보험이력
+
+      상부진단과 하부진단을 같은 Grid 행에 배치하여
+      외곽선 높이를 브라우저 레이아웃이 자동으로 동일하게 맞춘다.
     */
-    var page2 = createPrintPageV141(printRoot, 'report-print-page2-v141');
+    var page2 = createPrintPageV141(
+      printRoot,
+      'report-print-page2-v141'
+    );
     appendPageTitleV141(page2, '사고');
 
-    var page2FlowV157 = document.createElement('div');
-    page2FlowV157.className = 'report-print-page2-flow-v157';
+    var page2GridV181 = document.createElement('div');
+    page2GridV181.className = 'report-print-page2-grid-v181';
 
-    var page2LeftV157 = document.createElement('div');
-    page2LeftV157.className = 'report-print-page2-left-v157';
+    var accidentFlowV181 = clonePrintSectionV141(
+      reportRoot,
+      '사고'
+    );
 
-    var page2RightV157 = document.createElement('div');
-    page2RightV157.className = 'report-print-page2-right-v157';
-
-    var accidentFlowV157 = clonePrintSectionV141(reportRoot, '사고');
-    if(accidentFlowV157){
-      removeSectionTitleV141(accidentFlowV157);
-      removeLegacyDiagramTitlesV162(accidentFlowV157);
+    if(accidentFlowV181){
+      removeSectionTitleV141(accidentFlowV181);
+      removeLegacyDiagramTitlesV162(accidentFlowV181);
       removeCardsByTitleV141(
-        accidentFlowV157,
+        accidentFlowV181,
         /랩핑\s*\/\s*PPF|랩핑\s*\/PPF|위\s*항목\s*확인\s*후\s*진단스캐너/
       );
 
-      var accidentBodyV157 = qs('.report-print-section-body-v1773', accidentFlowV157);
-      var accidentContextV157 = accidentBodyV157 ? accidentBodyV157.firstElementChild : null;
-      var insuranceCardV157 = accidentContextV157 ? qs('.insurance-basic-card', accidentContextV157) : null;
-      var diagramShellV157 = accidentContextV157 ? qs('.touch-diagram-shell', accidentContextV157) : null;
-      var diagramCardV157 = diagramShellV157 ? diagramShellV157.closest('article, .report-card-ui') : null;
-      var diagramCardsV157 = diagramShellV157 ? qsa(':scope > .touch-card', diagramShellV157) : [];
+      var accidentBodyV181 = qs(
+        '.report-print-section-body-v1773',
+        accidentFlowV181
+      );
+      var accidentContextV181 = accidentBodyV181
+        ? accidentBodyV181.firstElementChild
+        : null;
+      var insuranceCardV181 = accidentContextV181
+        ? qs('.insurance-basic-card', accidentContextV181)
+        : null;
+      var diagramShellV181 = accidentContextV181
+        ? qs('.touch-diagram-shell', accidentContextV181)
+        : null;
+      var diagramCardV181 = diagramShellV181
+        ? diagramShellV181.closest(
+          'article, .report-card-ui'
+        )
+        : null;
+      var diagramCardsV181 = diagramShellV181
+        ? qsa(':scope > .touch-card', diagramShellV181)
+        : [];
 
-      if(diagramCardV157){
-        diagramCardV157.classList.add('report-print-outer-card-borderless-v158');
-      }
-
-      var diagramHeadingV178 = diagramCardV157
+      var headingV181 = diagramCardV181
         ? (
-          qs(':scope > h2', diagramCardV157) ||
-          qs('h2', diagramCardV157)
+          qs(':scope > h2', diagramCardV181) ||
+          qs('h2', diagramCardV181)
         )
         : null;
 
-      diagramCardsV157.forEach(function(cardV157, indexV157){
-        if(indexV157 === 0){
-          cardV157.classList.add('report-print-accident-top-v157');
-        }else if(indexV157 === 1){
-          cardV157.classList.add('report-print-accident-side-v157');
+      diagramCardsV181.forEach(function(cardV181, indexV181){
+        if(indexV181 === 0){
+          cardV181.classList.add(
+            'report-print-accident-top-v157'
+          );
+        }else if(indexV181 === 1){
+          cardV181.classList.add(
+            'report-print-accident-side-v157'
+          );
         }else{
-          cardV157.classList.add('report-print-accident-bottom-v157');
+          cardV181.classList.add(
+            'report-print-accident-bottom-v157'
+          );
         }
       });
 
-      var leftSectionV157 = document.createElement('section');
-      leftSectionV157.className = 'report-print-section-v1773';
-      var leftBodyV157 = document.createElement('div');
-      leftBodyV157.className = 'report-print-section-body-v1773';
-      var leftContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
-      leftContextV157.id = 'secDiag';
+      /**
+       * buildAccidentCellV181은 사고 페이지 Grid 셀을 생성한다.
+       * 원본 #secDiag 컨텍스트와 카드 구조를 유지한다.
+       */
+      function buildAccidentCellV181(
+        cardV181,
+        classNameV181
+      ){
+        var cellV181 = document.createElement('div');
+        cellV181.className = classNameV181;
 
-      if(diagramCardV157 && diagramShellV157){
-        var rightDiagramCardV157 = diagramCardV157.cloneNode(false);
-        var rightShellV157 = diagramShellV157.cloneNode(false);
+        var sectionV181 = document.createElement('section');
+        sectionV181.className = 'report-print-section-v1773';
 
-        diagramCardsV157.slice(2).forEach(function(cardV157){
-          rightShellV157.appendChild(cardV157);
-        });
+        var bodyV181 = document.createElement('div');
+        bodyV181.className =
+          'report-print-section-body-v1773';
 
-        if(diagramHeadingV178){
-          var rightHeadingSpacerV178 = diagramHeadingV178.cloneNode(true);
-          rightHeadingSpacerV178.classList.add(
-            'report-print-accident-heading-spacer-v178'
-          );
-          rightHeadingSpacerV178.setAttribute('aria-hidden', 'true');
-          rightDiagramCardV157.appendChild(rightHeadingSpacerV178);
+        var contextV181 = accidentContextV181
+          ? accidentContextV181.cloneNode(false)
+          : document.createElement('section');
+        contextV181.id = 'secDiag';
+
+        if(cardV181){
+          contextV181.appendChild(cardV181);
         }
 
-        rightDiagramCardV157.appendChild(rightShellV157);
+        bodyV181.appendChild(contextV181);
+        sectionV181.appendChild(bodyV181);
+        cellV181.appendChild(sectionV181);
 
-        diagramCardsV157.slice(0,2).forEach(function(cardV157){
-          diagramShellV157.appendChild(cardV157);
-        });
-        leftContextV157.appendChild(diagramCardV157);
-
-        var rightSectionV157 = document.createElement('section');
-        rightSectionV157.className = 'report-print-section-v1773';
-        var rightBodyV157 = document.createElement('div');
-        rightBodyV157.className = 'report-print-section-body-v1773';
-        var rightContextV157 = accidentContextV157 ? accidentContextV157.cloneNode(false) : document.createElement('section');
-        rightContextV157.id = 'secDiag';
-
-        rightContextV157.appendChild(rightDiagramCardV157);
-
-        if(insuranceCardV157){
-          rightContextV157.appendChild(insuranceCardV157);
-        }
-
-        rightBodyV157.appendChild(rightContextV157);
-        rightSectionV157.appendChild(rightBodyV157);
-        page2RightV157.appendChild(rightSectionV157);
+        return cellV181;
       }
 
-      leftBodyV157.appendChild(leftContextV157);
-      leftSectionV157.appendChild(leftBodyV157);
-      page2LeftV157.appendChild(leftSectionV157);
+      if(
+        diagramCardV181 &&
+        diagramShellV181 &&
+        diagramCardsV181.length >= 3
+      ){
+        var topCardOuterV181 =
+          diagramCardV181;
+        topCardOuterV181.classList.add(
+          'report-print-outer-card-borderless-v158',
+          'report-print-accident-card-v181'
+        );
+
+        var topShellV181 =
+          diagramShellV181;
+        topShellV181.innerHTML = '';
+        topShellV181.appendChild(
+          diagramCardsV181[0]
+        );
+
+        var bottomCardOuterV181 =
+          diagramCardV181.cloneNode(false);
+        bottomCardOuterV181.classList.add(
+          'report-print-outer-card-borderless-v158',
+          'report-print-accident-card-v181'
+        );
+
+        if(headingV181){
+          var headingSpacerV181 =
+            headingV181.cloneNode(true);
+          headingSpacerV181.classList.add(
+            'report-print-accident-heading-spacer-v181'
+          );
+          headingSpacerV181.setAttribute(
+            'aria-hidden',
+            'true'
+          );
+          bottomCardOuterV181.appendChild(
+            headingSpacerV181
+          );
+        }
+
+        var bottomShellV181 =
+          diagramShellV181.cloneNode(false);
+        bottomShellV181.appendChild(
+          diagramCardsV181[2]
+        );
+        bottomCardOuterV181.appendChild(
+          bottomShellV181
+        );
+
+        var sideCardOuterV181 =
+          diagramCardV181.cloneNode(false);
+        sideCardOuterV181.classList.add(
+          'report-print-outer-card-borderless-v158',
+          'report-print-accident-card-v181'
+        );
+
+        var sideShellV181 =
+          diagramShellV181.cloneNode(false);
+        sideShellV181.appendChild(
+          diagramCardsV181[1]
+        );
+        sideCardOuterV181.appendChild(
+          sideShellV181
+        );
+
+        var topCellV181 = buildAccidentCellV181(
+          topCardOuterV181,
+          'report-print-accident-top-cell-v181'
+        );
+        var bottomCellV181 = buildAccidentCellV181(
+          bottomCardOuterV181,
+          'report-print-accident-bottom-cell-v181'
+        );
+        var sideCellV181 = buildAccidentCellV181(
+          sideCardOuterV181,
+          'report-print-accident-side-cell-v181'
+        );
+        var insuranceCellV181 = buildAccidentCellV181(
+          insuranceCardV181,
+          'report-print-accident-insurance-cell-v181'
+        );
+
+        page2GridV181.appendChild(topCellV181);
+        page2GridV181.appendChild(bottomCellV181);
+        page2GridV181.appendChild(sideCellV181);
+        page2GridV181.appendChild(insuranceCellV181);
+      }
     }
 
-    page2FlowV157.appendChild(page2LeftV157);
-    page2FlowV157.appendChild(page2RightV157);
-    page2.appendChild(page2FlowV157);
+    page2.appendChild(page2GridV181);
 
     /* 3페이지: 좌측 도막, 우측 외관, 하단 전체 타이어. */
     var page3 = createPrintPageV141(printRoot, 'report-print-page3-v141');
@@ -17072,167 +17279,15 @@ function isVisibleCaptureTarget(el){
   }
 
 
-  /**
-   * applyAccidentPage2GeometryV180는 사고 상부/하부 도면의 실제 렌더 높이를 비교해
-   * 하부 도면 전체(fig + 이미지 + 마커)를 비례 확대하고 외곽선 높이도 맞춘다.
-   *
-   * 기존 실패 원인:
-   * - 상부/하부 도면은 원본 가로세로 비율이 다르다.
-   * - 같은 width 비율을 적용해도 실제 세로 높이는 같아지지 않는다.
-   * - 카드 외곽선 높이만 맞추면 내부 도면 크기는 그대로 남는다.
-   */
-  function applyAccidentPage2GeometryV180(){
-    var page2 = document.querySelector(
-      '#reportPrintPagesV141 .report-print-page2-v141'
-    );
-    if(!page2) return;
 
-    var topCard = page2.querySelector(
-      '.report-print-accident-top-v157'
-    );
-    var bottomCard = page2.querySelector(
-      '.report-print-accident-bottom-v157'
-    );
-    var topFig = topCard ? topCard.querySelector(':scope > .fig') : null;
-    var bottomFig = bottomCard ? bottomCard.querySelector(':scope > .fig') : null;
 
-    if(!topCard || !bottomCard || !topFig || !bottomFig) return;
 
-    /* 이전 동기화 결과를 제거하고 CSS 기본값에서 다시 측정한다. */
-    topCard.style.removeProperty('height');
-    topCard.style.removeProperty('min-height');
-    bottomCard.style.removeProperty('height');
-    bottomCard.style.removeProperty('min-height');
-    bottomFig.style.removeProperty('width');
-    bottomFig.style.removeProperty('margin-left');
-    bottomFig.style.removeProperty('margin-right');
-
-    void topFig.offsetHeight;
-    void bottomFig.offsetHeight;
-
-    var topFigRect = topFig.getBoundingClientRect();
-    var bottomFigRect = bottomFig.getBoundingClientRect();
-    var bottomCardRect = bottomCard.getBoundingClientRect();
-
-    if(
-      !topFigRect || !bottomFigRect || !bottomCardRect ||
-      topFigRect.height <= 0 || bottomFigRect.height <= 0 ||
-      bottomFigRect.width <= 0 || bottomCardRect.width <= 0
-    ) return;
-
-    var scale = topFigRect.height / bottomFigRect.height;
-    var targetWidth = bottomFigRect.width * scale;
-    var targetMarginLeft = (bottomCardRect.width - targetWidth) / 2;
-
-    bottomFig.style.setProperty(
-      'width',
-      targetWidth.toFixed(2) + 'px',
-      'important'
-    );
-    bottomFig.style.setProperty(
-      'margin-left',
-      targetMarginLeft.toFixed(2) + 'px',
-      'important'
-    );
-    bottomFig.style.setProperty(
-      'margin-right',
-      '0',
-      'important'
-    );
-
-    /* 확대 적용 후 실제 카드 높이를 다시 확정한다. */
-    void bottomFig.offsetHeight;
-
-    var topCardRect = topCard.getBoundingClientRect();
-    var bottomCardAfterRect = bottomCard.getBoundingClientRect();
-    var syncedHeight = Math.max(
-      topCardRect && topCardRect.height > 0
-        ? Math.ceil(topCardRect.height)
-        : 0,
-      bottomCardAfterRect && bottomCardAfterRect.height > 0
-        ? Math.ceil(bottomCardAfterRect.height)
-        : 0
-    );
-
-    if(syncedHeight > 0){
-      topCard.style.setProperty(
-        'height', syncedHeight + 'px', 'important'
-      );
-      topCard.style.setProperty(
-        'min-height', syncedHeight + 'px', 'important'
-      );
-      bottomCard.style.setProperty(
-        'height', syncedHeight + 'px', 'important'
-      );
-      bottomCard.style.setProperty(
-        'min-height', syncedHeight + 'px', 'important'
-      );
-    }
-  }
-
-  /**
-   * waitForAccidentPageImagesV180은 사고 페이지 출력 복사본의
-   * 상부·하부 도면 이미지가 완전히 디코딩될 때까지 기다린다.
-   */
-  async function waitForAccidentPageImagesV180(){
-    var page2 = document.querySelector(
-      '#reportPrintPagesV141 .report-print-page2-v141'
-    );
-    if(!page2) return;
-
-    var images = Array.prototype.slice.call(
-      page2.querySelectorAll(
-        '.report-print-accident-top-v157 img,' +
-        '.report-print-accident-bottom-v157 img'
-      )
-    );
-
-    await Promise.all(images.map(function(image){
-      if(image.decode){
-        return image.decode().catch(function(){});
-      }
-
-      if(image.complete){
-        return Promise.resolve();
-      }
-
-      return new Promise(function(resolve){
-        image.addEventListener('load', resolve, {once:true});
-        image.addEventListener('error', resolve, {once:true});
-      });
-    }));
-  }
-
-  /**
-   * syncAccidentPage2GeometryV180은 이미지 디코딩과 최종 레이아웃
-   * 확정 후 사고 상부·하부진단 외곽선 높이를 다시 동기화한다.
-   */
-  async function syncAccidentPage2GeometryV180(){
-    await waitForAccidentPageImagesV180();
-
-    await new Promise(function(resolve){
-      requestAnimationFrame(function(){
-        requestAnimationFrame(resolve);
-      });
-    });
-
-    applyAccidentPage2GeometryV180();
-  }
-
-  window.addEventListener('beforeprint', function(){
-    /*
-      beforeprint는 비동기 완료를 기다리지 않으므로,
-      이미 디코딩된 이미지 기준으로 즉시 한 번 더 적용한다.
-    */
-    applyAccidentPage2GeometryV180();
-  }, false);
 
   async function openPreview(mode){
     repairMainTabHandlersV1784();
     await prepareDiagramImagesForPrintV164();
     var root = buildReport(mode);
     buildPrintPagesFromCopyV141(root);
-    await syncAccidentPage2GeometryV180();
     document.body.classList.add(PREV_CLASS);
     buildBar();
     window.scrollTo(0,0);
@@ -17241,15 +17296,12 @@ function isVisibleCaptureTarget(el){
 
     if(window.requestAnimationFrame){
       window.requestAnimationFrame(function(){
-        syncAccidentPage2GeometryV180().then(function(){
-          syncPrintSectionTitleWidths(root);
-        });
+        syncPrintSectionTitleWidths(root);
       });
     }
 
     setTimeout(async function(){
-      await syncAccidentPage2GeometryV180();
-      syncPrintSectionTitleWidths(root);
+        syncPrintSectionTitleWidths(root);
       window.print();
     }, 450);
   }

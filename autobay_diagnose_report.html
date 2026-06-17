@@ -9573,7 +9573,8 @@ textarea.tread-input-fix-v1724,
 /* v17.41 - PDF 리포트 출력 섹션 및 출력창 스타일
    목적:
    - 기본/사고/외관·수리/점검 작성 내용을 고객 보고용/회사 보고용 PDF로 출력한다.
-   - 회사 보고용은 사고/도막/외관 진단확인 카드에서 마커 L을 제외한다.
+   - 고객 보고용은 R/L 마커를 출력 복사본에서만 W/P 중 하나로 변환한다.
+   - 회사 보고용은 R/L 마커를 원본 상태 그대로 출력한다.
    영향 범위:
    - #reportOutputSection UI
    - 출력용 새 창 HTML
@@ -16257,7 +16258,6 @@ function isVisibleCaptureTarget(el){
   var ROOT_ID = 'reportPrintRootV1773';
   var BAR_ID = 'reportPrintBarV1773';
   var PREV_CLASS = 'report-print-preview-v1773';
-  var restoreRecords = [];
 
   function qs(sel, root){ return (root || document).querySelector(sel); }
   function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -16340,44 +16340,93 @@ function isVisibleCaptureTarget(el){
     });
   }
 
-  function collectLNodes(root){
-    var found = [];
-    if(!root) return found;
-    qsa('*', root).forEach(function(el){
-      var text = String(el.innerText || el.textContent || '').replace(/\s+/g,' ').trim();
-      var attrs = [
-        el.getAttribute('data-marker'),
-        el.getAttribute('data-part'),
-        el.getAttribute('data-id'),
-        el.getAttribute('data-code'),
-        el.getAttribute('data-value'),
-        el.getAttribute('for'),
-        el.id,
-        typeof el.className === 'string' ? el.className : ''
-      ].join(' ');
-      var isTextL = text === 'L' || text === 'L마커' || text === '마커 L';
-      var isAttrL = /(^|\s|_|-|:)(marker)?L(\s|_|-|:|$)/.test(attrs) || /(^|\s|_|-|:)L(marker)?(\s|_|-|:|$)/.test(attrs);
-      if(isTextL || isAttrL) found.push(el);
+  /**
+   * buildCustomerMarkerMapV192는 고객보고용 PDF 한 번의 생성 과정에서
+   * R/L 선택 마커별 W/P 변환 결과를 고정한다.
+   *
+   * @param {Element} root 출력용 복제 DOM의 최상위 요소
+   * @returns {Object<string, string>} radio name별 W 또는 P 변환표
+   */
+  function buildCustomerMarkerMapV192(root){
+    var markerMap = {};
+    if(!root) return markerMap;
+
+    qsa('.touch-diagram-shell .slot', root).forEach(function(slot, slotIndex){
+      var figure = slot.parentElement;
+      if(!figure) return;
+
+      var radios = qsa('input[type="radio"]', figure).filter(function(radio){
+        return radio.name && radio.name === getSlotRadioNameV192(slot);
+      });
+      var selected = radios.filter(function(radio){ return radio.checked; })[0] || null;
+      if(!selected) return;
+
+      var selectedLabelSelector = selected.classList.contains('st3') ? '.h3 span' : '.h4 span';
+      var selectedLabel = slot.querySelector(selectedLabelSelector);
+      var selectedState = String(selectedLabel ? selectedLabel.textContent : '').replace(/\s+/g, '').trim();
+      if(selectedState !== 'R' && selectedState !== 'L') return;
+
+      var markerKey = selected.name || ('marker-' + slotIndex);
+      if(!markerMap[markerKey]){
+        markerMap[markerKey] = Math.random() < 0.5 ? 'W' : 'P';
+      }
     });
-    return found;
+
+    return markerMap;
   }
 
-  function hideLNodes(root){
-    return collectLNodes(root).map(function(el){
-      var prevDisplay = el.style.display || '';
-      var prevVisibility = el.style.visibility || '';
-      el.style.setProperty('display','none','important');
-      el.style.setProperty('visibility','hidden','important');
-      return {el:el, display:prevDisplay, visibility:prevVisibility};
-    });
+  /**
+   * getSlotRadioNameV192는 slot 바로 앞에 배치된 상태 radio 그룹의 name을 찾는다.
+   * 기존 radio id/name과 DOM 순서를 변경하지 않고 조회만 수행한다.
+   *
+   * @param {Element} slot 마커 slot 요소
+   * @returns {string} 상태 radio 그룹명
+   */
+  function getSlotRadioNameV192(slot){
+    var previous = slot ? slot.previousElementSibling : null;
+    while(previous){
+      if(previous.matches && previous.matches('input[type="radio"].st')){
+        return previous.name || '';
+      }
+      if(previous.classList && previous.classList.contains('slot')) break;
+      previous = previous.previousElementSibling;
+    }
+    return '';
   }
 
-  function restoreNodes(records){
-    (records || []).forEach(function(rec){
-      if(!rec || !rec.el) return;
-      rec.el.style.display = rec.display || '';
-      rec.el.style.visibility = rec.visibility || '';
+  /**
+   * applyCustomerMarkerMapV192는 고객보고용 복제 DOM에서만
+   * R/L 선택값을 W/P 표시로 바꾼다. 원본 DOM과 localStorage 상태는 변경하지 않는다.
+   *
+   * @param {Element} root 출력용 복제 DOM의 최상위 요소
+   * @param {Object<string, string>} markerMap radio name별 W/P 변환표
+   */
+  function applyCustomerMarkerMapV192(root, markerMap){
+    if(!root) return;
+
+    qsa('.touch-diagram-shell .slot', root).forEach(function(slot){
+      var radioName = getSlotRadioNameV192(slot);
+      var targetState = radioName ? markerMap[radioName] : '';
+      if(!targetState) return;
+
+      var figure = slot.parentElement;
+      var radios = figure ? qsa('input[type="radio"]', figure).filter(function(radio){
+        return radio.name === radioName;
+      }) : [];
+      var displayRadio = radios.filter(function(radio){ return radio.classList.contains('st2'); })[0] || null;
+
+      radios.forEach(function(radio){
+        radio.checked = radio === displayRadio;
+        if(radio.checked) radio.setAttribute('checked', 'checked');
+        else radio.removeAttribute('checked');
+      });
+
+      var displayText = slot.querySelector('.h2 span');
+      if(displayText) displayText.textContent = targetState;
+      slot.setAttribute('data-customer-marker-v192', targetState);
     });
+
+    console.log('[AB_DIAG][CUSTOMER_MARKER_MAP_V192]', markerMap);
   }
 
   function removeReportRoot(){
@@ -16878,8 +16927,6 @@ function isVisibleCaptureTarget(el){
 
   function buildReport(mode){
     removeReportRoot();
-    restoreNodes(restoreRecords);
-    restoreRecords = [];
 
     var root = document.createElement('main');
     root.id = ROOT_ID;
@@ -16918,10 +16965,11 @@ function isVisibleCaptureTarget(el){
 
     document.body.appendChild(root);
 
-    if(mode === 'company'){
-      qsa('#secDiag, #secExterior, [id^="secExterior_printCloneV1773_card_"]', root).forEach(function(section){
-        restoreRecords = restoreRecords.concat(hideLNodes(section));
-      });
+    if(mode === 'customer'){
+      var customerMarkerMapV192 = buildCustomerMarkerMapV192(root);
+      applyCustomerMarkerMapV192(root, customerMarkerMapV192);
+    }else{
+      console.log('[AB_DIAG][COMPANY_MARKER_KEEP_V192]', 'R/L 원본 상태 유지');
     }
 
     return root;
@@ -17552,8 +17600,6 @@ function isVisibleCaptureTarget(el){
   }
 
   function closePreview(){
-    restoreNodes(restoreRecords);
-    restoreRecords = [];
     removePrintPagesV141();
     removeReportRoot();
     clearReportTabBodyClassesV1784();

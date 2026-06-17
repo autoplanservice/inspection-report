@@ -11215,7 +11215,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
     grid-template-rows:auto minmax(0,1fr)!important;
     column-gap:8mm!important;
-    row-gap:12px!important;
+    row-gap:0!important;
     align-items:start!important;
     margin-top:8px!important;
   }
@@ -11227,9 +11227,9 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     display:flex!important;
     align-items:flex-start!important;
     justify-content:flex-start!important;
-    min-height:32px!important;
+    min-height:0!important;
     margin:0!important;
-    padding:0 0 0 14px!important;
+    padding:0 0 12px 14px!important;
     box-sizing:border-box!important;
   }
 
@@ -17020,37 +17020,50 @@ function isVisibleCaptureTarget(el){
 
 
   /**
-   * syncAccidentPage2GeometryV176는 사고 페이지의 공통 배지와
-   * 사고 하부진단 카드 외곽선 크기를 일반 카드 규칙에 맞춰 동기화한다.
+   * syncAccidentPage2GeometryV177는 사고 페이지 공통 배지와
+   * 사고 상부/하부진단 외곽선 높이를 동일 기준으로 맞춘다.
    *
    * 기준값:
-   * - 배지 좌측 inset: .report-card-ui padding-left 14px
-   * - 배지/카드 간격: .report-card-ui > h2 margin-bottom 12px
-   * - 하부진단 외곽선 높이: 사고 상부진단 카드의 실제 렌더 높이
+   * - 공통 배지 좌측 inset: .report-card-ui padding-left 14px
+   * - 공통 배지와 카드 사이 간격: .report-card-ui > h2 margin-bottom 12px
+   * - 상부/하부진단 외곽선 높이: 두 카드의 실제 렌더 높이 중 최대값
    */
-  function syncAccidentPage2GeometryV176(){
+  function syncAccidentPage2GeometryV177(){
     var page2 = document.querySelector('#reportPrintPagesV141 .report-print-page2-v141');
     if(!page2) return;
 
     var commonHeader = page2.querySelector('.report-print-page2-common-header-v170');
     if(commonHeader){
-      commonHeader.style.setProperty('padding-left','14px','important');
-      commonHeader.style.setProperty('min-height','32px','important');
+      commonHeader.style.setProperty('padding','0 0 12px 14px','important');
+      commonHeader.style.setProperty('min-height','0','important');
+      commonHeader.style.setProperty('height','auto','important');
       commonHeader.style.setProperty('align-items','flex-start','important');
       commonHeader.style.setProperty('justify-content','flex-start','important');
       commonHeader.style.setProperty('box-sizing','border-box','important');
+      commonHeader.style.setProperty('margin','0','important');
     }
 
     var topCard = page2.querySelector('.report-print-accident-top-v157');
     var bottomCard = page2.querySelector('.report-print-accident-bottom-v157');
     if(!topCard || !bottomCard) return;
 
+    topCard.style.removeProperty('height');
+    topCard.style.removeProperty('min-height');
     bottomCard.style.removeProperty('height');
     bottomCard.style.removeProperty('min-height');
 
     var topRect = topCard.getBoundingClientRect();
-    if(topRect && topRect.height > 0){
-      var syncedHeight = Math.ceil(topRect.height);
+    var bottomRect = bottomCard.getBoundingClientRect();
+    var syncedHeight = Math.max(
+      topRect && topRect.height > 0 ? Math.ceil(topRect.height) : 0,
+      bottomRect && bottomRect.height > 0 ? Math.ceil(bottomRect.height) : 0
+    );
+
+    if(syncedHeight > 0){
+      topCard.style.setProperty('height', syncedHeight + 'px', 'important');
+      topCard.style.setProperty('min-height', syncedHeight + 'px', 'important');
+      topCard.style.setProperty('box-sizing', 'border-box', 'important');
+
       bottomCard.style.setProperty('height', syncedHeight + 'px', 'important');
       bottomCard.style.setProperty('min-height', syncedHeight + 'px', 'important');
       bottomCard.style.setProperty('box-sizing', 'border-box', 'important');
@@ -17062,7 +17075,7 @@ function isVisibleCaptureTarget(el){
     await prepareDiagramImagesForPrintV164();
     var root = buildReport(mode);
     buildPrintPagesFromCopyV141(root);
-    syncAccidentPage2GeometryV176();
+    syncAccidentPage2GeometryV177();
     document.body.classList.add(PREV_CLASS);
     buildBar();
     window.scrollTo(0,0);
@@ -17071,13 +17084,13 @@ function isVisibleCaptureTarget(el){
 
     if(window.requestAnimationFrame){
       window.requestAnimationFrame(function(){
-        syncAccidentPage2GeometryV176();
+        syncAccidentPage2GeometryV177();
         syncPrintSectionTitleWidths(root);
       });
     }
 
     setTimeout(function(){
-      syncAccidentPage2GeometryV176();
+      syncAccidentPage2GeometryV177();
       syncPrintSectionTitleWidths(root);
       window.print();
     }, 450);

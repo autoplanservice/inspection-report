@@ -11215,7 +11215,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
     grid-template-rows:auto minmax(0,1fr)!important;
     column-gap:8mm!important;
-    row-gap:4px!important;
+    row-gap:12px!important;
     align-items:start!important;
     margin-top:8px!important;
   }
@@ -11225,11 +11225,12 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     grid-column:1 / -1!important;
     grid-row:1!important;
     display:flex!important;
-    align-items:flex-end!important;
+    align-items:flex-start!important;
     justify-content:flex-start!important;
-    min-height:42px!important;
+    min-height:32px!important;
     margin:0!important;
-    padding:0!important;
+    padding:0 0 0 14px!important;
+    box-sizing:border-box!important;
   }
 
   #reportPrintPagesV141
@@ -17017,11 +17018,51 @@ function isVisibleCaptureTarget(el){
     }));
   }
 
+
+  /**
+   * syncAccidentPage2GeometryV176는 사고 페이지의 공통 배지와
+   * 사고 하부진단 카드 외곽선 크기를 일반 카드 규칙에 맞춰 동기화한다.
+   *
+   * 기준값:
+   * - 배지 좌측 inset: .report-card-ui padding-left 14px
+   * - 배지/카드 간격: .report-card-ui > h2 margin-bottom 12px
+   * - 하부진단 외곽선 높이: 사고 상부진단 카드의 실제 렌더 높이
+   */
+  function syncAccidentPage2GeometryV176(){
+    var page2 = document.querySelector('#reportPrintPagesV141 .report-print-page2-v141');
+    if(!page2) return;
+
+    var commonHeader = page2.querySelector('.report-print-page2-common-header-v170');
+    if(commonHeader){
+      commonHeader.style.setProperty('padding-left','14px','important');
+      commonHeader.style.setProperty('min-height','32px','important');
+      commonHeader.style.setProperty('align-items','flex-start','important');
+      commonHeader.style.setProperty('justify-content','flex-start','important');
+      commonHeader.style.setProperty('box-sizing','border-box','important');
+    }
+
+    var topCard = page2.querySelector('.report-print-accident-top-v157');
+    var bottomCard = page2.querySelector('.report-print-accident-bottom-v157');
+    if(!topCard || !bottomCard) return;
+
+    bottomCard.style.removeProperty('height');
+    bottomCard.style.removeProperty('min-height');
+
+    var topRect = topCard.getBoundingClientRect();
+    if(topRect && topRect.height > 0){
+      var syncedHeight = Math.ceil(topRect.height);
+      bottomCard.style.setProperty('height', syncedHeight + 'px', 'important');
+      bottomCard.style.setProperty('min-height', syncedHeight + 'px', 'important');
+      bottomCard.style.setProperty('box-sizing', 'border-box', 'important');
+    }
+  }
+
   async function openPreview(mode){
     repairMainTabHandlersV1784();
     await prepareDiagramImagesForPrintV164();
     var root = buildReport(mode);
     buildPrintPagesFromCopyV141(root);
+    syncAccidentPage2GeometryV176();
     document.body.classList.add(PREV_CLASS);
     buildBar();
     window.scrollTo(0,0);
@@ -17030,11 +17071,13 @@ function isVisibleCaptureTarget(el){
 
     if(window.requestAnimationFrame){
       window.requestAnimationFrame(function(){
+        syncAccidentPage2GeometryV176();
         syncPrintSectionTitleWidths(root);
       });
     }
 
     setTimeout(function(){
+      syncAccidentPage2GeometryV176();
       syncPrintSectionTitleWidths(root);
       window.print();
     }, 450);

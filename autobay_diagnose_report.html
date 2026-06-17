@@ -11518,6 +11518,33 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     page-break-inside:avoid!important;
   }
 
+
+  /*
+    v189 - iPhone 모든 메인헤더를 페이지 상단에 밀착
+
+    Safari PDF가 페이지 상단에 남기는 안전 여백을
+    메인헤더의 음수 상단 margin으로 상쇄한다.
+    메인헤더 아래 간격과 라운드 스타일은 유지한다.
+  */
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page-title-v141{
+    margin:-8mm 1mm 2mm 1mm!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page-v141{
+    padding-top:0!important;
+  }
+
+  body.report-print-ios-v183
+  #reportPrintPagesV141
+  .report-print-page-v141
+  > .report-print-page-title-v141:first-child{
+    margin-top:-8mm!important;
+  }
+
 </style>
 
 </head>

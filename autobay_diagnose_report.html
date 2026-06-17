@@ -11231,6 +11231,8 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   .report-print-page-v141{
     display:block!important;
     position:relative!important;
+    top:auto!important;
+    left:auto!important;
     width:210mm!important;
     height:auto!important;
     min-height:0!important;
@@ -11254,13 +11256,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     break-before:auto!important;
   }
 
-  body.report-print-ios-v183
-  #reportPrintPagesV141
-  .report-print-page-v141:not(:first-child){
-    top:-8mm!important;
-    margin-bottom:-8mm!important;
-  }
-
   /*
     메인헤더 네 모서리 동일 라운드.
   */
@@ -11269,13 +11264,13 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   .report-print-page-title-v141{
     display:block!important;
     width:calc(100% - 4mm)!important;
-    margin:0 2mm 2mm 2mm!important;
-    padding:5px 10px!important;
+    margin:0 2mm 1.5mm 2mm!important;
+    padding:4px 10px!important;
     border-radius:10px!important;
     overflow:hidden!important;
     clip-path:none!important;
     box-sizing:border-box!important;
-    line-height:1.15!important;
+    line-height:1.1!important;
     font-size:14px!important;
   }
 

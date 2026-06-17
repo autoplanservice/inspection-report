@@ -18478,10 +18478,160 @@ function isVisibleCaptureTarget(el){
   function collectDynamicV197(){return{tuningRows:document.querySelectorAll('#secInput .tuning-list .tuning-row').length,prosRows:document.querySelectorAll('[data-pros-tuning-rows] .pros-tuning-row').length};}
   /** 동적 추가행을 저장된 개수로 재구성한다. */
   function restoreDynamicV197(d){d=d||{};var tBtn=document.querySelector('#secInput .tuning-add-btn');while(tBtn&&document.querySelectorAll('#secInput .tuning-list .tuning-row').length<(d.tuningRows||0))tBtn.click();var pBtn=document.querySelector('[data-pros-add-tuning]');while(pBtn&&document.querySelectorAll('[data-pros-tuning-rows] .pros-tuning-row').length<(d.prosRows||1))pBtn.click();}
-  /** 진단리포트의 모든 입력 컨트롤과 사용자 선택 상태를 JSON 객체로 수집한다. */
-  function collectReportV197(){var root=document.getElementById('reportAppV194'),all=Array.prototype.slice.call(root.querySelectorAll('input,select,textarea,[contenteditable="true"]')),counts={},controls=[];all.forEach(function(el,i){if(el.type==='button'||el.type==='submit'||el.type==='file')return;var rec={key:elementKeyV197(el,i,counts),tag:el.tagName,type:el.type||'',value:el.value==null?'':String(el.value)};if(el.type==='checkbox'||el.type==='radio')rec.checked=!!el.checked;if(el.tagName==='SELECT')rec.selectedIndex=el.selectedIndex;if(el.isContentEditable)rec.text=el.textContent||'';controls.push(rec);});var attrs=[],attrCounts={};Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]')).forEach(function(el,i){attrs.push({key:elementKeyV197(el,i,attrCounts),dataValue:el.getAttribute('data-value'),talkLevel:el.getAttribute('data-talk-level'),text:el.textContent||''});});var entryMode=document.body.getAttribute('data-entry-mode-v194')||'';var stage=document.body.getAttribute('data-entry-stage-v194')||(entryMode==='PRE_INPUT'?'PRE_INPUT':'FIELD_IN_PROGRESS');return{schemaVersion:1,reportVersion:'v197',diagnosisId:currentRecordV197.diagnosisId||'',revision:currentRecordV197.revision||0,entryMode:entryMode,stage:stage,controls:controls,attributes:attrs,dynamic:collectDynamicV197(),savedAt:new Date().toISOString()};}
-  /** 저장된 JSON을 화면 전체에 복원하고 관련 input/change 이벤트를 발생시킨다. */
-  function restoreReportV197(data){if(!data||!Array.isArray(data.controls))throw new Error('저장 JSON 형식이 올바르지 않습니다.');restoreDynamicV197(data.dynamic);var root=document.getElementById('reportAppV194'),all=Array.prototype.slice.call(root.querySelectorAll('input,select,textarea,[contenteditable="true"]'));data.controls.forEach(function(rec){var el=findElementV197(rec.key,all);if(!el)return;if(el.type==='checkbox'||el.type==='radio')el.checked=!!rec.checked;else if(el.isContentEditable)el.textContent=rec.text||'';else el.value=rec.value==null?'':rec.value;try{el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}catch(e){}});(data.attributes||[]).forEach(function(rec){var el=findElementV197(rec.key,Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]')));if(!el)return;if(rec.dataValue!==null)el.setAttribute('data-value',rec.dataValue);if(rec.talkLevel!==null)el.setAttribute('data-talk-level',rec.talkLevel);if(rec.text!==undefined)el.textContent=rec.text;});currentRecordV197={diagnosisId:data.diagnosisId||'',revision:Number(data.revision||0),stage:data.stage||'',entryMode:data.entryMode||''};document.body.setAttribute('data-entry-mode-v194',data.entryMode||'LOAD_EXISTING');document.body.setAttribute('data-entry-stage-v194',data.stage||'FIELD_IN_PROGRESS');console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V197]',currentRecordV197);}
+  /**
+   * 저장 대상 입력 컨트롤을 DOM 순서대로 반환한다.
+   * 버튼·파일 입력은 사용자 진단값이 아니므로 제외한다.
+   * @returns {HTMLElement[]}
+   */
+  function getReportControlsV201(){
+    var root=document.getElementById('reportAppV194');
+    if(!root)return[];
+    return Array.prototype.filter.call(root.querySelectorAll('input,select,textarea,[contenteditable="true"]'),function(el){
+      return el.type!=='button'&&el.type!=='submit'&&el.type!=='file';
+    });
+  }
+
+  /**
+   * 진단리포트 전체 상태를 셀 용량에 맞는 압축 JSON 구조로 수집한다.
+   * v: 일반 입력값 [DOM순번, 값]
+   * c: 체크된 radio/checkbox의 DOM순번
+   * a: data-value/data-talk-level 요소 상태 [DOM순번, dataValue, talkLevel, 표시문자]
+   * @returns {Object}
+   */
+  function collectReportV197(){
+    var root=document.getElementById('reportAppV194');
+    var controls=getReportControlsV201();
+    var values=[];
+    var checked=[];
+
+    controls.forEach(function(el,index){
+      if(el.type==='radio'||el.type==='checkbox'){
+        if(el.checked)checked.push(index);
+        return;
+      }
+      values.push([index,el.isContentEditable?String(el.textContent||''):String(el.value==null?'':el.value)]);
+    });
+
+    var attributes=[];
+    Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]')).forEach(function(el,index){
+      attributes.push([
+        index,
+        el.hasAttribute('data-value')?el.getAttribute('data-value'):null,
+        el.hasAttribute('data-talk-level')?el.getAttribute('data-talk-level'):null,
+        String(el.textContent||'')
+      ]);
+    });
+
+    var entryMode=document.body.getAttribute('data-entry-mode-v194')||'';
+    var stage=document.body.getAttribute('data-entry-stage-v194')||(entryMode==='PRE_INPUT'?'PRE_INPUT':'FIELD_IN_PROGRESS');
+    var report={
+      schemaVersion:2,
+      reportVersion:'v201',
+      diagnosisId:currentRecordV197.diagnosisId||'',
+      revision:currentRecordV197.revision||0,
+      entryMode:entryMode,
+      stage:stage,
+      v:values,
+      c:checked,
+      a:attributes,
+      dynamic:collectDynamicV197(),
+      savedAt:new Date().toISOString()
+    };
+
+    console.log('[AB_DIAG][JSON_COLLECT_V201]',{
+      controls:controls.length,
+      values:values.length,
+      checked:checked.length,
+      jsonLength:JSON.stringify(report).length
+    });
+    return report;
+  }
+
+  /**
+   * 압축 JSON(v2)을 화면 전체에 복원한다.
+   * 동적 행을 먼저 구성한 뒤 DOM 순번 기준으로 모든 값과 선택 상태를 복원한다.
+   * @param {Object} data 저장된 진단 JSON
+   */
+  function restoreCompactReportV201(data){
+    restoreDynamicV197(data.dynamic);
+    var root=document.getElementById('reportAppV194');
+    var controls=getReportControlsV201();
+
+    controls.forEach(function(el){
+      if(el.type==='radio'||el.type==='checkbox')el.checked=false;
+    });
+
+    (data.v||[]).forEach(function(item){
+      var el=controls[Number(item[0])];
+      if(!el)return;
+      var value=item[1]==null?'':String(item[1]);
+      if(el.isContentEditable)el.textContent=value;
+      else el.value=value;
+    });
+
+    (data.c||[]).forEach(function(index){
+      var el=controls[Number(index)];
+      if(el&&(el.type==='radio'||el.type==='checkbox'))el.checked=true;
+    });
+
+    var attrElements=Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]'));
+    (data.a||[]).forEach(function(item){
+      var el=attrElements[Number(item[0])];
+      if(!el)return;
+      if(item[1]!==null&&item[1]!==undefined)el.setAttribute('data-value',String(item[1]));
+      if(item[2]!==null&&item[2]!==undefined)el.setAttribute('data-talk-level',String(item[2]));
+      if(item[3]!==undefined)el.textContent=String(item[3]||'');
+    });
+
+    controls.forEach(function(el){
+      try{
+        el.dispatchEvent(new Event('input',{bubbles:true}));
+        el.dispatchEvent(new Event('change',{bubbles:true}));
+      }catch(error){}
+    });
+  }
+
+  /**
+   * 저장된 JSON을 화면 전체에 복원한다.
+   * 신규 압축 형식(v2)과 기존 상세 형식(v1)을 모두 지원한다.
+   * @param {Object} data 저장된 진단 JSON
+   */
+  function restoreReportV197(data){
+    if(!data)throw new Error('저장 JSON 형식이 올바르지 않습니다.');
+
+    if(Number(data.schemaVersion||0)>=2&&Array.isArray(data.v)&&Array.isArray(data.c)){
+      restoreCompactReportV201(data);
+    }else if(Array.isArray(data.controls)){
+      restoreDynamicV197(data.dynamic);
+      var root=document.getElementById('reportAppV194');
+      var all=Array.prototype.slice.call(root.querySelectorAll('input,select,textarea,[contenteditable="true"]'));
+      data.controls.forEach(function(rec){
+        var el=findElementV197(rec.key,all);
+        if(!el)return;
+        if(el.type==='checkbox'||el.type==='radio')el.checked=!!rec.checked;
+        else if(el.isContentEditable)el.textContent=rec.text||'';
+        else el.value=rec.value==null?'':rec.value;
+        try{
+          el.dispatchEvent(new Event('input',{bubbles:true}));
+          el.dispatchEvent(new Event('change',{bubbles:true}));
+        }catch(error){}
+      });
+      (data.attributes||[]).forEach(function(rec){
+        var el=findElementV197(rec.key,Array.prototype.slice.call(root.querySelectorAll('[data-value],[data-talk-level]')));
+        if(!el)return;
+        if(rec.dataValue!==null)el.setAttribute('data-value',rec.dataValue);
+        if(rec.talkLevel!==null)el.setAttribute('data-talk-level',rec.talkLevel);
+        if(rec.text!==undefined)el.textContent=rec.text;
+      });
+    }else{
+      throw new Error('저장 JSON 형식이 올바르지 않습니다.');
+    }
+
+    currentRecordV197={diagnosisId:data.diagnosisId||'',revision:Number(data.revision||0),stage:data.stage||'',entryMode:data.entryMode||''};
+    document.body.setAttribute('data-entry-mode-v194',data.entryMode||'LOAD_EXISTING');
+    document.body.setAttribute('data-entry-stage-v194',data.stage||'FIELD_IN_PROGRESS');
+    console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V201]',currentRecordV197);
+  }
   /** 기본정보에서 시트 색인용 메타데이터를 읽는다. */
   /**
    * 기본정보 영역에서 서버 저장용 핵심 메타데이터를 읽는다.
@@ -18502,7 +18652,7 @@ function isVisibleCaptureTarget(el){
     };
   }
   /** 현재 진입 모드에 맞는 상태로 전체 JSON을 저장한다. */
-  function saveV197(){if(busyV197)return;var meta=getMetaV197();if(!meta.vehicleNumber){setStatusV197('차량번호를 입력해 주세요.',true);return;}if(!meta.manager){setStatusV197('담당자를 입력해 주세요.',true);return;}busyV197=true;setStatusV197('전체 항목을 JSON으로 저장하고 있습니다.',false);var report=collectReportV197();apiV197('saveReport',{diagnosisId:currentRecordV197.diagnosisId||'',revision:String(currentRecordV197.revision||0),vehicleNumber:meta.vehicleNumber,oldVehicleNumber:meta.oldVehicleNumber,vehicleName:meta.vehicleName,manager:meta.manager,stage:report.stage,jsonData:JSON.stringify(report)}).then(function(r){currentRecordV197.diagnosisId=r.diagnosisId;currentRecordV197.revision=Number(r.revision||1);report.diagnosisId=r.diagnosisId;report.revision=currentRecordV197.revision;setStatusV197('저장 완료 · '+r.diagnosisId+' · 수정버전 '+r.revision,false);updateMetaV197();console.log('[AB_DIAG][SHEET_SAVE_COMPLETE_V197]',r);}).catch(function(e){setStatusV197(e.message||'저장 실패',true);console.error('[AB_DIAG][SHEET_SAVE_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
+  function saveV197(){if(busyV197)return;var meta=getMetaV197();if(!meta.vehicleNumber){setStatusV197('차량번호를 입력해 주세요.',true);return;}if(!meta.manager){setStatusV197('담당자를 입력해 주세요.',true);return;}busyV197=true;setStatusV197('전체 항목을 JSON으로 저장하고 있습니다.',false);var report=collectReportV197();var reportJson=JSON.stringify(report);if(reportJson.length>49000){busyV197=false;setStatusV197('저장 데이터가 '+reportJson.length.toLocaleString()+'자로 셀 허용 크기를 초과했습니다.',true);console.error('[AB_DIAG][JSON_SIZE_EXCEEDED_V201]',reportJson.length);return;}apiV197('saveReport',{diagnosisId:currentRecordV197.diagnosisId||'',revision:String(currentRecordV197.revision||0),vehicleNumber:meta.vehicleNumber,oldVehicleNumber:meta.oldVehicleNumber,vehicleName:meta.vehicleName,manager:meta.manager,stage:report.stage,jsonData:reportJson}).then(function(r){currentRecordV197.diagnosisId=r.diagnosisId;currentRecordV197.revision=Number(r.revision||1);report.diagnosisId=r.diagnosisId;report.revision=currentRecordV197.revision;setStatusV197('저장 완료 · '+r.diagnosisId+' · 수정버전 '+r.revision,false);updateMetaV197();console.log('[AB_DIAG][SHEET_SAVE_COMPLETE_V197]',r);}).catch(function(e){setStatusV197(e.message||'저장 실패',true);console.error('[AB_DIAG][SHEET_SAVE_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
   /** 차량번호로 가장 최근 저장 건을 조회하고 복원한다. */
   function loadByVehicleV197(vehicleNumber){if(busyV197)return Promise.resolve();busyV197=true;setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);return apiV197('loadByVehicle',{vehicleNumber:normalizeVehicleNoV197(vehicleNumber)}).then(function(r){restoreReportV197(r.data);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);updateMetaV197();}).catch(function(e){setStatusV197(e.message||'불러오기 실패',true);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);console.error('[AB_DIAG][SHEET_LOAD_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
   /** 도구막대의 현재 진단 메타정보를 갱신한다. */

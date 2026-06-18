@@ -10880,6 +10880,19 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 }
 
+
+/* v216: 보증연장 선택 버튼을 검수자 코멘트 선택 버튼과 동일한 크기로 통일한다. */
+html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
+  width:auto !important;
+  min-width:44px !important;
+  height:28px !important;
+  min-height:28px !important;
+  padding:0 8px !important;
+  border-radius:9px !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+}
 </style>
 
 <!--
@@ -19043,8 +19056,18 @@ function isVisibleCaptureTarget(el){
       busyV197=false;
     }
   }
+  /** 불러오기 완료 후 기본정보 탭을 활성화하고 화면 상단으로 이동한다. */
+  function activateBasicTabAfterLoadV216(){
+    var basicTab=document.getElementById('tabInput');
+    if(basicTab){
+      basicTab.checked=true;
+      try{basicTab.dispatchEvent(new Event('change',{bubbles:true}));}catch(error){}
+    }
+    try{window.scrollTo({top:0,left:0,behavior:'auto'});}catch(error){window.scrollTo(0,0);}
+    console.log('[AB_DIAG][LOAD_BASIC_TAB_V216]');
+  }
   /** 차량번호로 가장 최근 저장 건을 조회하고 복원한다. */
-  function loadByVehicleV197(vehicleNumber){if(busyV197)return Promise.resolve();busyV197=true;setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);return apiV197('loadByVehicle',{vehicleNumber:normalizeVehicleNoV197(vehicleNumber)}).then(function(r){restoreReportV197(r.data);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);updateMetaV197();}).catch(function(e){setStatusV197(e.message||'불러오기 실패',true);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);console.error('[AB_DIAG][SHEET_LOAD_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
+  function loadByVehicleV197(vehicleNumber){if(busyV197)return Promise.resolve();busyV197=true;setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);return apiV197('loadByVehicle',{vehicleNumber:normalizeVehicleNoV197(vehicleNumber)}).then(function(r){restoreReportV197(r.data);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');activateBasicTabAfterLoadV216();setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);updateMetaV197();}).catch(function(e){setStatusV197(e.message||'불러오기 실패',true);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);console.error('[AB_DIAG][SHEET_LOAD_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
   /** 도구막대의 현재 진단 메타정보를 갱신한다. */
   function updateMetaV197(){var el=document.getElementById('abDbMetaV197');if(el)el.textContent=currentRecordV197.diagnosisId?('진단ID '+currentRecordV197.diagnosisId+' / 수정버전 '+currentRecordV197.revision):'아직 서버에 저장되지 않은 신규 진단';}
   /**

@@ -11875,6 +11875,113 @@ body.ab-password-active-v195{overflow:hidden!important}
 }
 </style>
 
+
+<style>
+/* v225: 매입금액 산정 입력박스 규격 및 복합행 정렬 통일
+   - 기능/키/계산 로직은 변경하지 않는다.
+   - 단일 입력은 전체 폭, 내용+금액은 동일 비율, 복합 계산행은 동일 높이와 균등 폭을 사용한다. */
+#secPriceCalcV218{
+  --price-calc-input-height-v225:42px;
+  --price-calc-amount-width-v225:92px;
+  --price-calc-row-gap-v225:7px;
+}
+
+/* 모든 입력요소의 높이·테두리·라운드·글자 위치 통일 */
+#secPriceCalcV218 input,
+#secPriceCalcV218 select{
+  height:var(--price-calc-input-height-v225)!important;
+  min-height:var(--price-calc-input-height-v225)!important;
+  border-radius:10px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  line-height:normal!important;
+}
+#secPriceCalcV218 textarea{
+  border-radius:10px!important;
+}
+
+/* 단일 금액 입력은 일반 입력박스와 동일하게 전체 폭 사용 */
+#secPriceCalcV218 .price-calc-money-v218{
+  display:block!important;
+  width:100%!important;
+}
+#secPriceCalcV218 .price-calc-money-v218>.price-calc-input-unit-v223{
+  width:100%!important;
+}
+
+/* 부위/내용 + 금액 조합은 모든 항목에서 같은 비율과 금액칸 폭 사용 */
+#secPriceCalcV218 .price-calc-detail-money-v218,
+#secPriceCalcV218 .price-calc-repeat-row-v219{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) var(--price-calc-amount-width-v225)!important;
+  gap:var(--price-calc-row-gap-v225)!important;
+  align-items:center!important;
+  width:100%!important;
+}
+#secPriceCalcV218 .price-calc-repeat-row-v219.amount-only{
+  grid-template-columns:1fr!important;
+}
+
+/* 외판·판금·휠기스: 개수/개당금액/합계 입력 폭을 동일 계열로 정렬 */
+#secPriceCalcV218 .price-calc-multi-v218:not(.accident){
+  display:grid!important;
+  grid-template-columns:minmax(48px,.72fr) 22px minmax(72px,1fr) 38px minmax(72px,1fr)!important;
+  gap:6px!important;
+  align-items:center!important;
+  width:100%!important;
+}
+
+/* 사고: 개수·개당비율·총비율·총금액을 균등한 입력 폭으로 정렬 */
+#secPriceCalcV218 .price-calc-multi-v218.accident{
+  display:grid!important;
+  grid-template-columns:minmax(44px,.78fr) 18px minmax(44px,.78fr) 18px minmax(44px,.78fr) 40px minmax(64px,1.05fr)!important;
+  gap:5px!important;
+  align-items:center!important;
+  width:100%!important;
+}
+#secPriceCalcV218 .price-calc-multi-v218>span{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  height:var(--price-calc-input-height-v225)!important;
+  margin:0!important;
+  text-align:center!important;
+}
+
+/* 항목추가 버튼도 반복행 전체 폭과 정렬 통일 */
+#secPriceCalcV218 .price-calc-add-btn-v219{
+  width:100%!important;
+  min-width:0!important;
+  height:34px!important;
+  justify-self:stretch!important;
+}
+
+/* 차감 합계/최종금액 입력 영역을 동일 폭으로 통일 */
+#secPriceCalcV218 .price-calc-summary-row-v218>div,
+#secPriceCalcV218 .price-calc-summary-row-v218.final>div{
+  display:block!important;
+  width:100%!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218 .price-calc-input-unit-v223{
+  width:100%!important;
+}
+
+/* 좁은 Android 화면에서도 금액칸 폭과 행 정렬 유지 */
+@media(max-width:430px){
+  #secPriceCalcV218{
+    --price-calc-amount-width-v225:88px;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218:not(.accident){
+    grid-template-columns:minmax(42px,.68fr) 18px minmax(62px,1fr) 34px minmax(62px,1fr)!important;
+    gap:5px!important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.accident{
+    grid-template-columns:minmax(38px,.72fr) 16px minmax(38px,.72fr) 16px minmax(38px,.72fr) 36px minmax(58px,1fr)!important;
+    gap:4px!important;
+  }
+}
+</style>
+
 </head>
 <body class="ab-entry-active-v194 ab-password-active-v195">
 <div aria-labelledby="passwordGateTitleV195" aria-modal="true" id="passwordGateScreenV195" role="dialog">

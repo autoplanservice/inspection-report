@@ -11688,7 +11688,141 @@ body.ab-password-active-v195{overflow:hidden!important}
   .price-calc-basic-price-v219>label{font-size:12px!important;white-space:nowrap!important}
   .price-calc-repeat-row-v219{grid-template-columns:minmax(0,1fr) 78px 24px!important}
 }
-</style></head>
+</style>
+<style>
+/* v222: 매입오더 작성 및 매입금액 산정 입력 레이아웃을 기본 탭 형식으로 통일한다.
+   - 작은 검은 점 + 항목명
+   - 입력요소는 항목명 아래 배치
+   - 기존 data-key, 계산, 저장/불러오기, 출력 로직은 변경하지 않는다. */
+
+/* 매입오더: 각 항목을 라벨 위 / 입력 아래 구조로 통일 */
+#secOrder .order-field:not(.no-label-v1699){
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+  min-width:0!important;
+}
+#secOrder .order-field:not(.no-label-v1699)>label{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  color:#111827!important;
+}
+#secOrder .order-field:not(.no-label-v1699)>label::before{
+  content:""!important;
+  flex:0 0 5px!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:999px!important;
+  background:#111827!important;
+}
+#secOrder .order-field:not(.no-label-v1699)>input,
+#secOrder .order-field:not(.no-label-v1699)>select,
+#secOrder .order-field:not(.no-label-v1699)>textarea,
+#secOrder .order-field:not(.no-label-v1699)>.order-inline,
+#secOrder .order-field:not(.no-label-v1699)>.date-dual-wrap,
+#secOrder .order-field:not(.no-label-v1699)>.order-count-detail-v1717{
+  width:100%!important;
+  min-width:0!important;
+}
+
+/* 매입금액 산정: 모든 일반 항목을 라벨 위 / 입력 아래 구조로 통일 */
+#secPriceCalcV218 .price-calc-field-v218{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+  min-width:0!important;
+}
+#secPriceCalcV218 .price-calc-field-v218>label,
+#secPriceCalcV218 .price-calc-comment-v218>label{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  line-height:1.35!important;
+  color:#111827!important;
+}
+#secPriceCalcV218 .price-calc-field-v218>label::before,
+#secPriceCalcV218 .price-calc-comment-v218>label::before{
+  content:""!important;
+  flex:0 0 5px!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:999px!important;
+  background:#111827!important;
+}
+#secPriceCalcV218 .price-calc-field-v218>input,
+#secPriceCalcV218 .price-calc-field-v218>select,
+#secPriceCalcV218 .price-calc-field-v218>textarea,
+#secPriceCalcV218 .price-calc-field-v218>.price-calc-money-v218,
+#secPriceCalcV218 .price-calc-field-v218>.price-calc-detail-money-v218,
+#secPriceCalcV218 .price-calc-field-v218>.price-calc-multi-v218,
+#secPriceCalcV218 .price-calc-field-v218>.price-calc-repeat-group-v219{
+  width:100%!important;
+  min-width:0!important;
+}
+#secPriceCalcV218 .price-calc-basic-price-v219{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:6px!important;
+}
+#secPriceCalcV218 .price-calc-comment-v218{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:6px!important;
+}
+
+/* 차감 합계/최종금액도 동일한 항목명 위, 입력 아래 형식으로 유지 */
+#secPriceCalcV218 .price-calc-summary-row-v218{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218>strong{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  width:max-content!important;
+  margin:0!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218>strong::before{
+  content:""!important;
+  flex:0 0 5px!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:999px!important;
+  background:currentColor!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218>div{
+  width:100%!important;
+  grid-template-columns:auto minmax(0,1fr) 26px!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218.final>div{
+  grid-template-columns:minmax(0,1fr) 26px!important;
+}
+</style>
+
+</head>
 <body class="ab-entry-active-v194 ab-password-active-v195">
 <div aria-labelledby="passwordGateTitleV195" aria-modal="true" id="passwordGateScreenV195" role="dialog">
 <div class="password-gate-card-v195">

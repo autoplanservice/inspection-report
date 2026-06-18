@@ -18851,6 +18851,39 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
+   * 도막 진단 W 선택 상태를 부위별로 수집한다.
+   * 도막 수치 input은 일반 컨트롤 저장 대상이지만 W 버튼은 button 요소이므로 별도 저장한다.
+   * @returns {Object<string, boolean>}
+   */
+  function collectPaintWStateV221(){
+    var state={};
+    Array.prototype.slice.call(document.querySelectorAll('.paint-native-w[data-paint-id]')).forEach(function(button){
+      var id=String(button.getAttribute('data-paint-id')||'').trim();
+      if(!id)return;
+      state[id]=button.classList.contains('active');
+    });
+    return state;
+  }
+
+  /**
+   * 저장된 도막 진단 W 선택 상태를 화면과 내부 도막 상태 저장소에 복원한다.
+   * W 버튼의 실제 클릭 로직을 호출해 private STORE와 배지 표시를 동시에 동기화한다.
+   * @param {Object<string, boolean>} state 부위별 W 선택 상태
+   */
+  function restorePaintWStateV221(state){
+    state=state||{};
+    Array.prototype.slice.call(document.querySelectorAll('.paint-native-w[data-paint-id]')).forEach(function(button){
+      var id=String(button.getAttribute('data-paint-id')||'').trim();
+      if(!id)return;
+      var shouldBeActive=state[id]===true||state[id]==='1'||state[id]===1;
+      var isActive=button.classList.contains('active');
+      if(shouldBeActive!==isActive){
+        button.click();
+      }
+    });
+  }
+
+  /**
    * 진단리포트 전체 상태를 요소별 안정 키로 수집한다.
    * GZIP 저장을 사용하므로 DOM 순번 대신 id/data-key/name 기반 키를 저장한다.
    * @returns {Object}
@@ -18874,7 +18907,7 @@ function isVisibleCaptureTarget(el){
     var stage=document.body.getAttribute('data-entry-stage-v194')||(entryMode==='PRE_INPUT'?'PRE_INPUT':'FIELD_IN_PROGRESS');
     var report={
       schemaVersion:3,
-      reportVersion:'v210',
+      reportVersion:'v221',
       diagnosisId:currentRecordV197.diagnosisId||'',
       revision:currentRecordV197.revision||0,
       entryMode:entryMode,
@@ -18884,6 +18917,7 @@ function isVisibleCaptureTarget(el){
       dynamic:collectDynamicV197(),
       exteriorTop:collectExteriorTopStateV203(),
       cycles:collectCycleStateV203(),
+      paintW:collectPaintWStateV221(),
       savedAt:new Date().toISOString()
     };
 
@@ -18892,6 +18926,7 @@ function isVisibleCaptureTarget(el){
       values:values.length,
       checked:checked.length,
       glass:Object.keys(report.exteriorTop.glass||{}).length,
+      paintW:Object.keys(report.paintW||{}).filter(function(key){return report.paintW[key];}).length,
       jsonLength:JSON.stringify(report).length
     });
     return report;
@@ -18995,6 +19030,7 @@ function isVisibleCaptureTarget(el){
 
     restoreExteriorTopStateV203(data.exteriorTop);
     restoreCycleStateV203(data.cycles);
+    restorePaintWStateV221(data.paintW);
   }
 
   /**
@@ -19060,6 +19096,7 @@ function isVisibleCaptureTarget(el){
         warranty:(document.querySelector('[data-key="prosWarrantyLevel"]')||{}).value||'',
         inspector:'0'
       });
+      if(data.paintW)restorePaintWStateV221(data.paintW);
     }else if(Array.isArray(data.controls)){
       restoreDynamicV197(data.dynamic);
       var root=document.getElementById('reportAppV194');
@@ -19084,6 +19121,7 @@ function isVisibleCaptureTarget(el){
       });
       if(data.exteriorTop)restoreExteriorTopStateV203(data.exteriorTop);
       if(data.cycles)restoreCycleStateV203(data.cycles);
+      if(data.paintW)restorePaintWStateV221(data.paintW);
     }else{
       throw new Error('저장 JSON 형식이 올바르지 않습니다.');
     }

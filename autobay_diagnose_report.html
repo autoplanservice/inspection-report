@@ -19070,9 +19070,15 @@ function isVisibleCaptureTarget(el){
     document.body.appendChild(bar);
 
     /* 외부 CSS나 복원된 이전 스타일보다 우선하도록 핵심 위치값을 inline important로 고정한다. */
+    var isNarrowScreen=window.matchMedia&&window.matchMedia('(max-width:430px)').matches;
+    var floatingRight=isNarrowScreen ? '10px' : '12px';
+    var floatingBottom=isNarrowScreen
+      ? 'calc(18px + env(safe-area-inset-bottom, 0px))'
+      : 'calc(22px + env(safe-area-inset-bottom, 0px))';
+
     bar.style.setProperty('position','fixed','important');
-    bar.style.setProperty('right','12px','important');
-    bar.style.setProperty('bottom','calc(92px + env(safe-area-inset-bottom, 0px))','important');
+    bar.style.setProperty('right',floatingRight,'important');
+    bar.style.setProperty('bottom',floatingBottom,'important');
     bar.style.setProperty('left','auto','important');
     bar.style.setProperty('top','auto','important');
     bar.style.setProperty('width','auto','important');

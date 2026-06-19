@@ -16354,6 +16354,21 @@ boot();
   box-sizing:border-box!important;
 }
 </style>
+
+<style>
+/* v249: 매입금액 산정 기본/고장 및 수리 섹션 라벨을 제출하기 버튼 색상과 동일하게 고정 */
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
+  background:#111827!important;
+  border:1px solid #111827!important;
+  color:#ffffff!important;
+  box-shadow:none!important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699 *,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699 *{
+  color:#ffffff!important;
+}
+</style>
 </body></html>'
     );
     win.document.close();
@@ -19851,6 +19866,10 @@ function isVisibleCaptureTarget(el){
   }
   /** v227: 자동 산출 총액은 기본 계산하되 사용자가 직접 입력한 총액은 유지한다. */
   function calculateV219(){var root=sec();if(!root)return;['outer','panel','wheel'].forEach(function(name){var c=root.querySelector('[data-multiply-count="'+name+'"]');var e=root.querySelector('[data-multiply-each="'+name+'"]');var totalEl=root.querySelector('[data-multiply-total="'+name+'"]');if(totalEl&&totalEl.getAttribute('data-manual-v227')!=='1')totalEl.value=formatNumber(digitsNumber(c&&c.value)*digitsNumber(e&&e.value));});var ac=digitsNumber(value('price_calc_accident_count'));var ap=digitsNumber(value('price_calc_accident_each_percent'));var totalPercent=ac*ap;setValue('price_calc_accident_total_percent',formatNumber(totalPercent),true);var accidentAmount=field('price_calc_accident_amount');if(accidentAmount&&accidentAmount.getAttribute('data-manual-v227')!=='1')setValue('price_calc_accident_amount',formatNumber(basePriceNumber()*totalPercent/100),true);var total=0;var amounts=root.querySelectorAll('[data-calc-amount="1"]');for(var i=0;i<amounts.length;i++)total+=digitsNumber(amounts[i].value);setValue('price_calc_deduction_total',formatNumber(total),true);var finalInput=field('price_calc_final_amount');if(finalInput&&finalInput.getAttribute('data-manual-v218')!=='1')setValue('price_calc_final_amount',formatNumber(Math.max(0,basePriceNumber()-total)),true);}
+  /** v249: 최종금액은 신규 입력/불러오기에서는 자동 계산하고, 사용자가 직접 수정한 경우만 수동값으로 유지한다. */
+  function clearFinalManualV249(){var finalInput=field('price_calc_final_amount');if(finalInput)finalInput.removeAttribute('data-manual-v218');}
+  /** v249: 가격·감가금액·자동총액 산출 입력만 최종금액 자동 재계산 트리거로 본다. */
+  function isFinalAmountDriverV249(target){if(!target)return false;if(target.getAttribute('data-calc-amount')==='1')return true;if(target.hasAttribute('data-multiply-count')||target.hasAttribute('data-multiply-each'))return true;var key=target.getAttribute('data-key')||'';return key==='price_calc_base_price'||key==='price_calc_accident_count'||key==='price_calc_accident_each_percent';}
   function repeatedDetailsV219(prefix,label,amountOnly){
     var root=sec();var lines=[];if(!root)return lines;
     var rows=root.querySelectorAll('[data-repeat-row-v219="'+prefix+'"]');
@@ -19868,10 +19887,10 @@ function isVisibleCaptureTarget(el){
   function copyText(text,button){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){var old=button.textContent;button.textContent='복사완료';setTimeout(function(){button.textContent=old;},1200);});return;}var ta=document.getElementById('priceCalcCopyOutputV218');ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}}
   function bindV219(){var root=sec();if(!root||root.dataset.boundV219==='1')return;root.dataset.boundV219='1';root.addEventListener('click',function(ev){
     var remove=ev.target.closest('[data-repeat-remove-v220]');
-    if(remove){var row=remove.closest('[data-repeat-row-v219]');if(row){row.remove();calculateV219();}return;}
+    if(remove){var row=remove.closest('[data-repeat-row-v219]');if(row){row.remove();clearFinalManualV249();calculateV219();}return;}
     var add=ev.target.closest('[data-repeat-add-v219]');
-    if(add){addRepeatRowV219(add.getAttribute('data-repeat-add-v219'));}
-  });root.addEventListener('input',function(ev){var target=ev.target;if(target&&target.getAttribute('inputmode')){if(target.getAttribute('inputmode')==='numeric')target.value=String(target.value||'').replace(/[^0-9]/g,'');else if(target.getAttribute('inputmode')==='decimal')target.value=String(target.value||'').replace(/[^0-9.,-]/g,'');}if(target&&target.id==='priceCalcFinalAmountV218'){target.setAttribute('data-manual-v218','1');return;}if(target&&target.getAttribute('data-manual-total-v227')){target.setAttribute('data-manual-v227','1');calculateV219();return;}if(target&&target.hasAttribute('data-multiply-count')){var multiplyName=target.getAttribute('data-multiply-count');var multiplyTotal=root.querySelector('[data-multiply-total="'+multiplyName+'"]');if(multiplyTotal)multiplyTotal.removeAttribute('data-manual-v227');}if(target&&target.hasAttribute('data-multiply-each')){var multiplyEachName=target.getAttribute('data-multiply-each');var multiplyEachTotal=root.querySelector('[data-multiply-total="'+multiplyEachName+'"]');if(multiplyEachTotal)multiplyEachTotal.removeAttribute('data-manual-v227');}if(target&&(target.getAttribute('data-key')==='price_calc_accident_count'||target.getAttribute('data-key')==='price_calc_accident_each_percent'||target.getAttribute('data-key')==='price_calc_base_price')){var accidentTotal=field('price_calc_accident_amount');if(accidentTotal)accidentTotal.removeAttribute('data-manual-v227');}calculateV219();});var tab=document.getElementById('tabPriceCalc');if(tab)tab.addEventListener('change',function(){if(tab.checked){syncBasicV219();revealStoredRowsV219();calculateV219();window.scrollTo(0,0);}});var submit=document.getElementById('priceCalcSubmitBtnV218');if(submit)submit.addEventListener('click',function(){var text=buildTextV219();var out=document.getElementById('priceCalcCopyOutputV218');out.value=text;document.getElementById('priceCalcOutputCardV218').classList.add('active');copyText(text,submit);});var copy=document.getElementById('priceCalcCopyBtnV218');if(copy)copy.addEventListener('click',function(){copyText(document.getElementById('priceCalcCopyOutputV218').value,copy);});syncBasicV219();revealStoredRowsV219();calculateV219();}
+    if(add){addRepeatRowV219(add.getAttribute('data-repeat-add-v219'));clearFinalManualV249();calculateV219();}
+  });root.addEventListener('input',function(ev){var target=ev.target;if(target&&target.getAttribute('inputmode')){if(target.getAttribute('inputmode')==='numeric')target.value=String(target.value||'').replace(/[^0-9]/g,'');else if(target.getAttribute('inputmode')==='decimal')target.value=String(target.value||'').replace(/[^0-9.,-]/g,'');}if(target&&target.id==='priceCalcFinalAmountV218'){if(ev&&ev.isTrusted)target.setAttribute('data-manual-v218','1');return;}if(target&&isFinalAmountDriverV249(target))clearFinalManualV249();if(target&&target.getAttribute('data-manual-total-v227')){target.setAttribute('data-manual-v227','1');calculateV219();return;}if(target&&target.hasAttribute('data-multiply-count')){var multiplyName=target.getAttribute('data-multiply-count');var multiplyTotal=root.querySelector('[data-multiply-total="'+multiplyName+'"]');if(multiplyTotal)multiplyTotal.removeAttribute('data-manual-v227');}if(target&&target.hasAttribute('data-multiply-each')){var multiplyEachName=target.getAttribute('data-multiply-each');var multiplyEachTotal=root.querySelector('[data-multiply-total="'+multiplyEachName+'"]');if(multiplyEachTotal)multiplyEachTotal.removeAttribute('data-manual-v227');}if(target&&(target.getAttribute('data-key')==='price_calc_accident_count'||target.getAttribute('data-key')==='price_calc_accident_each_percent'||target.getAttribute('data-key')==='price_calc_base_price')){var accidentTotal=field('price_calc_accident_amount');if(accidentTotal)accidentTotal.removeAttribute('data-manual-v227');}calculateV219();});var tab=document.getElementById('tabPriceCalc');if(tab)tab.addEventListener('change',function(){if(tab.checked){syncBasicV219();revealStoredRowsV219();calculateV219();window.scrollTo(0,0);}});var submit=document.getElementById('priceCalcSubmitBtnV218');if(submit)submit.addEventListener('click',function(){var text=buildTextV219();var out=document.getElementById('priceCalcCopyOutputV218');out.value=text;document.getElementById('priceCalcOutputCardV218').classList.add('active');copyText(text,submit);});var copy=document.getElementById('priceCalcCopyBtnV218');if(copy)copy.addEventListener('click',function(){copyText(document.getElementById('priceCalcCopyOutputV218').value,copy);});syncBasicV219();revealStoredRowsV219();calculateV219();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindV219,false);else bindV219();
 })();
 </script><style>

@@ -16485,6 +16485,258 @@ boot();
   box-sizing:border-box!important;
 }
 </style>
+
+<style>
+/* v244: 매입금액 산정 최종 요약/코멘트/배지 위치 보정
+   - v243 기준에서 CSS만 추가한다.
+   - 차감 및 최종 중복 헤더는 pseudo header를 제거하고 실제 DOM 헤더만 사용한다.
+   - 항목추가가 있는 반복항목은 좌측 배지가 상단에 고정되도록 정렬한다.
+   - 항목명 배지 폭은 8자 기준으로 통일한다. */
+#secPriceCalcV218{
+  --price-calc-v244-label-width:126px;
+  --price-calc-v244-label-width-mobile:112px;
+  --price-calc-v244-label-bg:#334155;
+  --price-calc-v244-label-border:#475569;
+  --price-calc-v244-label-color:#FFFFFF;
+}
+
+/* 차감 및 최종 헤더 중복 제거: 기존 ::before 헤더 비활성화 */
+#secPriceCalcV218 .price-calc-summary-v218::before{
+  content:none!important;
+  display:none!important;
+}
+
+/* 항목명 배지 폭 8자 기준 및 반복항목 상단 고정 */
+#secPriceCalcV218 .price-calc-field-v218,
+#secPriceCalcV218 .price-calc-field-v218.full,
+#secPriceCalcV218 .price-calc-summary-row-v218{
+  grid-template-columns:var(--price-calc-v244-label-width) minmax(0,1fr)!important;
+  align-items:start!important;
+}
+#secPriceCalcV218 .price-calc-field-v218>label,
+#secPriceCalcV218 .price-calc-summary-row-v218>strong{
+  align-self:start!important;
+  width:var(--price-calc-v244-label-width)!important;
+  min-width:var(--price-calc-v244-label-width)!important;
+  max-width:var(--price-calc-v244-label-width)!important;
+  height:38px!important;
+  min-height:38px!important;
+  background:var(--price-calc-v244-label-bg)!important;
+  border:1px solid var(--price-calc-v244-label-border)!important;
+  color:var(--price-calc-v244-label-color)!important;
+  font-size:13px!important;
+  font-weight:500!important;
+  line-height:1.1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  padding:0 10px!important;
+  box-sizing:border-box!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* 코멘트: 배지 다음 줄 입력박스 */
+#secPriceCalcV218 .price-calc-comment-v218{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  align-items:stretch!important;
+  width:100%!important;
+  margin:0!important;
+}
+#secPriceCalcV218 .price-calc-comment-v218>label{
+  align-self:flex-start!important;
+  width:var(--price-calc-v244-label-width)!important;
+  min-width:var(--price-calc-v244-label-width)!important;
+  max-width:var(--price-calc-v244-label-width)!important;
+  height:38px!important;
+  min-height:38px!important;
+  background:var(--price-calc-v244-label-bg)!important;
+  border:1px solid var(--price-calc-v244-label-border)!important;
+  color:var(--price-calc-v244-label-color)!important;
+  border-radius:7px!important;
+  font-size:13px!important;
+  font-weight:500!important;
+  line-height:1.1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  padding:0 10px!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 .price-calc-comment-v218>textarea{
+  width:100%!important;
+  max-width:100%!important;
+  min-height:88px!important;
+  margin:0!important;
+}
+
+/* 차감 합계 / 최종금액: 요청 이미지 형태의 2분할 요약 박스 */
+#secPriceCalcV218 .price-calc-summary-v218{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  padding:10px!important;
+  background:#fff!important;
+  border:1px solid #d8dee8!important;
+  border-radius:14px!important;
+  overflow:visible!important;
+}
+#secPriceCalcV218 .price-calc-summary-v218>.order-soft-section-title-v1699{
+  grid-column:1/-1!important;
+  margin:0 0 2px 0!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:6px!important;
+  min-height:86px!important;
+  margin:0!important;
+  padding:10px!important;
+  border-radius:12px!important;
+  box-sizing:border-box!important;
+  border:2px solid #ef4444!important;
+  background:#fff!important;
+  color:#111827!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218.final{
+  border-color:#ef4444!important;
+  background:#ef4444!important;
+  color:#fff!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218>strong{
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#ef4444!important;
+  font-size:13px!important;
+  font-weight:700!important;
+  line-height:1.15!important;
+  display:block!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218>strong::before{
+  content:'• '!important;
+  display:inline!important;
+  color:inherit!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218.final>strong{
+  color:#fff!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218>div{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218 .price-calc-input-unit-v223{
+  display:block!important;
+  position:relative!important;
+  width:100%!important;
+  height:42px!important;
+  min-height:42px!important;
+  background:#fff!important;
+  border-radius:9px!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) .price-calc-input-unit-v223{
+  background:transparent!important;
+  border-radius:0!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218 input{
+  width:100%!important;
+  height:42px!important;
+  min-height:42px!important;
+  margin:0!important;
+  padding:0 36px 0 22px!important;
+  border:0!important;
+  background:transparent!important;
+  color:#111827!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  text-align:left!important;
+  box-shadow:none!important;
+  -webkit-text-fill-color:#111827!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218.final input{
+  background:#fff!important;
+  border-radius:9px!important;
+  padding-left:12px!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218 .price-calc-suffix-v223{
+  position:absolute!important;
+  right:10px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:#111827!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  pointer-events:none!important;
+  z-index:5!important;
+}
+#secPriceCalcV218 .price-calc-summary-row-v218 .price-calc-prefix-v223{
+  position:absolute!important;
+  left:0!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  color:#111827!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  pointer-events:none!important;
+  z-index:5!important;
+}
+#secPriceCalcV218 .price-calc-summary-v218>.price-calc-comment-v218{
+  grid-column:1/-1!important;
+  margin-top:2px!important;
+}
+
+@media(max-width:430px){
+  #secPriceCalcV218{
+    --price-calc-v244-label-width:var(--price-calc-v244-label-width-mobile);
+  }
+  #secPriceCalcV218 .price-calc-field-v218,
+  #secPriceCalcV218 .price-calc-field-v218.full{
+    grid-template-columns:var(--price-calc-v244-label-width) minmax(0,1fr)!important;
+  }
+  #secPriceCalcV218 .price-calc-field-v218>label,
+  #secPriceCalcV218 .price-calc-comment-v218>label{
+    height:36px!important;
+    min-height:36px!important;
+    font-size:12px!important;
+    padding:0 8px!important;
+  }
+  #secPriceCalcV218 .price-calc-summary-v218{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+    padding:8px!important;
+  }
+  #secPriceCalcV218 .price-calc-summary-row-v218{
+    min-height:82px!important;
+    padding:9px!important;
+  }
+  #secPriceCalcV218 .price-calc-summary-row-v218 input{
+    font-size:18px!important;
+  }
+}
+</style>
+
 </body></html>'
     );
     win.document.close();

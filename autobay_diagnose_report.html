@@ -16549,6 +16549,60 @@ boot();
   box-sizing:border-box!important;
 }
 </style>
+
+
+<style>
+/* v238: 매입금액 산정 항목 제목 미니 라벨 스타일
+   - 매입금액 산정 내부 항목명만 검정 사각 라운드 라벨로 통일한다.
+   - 항목 순서, data-key, 계산식, 저장/불러오기, 제출 출력은 변경하지 않는다. */
+#secPriceCalcV218 .price-calc-field-v218>label,
+#secPriceCalcV218 .price-calc-comment-v218>label{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  max-width:100%!important;
+  min-height:24px!important;
+  padding:4px 9px!important;
+  margin:0 0 6px 0!important;
+  border:0!important;
+  border-radius:7px!important;
+  background:#111827!important;
+  color:#ffffff!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+  font-weight:500!important;
+  letter-spacing:-.02em!important;
+  white-space:normal!important;
+  box-shadow:none!important;
+  justify-self:start!important;
+}
+#secPriceCalcV218 .price-calc-field-v218>label::before,
+#secPriceCalcV218 .price-calc-comment-v218>label::before{
+  content:none!important;
+  display:none!important;
+}
+#secPriceCalcV218 .price-calc-field-v218{
+  align-items:start!important;
+}
+#secPriceCalcV218 .price-calc-comment-v218{
+  align-items:start!important;
+}
+#secPriceCalcV218 .price-calc-field-v218.full>label,
+#secPriceCalcV218 .price-calc-comment-v218>label{
+  grid-column:auto!important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .price-calc-field-v218>label,
+  #secPriceCalcV218 .price-calc-comment-v218>label{
+    min-height:23px!important;
+    padding:4px 8px!important;
+    font-size:11.5px!important;
+    border-radius:7px!important;
+  }
+}
+</style>
+
 </body></html>'
     );
     win.document.close();

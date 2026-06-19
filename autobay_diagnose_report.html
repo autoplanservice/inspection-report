@@ -16369,6 +16369,25 @@ boot();
   color:#ffffff!important;
 }
 </style>
+
+<style>
+/* v250: 매입금액 산정 섹션 라벨 최종 색상 보정
+   - v247 공통 라벨 색상(#334155)이 뒤에서 덮어써지는 문제를 최종 우선순위로 재보정한다.
+   - 적용 대상은 매입금액 산정의 기본/고장 및 수리 섹션 라벨만이다. */
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
+  background:#111827 !important;
+  border-color:#111827 !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699 *,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699 *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+</style>
+
 </body></html>'
     );
     win.document.close();

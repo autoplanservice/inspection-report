@@ -20105,5 +20105,65 @@ function isVisibleCaptureTarget(el){
 }
 </style>
 
+
+<style>
+/* v248: 매입금액 산정 상단 고정 보정
+   - 기존 sticky 헤더 높이를 CSS 변수로 계산하여 매입금액 산정 제목과 차감/최종 요약을 헤더 아래에 고정한다.
+   - v247의 모바일 top:4px 보정을 최종 우선순위에서 덮어쓴다. */
+:root{
+  --ab-price-sticky-header-h:126px;
+  --ab-price-title-h:42px;
+}
+#secPriceCalcV218 .order-page-title-card-v1699{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + 8px) !important;
+  z-index:2147483400 !important;
+  margin:10px 0 8px !important;
+  box-shadow:0 8px 18px rgba(15,23,42,.18) !important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 16px) !important;
+  z-index:2147483300 !important;
+  margin-top:0 !important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .order-page-title-card-v1699{
+    top:calc(var(--ab-price-sticky-header-h,126px) + 7px) !important;
+  }
+  #secPriceCalcV218 .price-calc-summary-sticky-v247{
+    top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
+  }
+}
+</style>
+<script>
+/* v248: sticky 기준 높이 계산
+   - 상단 .header 높이와 매입금액 산정 제목 높이를 CSS 변수로 저장한다.
+   - Android/PC/iPhone에서 탭 높이·메뉴 줄바꿈이 달라도 차감/최종 요약이 헤더 밑에 붙도록 한다. */
+(function(){
+  function updatePriceCalcStickyOffsetV248(){
+    var root=document.documentElement;
+    var header=document.querySelector('.header');
+    var title=document.querySelector('#secPriceCalcV218 .order-page-title-card-v1699');
+    var headerHeight=header?Math.ceil(header.getBoundingClientRect().height):126;
+    var titleHeight=title?Math.ceil(title.getBoundingClientRect().height):42;
+    root.style.setProperty('--ab-price-sticky-header-h', headerHeight + 'px');
+    root.style.setProperty('--ab-price-title-h', titleHeight + 'px');
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', updatePriceCalcStickyOffsetV248, false);
+  }else{
+    updatePriceCalcStickyOffsetV248();
+  }
+  window.addEventListener('resize', updatePriceCalcStickyOffsetV248, {passive:true});
+  window.addEventListener('orientationchange', updatePriceCalcStickyOffsetV248, {passive:true});
+  document.addEventListener('change', function(e){
+    if(e && e.target && e.target.name==='tab'){
+      setTimeout(updatePriceCalcStickyOffsetV248, 60);
+    }
+  }, false);
+})();
+</script>
+
 </body>
 </html>

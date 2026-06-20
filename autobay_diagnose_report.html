@@ -13338,6 +13338,145 @@ body.ab-password-active-v195{overflow:hidden!important}
     padding:0 4px !important;
   }
 }
+
+/* v267 BUGFIX: 매입금액 산정 계산행을 카드 폭 기준 유동 그리드로 보정
+   - 사고/외판/판금/휠기스의 입력박스가 고정 px 폭 때문에 카드 폭을 벗어나거나 붙어 보이는 문제를 해결한다.
+   - 기존 계산식, data-key, 저장/불러오기 로직은 변경하지 않는다.
+   - 소형 박스/합계 라벨/결과 박스를 고정폭 기준이 아니라 현재 카드 폭 안에서 자동 배분한다. */
+#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-field-v218.price-calc-half-v247{
+  min-width:0 !important;
+  width:100% !important;
+  align-self:start !important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-field-v218.price-calc-half-v247 > label{
+  align-self:flex-start !important;
+  height:22px !important;
+  min-height:22px !important;
+  line-height:1 !important;
+  margin:0 !important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-field-v218.price-calc-half-v247 > input,
+#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-field-v218.price-calc-half-v247 > .price-calc-money-v218{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  align-self:stretch !important;
+  box-sizing:border-box !important;
+}
+
+/* 사고 계산행: 1줄은 3등분, 2줄은 합계 라벨 + 결과금액으로 카드 폭에 맞춘다. */
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+  display:grid !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  grid-template-rows:42px 42px !important;
+  gap:7px !important;
+  align-items:center !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-compact-unit-v229:nth-of-type(1){
+  grid-column:1 !important;
+  grid-row:1 !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-compact-unit-v229:nth-of-type(2){
+  grid-column:2 !important;
+  grid-row:1 !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-total-percent-unit-v229{
+  grid-column:3 !important;
+  grid-row:1 !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-eq-label-v253{
+  grid-column:1 !important;
+  grid-row:2 !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-result-unit-v231{
+  grid-column:2 / 4 !important;
+  grid-row:2 !important;
+}
+
+/* 외판/판금/휠기스 계산행: 4개 요소를 카드 폭 안에서 균형 있게 배치한다. */
+#secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+  display:grid !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.05fr) 48px minmax(0,1.18fr) !important;
+  gap:7px !important;
+  align-items:center !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+
+/* 계산행 내부 박스는 고정폭을 해제하고 현재 그리드 칸에 100% 맞춘다. */
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-compact-unit-v229,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-each-unit-v229,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-total-percent-unit-v229,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-eq-label-v253{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  height:42px !important;
+  min-height:42px !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-input-unit-v223 > input,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  height:42px !important;
+  min-height:42px !important;
+  box-sizing:border-box !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-eq-label-v253{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 4px !important;
+  background:#ffffff !important;
+  border:1px solid #cfd6e1 !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  border-radius:10px !important;
+  font-size:11px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+}
+
+/* 좁은 Android 화면에서는 합계 칸을 조금 줄이고 입력칸이 남은 폭을 나눠 갖게 한다. */
+@media(max-width:430px){
+  #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    grid-template-rows:40px 40px !important;
+    gap:6px !important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+    grid-template-columns:minmax(0,.78fr) minmax(0,1.02fr) 42px minmax(0,1.18fr) !important;
+    gap:6px !important;
+  }
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-compact-unit-v229,
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-each-unit-v229,
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-total-percent-unit-v229,
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231,
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-eq-label-v253,
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-input-unit-v223 > input,
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
+    height:40px !important;
+    min-height:40px !important;
+  }
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-eq-label-v253{
+    font-size:10.5px !important;
+    padding:0 3px !important;
+  }
+}
+
 </style>
 <!--
   v89 정리6차

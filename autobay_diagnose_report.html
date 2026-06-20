@@ -16766,6 +16766,33 @@ boot();
   color:#ffffff !important;
   -webkit-text-fill-color:#ffffff !important;
 }
+
+
+/* 매입금액 산정: 웹/모바일 공통 sticky 보정
+   - 통합 style 후반에서 sticky 기준점과 overflow 조건을 최종 확정한다. */
+#secPriceCalcV218{
+  overflow:visible !important;
+  contain:initial !important;
+}
+#secPriceCalcV218 .order-page-title-card-v1699{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + 8px) !important;
+  z-index:2147483400 !important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 16px) !important;
+  z-index:2147483300 !important;
+  overflow:visible !important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .order-page-title-card-v1699{
+    top:calc(var(--ab-price-sticky-header-h,126px) + 7px) !important;
+  }
+  #secPriceCalcV218 .price-calc-summary-sticky-v247{
+    top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
+  }
+}
 </style>
 
 </body></html>'
@@ -20159,29 +20186,59 @@ function isVisibleCaptureTarget(el){
 
 
 <script>
-/* v248: sticky 기준 높이 계산
-   - 상단 .header 높이와 매입금액 산정 제목 높이를 CSS 변수로 저장한다.
-   - Android/PC/iPhone에서 탭 높이·메뉴 줄바꿈이 달라도 차감/최종 요약이 헤더 밑에 붙도록 한다. */
+/* 매입금액 산정: 상단 고정 위치 계산
+   - 상단 헤더, 매입금액 산정 제목 높이를 실측하여 차감/최종 요약 박스의 sticky 기준점을 갱신한다.
+   - 웹/모바일 모두 mainTabs 변경, 메뉴 클릭, 리사이즈, 회전 이후 다시 계산한다. */
 (function(){
-  function updatePriceCalcStickyOffsetV248(){
-    var root=document.documentElement;
-    var header=document.querySelector('.header');
-    var title=document.querySelector('#secPriceCalcV218 .order-page-title-card-v1699');
-    var headerHeight=header?Math.ceil(header.getBoundingClientRect().height):126;
-    var titleHeight=title?Math.ceil(title.getBoundingClientRect().height):42;
+  function updatePriceCalcStickyOffset(){
+    var root = document.documentElement;
+    var priceTab = document.getElementById('tabPriceCalc');
+    var header = document.querySelector('.header');
+    var title = document.querySelector('#secPriceCalcV218 .order-page-title-card-v1699');
+
+    var headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 126;
+    var titleRect = title ? title.getBoundingClientRect() : null;
+    var titleHeight = titleRect && titleRect.height ? Math.ceil(titleRect.height) : 42;
+
     root.style.setProperty('--ab-price-sticky-header-h', headerHeight + 'px');
     root.style.setProperty('--ab-price-title-h', titleHeight + 'px');
+
+    if (priceTab && priceTab.checked) {
+      document.body.classList.add('ab-price-calc-active');
+    } else {
+      document.body.classList.remove('ab-price-calc-active');
+    }
   }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', updatePriceCalcStickyOffsetV248, false);
-  }else{
-    updatePriceCalcStickyOffsetV248();
+
+  function schedulePriceCalcStickyOffset(){
+    updatePriceCalcStickyOffset();
+    window.requestAnimationFrame(function(){
+      updatePriceCalcStickyOffset();
+      setTimeout(updatePriceCalcStickyOffset, 80);
+    });
   }
-  window.addEventListener('resize', updatePriceCalcStickyOffsetV248, {passive:true});
-  window.addEventListener('orientationchange', updatePriceCalcStickyOffsetV248, {passive:true});
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', schedulePriceCalcStickyOffset, false);
+  } else {
+    schedulePriceCalcStickyOffset();
+  }
+
+  window.addEventListener('resize', schedulePriceCalcStickyOffset, {passive:true});
+  window.addEventListener('orientationchange', schedulePriceCalcStickyOffset, {passive:true});
+  window.addEventListener('load', schedulePriceCalcStickyOffset, false);
+
   document.addEventListener('change', function(e){
-    if(e && e.target && e.target.name==='tab'){
-      setTimeout(updatePriceCalcStickyOffsetV248, 60);
+    if (!e || !e.target) return;
+    if (e.target.name === 'mainTabs' || e.target.id === 'tabPriceCalc') {
+      schedulePriceCalcStickyOffset();
+    }
+  }, false);
+
+  document.addEventListener('click', function(e){
+    if (!e || !e.target) return;
+    if (e.target.closest('label[for="tabPriceCalc"], .menu-price-calc-link-v218')) {
+      schedulePriceCalcStickyOffset();
     }
   }, false);
 })();

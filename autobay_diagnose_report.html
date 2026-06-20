@@ -13,7 +13,8 @@ BASE CLEANUP NOTE
 - 유지: L 상태, R 노랑, 기존 localStorage key, radio + label 구조
 - 정리: 중복 doctype, D15 전용 transform 잔재, 비활성 placeholder script, R 검정 잔재
 -->
-<style>
+<style id="abUnifiedStyleV251">
+/* STYLE_BLOCK_01  */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
 body{padding:10px 8px 86px;overflow-x:hidden}
@@ -762,7 +763,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   -webkit-tap-highlight-color:transparent !important;
 }
 
-
 #secDiag .touch-diagram-shell .touch-card .slot .hit{
   position:absolute !important;
   inset:0 !important;
@@ -1236,7 +1236,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .paint-native-badge.warn{background:#f59e0b !important;}
 .paint-native-badge.danger{background:#ef4444 !important;}
 
-
 .paint-native-panel{
   display:none !important;
   width:100% !important;
@@ -1583,7 +1582,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:1 !important;
 }
 
-
 .paint-native-row{
   width:100% !important;
   box-sizing:border-box !important;
@@ -1754,9 +1752,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   z-index:2 !important;
 }
 
-
 /* 사고진단 바퀴 마커 제거 보강: data-part 기반 */
-
 
 .paint-native-input{
   ime-mode:disabled !important;
@@ -1769,7 +1765,6 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   -webkit-backface-visibility:hidden !important;
   contain:layout style paint !important;
 }
-
 
 .paint-native-slot.has-value .paint-native-badge{
   display:flex !important;
@@ -2822,12 +2817,10 @@ button{
   gap:8px !important;
 }
 
-
 .plate-wrap .plate-input{
   flex:1 1 auto !important;
   min-width:0 !important;
 }
-
 
 .plate-change-badge{
   flex:0 0 auto !important;
@@ -4793,7 +4786,6 @@ html, body{
   padding-top:0!important;
 }
 
-
 /* 선루프 점검 빨간색을 기존 위험/점검 계열 빨강과 동일 계열로 통일한다. */
 #secDiag .exterior-sunroof-badge[data-state="점검"]{
   background:#ef4444!important;
@@ -4818,7 +4810,6 @@ html, body{
   z-index:auto!important;
 }
 
-
 /* v16.41 - 도막/외관 카드 위 여백 복구
    목적: v16.40에서 구분선을 제거하면서 함께 사라진 카드 간 상단 여백을 복구한다.
    영향 범위: 진단 탭의 도막 진단확인, 외관 진단확인 카드 상단 여백만 조정한다.
@@ -4829,7 +4820,6 @@ html, body{
   margin-top:18px!important;
   padding-top:0!important;
 }
-
 
 /* v16.42 - 사고/도막/외관 진단확인 카드 제목부 여백 통일
    목적: 사고 진단확인 카드 기준으로 도막 진단확인, 외관 진단확인 카드의 상단 여백과 제목-첫 도면 간격을 동일하게 맞춘다.
@@ -4854,7 +4844,6 @@ html, body{
 #secDiag .report-card-ui:nth-of-type(4) > .touch-card:first-of-type{
   margin-top:0!important;
 }
-
 
 /* 도막/외관 카드 구분선 제거 상태 유지 */
 
@@ -5534,7 +5523,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
   box-sizing:border-box!important;
 }
 
-
 /* v16.60 - 엔진룸 기능점검 소음/떨림 그룹 테두리 구분
    목적: 소음 여부, 떨림 여부의 하위 항목(예열 전/후/공회전)을 각각 하나의 그룹 박스로 명확히 구분한다.
    영향 범위: 점검 탭 13 엔진룸 기능점검 카드의 소음/떨림 그룹 박스 스타일만 적용한다.
@@ -5559,7 +5547,6 @@ html body #secDiag .diag-exterior-card .touch-card:first-of-type .exterior-sunro
   padding:9px 10px!important;
   border-bottom:1px solid #eef1f5!important;
 }
-
 
 /* 조향 여부 단독 row는 그룹 박스와 분리된 1행 스타일 유지 */
 #secCheck [data-check-card="engine_func"] .engine-steering-single-row{
@@ -6335,7 +6322,6 @@ textarea::-ms-input-placeholder{
   outline:2px solid rgba(255,255,255,.38)!important;
 }
 
-
 /* 기존 3개 탭과 O 페이지 선택 상태가 충돌하지 않도록 표시 제어 */
 #tabOrder:checked ~ #secInput,
 #tabOrder:checked ~ #secDiag,
@@ -6594,7 +6580,6 @@ textarea::-ms-input-placeholder{
   height:1px!important;
   opacity:0!important;
 }
-
 
 .menu-open-btn{
   position:absolute!important;
@@ -6871,7 +6856,6 @@ textarea::-ms-input-placeholder{
   color:#111827!important;
 }
 
-
 /* 외관 탭 선택 시 다른 섹션 숨김 */
 #tabExterior:checked ~ #secInput,
 #tabExterior:checked ~ #secDiag,
@@ -6984,7 +6968,6 @@ textarea::-ms-input-placeholder{
 }
 
 /* 등록일자/제작일자: 달력 요소 완전 배제 */
-
 
 /* 튜닝 추가행: 라벨 높이와 입력박스 높이 동일 */
 #secInput .tuning-row{
@@ -8791,7 +8774,6 @@ textarea.tread-input-fix-v1724,
   flex:0 0 auto!important;
 }
 
-
 /* v17.26 - 외관 좌/우 측면진단 트레드 입력/안내문구/% 정렬 보정
    목적:
    - 트레드 입력박스의 안내 문구가 가로/세로 가운데 정렬되도록 한다.
@@ -8960,7 +8942,6 @@ textarea.tread-input-fix-v1724,
 #secInput .date-dual-wrap{
   position:relative!important;
 }
-
 
 /* 기존 미니 달력 input만 남김 */
 #secInput .date-dual-wrap input[type="date"].bi-date-overlay{
@@ -10026,7 +10007,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-titl
   print-color-adjust:exact!important;
 }
 
-
 /* v115 - PDF 도막 수치 배지 색상 보존
    포괄적인 paint/value 회색 규칙보다 뒤에서 실제 도막 배지 상태색을 복원한다. */
 #reportPrintRootV1773 #secDiag .paint-native-badge.has-value,
@@ -10580,11 +10560,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   box-sizing:border-box!important;
 }
 
-
-
-
-
-
 /*
   v152 - 출력 복사본 유지 / 실제 인쇄 전용 페이지 구성
   화면 미리보기 #reportPrintRootV1773는 변경하지 않는다.
@@ -10864,8 +10839,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
     box-shadow:none!important;
   }
 
-
-
   html body.report-print-preview-v1773 .report-print-bar-v1773,
   html body.report-print-preview-v1773 #reportPrintBarV1773{
     display:none!important;
@@ -10879,7 +10852,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   }
 }
 
-
 /* v216: 보증연장 선택 버튼을 검수자 코멘트 선택 버튼과 동일한 크기로 통일한다. */
 html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   width:auto !important;
@@ -10892,19 +10864,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   font-weight:900 !important;
   line-height:1 !important;
 }
-</style>
-<!--
-  v89 정리6차
-  - 현재 HTML/JS에서 참조되지 않는 과거 PDF/캡처 CSS v17.42~v17.56 계열만 제거했다.
-  - 날짜 기능(v17.29/v17.30/v17.36), 실제 PDF 함수, win.document.write 구조는 수정하지 않았다.
--->
-<!-- v98 CSS 통합 1차
-     - 실제 style 블록 28개를 1개로 통합
-     - 기존 CSS 선언 순서와 cascade 순서 유지
-     - 빈 style 블록 제거
-     - JavaScript / DOM / 저장키 / 날짜 / PDF 실행 로직 미수정
--->
-<style id="reportPrintDiagramUnifiedV161">
+
+/* STYLE_BLOCK_02 id="reportPrintDiagramUnifiedV161" */
 @media print{
   /*
     v161 - 도면 출력 CSS 단일화
@@ -11146,8 +11107,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
     background:transparent!important;
   }
 }
-</style>
-<style id="reportPrintLegacyTitleGuardV162">
+
+/* STYLE_BLOCK_03 id="reportPrintLegacyTitleGuardV162" */
 @media print{
   /*
     v162 - 방어 규칙
@@ -11178,8 +11139,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
     opacity:0!important;
   }
 }
-</style>
-<style id="reportPrintIOSV190">
+
+/* STYLE_BLOCK_04 id="reportPrintIOSV190" */
 @media print{
   @page{
     size:A4 portrait;
@@ -11452,7 +11413,6 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   }
 }
 
-
 /* v194 - 첫 진입 모드 선택 화면 */
 #entryModeScreenV194{
   position:fixed;
@@ -11539,7 +11499,6 @@ body.ab-entry-active-v194{overflow:hidden!important}
   #entryVehicleLoadBtnV194{width:100%}
 }
 
-
 /* v195 - Apps Script 비밀번호 인증 화면 */
 #passwordGateScreenV195{
   position:fixed;
@@ -11618,8 +11577,7 @@ body.ab-password-active-v195{overflow:hidden!important}
   #passwordVerifyBtnV195{width:100%}
 }
 
-</style>
-<style>
+/* STYLE_BLOCK_05  */
 /* v218 - 매입금액 산정 메뉴/페이지 */
 .menu-item + .menu-item{margin-top:6px!important}
 #tabPriceCalc:checked ~ #secPriceCalcV218{display:block!important}
@@ -11688,8 +11646,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   .price-calc-basic-price-v219>label{font-size:12px!important;white-space:nowrap!important}
   .price-calc-repeat-row-v219{grid-template-columns:minmax(0,1fr) 78px 24px!important}
 }
-</style>
-<style>
+
+/* STYLE_BLOCK_06  */
 /* v222: 매입오더 작성 및 매입금액 산정 입력 레이아웃을 기본 탭 형식으로 통일한다.
    - 작은 검은 점 + 항목명
    - 입력요소는 항목명 아래 배치
@@ -11820,10 +11778,8 @@ body.ab-password-active-v195{overflow:hidden!important}
 #secPriceCalcV218 .price-calc-summary-row-v218.final>div{
   grid-template-columns:minmax(0,1fr) 26px!important;
 }
-</style>
 
-
-<style>
+/* STYLE_BLOCK_07  */
 /* v223: 매입금액 산정의 금액 단위를 입력박스 내부 우측에 표시한다.
    차감 합계의 음수 기호도 입력박스 내부 좌측에 검정색으로 표시한다. */
 #secPriceCalcV218 .price-calc-input-unit-v223{
@@ -11873,10 +11829,8 @@ body.ab-password-active-v195{overflow:hidden!important}
 #secPriceCalcV218 .price-calc-summary-row-v218>div{
   align-items:center!important;
 }
-</style>
 
-
-<style>
+/* STYLE_BLOCK_08  */
 /* v225: 매입금액 산정 입력박스 규격 및 복합행 정렬 통일
    - 기능/키/계산 로직은 변경하지 않는다.
    - 단일 입력은 전체 폭, 내용+금액은 동일 비율, 복합 계산행은 동일 높이와 균등 폭을 사용한다. */
@@ -11980,10 +11934,8 @@ body.ab-password-active-v195{overflow:hidden!important}
     gap:4px!important;
   }
 }
-</style>
 
-
-<style>
+/* STYLE_BLOCK_09  */
 /* v229: 매입금액 산정 사고/외판/판금/휠기스 소형 입력박스 단위 내장 보정
    - 계산 key와 저장 key는 유지한다.
    - 개/%, 개당/만, 총/% 표시만 입력박스 내부로 이동한다. */
@@ -12059,10 +12011,8 @@ body.ab-password-active-v195{overflow:hidden!important}
     padding-left:28px!important;
   }
 }
-</style>
 
-
-<style>
+/* STYLE_BLOCK_10  */
 /* v230: 외판·판금·휠기스 개당 입력칸 보정
    - 개당 문구가 입력 공간을 차지하지 않도록 사고의 개당 % 칸과 같은 placeholder 방식으로 전환한다.
    - 계산 key, 저장 key, 총합 직접입력 기능은 변경하지 않는다. */
@@ -12093,11 +12043,8 @@ body.ab-password-active-v195{overflow:hidden!important}
     padding-right:21px!important;
   }
 }
-</style>
 
-
-
-<style>
+/* STYLE_BLOCK_11  */
 /* v231: 매입금액 산정 소형 계산행 Android 최종 보정
    - 사고 개수 placeholder 제거, 개당 placeholder 폰트 통일, 총액 입력박스 = 표시를 추가한다.
    - 계산식, 저장 key, data-key, localStorage key는 변경하지 않는다. */
@@ -12171,7 +12118,440 @@ body.ab-password-active-v195{overflow:hidden!important}
     padding-right:22px!important;
   }
 }
+
+/* STYLE_BLOCK_12  */
+/* v208: 모바일·웹 공통 저장 아이콘 플로팅 버튼 */
+.ab-dbbar-v197{
+  position:fixed !important;
+  right:max(12px, env(safe-area-inset-right, 0px)) !important;
+  bottom:calc(22px + env(safe-area-inset-bottom, 0px)) !important;
+  z-index:2147483000 !important;
+  width:auto !important;
+  max-width:calc(100vw - 24px) !important;
+  margin:0 !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-end !important;
+  pointer-events:none !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+.ab-dbbar-row-v197{
+  display:flex !important;
+  justify-content:flex-end !important;
+  width:auto !important;
+}
+.ab-dbbar-v197 button{
+  pointer-events:auto !important;
+  width:56px !important;
+  min-width:56px !important;
+  height:44px !important;
+  min-height:44px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:14px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:0 8px 24px rgba(15,23,42,.30) !important;
+  -webkit-tap-highlight-color:transparent !important;
+  touch-action:manipulation !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+}
+.ab-db-save-v197{background:#fff !important;color:#111827 !important;border:1px solid rgba(15,23,42,.14) !important;box-shadow:0 8px 24px rgba(15,23,42,.18) !important}
+.ab-db-save-v197:disabled{opacity:.55 !important}
+/* v212: 사용자가 업로드한 PNG 저장 아이콘을 모든 플랫폼에서 동일하게 표시한다. */
+.ab-db-save-v197 img{width:22px !important;height:22px !important;display:block !important;pointer-events:none !important;object-fit:contain !important}
+.ab-db-save-v197 svg{display:none !important}
+.ab-db-status-v197{
+  display:none;
+  width:min(280px, calc(100vw - 28px));
+  margin:0 0 8px;
+  padding:10px 12px;
+  border:1px solid #d8dee8;
+  border-radius:12px;
+  background:rgba(255,255,255,.98);
+  color:#374151;
+  font-size:12px;
+  font-weight:900;
+  line-height:1.45;
+  text-align:left;
+  word-break:keep-all;
+  box-shadow:0 6px 20px rgba(15,23,42,.18);
+  pointer-events:none;
+}
+.ab-db-status-v197.show{display:block !important}
+.ab-db-status-v197.error{border-color:#fecaca;background:#fff7f7;color:#b91c1c}
+.ab-db-meta-v197{display:none!important}
+@media (max-width:430px){
+  .ab-dbbar-v197{
+    right:max(10px, env(safe-area-inset-right, 0px)) !important;
+    bottom:calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .ab-dbbar-v197 button{
+    width:54px !important;
+    min-width:54px !important;
+    height:42px !important;
+    min-height:42px !important;
+  }
+  .ab-db-save-v197 img{width:21px !important;height:21px !important}
+}
+/* v209: Android Chrome에서 이전 상단형 저장바 스타일이 복원되어도 플로팅 위치를 강제한다. */
+@media screen and (max-width:900px){
+  body > #abDbBarV197[data-floating-save-v209="1"]{
+    position:fixed !important;
+    top:auto !important;
+    left:auto !important;
+    right:12px !important;
+    bottom:calc(22px + env(safe-area-inset-bottom, 0px)) !important;
+    width:auto !important;
+    height:auto !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    transform:none !important;
+    z-index:2147483000 !important;
+  }
+}
+@media print{
+  .ab-dbbar-v197{display:none!important}
+}
+
+/* v217 - 매입오더 인증 탁송출발/인수일 입력 구조 변경
+   - 인증 탁송출발은 MM-DD + HH 입력박스로 구성한다.
+   - 인수일은 기존 월/일 select 대신 MM-DD 입력박스로 구성한다.
+   영향 범위: #secOrder 신규 두 입력영역만 적용한다. */
+#secOrder .order-certified-departure-v217{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 72px!important;
+  gap:8px!important;
+  align-items:center!important;
+}
+#secOrder .order-certified-departure-v217 input,
+#secOrder .order-takeover-mmdd-v217{
+  width:100%!important;
+  min-width:0!important;
+  height:42px!important;
+  box-sizing:border-box!important;
+}
+
+/* v220: 매입금액 산정 반복 항목을 점검 탭 추가장착(튜닝)과 같은 추가/삭제 UI로 통일한다. */
+#secPriceCalcV218 .price-calc-repeat-group-v219{display:flex!important;flex-direction:column!important;gap:8px!important}
+#secPriceCalcV218 .price-calc-repeat-row-v219{display:grid!important;grid-template-columns:minmax(0,1fr) 92px 26px!important;gap:6px!important;align-items:center!important}
+#secPriceCalcV218 .price-calc-repeat-row-v219.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 92px 26px 36px!important}
+#secPriceCalcV218 .price-calc-repeat-row-v219.amount-only{grid-template-columns:minmax(0,1fr) 26px!important}
+#secPriceCalcV218 .price-calc-repeat-row-v219.amount-only.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 26px 36px!important}
+#secPriceCalcV218 .price-calc-add-btn-v219{width:100%!important;height:36px!important;margin-top:0!important;padding:0 12px!important;border:1px dashed #94a3b8!important;border-radius:10px!important;background:#fff!important;color:#111827!important;font-size:13px!important;font-weight:1000!important}
+#secPriceCalcV218 .price-calc-repeat-minus-v220{width:36px!important;min-width:36px!important;max-width:36px!important;height:36px!important;min-height:36px!important;max-height:36px!important;padding:0!important;border:1px solid #cfd6e1!important;border-radius:10px!important;background:#fff!important;color:#111827!important;font-size:18px!important;font-weight:900!important;line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}
+#secPriceCalcV218 .price-calc-repeat-minus-v220:active{background:#f3f4f6!important}
+#secPriceCalcV218 .price-calc-summary-row-v218{background:#ef4444!important;color:#fff!important;border:0!important;border-radius:12px!important;padding:12px!important;margin-bottom:8px!important}
+#secPriceCalcV218 .price-calc-summary-row-v218 strong,#secPriceCalcV218 .price-calc-summary-row-v218 span{color:#fff!important}
+#secPriceCalcV218 .price-calc-summary-row-v218 input{background:#fff!important;color:#111827!important;border-color:#fff!important}
+@media(max-width:430px){
+ #secPriceCalcV218 .price-calc-repeat-row-v219{grid-template-columns:minmax(0,1fr) 78px 24px!important}
+ #secPriceCalcV218 .price-calc-repeat-row-v219.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 78px 24px 36px!important}
+ #secPriceCalcV218 .price-calc-repeat-row-v219.amount-only{grid-template-columns:minmax(0,1fr) 24px!important}
+ #secPriceCalcV218 .price-calc-repeat-row-v219.amount-only.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 24px 36px!important}
+}
+
+/* STYLE_BLOCK_13  */
+/* v226: 매입금액 산정 반복 입력행 최종 규격 및 차감 음수 표기 보강 */
+#secPriceCalcV218{--price-calc-v226-height:42px;--price-calc-v226-amount-width:92px;--price-calc-v226-remove-width:36px;--price-calc-v226-gap:7px}
+#secPriceCalcV218 #priceCalcBasePriceV218,#secPriceCalcV218 #priceCalcVehicleNoV218,#secPriceCalcV218 #priceCalcCarNameV218{width:100%!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;background:#fff!important;color:#111827!important;cursor:text!important}
+#secPriceCalcV218 [data-repeat-row-v219="leak"],#secPriceCalcV218 [data-repeat-row-v219="oil"],#secPriceCalcV218 [data-repeat-row-v219="scanner"],#secPriceCalcV218 [data-repeat-row-v219="repair"],#secPriceCalcV218 [data-repeat-row-v219="interior"],#secPriceCalcV218 [data-repeat-row-v219="missing"],#secPriceCalcV218 [data-repeat-row-v219="other"]{width:100%!important;gap:var(--price-calc-v226-gap)!important;align-items:center!important;box-sizing:border-box!important}
+#secPriceCalcV218 [data-repeat-row-v219="leak"],#secPriceCalcV218 [data-repeat-row-v219="scanner"],#secPriceCalcV218 [data-repeat-row-v219="repair"],#secPriceCalcV218 [data-repeat-row-v219="interior"],#secPriceCalcV218 [data-repeat-row-v219="missing"],#secPriceCalcV218 [data-repeat-row-v219="other"]{display:grid!important;grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important}
+#secPriceCalcV218 [data-repeat-row-v219="leak"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="scanner"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="repair"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="interior"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="missing"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="other"].price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important}
+#secPriceCalcV218 [data-repeat-row-v219="oil"]{display:grid!important;grid-template-columns:minmax(0,1fr)!important}
+#secPriceCalcV218 [data-repeat-row-v219="oil"].price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) var(--price-calc-v226-remove-width)!important}
+#secPriceCalcV218 [data-repeat-row-v219]>input,#secPriceCalcV218 [data-repeat-row-v219]>.price-calc-input-unit-v223,#secPriceCalcV218 [data-repeat-row-v219]>.price-calc-input-unit-v223>input{width:100%!important;min-width:0!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;border-radius:10px!important;box-sizing:border-box!important}
+#secPriceCalcV218 [data-repeat-row-v219]>.price-calc-repeat-minus-v220{width:var(--price-calc-v226-remove-width)!important;min-width:var(--price-calc-v226-remove-width)!important;max-width:var(--price-calc-v226-remove-width)!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;max-height:var(--price-calc-v226-height)!important;margin:0!important;border-radius:10px!important}
+#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) .price-calc-input-unit-prefix-v223{position:relative!important;display:block!important;width:100%!important}
+#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) .price-calc-prefix-v223{display:block!important;visibility:visible!important;opacity:1!important;left:11px!important;top:50%!important;transform:translateY(-50%)!important;color:#111827!important;font-size:16px!important;font-weight:1000!important;z-index:5!important}
+#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) input{padding-left:29px!important}
+@media(max-width:430px){#secPriceCalcV218{--price-calc-v226-amount-width:88px}}
+
+/* v227: 직접입력 가능한 자동 총액과 오일교환 입력 폭 최종 보정 */
+#secPriceCalcV218 [data-manual-total-v227]{background:#fff!important;color:#111827!important;cursor:text!important;-webkit-text-fill-color:#111827!important;opacity:1!important}
+#secPriceCalcV218 [data-repeat-row-v219="oil"],#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223,#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223>input{display:block!important;width:100%!important;min-width:0!important;max-width:none!important;flex:1 1 auto!important;box-sizing:border-box!important}
+#secPriceCalcV218 [data-repeat-row-v219="oil"].price-calc-added-row-v220>.price-calc-input-unit-v223{width:100%!important}
+
+/* STYLE_BLOCK_14  */
+/* v232: 파손 반복 입력행 누락 보정
+   - v226 반복행 통일 CSS에서 damage만 빠져 Android에서 부위/금액 폭이 다른 항목과 불일치하던 문제를 수정한다.
+   - 계산식, 저장 key, 추가/삭제 로직은 변경하지 않는다. */
+#secPriceCalcV218 [data-repeat-row-v219="damage"]{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important;
+  gap:var(--price-calc-v226-gap)!important;
+  align-items:center!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="damage"].price-calc-added-row-v220{
+  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="damage"]>input,
+#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223,
+#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223>input{
+  width:100%!important;
+  min-width:0!important;
+  height:var(--price-calc-v226-height)!important;
+  min-height:var(--price-calc-v226-height)!important;
+  border-radius:10px!important;
+  box-sizing:border-box!important;
+}
+
+/* STYLE_BLOCK_15  */
+/* v247: v232 기준 매입금액 산정 부분 재배치 보정
+   - 차감 합계/최종금액을 매입금액 산정 헤더 바로 아래에 2열 고정형으로 배치한다.
+   - 항목추가 버튼은 실선/일반 굵기로 변경한다.
+   - 차량번호+차명, 계기판이상+등급상이, 유리+실내크리닝, 보수킷+스페어키+소화기 2/3열을 구성한다.
+   - 타이어도 반복 추가형으로 구성한다. */
+#secPriceCalcV218{--pc-v247-red:#ef4444;--pc-v247-red-border:#ff2f2f;--pc-v247-label:#334155;--pc-v247-border:#475569;}
+#secPriceCalcV218 .price-calc-summary-sticky-v247{
+  position:sticky!important;
+  top:6px!important;
+  z-index:160!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:10px!important;
+  margin:10px 0 12px!important;
+  padding:10px!important;
+  border:1px solid #d8dee8!important;
+  border-radius:16px!important;
+  background:#fff!important;
+  box-shadow:0 4px 14px rgba(15,23,42,.10)!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-comment-v218{
+  grid-column:1/-1!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:6px!important;
+  margin-top:2px!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218{
+  min-height:84px!important;
+  margin:0!important;
+  padding:10px 12px!important;
+  border:2px solid var(--pc-v247-red-border)!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  gap:7px!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218.final{
+  background:var(--pc-v247-red)!important;
+  border-color:var(--pc-v247-red)!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218>strong{
+  display:flex!important;
+  align-items:center!important;
+  gap:4px!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0!important;
+  color:var(--pc-v247-red)!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218>strong::before{
+  content:"•"!important;
+  width:auto!important;
+  height:auto!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:var(--pc-v247-red)!important;
+  font-size:13px!important;
+  line-height:1!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218.final>strong,
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218.final>strong::before{
+  color:#fff!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218>div{
+  width:100%!important;
+  display:block!important;
+  margin:0!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-input-unit-v223{
+  width:100%!important;
+  display:block!important;
+  position:relative!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 input{
+  width:100%!important;
+  height:40px!important;
+  min-height:40px!important;
+  padding-left:28px!important;
+  padding-right:28px!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:#fff!important;
+  color:#111827!important;
+  font-size:20px!important;
+  font-weight:1000!important;
+  text-align:left!important;
+  box-shadow:none!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-suffix-v223{
+  right:9px!important;
+  color:#111827!important;
+  font-size:13px!important;
+  font-weight:900!important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-prefix-v223{
+  left:9px!important;
+  color:#111827!important;
+  font-size:18px!important;
+  font-weight:1000!important;
+}
+#secPriceCalcV218 .price-calc-add-btn-v219{
+  width:100%!important;
+  justify-self:stretch!important;
+  height:34px!important;
+  border:1px solid #94a3b8!important;
+  border-style:solid!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#111827!important;
+  font-size:12px!important;
+  font-weight:400!important;
+  letter-spacing:0!important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-grid-v218{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:10px!important;
+}
+#secPriceCalcV218 .price-calc-field-v218.price-calc-half-v247{
+  grid-column:auto!important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-field-v218.full:not(.price-calc-half-v247){
+  grid-column:1/-1!important;
+}
+#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-grid-v218{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-field-v218.full{
+  grid-column:1/-1!important;
+}
+#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-half-repair-v247{
+  grid-column:span 3!important;
+}
+#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-third-repair-v247{
+  grid-column:span 2!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="tire"]{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important;
+  gap:var(--price-calc-v226-gap)!important;
+  align-items:center!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="tire"].price-calc-added-row-v220{
+  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="tire"]>input,
+#secPriceCalcV218 [data-repeat-row-v219="tire"]>.price-calc-input-unit-v223,
+#secPriceCalcV218 [data-repeat-row-v219="tire"]>.price-calc-input-unit-v223>input{
+  width:100%!important;
+  min-width:0!important;
+  height:var(--price-calc-v226-height)!important;
+  min-height:var(--price-calc-v226-height)!important;
+  border-radius:10px!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 .order-soft-section-title-v1699{
+  background:var(--pc-v247-label)!important;
+  border:1px solid var(--pc-v247-border)!important;
+  color:#fff!important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .price-calc-summary-sticky-v247{gap:8px!important;padding:8px!important;top:4px!important;}
+  #secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218{min-height:76px!important;padding:9px 10px!important;}
+  #secPriceCalcV218 .price-calc-summary-sticky-v247 input{height:36px!important;min-height:36px!important;font-size:18px!important;}
+  #secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-grid-v218,
+  #secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-grid-v218{grid-template-columns:1fr 1fr!important;}
+  #secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-third-repair-v247{grid-column:span 2!important;}
+}
+
+/* STYLE_BLOCK_16  */
+/* v248: 매입금액 산정 상단 고정 보정
+   - 기존 sticky 헤더 높이를 CSS 변수로 계산하여 매입금액 산정 제목과 차감/최종 요약을 헤더 아래에 고정한다.
+   - v247의 모바일 top:4px 보정을 최종 우선순위에서 덮어쓴다. */
+:root{
+  --ab-price-sticky-header-h:126px;
+  --ab-price-title-h:42px;
+}
+#secPriceCalcV218 .order-page-title-card-v1699{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + 8px) !important;
+  z-index:2147483400 !important;
+  margin:10px 0 8px !important;
+  box-shadow:0 8px 18px rgba(15,23,42,.18) !important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 16px) !important;
+  z-index:2147483300 !important;
+  margin-top:0 !important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .order-page-title-card-v1699{
+    top:calc(var(--ab-price-sticky-header-h,126px) + 7px) !important;
+  }
+  #secPriceCalcV218 .price-calc-summary-sticky-v247{
+    top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
+  }
+}
 </style>
+<!--
+  v89 정리6차
+  - 현재 HTML/JS에서 참조되지 않는 과거 PDF/캡처 CSS v17.42~v17.56 계열만 제거했다.
+  - 날짜 기능(v17.29/v17.30/v17.36), 실제 PDF 함수, win.document.write 구조는 수정하지 않았다.
+-->
+<!-- v98 CSS 통합 1차
+     - 실제 style 블록 28개를 1개로 통합
+     - 기존 CSS 선언 순서와 cascade 순서 유지
+     - 빈 style 블록 제거
+     - JavaScript / DOM / 저장키 / 날짜 / PDF 실행 로직 미수정
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </head>
 <body class="ab-entry-active-v194 ab-password-active-v195">
@@ -19099,149 +19479,7 @@ function isVisibleCaptureTarget(el){
   }
 })();
 </script>
-<style>
-/* v208: 모바일·웹 공통 저장 아이콘 플로팅 버튼 */
-.ab-dbbar-v197{
-  position:fixed !important;
-  right:max(12px, env(safe-area-inset-right, 0px)) !important;
-  bottom:calc(22px + env(safe-area-inset-bottom, 0px)) !important;
-  z-index:2147483000 !important;
-  width:auto !important;
-  max-width:calc(100vw - 24px) !important;
-  margin:0 !important;
-  padding:0 !important;
-  background:transparent !important;
-  border:0 !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:flex-end !important;
-  pointer-events:none !important;
-  visibility:visible !important;
-  opacity:1 !important;
-}
-.ab-dbbar-row-v197{
-  display:flex !important;
-  justify-content:flex-end !important;
-  width:auto !important;
-}
-.ab-dbbar-v197 button{
-  pointer-events:auto !important;
-  width:56px !important;
-  min-width:56px !important;
-  height:44px !important;
-  min-height:44px !important;
-  padding:0 !important;
-  border:0 !important;
-  border-radius:14px !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  box-shadow:0 8px 24px rgba(15,23,42,.30) !important;
-  -webkit-tap-highlight-color:transparent !important;
-  touch-action:manipulation !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  -webkit-appearance:none !important;
-  appearance:none !important;
-}
-.ab-db-save-v197{background:#fff !important;color:#111827 !important;border:1px solid rgba(15,23,42,.14) !important;box-shadow:0 8px 24px rgba(15,23,42,.18) !important}
-.ab-db-save-v197:disabled{opacity:.55 !important}
-/* v212: 사용자가 업로드한 PNG 저장 아이콘을 모든 플랫폼에서 동일하게 표시한다. */
-.ab-db-save-v197 img{width:22px !important;height:22px !important;display:block !important;pointer-events:none !important;object-fit:contain !important}
-.ab-db-save-v197 svg{display:none !important}
-.ab-db-status-v197{
-  display:none;
-  width:min(280px, calc(100vw - 28px));
-  margin:0 0 8px;
-  padding:10px 12px;
-  border:1px solid #d8dee8;
-  border-radius:12px;
-  background:rgba(255,255,255,.98);
-  color:#374151;
-  font-size:12px;
-  font-weight:900;
-  line-height:1.45;
-  text-align:left;
-  word-break:keep-all;
-  box-shadow:0 6px 20px rgba(15,23,42,.18);
-  pointer-events:none;
-}
-.ab-db-status-v197.show{display:block !important}
-.ab-db-status-v197.error{border-color:#fecaca;background:#fff7f7;color:#b91c1c}
-.ab-db-meta-v197{display:none!important}
-@media (max-width:430px){
-  .ab-dbbar-v197{
-    right:max(10px, env(safe-area-inset-right, 0px)) !important;
-    bottom:calc(18px + env(safe-area-inset-bottom, 0px)) !important;
-  }
-  .ab-dbbar-v197 button{
-    width:54px !important;
-    min-width:54px !important;
-    height:42px !important;
-    min-height:42px !important;
-  }
-  .ab-db-save-v197 img{width:21px !important;height:21px !important}
-}
-/* v209: Android Chrome에서 이전 상단형 저장바 스타일이 복원되어도 플로팅 위치를 강제한다. */
-@media screen and (max-width:900px){
-  body > #abDbBarV197[data-floating-save-v209="1"]{
-    position:fixed !important;
-    top:auto !important;
-    left:auto !important;
-    right:12px !important;
-    bottom:calc(22px + env(safe-area-inset-bottom, 0px)) !important;
-    width:auto !important;
-    height:auto !important;
-    margin:0 !important;
-    padding:0 !important;
-    display:flex !important;
-    visibility:visible !important;
-    opacity:1 !important;
-    transform:none !important;
-    z-index:2147483000 !important;
-  }
-}
-@media print{
-  .ab-dbbar-v197{display:none!important}
-}
 
-/* v217 - 매입오더 인증 탁송출발/인수일 입력 구조 변경
-   - 인증 탁송출발은 MM-DD + HH 입력박스로 구성한다.
-   - 인수일은 기존 월/일 select 대신 MM-DD 입력박스로 구성한다.
-   영향 범위: #secOrder 신규 두 입력영역만 적용한다. */
-#secOrder .order-certified-departure-v217{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) 72px!important;
-  gap:8px!important;
-  align-items:center!important;
-}
-#secOrder .order-certified-departure-v217 input,
-#secOrder .order-takeover-mmdd-v217{
-  width:100%!important;
-  min-width:0!important;
-  height:42px!important;
-  box-sizing:border-box!important;
-}
-
-/* v220: 매입금액 산정 반복 항목을 점검 탭 추가장착(튜닝)과 같은 추가/삭제 UI로 통일한다. */
-#secPriceCalcV218 .price-calc-repeat-group-v219{display:flex!important;flex-direction:column!important;gap:8px!important}
-#secPriceCalcV218 .price-calc-repeat-row-v219{display:grid!important;grid-template-columns:minmax(0,1fr) 92px 26px!important;gap:6px!important;align-items:center!important}
-#secPriceCalcV218 .price-calc-repeat-row-v219.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 92px 26px 36px!important}
-#secPriceCalcV218 .price-calc-repeat-row-v219.amount-only{grid-template-columns:minmax(0,1fr) 26px!important}
-#secPriceCalcV218 .price-calc-repeat-row-v219.amount-only.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 26px 36px!important}
-#secPriceCalcV218 .price-calc-add-btn-v219{width:100%!important;height:36px!important;margin-top:0!important;padding:0 12px!important;border:1px dashed #94a3b8!important;border-radius:10px!important;background:#fff!important;color:#111827!important;font-size:13px!important;font-weight:1000!important}
-#secPriceCalcV218 .price-calc-repeat-minus-v220{width:36px!important;min-width:36px!important;max-width:36px!important;height:36px!important;min-height:36px!important;max-height:36px!important;padding:0!important;border:1px solid #cfd6e1!important;border-radius:10px!important;background:#fff!important;color:#111827!important;font-size:18px!important;font-weight:900!important;line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}
-#secPriceCalcV218 .price-calc-repeat-minus-v220:active{background:#f3f4f6!important}
-#secPriceCalcV218 .price-calc-summary-row-v218{background:#ef4444!important;color:#fff!important;border:0!important;border-radius:12px!important;padding:12px!important;margin-bottom:8px!important}
-#secPriceCalcV218 .price-calc-summary-row-v218 strong,#secPriceCalcV218 .price-calc-summary-row-v218 span{color:#fff!important}
-#secPriceCalcV218 .price-calc-summary-row-v218 input{background:#fff!important;color:#111827!important;border-color:#fff!important}
-@media(max-width:430px){
- #secPriceCalcV218 .price-calc-repeat-row-v219{grid-template-columns:minmax(0,1fr) 78px 24px!important}
- #secPriceCalcV218 .price-calc-repeat-row-v219.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 78px 24px 36px!important}
- #secPriceCalcV218 .price-calc-repeat-row-v219.amount-only{grid-template-columns:minmax(0,1fr) 24px!important}
- #secPriceCalcV218 .price-calc-repeat-row-v219.amount-only.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 24px 36px!important}
-}
-</style>
 <script>
 (function(){
   'use strict';
@@ -19912,268 +20150,14 @@ function isVisibleCaptureTarget(el){
   });root.addEventListener('input',function(ev){var target=ev.target;if(target&&target.getAttribute('inputmode')){if(target.getAttribute('inputmode')==='numeric')target.value=String(target.value||'').replace(/[^0-9]/g,'');else if(target.getAttribute('inputmode')==='decimal')target.value=String(target.value||'').replace(/[^0-9.,-]/g,'');}if(target&&target.id==='priceCalcFinalAmountV218'){if(ev&&ev.isTrusted)target.setAttribute('data-manual-v218','1');return;}if(target&&isFinalAmountDriverV249(target))clearFinalManualV249();if(target&&target.getAttribute('data-manual-total-v227')){target.setAttribute('data-manual-v227','1');calculateV219();return;}if(target&&target.hasAttribute('data-multiply-count')){var multiplyName=target.getAttribute('data-multiply-count');var multiplyTotal=root.querySelector('[data-multiply-total="'+multiplyName+'"]');if(multiplyTotal)multiplyTotal.removeAttribute('data-manual-v227');}if(target&&target.hasAttribute('data-multiply-each')){var multiplyEachName=target.getAttribute('data-multiply-each');var multiplyEachTotal=root.querySelector('[data-multiply-total="'+multiplyEachName+'"]');if(multiplyEachTotal)multiplyEachTotal.removeAttribute('data-manual-v227');}if(target&&(target.getAttribute('data-key')==='price_calc_accident_count'||target.getAttribute('data-key')==='price_calc_accident_each_percent'||target.getAttribute('data-key')==='price_calc_base_price')){var accidentTotal=field('price_calc_accident_amount');if(accidentTotal)accidentTotal.removeAttribute('data-manual-v227');}calculateV219();});var tab=document.getElementById('tabPriceCalc');if(tab)tab.addEventListener('change',function(){if(tab.checked){syncBasicV219();revealStoredRowsV219();calculateV219();window.scrollTo(0,0);}});var submit=document.getElementById('priceCalcSubmitBtnV218');if(submit)submit.addEventListener('click',function(){var text=buildTextV219();var out=document.getElementById('priceCalcCopyOutputV218');out.value=text;document.getElementById('priceCalcOutputCardV218').classList.add('active');copyText(text,submit);});var copy=document.getElementById('priceCalcCopyBtnV218');if(copy)copy.addEventListener('click',function(){copyText(document.getElementById('priceCalcCopyOutputV218').value,copy);});syncBasicV219();revealStoredRowsV219();calculateV219();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindV219,false);else bindV219();
 })();
-</script><style>
-/* v226: 매입금액 산정 반복 입력행 최종 규격 및 차감 음수 표기 보강 */
-#secPriceCalcV218{--price-calc-v226-height:42px;--price-calc-v226-amount-width:92px;--price-calc-v226-remove-width:36px;--price-calc-v226-gap:7px}
-#secPriceCalcV218 #priceCalcBasePriceV218,#secPriceCalcV218 #priceCalcVehicleNoV218,#secPriceCalcV218 #priceCalcCarNameV218{width:100%!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;background:#fff!important;color:#111827!important;cursor:text!important}
-#secPriceCalcV218 [data-repeat-row-v219="leak"],#secPriceCalcV218 [data-repeat-row-v219="oil"],#secPriceCalcV218 [data-repeat-row-v219="scanner"],#secPriceCalcV218 [data-repeat-row-v219="repair"],#secPriceCalcV218 [data-repeat-row-v219="interior"],#secPriceCalcV218 [data-repeat-row-v219="missing"],#secPriceCalcV218 [data-repeat-row-v219="other"]{width:100%!important;gap:var(--price-calc-v226-gap)!important;align-items:center!important;box-sizing:border-box!important}
-#secPriceCalcV218 [data-repeat-row-v219="leak"],#secPriceCalcV218 [data-repeat-row-v219="scanner"],#secPriceCalcV218 [data-repeat-row-v219="repair"],#secPriceCalcV218 [data-repeat-row-v219="interior"],#secPriceCalcV218 [data-repeat-row-v219="missing"],#secPriceCalcV218 [data-repeat-row-v219="other"]{display:grid!important;grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important}
-#secPriceCalcV218 [data-repeat-row-v219="leak"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="scanner"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="repair"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="interior"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="missing"].price-calc-added-row-v220,#secPriceCalcV218 [data-repeat-row-v219="other"].price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important}
-#secPriceCalcV218 [data-repeat-row-v219="oil"]{display:grid!important;grid-template-columns:minmax(0,1fr)!important}
-#secPriceCalcV218 [data-repeat-row-v219="oil"].price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) var(--price-calc-v226-remove-width)!important}
-#secPriceCalcV218 [data-repeat-row-v219]>input,#secPriceCalcV218 [data-repeat-row-v219]>.price-calc-input-unit-v223,#secPriceCalcV218 [data-repeat-row-v219]>.price-calc-input-unit-v223>input{width:100%!important;min-width:0!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;border-radius:10px!important;box-sizing:border-box!important}
-#secPriceCalcV218 [data-repeat-row-v219]>.price-calc-repeat-minus-v220{width:var(--price-calc-v226-remove-width)!important;min-width:var(--price-calc-v226-remove-width)!important;max-width:var(--price-calc-v226-remove-width)!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;max-height:var(--price-calc-v226-height)!important;margin:0!important;border-radius:10px!important}
-#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) .price-calc-input-unit-prefix-v223{position:relative!important;display:block!important;width:100%!important}
-#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) .price-calc-prefix-v223{display:block!important;visibility:visible!important;opacity:1!important;left:11px!important;top:50%!important;transform:translateY(-50%)!important;color:#111827!important;font-size:16px!important;font-weight:1000!important;z-index:5!important}
-#secPriceCalcV218 .price-calc-summary-row-v218:not(.final) input{padding-left:29px!important}
-@media(max-width:430px){#secPriceCalcV218{--price-calc-v226-amount-width:88px}}
-
-/* v227: 직접입력 가능한 자동 총액과 오일교환 입력 폭 최종 보정 */
-#secPriceCalcV218 [data-manual-total-v227]{background:#fff!important;color:#111827!important;cursor:text!important;-webkit-text-fill-color:#111827!important;opacity:1!important}
-#secPriceCalcV218 [data-repeat-row-v219="oil"],#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223,#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223>input{display:block!important;width:100%!important;min-width:0!important;max-width:none!important;flex:1 1 auto!important;box-sizing:border-box!important}
-#secPriceCalcV218 [data-repeat-row-v219="oil"].price-calc-added-row-v220>.price-calc-input-unit-v223{width:100%!important}
-</style>
-
-<style>
-/* v232: 파손 반복 입력행 누락 보정
-   - v226 반복행 통일 CSS에서 damage만 빠져 Android에서 부위/금액 폭이 다른 항목과 불일치하던 문제를 수정한다.
-   - 계산식, 저장 key, 추가/삭제 로직은 변경하지 않는다. */
-#secPriceCalcV218 [data-repeat-row-v219="damage"]{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important;
-  gap:var(--price-calc-v226-gap)!important;
-  align-items:center!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="damage"].price-calc-added-row-v220{
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>input,
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223,
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223>input{
-  width:100%!important;
-  min-width:0!important;
-  height:var(--price-calc-v226-height)!important;
-  min-height:var(--price-calc-v226-height)!important;
-  border-radius:10px!important;
-  box-sizing:border-box!important;
-}
-</style>
-
-<style>
-/* v247: v232 기준 매입금액 산정 부분 재배치 보정
-   - 차감 합계/최종금액을 매입금액 산정 헤더 바로 아래에 2열 고정형으로 배치한다.
-   - 항목추가 버튼은 실선/일반 굵기로 변경한다.
-   - 차량번호+차명, 계기판이상+등급상이, 유리+실내크리닝, 보수킷+스페어키+소화기 2/3열을 구성한다.
-   - 타이어도 반복 추가형으로 구성한다. */
-#secPriceCalcV218{--pc-v247-red:#ef4444;--pc-v247-red-border:#ff2f2f;--pc-v247-label:#334155;--pc-v247-border:#475569;}
-#secPriceCalcV218 .price-calc-summary-sticky-v247{
-  position:sticky!important;
-  top:6px!important;
-  z-index:160!important;
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-  gap:10px!important;
-  margin:10px 0 12px!important;
-  padding:10px!important;
-  border:1px solid #d8dee8!important;
-  border-radius:16px!important;
-  background:#fff!important;
-  box-shadow:0 4px 14px rgba(15,23,42,.10)!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-comment-v218{
-  grid-column:1/-1!important;
-  display:flex!important;
-  flex-direction:column!important;
-  gap:6px!important;
-  margin-top:2px!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218{
-  min-height:84px!important;
-  margin:0!important;
-  padding:10px 12px!important;
-  border:2px solid var(--pc-v247-red-border)!important;
-  border-radius:12px!important;
-  background:#fff!important;
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:stretch!important;
-  justify-content:flex-start!important;
-  gap:7px!important;
-  box-sizing:border-box!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218.final{
-  background:var(--pc-v247-red)!important;
-  border-color:var(--pc-v247-red)!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218>strong{
-  display:flex!important;
-  align-items:center!important;
-  gap:4px!important;
-  width:max-content!important;
-  max-width:100%!important;
-  margin:0!important;
-  color:var(--pc-v247-red)!important;
-  font-size:12px!important;
-  font-weight:900!important;
-  line-height:1!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218>strong::before{
-  content:"•"!important;
-  width:auto!important;
-  height:auto!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:var(--pc-v247-red)!important;
-  font-size:13px!important;
-  line-height:1!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218.final>strong,
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218.final>strong::before{
-  color:#fff!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218>div{
-  width:100%!important;
-  display:block!important;
-  margin:0!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-input-unit-v223{
-  width:100%!important;
-  display:block!important;
-  position:relative!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 input{
-  width:100%!important;
-  height:40px!important;
-  min-height:40px!important;
-  padding-left:28px!important;
-  padding-right:28px!important;
-  border:0!important;
-  border-radius:9px!important;
-  background:#fff!important;
-  color:#111827!important;
-  font-size:20px!important;
-  font-weight:1000!important;
-  text-align:left!important;
-  box-shadow:none!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-suffix-v223{
-  right:9px!important;
-  color:#111827!important;
-  font-size:13px!important;
-  font-weight:900!important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-prefix-v223{
-  left:9px!important;
-  color:#111827!important;
-  font-size:18px!important;
-  font-weight:1000!important;
-}
-#secPriceCalcV218 .price-calc-add-btn-v219{
-  width:100%!important;
-  justify-self:stretch!important;
-  height:34px!important;
-  border:1px solid #94a3b8!important;
-  border-style:solid!important;
-  border-radius:10px!important;
-  background:#fff!important;
-  color:#111827!important;
-  font-size:12px!important;
-  font-weight:400!important;
-  letter-spacing:0!important;
-}
-#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-grid-v218{
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-  gap:10px!important;
-}
-#secPriceCalcV218 .price-calc-field-v218.price-calc-half-v247{
-  grid-column:auto!important;
-}
-#secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-field-v218.full:not(.price-calc-half-v247){
-  grid-column:1/-1!important;
-}
-#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-grid-v218{
-  display:grid!important;
-  grid-template-columns:repeat(6,minmax(0,1fr))!important;
-  gap:10px!important;
-}
-#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-field-v218.full{
-  grid-column:1/-1!important;
-}
-#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-half-repair-v247{
-  grid-column:span 3!important;
-}
-#secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-third-repair-v247{
-  grid-column:span 2!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="tire"]{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important;
-  gap:var(--price-calc-v226-gap)!important;
-  align-items:center!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="tire"].price-calc-added-row-v220{
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="tire"]>input,
-#secPriceCalcV218 [data-repeat-row-v219="tire"]>.price-calc-input-unit-v223,
-#secPriceCalcV218 [data-repeat-row-v219="tire"]>.price-calc-input-unit-v223>input{
-  width:100%!important;
-  min-width:0!important;
-  height:var(--price-calc-v226-height)!important;
-  min-height:var(--price-calc-v226-height)!important;
-  border-radius:10px!important;
-  box-sizing:border-box!important;
-}
-#secPriceCalcV218 .order-soft-section-title-v1699{
-  background:var(--pc-v247-label)!important;
-  border:1px solid var(--pc-v247-border)!important;
-  color:#fff!important;
-}
-@media(max-width:430px){
-  #secPriceCalcV218 .price-calc-summary-sticky-v247{gap:8px!important;padding:8px!important;top:4px!important;}
-  #secPriceCalcV218 .price-calc-summary-sticky-v247 .price-calc-summary-row-v218{min-height:76px!important;padding:9px 10px!important;}
-  #secPriceCalcV218 .price-calc-summary-sticky-v247 input{height:36px!important;min-height:36px!important;font-size:18px!important;}
-  #secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-grid-v218,
-  #secPriceCalcV218 .price-calc-basic-card-v247 .price-calc-grid-v218{grid-template-columns:1fr 1fr!important;}
-  #secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-third-repair-v247{grid-column:span 2!important;}
-}
-</style>
+</script>
 
 
-<style>
-/* v248: 매입금액 산정 상단 고정 보정
-   - 기존 sticky 헤더 높이를 CSS 변수로 계산하여 매입금액 산정 제목과 차감/최종 요약을 헤더 아래에 고정한다.
-   - v247의 모바일 top:4px 보정을 최종 우선순위에서 덮어쓴다. */
-:root{
-  --ab-price-sticky-header-h:126px;
-  --ab-price-title-h:42px;
-}
-#secPriceCalcV218 .order-page-title-card-v1699{
-  position:sticky !important;
-  top:calc(var(--ab-price-sticky-header-h,126px) + 8px) !important;
-  z-index:2147483400 !important;
-  margin:10px 0 8px !important;
-  box-shadow:0 8px 18px rgba(15,23,42,.18) !important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247{
-  position:sticky !important;
-  top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 16px) !important;
-  z-index:2147483300 !important;
-  margin-top:0 !important;
-}
-@media(max-width:430px){
-  #secPriceCalcV218 .order-page-title-card-v1699{
-    top:calc(var(--ab-price-sticky-header-h,126px) + 7px) !important;
-  }
-  #secPriceCalcV218 .price-calc-summary-sticky-v247{
-    top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
-  }
-}
-</style>
+
+
+
+
+
 <script>
 /* v248: sticky 기준 높이 계산
    - 상단 .header 높이와 매입금액 산정 제목 높이를 CSS 변수로 저장한다.

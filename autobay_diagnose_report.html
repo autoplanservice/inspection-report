@@ -13,7 +13,10 @@ BASE CLEANUP NOTE
 - 유지: L 상태, R 노랑, 기존 localStorage key, radio + label 구조
 - 정리: 중복 doctype, D15 전용 transform 잔재, 비활성 placeholder script, R 검정 잔재
 -->
-<style id="abUnifiedStyleCleanV258">
+<style>
+
+
+/* CLEAN CODE STAGE 2: consolidated CSS block 1 */
 /*
   CLEAN CODE STAGE 1
   - 기존 외부 CSS 블록을 1개로 통합
@@ -22,37 +25,65 @@ BASE CLEANUP NOTE
 */
 
 /* CLEAN_CSS_SOURCE_01 */
-/* STYLE_BLOCK_01  */
+/*
+  CSS SECTION INDEX
+  01. 공통 레이아웃/헤더/탭/입력 카드
+  02. 사고·외관·도막 터치 도면 및 도막 수치 입력 UI
+  03. 모바일/브라우저 보정 및 입력 요소 크기 통일
+  04. 메뉴·제출·PDF 미리보기/출력 관련 스타일
+  05. 매입오더 작성 화면 스타일
+  06. 매입금액 산정 화면 스타일
+  07. 저장/불러오기 플로팅 버튼 스타일
+  08. 최종 sticky/요약/반복항목 보정 스타일
+
+  정리 원칙:
+  - 기능 selector, id, data-key, localStorage key는 변경하지 않는다.
+  - 기존 우선순위가 화면 동작에 영향을 주므로 CSS 선언 순서는 유지한다.
+  - 아래 주석은 기능 구역 식별용이며 동작에는 영향을 주지 않는다.
+*/
+/* STYLE_BLOCK_01: 기본 화면 공통 CSS
+   - 앱 레이아웃, 상단 헤더, 탭, 입력 카드, 사고/도막 도면, 모바일 보정, 제출/PDF 기본 스타일을 포함한다. */
+/* 공통 초기화: 전체 box-sizing과 body/app 기본 폭을 설정한다. */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
 body{padding:10px 8px 86px;overflow-x:hidden}
 .app{width:100%;max-width:560px;margin:0 auto}
+/* 상단 헤더: 앱 제목, 안내문, 탭을 감싸는 고정성 헤더 카드 스타일이다. */
 .header{position:relative;z-index:100;background:#111827;color:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .header h1{font-size:18px;line-height:1.25;margin:0 0 6px;font-weight:900;letter-spacing:-.04em}
 .header p{font-size:12px;line-height:1.45;margin:0;color:#d1d5db}
+/* 탭 전환 radio: 실제 radio는 숨기고 label 터치로 섹션을 전환한다. */
 .tab-radio{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+/* 상단 탭 버튼: 기본/사고/점검 등 주요 섹션 이동 버튼이다. */
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;position:relative;z-index:200}
 .tabs label{height:38px;border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer;user-select:none;-webkit-user-select:none}
 #tabInput:checked ~ .header label[for="tabInput"],#tabDiag:checked ~ .header label[for="tabDiag"],#tabCheck:checked ~ .header label[for="tabCheck"]{background:#fff;color:#111827}
+/* 섹션 표시 제어: 선택된 탭에 해당하는 section만 화면에 표시한다. */
 .section{display:none}
 #tabInput:checked ~ #secInput{display:block}
 #tabDiag:checked ~ #secDiag{display:block}
 #tabCheck:checked ~ #secCheck{display:block}
+/* 공통 입력 카드: 각 진단 항목을 담는 흰색 라운드 카드 스타일이다. */
 .report-card-ui{background:#fff;border:1px solid #d8dee8;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 10px rgba(15,23,42,.04)}
 .report-card-ui h2{font-size:15px;margin:0 0 12px;font-weight:900;display:flex;align-items:center;gap:7px;letter-spacing:-.02em}
 .no{display:inline-flex;align-items:center;justify-content:center;height:22px;min-width:22px;border-radius:999px;background:#111827;color:#fff;font-size:11px;font-weight:900;padding:0 8px}
+/* 공통 그리드 유틸: 2열/3열 입력 배치를 위한 기본 grid 클래스다. */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+/* 공통 입력 필드: 라벨과 입력요소를 세로로 배치한다. */
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:11px;font-weight:900;color:#374151;display:block;height:auto;border:0;background:transparent;padding:0;justify-content:flex-start}
+/* 공통 입력요소: text/select/textarea 기본 테두리, 라운드, 포커스 기준이다. */
 input,select,textarea{width:100%;border:1px solid #cfd6e1;border-radius:10px;padding:10px 9px;font-size:14px;background:#fff;color:#111827;outline:none}
 textarea{min-height:78px;resize:vertical;line-height:1.5}
 input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}
+/* 등급 선택 버튼: 1~5단계 색상 레벨 선택 UI를 담당한다. */
 .level-row{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
 .level{height:38px;border:2px solid transparent;border-radius:12px;font-size:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .lv1{background:#ef4444}.lv2{background:#f97316}.lv3{background:#eab308}.lv4{background:#22c55e}.lv5{background:#3b82f6}
 .level.active{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.15)}
 .hint{font-size:12px;line-height:1.55;color:#6b7280;margin:8px 0 0}
+/* 결과 패널: 사고/외관 선택 결과 태그와 내부 표시 영역을 담당한다. */
 .split-result{display:none;border-radius:14px;border:1px solid #d8dee8;padding:12px;margin-top:10px;background:#fafafa}
 .split-result.show{display:block}
 .split-result h3{font-size:14px;margin:0 0 8px;font-weight:900}
@@ -69,14 +100,18 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
   border:0!important;
   overflow:hidden!important;
 }
+/* 태그 리스트: 고객/내부 진단 결과 태그 표시 UI다. */
 .taglist{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
 .tag{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;padding:0 10px;font-size:12px;font-weight:900;background:#e5e7eb;color:#111827}
 .tag.customer{background:#fee2e2;color:#991b1b}
 .tag.internal{background:#ffedd5;color:#9a3412}
+/* 간단 도막 입력 그리드: 부위명과 수치 입력을 나란히 배치한다. */
 .paint-grid{display:grid;grid-template-columns:1fr 88px;gap:8px;align-items:center}
 .paint-grid div{font-size:13px;font-weight:900}
+/* 휠 상태 영역: 4개 휠 입력 박스를 균등 배치한다. */
 .wheel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .wheel-box{height:72px;border:1px dashed #9ca3af;border-radius:12px;background:#f9fafb;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:900;color:#6b7280}
+/* 점검 라인: 정상/이상 radio와 메모 입력을 한 행에 배치한다. */
 .checkline{display:grid;grid-template-columns:1fr 64px 64px;gap:7px;align-items:center;padding:8px 0;border-bottom:1px solid #eef1f5}
 .checkline:last-child{border-bottom:0}
 .check-title{font-size:13px;font-weight:900}
@@ -107,14 +142,17 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
   display:block;
 }
 
+/* 하단 고정 버튼바: 저장/제출 등 주요 하단 버튼 영역이다. */
 .bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid #d8dee8;padding:8px;z-index:120}
 .bottom-inner{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{height:42px;border-radius:12px;font-size:14px;font-weight:900;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn.secondary{border:1px solid #cfd6e1;background:#fff;color:#111827}
 .btn.primary{border:0;background:#111827;color:#fff}
+/* 사고/외관 터치 도면: 차량 도면 이미지와 X/W/R/L 마커 클릭영역을 담당한다. */
 .touch-diagram-shell{margin:0 -12px}
 .touch-diagram-title{font-size:12px;font-weight:900;color:#4b5563;margin:8px 0 6px;padding:0 4px}
 .touch-diagram-subtitle{font-size:12px;font-weight:900;color:#111827;margin:10px 2px 6px;padding:6px 8px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px}
+/* 도면 카드: 차량 이미지, slot, hit 영역의 기준 컨테이너다. */
 .touch-card{background:#fff;border:1px solid #d9dee5;border-radius:10px;padding:0;margin:0 auto 8px;width:calc(100vw - 28px);max-width:540px;overflow:hidden}
 .touch-card .fig{position:relative;line-height:0;margin:0 auto;overflow:visible;width:100%;max-width:540px}
 .touch-card .fig img{display:block;width:100%;height:auto;margin:0;pointer-events:none;-webkit-user-drag:none;user-select:none}
@@ -137,8 +175,10 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .touch-card .st2:checked + .st3 + .slot .h2{display:flex !important}
 .touch-card .st3:checked + .slot .h3{display:flex !important}
 
+/* 도막 진단 도면: 도막 수치 입력용 차량 도면 블록이다. */
 .paint-diagram-block{margin:12px 0 14px}
 
+/* 도막 도면 보조점/선/입력박스: 도막 좌표와 수치 표시 요소다. */
 .paint-dot{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:999px;background:#9ca3af;border:1px solid #6b7280;z-index:5}
 .paint-line{position:absolute;height:1px;background:#9ca3af;transform:translateY(-50%);z-index:4}
 .paint-line.left{transform:translateY(-50%)}
@@ -1159,6 +1199,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   pointer-events:none !important;
 }
 
+/* 도막 native 입력 UI: 모바일 터치 안정성을 위해 radio/slot/panel 구조를 사용한다. */
 .paint-native-radio{
   position:absolute !important;
   left:-9999px !important;
@@ -1168,6 +1209,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:0 !important;
 }
 
+/* 도막 native slot: 도막 부위별 터치 영역과 배지 위치 기준이다. */
 .paint-native-slot{
   position:absolute !important;
   width:44px !important;
@@ -1244,6 +1286,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .paint-native-badge.warn{background:#f59e0b !important;}
 .paint-native-badge.danger{background:#ef4444 !important;}
 
+/* 도막 수치 입력 패널: 선택 부위, 수치, W 버튼, 닫기 버튼을 표시한다. */
 .paint-native-panel{
   display:none !important;
   width:100% !important;
@@ -6868,7 +6911,8 @@ textarea::-ms-input-placeholder{
 #tabExterior:checked ~ #secInput,
 #tabExterior:checked ~ #secDiag,
 #tabExterior:checked ~ #secCheck,
-#tabExterior:checked ~ #secOrder{
+#tabExterior:checked ~ /* 매입오더 작성 화면: 오더 입력 폼 전체 섹션 스타일이다. */
+#secOrder{
   display:none!important;
 }
 
@@ -7292,7 +7336,8 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 }
 
 /* 매입오더 작성 별도 섹션 */
-#secOrder .order-page-title-card-v1699{
+#secOrder /* 오더/산정 페이지 제목 카드: 별도 화면 상단 제목 바 스타일이다. */
+.order-page-title-card-v1699{
   width:100%!important;
   min-height:42px!important;
   margin:10px 0!important;
@@ -9837,7 +9882,8 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
    - 화면 미리보기 기준은 기존 카드/상단 영역과 같은 560px 폭으로 맞춤
    - 실제 print 시에는 기존 @media print 규칙에 따라 100% 출력 유지
 */
-body.report-print-preview-v1773 #reportPrintRootV1773{
+body.report-print-preview-v1773 /* PDF 미리보기 루트: 고객/회사 보고용 복제 DOM 출력 컨테이너다. */
+#reportPrintRootV1773{
   width:calc(100vw - 24px)!important;
   max-width:560px!important;
   margin:0 auto!important;
@@ -9862,6 +9908,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-body
   margin-right:auto!important;
 }
 
+/* 인쇄/PDF 공통: 브라우저 출력 시 레이아웃과 색상 보존을 담당한다. */
 @media print{
   body.report-print-preview-v1773 #reportPrintRootV1773,
   body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-head-v1773,
@@ -10873,7 +10920,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   line-height:1 !important;
 }
 
-/* STYLE_BLOCK_02 id="reportPrintDiagramUnifiedV161" */
+/* STYLE_BLOCK_02: PDF 출력 도면 레이아웃 통합
+   - 사고/도막/외관 도면을 PDF 페이지에서 균일하게 배치한다. */
 @media print{
   /*
     v161 - 도면 출력 CSS 단일화
@@ -11116,7 +11164,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   }
 }
 
-/* STYLE_BLOCK_03 id="reportPrintLegacyTitleGuardV162" */
+/* STYLE_BLOCK_03: PDF 출력 legacy 제목 방어 규칙
+   - 동적 복제 과정에서 남는 도면 제목/캡션 영역을 출력에서 제거한다. */
 @media print{
   /*
     v162 - 방어 규칙
@@ -11148,7 +11197,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   }
 }
 
-/* STYLE_BLOCK_04 id="reportPrintIOSV190" */
+/* STYLE_BLOCK_04: iPhone/Safari PDF 출력 전용 보정
+   - iOS Safari의 print 분할/축소 기준을 별도 처리한다. */
 @media print{
   @page{
     size:A4 portrait;
@@ -11585,10 +11635,12 @@ body.ab-password-active-v195{overflow:hidden!important}
   #passwordVerifyBtnV195{width:100%}
 }
 
-/* STYLE_BLOCK_05  */
+/* STYLE_BLOCK_05: 매입금액 산정 메뉴/페이지 진입
+   - 상단 메뉴 선택 시 매입금액 산정 섹션 표시/숨김을 담당한다. */
 /* v218 - 매입금액 산정 메뉴/페이지 */
 .menu-item + .menu-item{margin-top:6px!important}
-#tabPriceCalc:checked ~ #secPriceCalcV218{display:block!important}
+#tabPriceCalc:checked ~ /* 매입금액 산정 화면: 가격, 감가항목, 차감합계, 최종금액 입력 UI 전체 기준이다. */
+#secPriceCalcV218{display:block!important}
 #tabPriceCalc:checked ~ #secInput,#tabPriceCalc:checked ~ #secDiag,#tabPriceCalc:checked ~ #secExterior,#tabPriceCalc:checked ~ #secCheck,#tabPriceCalc:checked ~ #secSubmit,#tabPriceCalc:checked ~ #secOrder{display:none!important}
 #tabInput:checked ~ #secPriceCalcV218,#tabDiag:checked ~ #secPriceCalcV218,#tabExterior:checked ~ #secPriceCalcV218,#tabCheck:checked ~ #secPriceCalcV218,#tabSubmit:checked ~ #secPriceCalcV218,#tabOrder:checked ~ #secPriceCalcV218{display:none!important}
 #secPriceCalcV218{padding-bottom:96px!important}
@@ -11655,7 +11707,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   .price-calc-repeat-row-v219{grid-template-columns:minmax(0,1fr) 78px 24px!important}
 }
 
-/* STYLE_BLOCK_06  */
+/* STYLE_BLOCK_06: 매입오더/매입금액 산정 기본 입력 레이아웃
+   - 라벨 위, 입력박스 아래 구조와 기본 탭 계열 입력 정렬을 담당한다. */
 /* v222: 매입오더 작성 및 매입금액 산정 입력 레이아웃을 기본 탭 형식으로 통일한다.
    - 작은 검은 점 + 항목명
    - 입력요소는 항목명 아래 배치
@@ -11787,7 +11840,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   grid-template-columns:minmax(0,1fr) 26px!important;
 }
 
-/* STYLE_BLOCK_07  */
+/* STYLE_BLOCK_07: 매입금액 산정 금액 단위 표시
+   - 만 단위, 차감 합계 음수 기호 등 입력박스 내부 단위 표시를 담당한다. */
 /* v223: 매입금액 산정의 금액 단위를 입력박스 내부 우측에 표시한다.
    차감 합계의 음수 기호도 입력박스 내부 좌측에 검정색으로 표시한다. */
 #secPriceCalcV218 .price-calc-input-unit-v223{
@@ -11838,7 +11892,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   align-items:center!important;
 }
 
-/* STYLE_BLOCK_08  */
+/* STYLE_BLOCK_08: 매입금액 산정 입력박스 규격 통일
+   - 단일 입력, 금액 입력, 반복행, 복합 계산행의 높이/폭/간격 기준을 맞춘다. */
 /* v225: 매입금액 산정 입력박스 규격 및 복합행 정렬 통일
    - 기능/키/계산 로직은 변경하지 않는다.
    - 단일 입력은 전체 폭, 내용+금액은 동일 비율, 복합 계산행은 동일 높이와 균등 폭을 사용한다. */
@@ -11943,7 +11998,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_09  */
+/* STYLE_BLOCK_09: 사고/외판/판금/휠기스 소형 계산행
+   - 개수, 개당, 총%, 합계 입력칸의 소형 그리드와 단위 표시를 담당한다. */
 /* v229: 매입금액 산정 사고/외판/판금/휠기스 소형 입력박스 단위 내장 보정
    - 계산 key와 저장 key는 유지한다.
    - 개/%, 개당/만, 총/% 표시만 입력박스 내부로 이동한다. */
@@ -12020,7 +12076,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_10  */
+/* STYLE_BLOCK_10: 개당 입력칸 placeholder 보정
+   - 외판/판금/휠기스의 개당 문구가 실제 입력값을 가리지 않게 처리한다. */
 /* v230: 외판·판금·휠기스 개당 입력칸 보정
    - 개당 문구가 입력 공간을 차지하지 않도록 사고의 개당 % 칸과 같은 placeholder 방식으로 전환한다.
    - 계산 key, 저장 key, 총합 직접입력 기능은 변경하지 않는다. */
@@ -12052,7 +12109,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_11  */
+/* STYLE_BLOCK_11: Android 소형 계산행 최종 보정
+   - 사고 개수 placeholder, 개당 placeholder, 합계 표시 위치 등 Android 표시를 보정한다. */
 /* v231: 매입금액 산정 소형 계산행 Android 최종 보정
    - 사고 개수 placeholder 제거, 개당 placeholder 폰트 통일, 총액 입력박스 = 표시를 추가한다.
    - 계산식, 저장 key, data-key, localStorage key는 변경하지 않는다. */
@@ -12127,8 +12185,10 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_12  */
+/* STYLE_BLOCK_12: 저장/불러오기 플로팅 버튼
+   - 모바일·웹 공통 하단 플로팅 저장 메뉴 위치와 아이콘 버튼을 담당한다. */
 /* v208: 모바일·웹 공통 저장 아이콘 플로팅 버튼 */
+/* 저장/불러오기 플로팅 바: 구글시트 저장/불러오기 버튼 컨테이너다. */
 .ab-dbbar-v197{
   position:fixed !important;
   right:max(12px, env(safe-area-inset-right, 0px)) !important;
@@ -12270,7 +12330,8 @@ body.ab-password-active-v195{overflow:hidden!important}
  #secPriceCalcV218 .price-calc-repeat-row-v219.amount-only.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 24px 36px!important}
 }
 
-/* STYLE_BLOCK_13  */
+/* STYLE_BLOCK_13: 반복 입력행과 차감 합계 보강
+   - 누유/파손/수리 등 반복행 폭과 차감 합계 음수 표기를 통일한다. */
 /* v226: 매입금액 산정 반복 입력행 최종 규격 및 차감 음수 표기 보강 */
 #secPriceCalcV218{--price-calc-v226-height:42px;--price-calc-v226-amount-width:92px;--price-calc-v226-remove-width:36px;--price-calc-v226-gap:7px}
 #secPriceCalcV218 #priceCalcBasePriceV218,#secPriceCalcV218 #priceCalcVehicleNoV218,#secPriceCalcV218 #priceCalcCarNameV218{width:100%!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;background:#fff!important;color:#111827!important;cursor:text!important}
@@ -12291,7 +12352,8 @@ body.ab-password-active-v195{overflow:hidden!important}
 #secPriceCalcV218 [data-repeat-row-v219="oil"],#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223,#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223>input{display:block!important;width:100%!important;min-width:0!important;max-width:none!important;flex:1 1 auto!important;box-sizing:border-box!important}
 #secPriceCalcV218 [data-repeat-row-v219="oil"].price-calc-added-row-v220>.price-calc-input-unit-v223{width:100%!important}
 
-/* STYLE_BLOCK_14  */
+/* STYLE_BLOCK_14: 파손 반복행 누락 보정
+   - 파손 항목의 부위/금액 행을 다른 반복항목과 동일한 규격으로 맞춘다. */
 /* v232: 파손 반복 입력행 누락 보정
    - v226 반복행 통일 CSS에서 damage만 빠져 Android에서 부위/금액 폭이 다른 항목과 불일치하던 문제를 수정한다.
    - 계산식, 저장 key, 추가/삭제 로직은 변경하지 않는다. */
@@ -12317,7 +12379,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   box-sizing:border-box!important;
 }
 
-/* STYLE_BLOCK_15  */
+/* STYLE_BLOCK_15: 매입금액 산정 최종 레이아웃
+   - 차감/최종 요약, 항목추가 버튼, 2열/3열 묶음, 타이어 반복형 구조를 담당한다. */
 /* v247: v232 기준 매입금액 산정 부분 재배치 보정
    - 차감 합계/최종금액을 매입금액 산정 헤더 바로 아래에 2열 고정형으로 배치한다.
    - 항목추가 버튼은 실선/일반 굵기로 변경한다.
@@ -12498,7 +12561,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   #secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-third-repair-v247{grid-column:span 2!important;}
 }
 
-/* STYLE_BLOCK_16  */
+/* STYLE_BLOCK_16: 매입금액 산정 sticky 고정 보정
+   - 상단 헤더 아래에 매입금액 산정 제목과 차감/최종 요약을 고정한다. */
 /* v248: 매입금액 산정 상단 고정 보정
    - 기존 sticky 헤더 높이를 CSS 변수로 계산하여 매입금액 산정 제목과 차감/최종 요약을 헤더 아래에 고정한다.
    - v247의 모바일 top:4px 보정을 최종 우선순위에서 덮어쓴다. */
@@ -12802,6 +12866,204 @@ body.ab-password-active-v195{overflow:hidden!important}
     gap:5px !important;
   }
 }
+
+
+/* CLEAN CODE STAGE 2: consolidated CSS block 2 */
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}
+
+
+/* CLEAN CODE STAGE 2: consolidated CSS block 3 */
+/* v232: 파손 반복 입력행 누락 보정
+   - v226 반복행 통일 CSS에서 damage만 빠져 Android에서 부위/금액 폭이 다른 항목과 불일치하던 문제를 수정한다.
+   - 계산식, 저장 key, 추가/삭제 로직은 변경하지 않는다. */
+#secPriceCalcV218 [data-repeat-row-v219="damage"]{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important;
+  gap:var(--price-calc-v226-gap)!important;
+  align-items:center!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="damage"].price-calc-added-row-v220{
+  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
+}
+#secPriceCalcV218 [data-repeat-row-v219="damage"]>input,
+#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223,
+#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223>input{
+  width:100%!important;
+  min-width:0!important;
+  height:var(--price-calc-v226-height)!important;
+  min-height:var(--price-calc-v226-height)!important;
+  border-radius:10px!important;
+  box-sizing:border-box!important;
+}
+
+
+/* CLEAN CODE STAGE 2: consolidated CSS block 4 */
+/* v249: 매입금액 산정 기본/고장 및 수리 섹션 라벨을 제출하기 버튼 색상과 동일하게 고정 */
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
+  background:#111827!important;
+  border:1px solid #111827!important;
+  color:#ffffff!important;
+  box-shadow:none!important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699 *,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699 *{
+  color:#ffffff!important;
+}
+
+
+/* CLEAN CODE STAGE 2: consolidated CSS block 5 */
+/* v250: 매입금액 산정 섹션 라벨 최종 색상 보정
+   - v247 공통 라벨 색상(#334155)이 뒤에서 덮어써지는 문제를 최종 우선순위로 재보정한다.
+   - 적용 대상은 매입금액 산정의 기본/고장 및 수리 섹션 라벨만이다. */
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
+  background:#111827 !important;
+  border-color:#111827 !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699 *,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699 *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+
+
+/* 매입금액 산정: 웹/모바일 공통 sticky 보정
+   - 통합 style 후반에서 sticky 기준점과 overflow 조건을 최종 확정한다. */
+#secPriceCalcV218{
+  overflow:visible !important;
+  contain:initial !important;
+}
+#secPriceCalcV218 .order-page-title-card-v1699{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + 8px) !important;
+  z-index:2147483400 !important;
+}
+#secPriceCalcV218 .price-calc-summary-sticky-v247{
+  position:sticky !important;
+  top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 16px) !important;
+  z-index:2147483300 !important;
+  overflow:visible !important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .order-page-title-card-v1699{
+    top:calc(var(--ab-price-sticky-header-h,126px) + 7px) !important;
+  }
+  #secPriceCalcV218 .price-calc-summary-sticky-v247{
+    top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
+  }
+}
+
+
+/* CLEAN CODE STAGE 2: consolidated CSS block 6 */
+/* 매입금액 산정: 기본/고장 및 수리 섹션 라벨 최종 색상 고정 */
+#secPriceCalcV218 article.price-calc-basic-card-v247 > div.order-soft-section-title-v1699,
+#secPriceCalcV218 article.price-calc-repair-card-v247 > div.order-soft-section-title-v1699,
+#secPriceCalcV218 article.price-calc-basic-card-v247 > .order-soft-section-title-v1699,
+#secPriceCalcV218 article.price-calc-repair-card-v247 > .order-soft-section-title-v1699{
+  background:#111827 !important;
+  background-image:none !important;
+  border:1px solid #111827 !important;
+  border-color:#111827 !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  box-shadow:none !important;
+}
+#secPriceCalcV218 article.price-calc-basic-card-v247 > div.order-soft-section-title-v1699 *,
+#secPriceCalcV218 article.price-calc-repair-card-v247 > div.order-soft-section-title-v1699 *{
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+/* 매입금액 산정: 사고/외판/판금/휠기스 = 라벨을 금액박스 밖 버튼형으로 고정 */
+#secPriceCalcV218 .price-calc-eq-label-v253{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:24px !important;
+  min-width:24px !important;
+  max-width:24px !important;
+  height:38px !important;
+  min-height:38px !important;
+  border-radius:9px !important;
+  background:#2563eb !important;
+  border:1px solid #1d4ed8 !important;
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  box-sizing:border-box !important;
+  margin:0 !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+  display:grid !important;
+  grid-template-columns:54px 62px 66px 24px 88px !important;
+  gap:5px !important;
+  align-items:center !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow:hidden !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+  display:grid !important;
+  grid-template-columns:58px 68px 24px 88px !important;
+  gap:5px !important;
+  align-items:center !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow:hidden !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231{
+  width:88px !important;
+  min-width:88px !important;
+  max-width:88px !important;
+  margin-left:0 !important;
+  box-sizing:border-box !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
+  width:100% !important;
+  min-width:0 !important;
+  padding-left:8px !important;
+  padding-right:24px !important;
+  box-sizing:border-box !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-equal-prefix-v231,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > .price-calc-prefix-v223.price-calc-equal-prefix-v231{
+  display:none !important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .price-calc-eq-label-v253{
+    width:22px !important;
+    min-width:22px !important;
+    max-width:22px !important;
+    height:36px !important;
+    min-height:36px !important;
+    border-radius:8px !important;
+    font-size:13px !important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+    grid-template-columns:44px 52px 56px 22px 76px !important;
+    gap:4px !important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+    grid-template-columns:50px 60px 22px 76px !important;
+    gap:4px !important;
+  }
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231{
+    width:76px !important;
+    min-width:76px !important;
+    max-width:76px !important;
+  }
+  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
+    padding-left:7px !important;
+    padding-right:22px !important;
+  }
+}
+
 </style>
 <!--
   v89 정리6차
@@ -13961,12 +14223,12 @@ body.ab-password-active-v195{overflow:hidden!important}
 <div class="price-calc-field-v218 price-calc-half-v247"><label>차명</label><input data-key="price_calc_car_name" id="priceCalcCarNameV218" placeholder="기본탭 차량이름 자동 반영"/></div>
 <div class="price-calc-field-v218 price-calc-half-v247"><label>계기판이상</label><div class="price-calc-money-v218"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_cluster_amount" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 price-calc-half-v247"><label>등급상이</label><div class="price-calc-money-v218"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_grade_amount" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
-<div class="price-calc-field-v218 full"><label>사고</label><div class="price-calc-multi-v218 accident price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_count" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_each_percent" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">%</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-total-percent-unit-v229"><span class="price-calc-prefix-v223">총</span><input data-key="price_calc_accident_total_percent" readonly=""/><span class="price-calc-suffix-v223">%</span></div><span class="price-calc-eq-label-v253">적용</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_accident_amount" placeholder="결과" data-manual-total-v227="accident" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>사고</label><div class="price-calc-multi-v218 accident price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_count" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_each_percent" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">%</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-total-percent-unit-v229"><span class="price-calc-prefix-v223">총</span><input data-key="price_calc_accident_total_percent" readonly=""/><span class="price-calc-suffix-v223">%</span></div><span class="price-calc-eq-label-v253">합계</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_accident_amount" placeholder="결과" data-manual-total-v227="accident" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>누유</label><div class="price-calc-repeat-group-v219"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="leak"><input data-key="price_calc_leak_part_1" placeholder="부위"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_leak_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="leak" type="button">+ 항목추가</button></div></div>
-<div class="price-calc-field-v218 full"><label>외판</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_outer_count" data-multiply-count="outer" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_outer_each" data-multiply-each="outer" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">적용</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_outer_amount" placeholder="결과" data-manual-total-v227="outer" data-multiply-total="outer" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
-<div class="price-calc-field-v218 full"><label>판금</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_panel_count" data-multiply-count="panel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_panel_each" data-multiply-each="panel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">적용</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_panel_amount" placeholder="결과" data-manual-total-v227="panel" data-multiply-total="panel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>외판</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_outer_count" data-multiply-count="outer" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_outer_each" data-multiply-each="outer" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">합계</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_outer_amount" placeholder="결과" data-manual-total-v227="outer" data-multiply-total="outer" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>판금</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_panel_count" data-multiply-count="panel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_panel_each" data-multiply-each="panel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">합계</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_panel_amount" placeholder="결과" data-manual-total-v227="panel" data-multiply-total="panel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>파손</label><div class="price-calc-repeat-group-v219"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="damage"><input data-key="price_calc_damage_part_1" placeholder="부위"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_damage_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="damage" type="button">+ 항목추가</button></div></div>
-<div class="price-calc-field-v218 full"><label>휠기스</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_wheel_count" data-multiply-count="wheel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_wheel_each" data-multiply-each="wheel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">적용</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_wheel_amount" placeholder="결과" data-manual-total-v227="wheel" data-multiply-total="wheel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>휠기스</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_wheel_count" data-multiply-count="wheel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_wheel_each" data-multiply-each="wheel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">합계</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_wheel_amount" placeholder="결과" data-manual-total-v227="wheel" data-multiply-total="wheel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>타이어</label><div class="price-calc-repeat-group-v219 price-calc-tire-repeat-v247"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="tire"><input data-key="price_calc_tire_part_1" placeholder="개"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_tire_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="tire" type="button">+ 항목추가</button></div></div>
 <div class="price-calc-field-v218 full"><label>오일교환</label><div class="price-calc-repeat-group-v219"><div class="price-calc-repeat-row-v219 amount-only" data-repeat-index-v220="1" data-repeat-row-v219="oil"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_oil_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="oil" type="button">+ 항목추가</button></div></div>
 <div class="price-calc-field-v218 full"><label>진단기</label><div class="price-calc-repeat-group-v219"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="scanner"><input data-key="price_calc_scanner_part_1" placeholder="부위"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_scanner_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="scanner" type="button">+ 항목추가</button></div></div>
@@ -16991,201 +17253,16 @@ boot();
     win.document.write(
       '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>오토베이 현장 매입 진단리포트 - ' + reportTitle + '</title>' +
-      '<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#f3f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif;}body{padding:16px;overflow:auto}.report-head{background:#fff;border:1px solid #d8e0ea;border-radius:14px;padding:14px;margin:0 0 12px;width:max-content;min-width:560px}.report-title{font-size:20px;font-weight:1000}.report-sub{font-size:13px;font-weight:900;margin-top:6px}.report-date{font-size:12px;color:#6b7280;margin-top:8px}.status{display:inline-flex;margin:0 0 14px;padding:8px 10px;border-radius:9px;background:#111827;color:#fff;font-size:12px;font-weight:900}.help{display:block;margin-top:6px;font-size:11px;color:#9ca3af}.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}.toolbar-btn.primary{background:#111827;border-color:#111827;color:#fff}.toolbar-btn[disabled]{opacity:.45;cursor:not-allowed}.toolbar-meta{font-size:12px;color:#6b7280;font-weight:800}.img-section{margin:0 0 18px;width:max-content;max-width:none}.section-title{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;margin:0 0 8px;border-radius:9px;background:#111827;color:#fff;font-size:14px;font-weight:900}.section-title .num{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:22px;border-radius:7px;background:#fff;color:#111827;font-size:12px;font-weight:1000}.img-wrap{background:#fff;border:1px solid #d8e0ea;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.06)}.img-wrap img{display:block;max-width:none}.download{display:inline-flex;margin-top:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #cbd5e1;color:#111827;text-decoration:none;font-size:12px;font-weight:900}.failed{width:560px;background:#fff6f6;border:1px solid #fecaca;color:#991b1b;border-radius:14px;padding:14px;font-size:13px;font-weight:900;line-height:1.5}</style>' +
+      '' +
       '</head><body><header class="report-head"><div class="report-title">오토베이 현장 매입 진단리포트</div><div class="report-sub">' + reportTitle + '</div><div class="report-date">생성일자: ' + yyyy + '-' + mm + '-' + dd + '</div></header><div class="status" id="status">현재 탭 공유 허용 대기 중...<span class="help">공유 허용 후 안내문구는 사라지고 카드 영역만 캡처됩니다.</span></div><div class="toolbar"><button class="toolbar-btn primary" id="downloadAllBtn" type="button" disabled>전체 이미지 다운로드</button><span class="toolbar-meta" id="downloadMeta">탭 4장 캡처 완료 후 한 번에 저장할 수 있습니다.</span></div><main id="images"></main>
-<style>
-/* v232: 파손 반복 입력행 누락 보정
-   - v226 반복행 통일 CSS에서 damage만 빠져 Android에서 부위/금액 폭이 다른 항목과 불일치하던 문제를 수정한다.
-   - 계산식, 저장 key, 추가/삭제 로직은 변경하지 않는다. */
-#secPriceCalcV218 [data-repeat-row-v219="damage"]{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width)!important;
-  gap:var(--price-calc-v226-gap)!important;
-  align-items:center!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="damage"].price-calc-added-row-v220{
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>input,
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223,
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223>input{
-  width:100%!important;
-  min-width:0!important;
-  height:var(--price-calc-v226-height)!important;
-  min-height:var(--price-calc-v226-height)!important;
-  border-radius:10px!important;
-  box-sizing:border-box!important;
-}
-</style>
-
-<style>
-/* v249: 매입금액 산정 기본/고장 및 수리 섹션 라벨을 제출하기 버튼 색상과 동일하게 고정 */
-#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
-#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
-  background:#111827!important;
-  border:1px solid #111827!important;
-  color:#ffffff!important;
-  box-shadow:none!important;
-}
-#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699 *,
-#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699 *{
-  color:#ffffff!important;
-}
-</style>
-
-<style>
-/* v250: 매입금액 산정 섹션 라벨 최종 색상 보정
-   - v247 공통 라벨 색상(#334155)이 뒤에서 덮어써지는 문제를 최종 우선순위로 재보정한다.
-   - 적용 대상은 매입금액 산정의 기본/고장 및 수리 섹션 라벨만이다. */
-#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
-#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
-  background:#111827 !important;
-  border-color:#111827 !important;
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
-#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699 *,
-#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699 *{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
 
 
-/* 매입금액 산정: 웹/모바일 공통 sticky 보정
-   - 통합 style 후반에서 sticky 기준점과 overflow 조건을 최종 확정한다. */
-#secPriceCalcV218{
-  overflow:visible !important;
-  contain:initial !important;
-}
-#secPriceCalcV218 .order-page-title-card-v1699{
-  position:sticky !important;
-  top:calc(var(--ab-price-sticky-header-h,126px) + 8px) !important;
-  z-index:2147483400 !important;
-}
-#secPriceCalcV218 .price-calc-summary-sticky-v247{
-  position:sticky !important;
-  top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 16px) !important;
-  z-index:2147483300 !important;
-  overflow:visible !important;
-}
-@media(max-width:430px){
-  #secPriceCalcV218 .order-page-title-card-v1699{
-    top:calc(var(--ab-price-sticky-header-h,126px) + 7px) !important;
-  }
-  #secPriceCalcV218 .price-calc-summary-sticky-v247{
-    top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
-  }
-}
-</style>
 
 
-<style id="priceCalcStage4FinalFixV254">
-/* 매입금액 산정: 기본/고장 및 수리 섹션 라벨 최종 색상 고정 */
-#secPriceCalcV218 article.price-calc-basic-card-v247 > div.order-soft-section-title-v1699,
-#secPriceCalcV218 article.price-calc-repair-card-v247 > div.order-soft-section-title-v1699,
-#secPriceCalcV218 article.price-calc-basic-card-v247 > .order-soft-section-title-v1699,
-#secPriceCalcV218 article.price-calc-repair-card-v247 > .order-soft-section-title-v1699{
-  background:#111827 !important;
-  background-image:none !important;
-  border:1px solid #111827 !important;
-  border-color:#111827 !important;
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-  box-shadow:none !important;
-}
-#secPriceCalcV218 article.price-calc-basic-card-v247 > div.order-soft-section-title-v1699 *,
-#secPriceCalcV218 article.price-calc-repair-card-v247 > div.order-soft-section-title-v1699 *{
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-}
-/* 매입금액 산정: 사고/외판/판금/휠기스 = 라벨을 금액박스 밖 버튼형으로 고정 */
-#secPriceCalcV218 .price-calc-eq-label-v253{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  width:24px !important;
-  min-width:24px !important;
-  max-width:24px !important;
-  height:38px !important;
-  min-height:38px !important;
-  border-radius:9px !important;
-  background:#2563eb !important;
-  border:1px solid #1d4ed8 !important;
-  color:#ffffff !important;
-  -webkit-text-fill-color:#ffffff !important;
-  font-size:14px !important;
-  font-weight:900 !important;
-  line-height:1 !important;
-  box-sizing:border-box !important;
-  margin:0 !important;
-}
-#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
-  display:grid !important;
-  grid-template-columns:54px 62px 66px 24px 88px !important;
-  gap:5px !important;
-  align-items:center !important;
-  width:100% !important;
-  max-width:100% !important;
-  overflow:hidden !important;
-}
-#secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
-  display:grid !important;
-  grid-template-columns:58px 68px 24px 88px !important;
-  gap:5px !important;
-  align-items:center !important;
-  width:100% !important;
-  max-width:100% !important;
-  overflow:hidden !important;
-}
-#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231{
-  width:88px !important;
-  min-width:88px !important;
-  max-width:88px !important;
-  margin-left:0 !important;
-  box-sizing:border-box !important;
-}
-#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
-  width:100% !important;
-  min-width:0 !important;
-  padding-left:8px !important;
-  padding-right:24px !important;
-  box-sizing:border-box !important;
-}
-#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-equal-prefix-v231,
-#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > .price-calc-prefix-v223.price-calc-equal-prefix-v231{
-  display:none !important;
-}
-@media(max-width:430px){
-  #secPriceCalcV218 .price-calc-eq-label-v253{
-    width:22px !important;
-    min-width:22px !important;
-    max-width:22px !important;
-    height:36px !important;
-    min-height:36px !important;
-    border-radius:8px !important;
-    font-size:13px !important;
-  }
-  #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
-    grid-template-columns:44px 52px 56px 22px 76px !important;
-    gap:4px !important;
-  }
-  #secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
-    grid-template-columns:50px 60px 22px 76px !important;
-    gap:4px !important;
-  }
-  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231{
-    width:76px !important;
-    min-width:76px !important;
-    max-width:76px !important;
-  }
-  #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
-    padding-left:7px !important;
-    padding-right:22px !important;
-  }
-}
-</style>
+
+
+
+
 
 </body></html>'
     );

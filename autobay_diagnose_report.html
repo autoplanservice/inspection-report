@@ -13,6 +13,404 @@ BASE CLEANUP NOTE
 - 유지: L 상태, R 노랑, 기존 localStorage key, radio + label 구조
 - 정리: 중복 doctype, D15 전용 transform 잔재, 비활성 placeholder script, R 검정 잔재
 -->
+
+<!-- AB_USAGE_LOGGER_JS_START
+  제거 방법:
+  1) 이 AB_USAGE_LOGGER_JS_START ~ AB_USAGE_LOGGER_JS_END 블록 전체 삭제
+  2) style 내부 AB_USAGE_LOGGER_CSS_START ~ AB_USAGE_LOGGER_CSS_END 블록 삭제
+  목적:
+  - 클린코드 정리 전 실제 CSS selector, 이벤트, 함수 호출 사용 여부를 기록한다.
+  - 운영용이 아니라 진단용이다.
+-->
+<script>
+(function(){
+  'use strict';
+
+  if(window.__AB_USAGE_LOGGER_INSTALLED__) return;
+  window.__AB_USAGE_LOGGER_INSTALLED__ = true;
+
+  var FUNCTION_NAMES = ["bindCheckButtons", "syncRow", "bindLevelButtons", "readTouchDiagramStates", "renderTagList", "buildDiagnosisReports", "bindTouchDiagramChange", "restoreDraft", "bindKmInputs", "boot", "colorClass", "cleanValue", "ensure", "badge", "slot", "paintBadgeTransform", "makeBadgeNode", "replaceBadge", "commitValue", "predictBeforeInput", "toggleW", "bindInput", "delegateInput", "bind", "bindGlassStatus", "bindInsuranceOptions", "bindInsuranceSelects", "onlyDigitsV16", "formatCommaV16", "openNativeDateV16", "bindDateTouchV16", "bindInsuranceSelectsV16", "bindInsuranceNumberInputsV16", "bindSaveNumericPatchV16", "bootV16", "onlyDigitsV163", "formatCommaV163", "bindInsuranceNumberInputsV163", "bootV163", "cleanExteriorTreadV165", "bindExteriorTreadInputsV165", "bootExteriorV165", "reindexProsTuningRows", "makeProsMinusButton", "bindProsTuningSingle", "applyBasicDangerSelect", "bindBasicDangerSelects", "bindCheckFastClick", "bindHeaderMenu", "onlyDigits", "formatYYMMDD", "cleanupDateFields", "getTuningMain", "getTuningStatus", "refreshTuningMainOnly", "addTuningRowFixed", "normalizeTuningRowsFixed", "bindV1694", "applyTuningMainColor", "normalizeFixedTuningRows", "bindV1695", "setActiveTab", "getCheckedTabName", "bindFastTabs", "norm", "splitValues", "isActiveButton", "getBoldValues", "applySelect", "applyButton", "applyAround", "initialApply", "bindUnifiedBoldV1709", "kmLive", "kmFormat", "togglePlateBadge", "cleanupDateCalendar", "bindBasicV1710", "sideTransform", "stabilizePaintSideNode", "stabilizeAllPaintSide", "bindPaintSideStabilizerV1713", "commaNumber", "formatPhone", "formatRrn", "formatYYMM", "formatMMDD", "mmddKorean", "certifiedDepartureKorean", "getByKey", "dateSlash", "getYear", "getSelectPlus", "getMoney", "getMoneyOrX", "getMoneyDate", "getAccount", "getCountMemo", "profitIsOpen", "inspectorIsEncar", "refreshCountDetail", "syncUnitButton", "toggleUnit", "buildOrderTextV1717", "bindOrderV1717", "setRadioByLabel", "isDiagramMarkerLabel", "bindMarkerStableV1718", "formatYMD", "dangerValue", "applyDanger", "applyAllDanger", "syncMemos", "setPlateVisible", "setSunroof", "cycleTalk", "disableAccA4A7", "isA4A7Target", "bindV1720", "fixPlateBadgeText", "normalizeOrderOutputNewlines", "bindOrderNewlineFixV1722", "formatDateText", "syncTextToNative", "syncNativeToText", "openNativeDate", "bindDateOldRestoreV1729", "bindDateCleanV1730", "bindDateCleanV1736", "cleanExteriorTreadV1739", "normalizePlateBadgeV1752", "bindPlateBadgeV1752", "qs", "qsa", "wait", "waitFrame", "next", "showLoading", "hideLoading", "safeFileName", "openStreamingWindow", "refreshDownloadAllState", "downloadAllCapturedImages", "step", "bindDownloadAllButton", "appendCardToWindow", "getCurrentTabName", "setActiveBodyTab", "activateTab", "isVisibleCaptureTarget", "textOfCaptureNode", "isExteriorRelatedCard", "pushUniqueVisible", "createExteriorCaptureGroup", "resolveTabCaptureElement", "collectCardList", "collectLNodes", "hideLNodes", "restoreNodes", "ensureCardTab", "createVideoFromStream", "waitVideoReady", "finish", "fail", "requestDisplayStream", "stopStream", "getSafeTopPadding", "captureCardByRealScreen", "updateProgress", "generateRealTabCaptureReport", "rebindButton", "bootRealCapture", "textOf", "findWrapPpfCard", "findSelect", "findMemo", "selectedIsOn", "applyWrapPpfMemoV1763", "bindWrapPpfMemoV1763", "selectedText", "syncFormValuesForClone", "stripTransientPrintUi", "makeReadonlyForPrint", "collectSlotStateRadiosV193", "getPrintRadioKeyV193", "buildCustomerMarkerMapV193", "applyCustomerMarkerMapV193", "removeReportRoot", "cloneSection", "textOfPrintNode", "isWholeDiagClone", "nearestPrintCard", "collectCardsByTitle", "removePrintCards", "pruneDiagCloneForMode", "cloneFilteredDiagSection", "cloneExteriorSection", "removeLegacyDiagramTitlesV162", "markOuterDiagnosticCardV158", "removePrintPagesV141", "findPrintSectionV141", "clonePrintSectionV141", "removeSectionTitleV141", "removeCardsByTitleV141", "createPrintPageV141", "appendPageTitleV141", "buildPrintPagesFromCopyV141", "buildReport", "syncPrintSectionTitleWidths", "buildBar", "cleanDiagramImageSourceV164", "isNearWhite", "enqueue", "prepareDiagramImagesForPrintV164", "isIOSPrintV183", "createIOSCheckColumnV183", "createIOSCheckPageV183", "prepareIOSBasicPageV183", "prepareIOSCheckPagesV183", "cardNumber", "take", "removeEmptyIOSPrintPagesV183", "prepareIOSPrintPagesV183", "openPreview", "clearReportTabBodyClassesV1784", "repairMainTabHandlersV1784", "closePreview", "bindPrintButtons", "bindSubmitTabV1777", "bindSubmitPdfButtonsV1778", "openPdf", "syncProsWarrantyButtonFromHidden", "syncProsWarrantyHiddenFromButton", "bindProsWarrantyV70", "getMaintenanceStatusElsV73", "applyMaintenanceStatusValueToRadioV73", "syncMaintenanceStatusValueFromRadioV73", "bindMaintenanceStatusV73", "normalizeVehicleNumberV194", "setEntryLoadMessageV194", "enterReportV194", "requestExistingReportV194", "bindEntryModeScreenV194", "setPasswordMessageV195", "showEntryModeAfterPasswordV195", "verifyPasswordWithAppsScriptV195", "requestPasswordVerificationV195", "bindPasswordGateV195", "normalizeVehicleNoV197", "cssEscapeV197", "setStatusV197", "getTokenV197", "apiV197", "elementKeyV197", "findElementV197", "collectDynamicV197", "restoreDynamicV197", "safeTargetCount", "safeClickUntil", "getReportControlsV201", "collectExteriorTopStateV203", "collectCycleStateV203", "collectPaintWStateV221", "restorePaintWStateV221", "collectReportV197", "restoreExteriorTopStateV203", "restoreCycleStateV203", "applyCycleValuesV207", "restoreStableReportV203", "restoreCompactReportV201", "restoreReportV197", "getMetaV197", "bytesToBase64V202", "encodeReportJsonV202", "saveV197", "activateBasicTabAfterLoadV216", "loadByVehicleV197", "updateMetaV197", "installToolbarV197", "bindEntryLoadV197", "bootV197", "sec", "digitsNumber", "formatNumber", "field", "value", "setValue", "basePriceNumber", "findBasicByLabel", "syncBasicV219", "revealStoredRowsV219", "addRepeatRowV219", "calculateV219", "clearFinalManualV249", "isFinalAmountDriverV249", "repeatedDetailsV219", "buildTextV219", "money", "detail", "copyText", "bindV219", "updatePriceCalcStickyOffset", "schedulePriceCalcStickyOffset", "run", "schedule", "handler", "sync"];
+
+  var STORE_KEY = 'AB_USAGE_LOGGER_ENABLED_V272';
+  var PANEL_KEY = 'AB_USAGE_LOGGER_PANEL_OPEN_V272';
+
+  function nowIso(){
+    try{ return new Date().toISOString(); }catch(e){ return String(Date.now()); }
+  }
+
+  function isEnabled(){
+    try{
+      var params = new URLSearchParams(location.search || '');
+      if(params.get('abUsageLog') === '0') {
+        localStorage.setItem(STORE_KEY, '0');
+        return false;
+      }
+      if(params.get('abUsageLog') === '1') {
+        localStorage.setItem(STORE_KEY, '1');
+        return true;
+      }
+      var stored = localStorage.getItem(STORE_KEY);
+      if(stored === '0') return false;
+      if(stored === '1') return true;
+    }catch(e){}
+    return true; /* v272 진단 파일은 기본 활성화 */
+  }
+
+  var enabled = isEnabled();
+
+  function emptyLog(){
+    return {
+      meta:{
+        version:'v272_usage_logger',
+        createdAt:nowIso(),
+        enabled:enabled,
+        userAgent:(navigator && navigator.userAgent) ? navigator.userAgent : '',
+        href:(location && location.href) ? location.href : ''
+      },
+      screenVisits:{},
+      cssScans:[],
+      cssMatchedSelectors:{},
+      cssUnmatchedSelectors:{},
+      cssInvalidSelectors:{},
+      cssMediaRules:{},
+      eventBindings:{},
+      eventCalls:{},
+      functionCalls:{},
+      functionWrapFailed:{},
+      functionWrapped:{},
+      restoreSteps:[],
+      notes:[]
+    };
+  }
+
+  var log = window.__AB_USAGE_LOG__ || emptyLog();
+  window.__AB_USAGE_LOG__ = log;
+
+  function inc(bucket, key, add){
+    if(!key) key = '(unknown)';
+    bucket[key] = (bucket[key] || 0) + (add || 1);
+  }
+
+  function pushNote(msg, data){
+    try{
+      log.notes.push({at:nowIso(), msg:String(msg), data:data || null});
+      if(log.notes.length > 500) log.notes.shift();
+    }catch(e){}
+  }
+
+  window.__AB_USAGE_LOGGER__ = {
+    enabled:function(){ return enabled; },
+    enable:function(){ enabled = true; try{localStorage.setItem(STORE_KEY,'1');}catch(e){} log.meta.enabled=true; pushNote('logger enabled'); },
+    disable:function(){ enabled = false; try{localStorage.setItem(STORE_KEY,'0');}catch(e){} log.meta.enabled=false; pushNote('logger disabled'); },
+    reset:function(){ window.__AB_USAGE_LOG__ = log = emptyLog(); pushNote('logger reset'); return log; },
+    get:function(){ return log; },
+    copy:function(){
+      var text = JSON.stringify(log, null, 2);
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        return navigator.clipboard.writeText(text).then(function(){ return text; });
+      }
+      return text;
+    },
+    download:function(){
+      var blob = new Blob([JSON.stringify(log, null, 2)], {type:'application/json'});
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'ab_usage_log_' + new Date().toISOString().replace(/[:.]/g,'-') + '.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ try{URL.revokeObjectURL(a.href); a.remove();}catch(e){} }, 0);
+    },
+    scanCss:scanCssUsage,
+    wrapFunctions:wrapKnownFunctions,
+    markScreen:markScreen
+  };
+
+  function getElementLabel(target){
+    try{
+      if(!target) return '(null)';
+      if(target === window) return 'window';
+      if(target === document) return 'document';
+      if(target.nodeType === 9) return 'document';
+      if(target.nodeType === 1){
+        var el = target;
+        var parts = [el.tagName ? el.tagName.toLowerCase() : 'element'];
+        if(el.id) parts.push('#' + el.id);
+        if(el.className && typeof el.className === 'string'){
+          var cls = el.className.trim().split(/\s+/).slice(0,4).join('.');
+          if(cls) parts.push('.' + cls);
+        }
+        if(el.getAttribute){
+          var dk = el.getAttribute('data-key');
+          var da = el.getAttribute('data-action') || el.getAttribute('data-repeat-add-v219') || el.getAttribute('data-tab');
+          if(dk) parts.push('[data-key="' + dk + '"]');
+          if(da) parts.push('[data-action="' + da + '"]');
+        }
+        return parts.join('');
+      }
+      return Object.prototype.toString.call(target);
+    }catch(e){ return '(label-error)'; }
+  }
+
+  function markScreen(name){
+    if(!enabled) return;
+    inc(log.screenVisits, name || '(unknown)', 1);
+  }
+
+  function installEventPatch(){
+    if(window.__AB_USAGE_EVENT_PATCHED__) return;
+    window.__AB_USAGE_EVENT_PATCHED__ = true;
+
+    var originalAdd = EventTarget.prototype.addEventListener;
+    var originalRemove = EventTarget.prototype.removeEventListener;
+    var listenerMap = new WeakMap();
+
+    function optionKey(options){
+      if(options === true) return 'capture:true';
+      if(options === false || options == null) return 'capture:false';
+      try{ return 'capture:' + !!options.capture + '|once:' + !!options.once + '|passive:' + !!options.passive; }
+      catch(e){ return 'options'; }
+    }
+
+    function getWrapped(target, type, listener, options){
+      if(!listener || (typeof listener !== 'function' && typeof listener.handleEvent !== 'function')) return listener;
+      var byListener = listenerMap.get(listener);
+      if(!byListener){
+        byListener = {};
+        listenerMap.set(listener, byListener);
+      }
+      var key = type + '|' + optionKey(options) + '|' + getElementLabel(target);
+      if(byListener[key]) return byListener[key];
+
+      var wrapped = function(event){
+        if(enabled){
+          var label = getElementLabel(target);
+          inc(log.eventCalls, type + ' :: ' + label, 1);
+        }
+        if(typeof listener === 'function') return listener.call(this, event);
+        return listener.handleEvent.call(listener, event);
+      };
+      byListener[key] = wrapped;
+      return wrapped;
+    }
+
+    EventTarget.prototype.addEventListener = function(type, listener, options){
+      if(enabled){
+        try{
+          var label = getElementLabel(this);
+          inc(log.eventBindings, String(type) + ' :: ' + label, 1);
+        }catch(e){}
+      }
+      return originalAdd.call(this, type, getWrapped(this, type, listener, options), options);
+    };
+
+    EventTarget.prototype.removeEventListener = function(type, listener, options){
+      var mapped = listener;
+      try{
+        var byListener = listenerMap.get(listener);
+        var key = type + '|' + optionKey(options) + '|' + getElementLabel(this);
+        if(byListener && byListener[key]) mapped = byListener[key];
+      }catch(e){}
+      return originalRemove.call(this, type, mapped, options);
+    };
+  }
+
+  function scanCssRules(ruleList, context, result){
+    if(!ruleList) return;
+    for(var i=0; i<ruleList.length; i++){
+      var rule = ruleList[i];
+      if(rule.cssRules){
+        var ctx = context;
+        try{
+          if(rule.conditionText){
+            ctx = context ? context + ' && ' + rule.conditionText : rule.conditionText;
+            inc(log.cssMediaRules, ctx, 1);
+          }
+        }catch(e){}
+        scanCssRules(rule.cssRules, ctx, result);
+        continue;
+      }
+
+      var selectorText = rule.selectorText;
+      if(!selectorText) continue;
+
+      var selectors = String(selectorText).split(',');
+      for(var s=0; s<selectors.length; s++){
+        var selector = selectors[s].trim();
+        if(!selector) continue;
+        try{
+          var count = document.querySelectorAll(selector).length;
+          if(count > 0){
+            result.matched[selector] = (result.matched[selector] || 0) + count;
+            log.cssMatchedSelectors[selector] = Math.max(log.cssMatchedSelectors[selector] || 0, count);
+          }else{
+            result.unmatched[selector] = (result.unmatched[selector] || 0) + 1;
+            inc(log.cssUnmatchedSelectors, selector, 1);
+          }
+        }catch(err){
+          result.invalid[selector] = String(err && err.message ? err.message : err);
+          log.cssInvalidSelectors[selector] = result.invalid[selector];
+        }
+      }
+    }
+  }
+
+  function scanCssUsage(){
+    var result = {at:nowIso(), href:location.href, matched:{}, unmatched:{}, invalid:{}};
+    try{
+      for(var i=0; i<document.styleSheets.length; i++){
+        var sheet = document.styleSheets[i];
+        try{ scanCssRules(sheet.cssRules, '', result); }
+        catch(err){
+          result.invalid['stylesheet['+i+']'] = String(err && err.message ? err.message : err);
+        }
+      }
+    }catch(e){
+      result.error = String(e && e.message ? e.message : e);
+    }
+    log.cssScans.push(result);
+    if(log.cssScans.length > 30) log.cssScans.shift();
+    pushNote('css scan completed', {
+      matched:Object.keys(result.matched).length,
+      unmatched:Object.keys(result.unmatched).length,
+      invalid:Object.keys(result.invalid).length
+    });
+    return result;
+  }
+
+  function wrapKnownFunctions(){
+    var wrappedCount = 0;
+    FUNCTION_NAMES.forEach(function(name){
+      try{
+        if(!name || name.indexOf('__AB_') === 0) return;
+        var fn = window[name];
+        if(typeof fn !== 'function') return;
+        if(fn.__AB_USAGE_WRAPPED__) return;
+
+        var wrapped = function(){
+          if(enabled) inc(log.functionCalls, name, 1);
+          return fn.apply(this, arguments);
+        };
+        try{ Object.defineProperty(wrapped, 'name', {value:name, configurable:true}); }catch(e){}
+        wrapped.__AB_USAGE_WRAPPED__ = true;
+        wrapped.__AB_USAGE_ORIGINAL__ = fn;
+        window[name] = wrapped;
+        log.functionWrapped[name] = true;
+        wrappedCount++;
+      }catch(err){
+        log.functionWrapFailed[name] = String(err && err.message ? err.message : err);
+      }
+    });
+    pushNote('function wrap completed', {wrapped:wrappedCount, failed:Object.keys(log.functionWrapFailed).length});
+    return wrappedCount;
+  }
+
+  function createPanel(){
+    if(document.getElementById('abUsageLoggerPanelV272')) return;
+    var panel = document.createElement('div');
+    panel.id = 'abUsageLoggerPanelV272';
+    panel.innerHTML =
+      '<div class="ab-usage-log-head-v272">' +
+        '<strong>Usage Logger</strong>' +
+        '<button type="button" data-ab-log-close>×</button>' +
+      '</div>' +
+      '<div class="ab-usage-log-body-v272">' +
+        '<button type="button" data-ab-log-css>CSS 스캔</button>' +
+        '<button type="button" data-ab-log-fn>함수 래핑</button>' +
+        '<button type="button" data-ab-log-copy>JSON 복사</button>' +
+        '<button type="button" data-ab-log-down>JSON 저장</button>' +
+        '<button type="button" data-ab-log-reset>초기화</button>' +
+        '<button type="button" data-ab-log-toggle></button>' +
+        '<pre data-ab-log-status></pre>' +
+      '</div>';
+
+    var mini = document.createElement('button');
+    mini.id = 'abUsageLoggerMiniV272';
+    mini.type = 'button';
+    mini.textContent = 'LOG';
+
+    document.body.appendChild(panel);
+    document.body.appendChild(mini);
+
+    function status(){
+      var statusEl = panel.querySelector('[data-ab-log-status]');
+      var data = window.__AB_USAGE_LOG__;
+      var lastScan = data.cssScans[data.cssScans.length - 1];
+      statusEl.textContent = [
+        'enabled: ' + enabled,
+        'css matched: ' + Object.keys(data.cssMatchedSelectors).length,
+        'css unmatched: ' + Object.keys(data.cssUnmatchedSelectors).length,
+        'events bound: ' + Object.keys(data.eventBindings).length,
+        'events called: ' + Object.keys(data.eventCalls).length,
+        'functions wrapped: ' + Object.keys(data.functionWrapped).length,
+        'functions called: ' + Object.keys(data.functionCalls).length,
+        lastScan ? ('last scan: M ' + Object.keys(lastScan.matched).length + ' / U ' + Object.keys(lastScan.unmatched).length + ' / I ' + Object.keys(lastScan.invalid).length) : 'last scan: none'
+      ].join('\n');
+      var toggle = panel.querySelector('[data-ab-log-toggle]');
+      toggle.textContent = enabled ? '로그 OFF' : '로그 ON';
+    }
+
+    panel.querySelector('[data-ab-log-css]').addEventListener('click', function(){ scanCssUsage(); status(); });
+    panel.querySelector('[data-ab-log-fn]').addEventListener('click', function(){ wrapKnownFunctions(); status(); });
+    panel.querySelector('[data-ab-log-copy]').addEventListener('click', function(){
+      var copied = window.__AB_USAGE_LOGGER__.copy();
+      if(copied && copied.then) copied.then(status);
+      else status();
+    });
+    panel.querySelector('[data-ab-log-down]').addEventListener('click', function(){ window.__AB_USAGE_LOGGER__.download(); status(); });
+    panel.querySelector('[data-ab-log-reset]').addEventListener('click', function(){ window.__AB_USAGE_LOGGER__.reset(); status(); });
+    panel.querySelector('[data-ab-log-toggle]').addEventListener('click', function(){
+      if(enabled) window.__AB_USAGE_LOGGER__.disable();
+      else window.__AB_USAGE_LOGGER__.enable();
+      status();
+    });
+    panel.querySelector('[data-ab-log-close]').addEventListener('click', function(){
+      panel.classList.add('is-hidden-v272');
+      mini.classList.add('is-visible-v272');
+      try{localStorage.setItem(PANEL_KEY,'0');}catch(e){}
+    });
+    mini.addEventListener('click', function(){
+      panel.classList.remove('is-hidden-v272');
+      mini.classList.remove('is-visible-v272');
+      try{localStorage.setItem(PANEL_KEY,'1');}catch(e){}
+      status();
+    });
+
+    try{
+      if(localStorage.getItem(PANEL_KEY) === '0'){
+        panel.classList.add('is-hidden-v272');
+        mini.classList.add('is-visible-v272');
+      }
+    }catch(e){}
+
+    status();
+  }
+
+  function installScreenVisitTracker(){
+    document.addEventListener('click', function(e){
+      var target = e.target && e.target.closest ? e.target.closest('[data-tab],button,[role="tab"],.tab,.main-tab,.tab-btn') : null;
+      if(!target) return;
+      var name = target.getAttribute('data-tab') || target.textContent || getElementLabel(target);
+      markScreen(String(name).trim().slice(0,80));
+    }, true);
+  }
+
+  installEventPatch();
+
+  document.addEventListener('DOMContentLoaded', function(){
+    try{
+      createPanel();
+      installScreenVisitTracker();
+      setTimeout(function(){ scanCssUsage(); }, 500);
+      setTimeout(function(){ wrapKnownFunctions(); }, 900);
+    }catch(e){
+      pushNote('logger boot failed', String(e && e.message ? e.message : e));
+    }
+  });
+
+})();
+</script>
+<!-- AB_USAGE_LOGGER_JS_END -->
+
 <style>
 
 
@@ -12365,19 +12763,6 @@ body.ab-password-active-v195{overflow:hidden!important}
   width:100%!important;
   box-sizing:border-box!important;
 }
-#secPriceCalcV218 [data-repeat-row-v219="damage"].price-calc-added-row-v220{
-  grid-template-columns:minmax(0,1fr) var(--price-calc-v226-amount-width) var(--price-calc-v226-remove-width)!important;
-}
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>input,
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223,
-#secPriceCalcV218 [data-repeat-row-v219="damage"]>.price-calc-input-unit-v223>input{
-  width:100%!important;
-  min-width:0!important;
-  height:var(--price-calc-v226-height)!important;
-  min-height:var(--price-calc-v226-height)!important;
-  border-radius:10px!important;
-  box-sizing:border-box!important;
-}
 
 /* STYLE_BLOCK_15: 매입금액 산정 최종 레이아웃
    - 차감/최종 요약, 항목추가 버튼, 2열/3열 묶음, 타이어 반복형 구조를 담당한다. */
@@ -12664,10 +13049,6 @@ body.ab-password-active-v195{overflow:hidden!important}
   font-weight:500 !important;
   opacity:.95 !important;
 }
-#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-equal-prefix-v231,
-#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > .price-calc-prefix-v223.price-calc-equal-prefix-v231{
-  display:none !important;
-}
 
 /* 사고: 상단 3칸 + 하단 ▷/결과 금액 2줄 구조 */
 #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
@@ -12680,7 +13061,6 @@ body.ab-password-active-v195{overflow:hidden!important}
 #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-input-unit-v223:nth-of-type(2){grid-column:2 !important; grid-row:1 !important;}
 #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-input-unit-v223:nth-of-type(3){grid-column:3 !important; grid-row:1 !important;}
 #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-eq-label-v253{grid-column:1 !important; grid-row:2 !important; width:100% !important; max-width:none !important;}
-#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-result-unit-v231{grid-column:2 / 4 !important; grid-row:2 !important;}
 
 /* 외판/판금/휠기스: 입력-단가-▷-결과를 여백 있는 1줄로 정렬 */
 #secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
@@ -12712,7 +13092,6 @@ body.ab-password-active-v195{overflow:hidden!important}
     max-width:none !important;
   }
 }
-
 
 
 /* CLEAN STAGE: 매입금액 산정 적용 라벨 최종 보정 */
@@ -13068,6 +13447,118 @@ body.ab-password-active-v195{overflow:hidden!important}
 }
 
 
+
+
+
+/* AB_USAGE_LOGGER_CSS_START
+   제거 방법:
+   - 이 AB_USAGE_LOGGER_CSS_START ~ AB_USAGE_LOGGER_CSS_END 블록 삭제
+   - head 상단 AB_USAGE_LOGGER_JS_START ~ AB_USAGE_LOGGER_JS_END 블록 삭제
+   - 운영 배포 전 반드시 제거한다.
+*/
+#abUsageLoggerPanelV272{
+  position:fixed !important;
+  right:10px !important;
+  bottom:10px !important;
+  z-index:2147483647 !important;
+  width:260px !important;
+  max-width:calc(100vw - 20px) !important;
+  border:1px solid #111827 !important;
+  border-radius:12px !important;
+  background:#ffffff !important;
+  color:#111827 !important;
+  box-shadow:0 8px 24px rgba(15,23,42,.24) !important;
+  overflow:hidden !important;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif !important;
+}
+
+#abUsageLoggerPanelV272.is-hidden-v272{
+  display:none !important;
+}
+
+#abUsageLoggerPanelV272 .ab-usage-log-head-v272{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  height:34px !important;
+  padding:0 8px 0 10px !important;
+  background:#111827 !important;
+  color:#ffffff !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+}
+
+#abUsageLoggerPanelV272 .ab-usage-log-head-v272 button{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:26px !important;
+  height:26px !important;
+  border:0 !important;
+  border-radius:8px !important;
+  background:#ffffff !important;
+  color:#111827 !important;
+  font-size:18px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+}
+
+#abUsageLoggerPanelV272 .ab-usage-log-body-v272{
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:6px !important;
+  padding:8px !important;
+}
+
+#abUsageLoggerPanelV272 .ab-usage-log-body-v272 button{
+  min-height:30px !important;
+  border:1px solid #cbd5e1 !important;
+  border-radius:8px !important;
+  background:#f8fafc !important;
+  color:#111827 !important;
+  font-size:11px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+}
+
+#abUsageLoggerPanelV272 .ab-usage-log-body-v272 pre{
+  grid-column:1 / -1 !important;
+  max-height:150px !important;
+  margin:0 !important;
+  padding:8px !important;
+  overflow:auto !important;
+  border-radius:8px !important;
+  background:#f1f5f9 !important;
+  color:#111827 !important;
+  font-size:10px !important;
+  line-height:1.35 !important;
+  white-space:pre-wrap !important;
+}
+
+#abUsageLoggerMiniV272{
+  display:none !important;
+  position:fixed !important;
+  right:10px !important;
+  bottom:10px !important;
+  z-index:2147483647 !important;
+  width:48px !important;
+  height:34px !important;
+  border:1px solid #111827 !important;
+  border-radius:999px !important;
+  background:#111827 !important;
+  color:#ffffff !important;
+  font-size:11px !important;
+  font-weight:1000 !important;
+  box-shadow:0 8px 18px rgba(15,23,42,.25) !important;
+  cursor:pointer !important;
+}
+
+#abUsageLoggerMiniV272.is-visible-v272{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+/* AB_USAGE_LOGGER_CSS_END */
 
 </style>
 <!--

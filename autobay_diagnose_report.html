@@ -16,10 +16,11 @@ BASE CLEANUP NOTE
 
 <!-- AB_USAGE_LOGGER_JS_START
   제거 방법:
-  1) 이 AB_USAGE_LOGGER_JS_START ~ AB_USAGE_LOGGER_JS_END 블록 전체 삭제
+  1) 이 AB_USAGE_LOGGER_JS_START ~ AB_USAGE_LOGGER_JS_END 블록 삭제
   2) style 내부 AB_USAGE_LOGGER_CSS_START ~ AB_USAGE_LOGGER_CSS_END 블록 삭제
+  3) 함수 내부에 삽입된 AB_FN_HIT_START ~ AB_FN_HIT_END 한 줄들을 전체 삭제
   목적:
-  - 클린코드 정리 전 실제 CSS selector, 이벤트, 함수 호출 사용 여부를 기록한다.
+  - 실제 사용 CSS selector, 이벤트, 함수 호출을 수집하여 클린코드 제거 후보를 판단한다.
   - 운영용이 아니라 진단용이다.
 -->
 <script>
@@ -29,23 +30,21 @@ BASE CLEANUP NOTE
   if(window.__AB_USAGE_LOGGER_INSTALLED__) return;
   window.__AB_USAGE_LOGGER_INSTALLED__ = true;
 
-  var FUNCTION_NAMES = ["bindCheckButtons", "syncRow", "bindLevelButtons", "readTouchDiagramStates", "renderTagList", "buildDiagnosisReports", "bindTouchDiagramChange", "restoreDraft", "bindKmInputs", "boot", "colorClass", "cleanValue", "ensure", "badge", "slot", "paintBadgeTransform", "makeBadgeNode", "replaceBadge", "commitValue", "predictBeforeInput", "toggleW", "bindInput", "delegateInput", "bind", "bindGlassStatus", "bindInsuranceOptions", "bindInsuranceSelects", "onlyDigitsV16", "formatCommaV16", "openNativeDateV16", "bindDateTouchV16", "bindInsuranceSelectsV16", "bindInsuranceNumberInputsV16", "bindSaveNumericPatchV16", "bootV16", "onlyDigitsV163", "formatCommaV163", "bindInsuranceNumberInputsV163", "bootV163", "cleanExteriorTreadV165", "bindExteriorTreadInputsV165", "bootExteriorV165", "reindexProsTuningRows", "makeProsMinusButton", "bindProsTuningSingle", "applyBasicDangerSelect", "bindBasicDangerSelects", "bindCheckFastClick", "bindHeaderMenu", "onlyDigits", "formatYYMMDD", "cleanupDateFields", "getTuningMain", "getTuningStatus", "refreshTuningMainOnly", "addTuningRowFixed", "normalizeTuningRowsFixed", "bindV1694", "applyTuningMainColor", "normalizeFixedTuningRows", "bindV1695", "setActiveTab", "getCheckedTabName", "bindFastTabs", "norm", "splitValues", "isActiveButton", "getBoldValues", "applySelect", "applyButton", "applyAround", "initialApply", "bindUnifiedBoldV1709", "kmLive", "kmFormat", "togglePlateBadge", "cleanupDateCalendar", "bindBasicV1710", "sideTransform", "stabilizePaintSideNode", "stabilizeAllPaintSide", "bindPaintSideStabilizerV1713", "commaNumber", "formatPhone", "formatRrn", "formatYYMM", "formatMMDD", "mmddKorean", "certifiedDepartureKorean", "getByKey", "dateSlash", "getYear", "getSelectPlus", "getMoney", "getMoneyOrX", "getMoneyDate", "getAccount", "getCountMemo", "profitIsOpen", "inspectorIsEncar", "refreshCountDetail", "syncUnitButton", "toggleUnit", "buildOrderTextV1717", "bindOrderV1717", "setRadioByLabel", "isDiagramMarkerLabel", "bindMarkerStableV1718", "formatYMD", "dangerValue", "applyDanger", "applyAllDanger", "syncMemos", "setPlateVisible", "setSunroof", "cycleTalk", "disableAccA4A7", "isA4A7Target", "bindV1720", "fixPlateBadgeText", "normalizeOrderOutputNewlines", "bindOrderNewlineFixV1722", "formatDateText", "syncTextToNative", "syncNativeToText", "openNativeDate", "bindDateOldRestoreV1729", "bindDateCleanV1730", "bindDateCleanV1736", "cleanExteriorTreadV1739", "normalizePlateBadgeV1752", "bindPlateBadgeV1752", "qs", "qsa", "wait", "waitFrame", "next", "showLoading", "hideLoading", "safeFileName", "openStreamingWindow", "refreshDownloadAllState", "downloadAllCapturedImages", "step", "bindDownloadAllButton", "appendCardToWindow", "getCurrentTabName", "setActiveBodyTab", "activateTab", "isVisibleCaptureTarget", "textOfCaptureNode", "isExteriorRelatedCard", "pushUniqueVisible", "createExteriorCaptureGroup", "resolveTabCaptureElement", "collectCardList", "collectLNodes", "hideLNodes", "restoreNodes", "ensureCardTab", "createVideoFromStream", "waitVideoReady", "finish", "fail", "requestDisplayStream", "stopStream", "getSafeTopPadding", "captureCardByRealScreen", "updateProgress", "generateRealTabCaptureReport", "rebindButton", "bootRealCapture", "textOf", "findWrapPpfCard", "findSelect", "findMemo", "selectedIsOn", "applyWrapPpfMemoV1763", "bindWrapPpfMemoV1763", "selectedText", "syncFormValuesForClone", "stripTransientPrintUi", "makeReadonlyForPrint", "collectSlotStateRadiosV193", "getPrintRadioKeyV193", "buildCustomerMarkerMapV193", "applyCustomerMarkerMapV193", "removeReportRoot", "cloneSection", "textOfPrintNode", "isWholeDiagClone", "nearestPrintCard", "collectCardsByTitle", "removePrintCards", "pruneDiagCloneForMode", "cloneFilteredDiagSection", "cloneExteriorSection", "removeLegacyDiagramTitlesV162", "markOuterDiagnosticCardV158", "removePrintPagesV141", "findPrintSectionV141", "clonePrintSectionV141", "removeSectionTitleV141", "removeCardsByTitleV141", "createPrintPageV141", "appendPageTitleV141", "buildPrintPagesFromCopyV141", "buildReport", "syncPrintSectionTitleWidths", "buildBar", "cleanDiagramImageSourceV164", "isNearWhite", "enqueue", "prepareDiagramImagesForPrintV164", "isIOSPrintV183", "createIOSCheckColumnV183", "createIOSCheckPageV183", "prepareIOSBasicPageV183", "prepareIOSCheckPagesV183", "cardNumber", "take", "removeEmptyIOSPrintPagesV183", "prepareIOSPrintPagesV183", "openPreview", "clearReportTabBodyClassesV1784", "repairMainTabHandlersV1784", "closePreview", "bindPrintButtons", "bindSubmitTabV1777", "bindSubmitPdfButtonsV1778", "openPdf", "syncProsWarrantyButtonFromHidden", "syncProsWarrantyHiddenFromButton", "bindProsWarrantyV70", "getMaintenanceStatusElsV73", "applyMaintenanceStatusValueToRadioV73", "syncMaintenanceStatusValueFromRadioV73", "bindMaintenanceStatusV73", "normalizeVehicleNumberV194", "setEntryLoadMessageV194", "enterReportV194", "requestExistingReportV194", "bindEntryModeScreenV194", "setPasswordMessageV195", "showEntryModeAfterPasswordV195", "verifyPasswordWithAppsScriptV195", "requestPasswordVerificationV195", "bindPasswordGateV195", "normalizeVehicleNoV197", "cssEscapeV197", "setStatusV197", "getTokenV197", "apiV197", "elementKeyV197", "findElementV197", "collectDynamicV197", "restoreDynamicV197", "safeTargetCount", "safeClickUntil", "getReportControlsV201", "collectExteriorTopStateV203", "collectCycleStateV203", "collectPaintWStateV221", "restorePaintWStateV221", "collectReportV197", "restoreExteriorTopStateV203", "restoreCycleStateV203", "applyCycleValuesV207", "restoreStableReportV203", "restoreCompactReportV201", "restoreReportV197", "getMetaV197", "bytesToBase64V202", "encodeReportJsonV202", "saveV197", "activateBasicTabAfterLoadV216", "loadByVehicleV197", "updateMetaV197", "installToolbarV197", "bindEntryLoadV197", "bootV197", "sec", "digitsNumber", "formatNumber", "field", "value", "setValue", "basePriceNumber", "findBasicByLabel", "syncBasicV219", "revealStoredRowsV219", "addRepeatRowV219", "calculateV219", "clearFinalManualV249", "isFinalAmountDriverV249", "repeatedDetailsV219", "buildTextV219", "money", "detail", "copyText", "bindV219", "updatePriceCalcStickyOffset", "schedulePriceCalcStickyOffset", "run", "schedule", "handler", "sync"];
-
-  var STORE_KEY = 'AB_USAGE_LOGGER_ENABLED_V272';
-  var PANEL_KEY = 'AB_USAGE_LOGGER_PANEL_OPEN_V272';
+  var STORE_KEY = 'AB_USAGE_LOGGER_ENABLED_V273';
+  var PANEL_KEY = 'AB_USAGE_LOGGER_PANEL_OPEN_V273';
 
   function nowIso(){
-    try{ return new Date().toISOString(); }catch(e){ return String(Date.now()); }
+    try { return new Date().toISOString(); } catch(e) { return String(Date.now()); }
   }
 
-  function isEnabled(){
+  function getStoredEnabled(){
     try{
       var params = new URLSearchParams(location.search || '');
-      if(params.get('abUsageLog') === '0') {
+      if(params.get('abUsageLog') === '0'){
         localStorage.setItem(STORE_KEY, '0');
         return false;
       }
-      if(params.get('abUsageLog') === '1') {
+      if(params.get('abUsageLog') === '1'){
         localStorage.setItem(STORE_KEY, '1');
         return true;
       }
@@ -53,19 +52,20 @@ BASE CLEANUP NOTE
       if(stored === '0') return false;
       if(stored === '1') return true;
     }catch(e){}
-    return true; /* v272 진단 파일은 기본 활성화 */
+    return true;
   }
 
-  var enabled = isEnabled();
+  var enabled = getStoredEnabled();
 
   function emptyLog(){
     return {
       meta:{
-        version:'v272_usage_logger',
+        version:'v273_usage_logger_raw_css_and_instrumented_functions',
         createdAt:nowIso(),
         enabled:enabled,
         userAgent:(navigator && navigator.userAgent) ? navigator.userAgent : '',
-        href:(location && location.href) ? location.href : ''
+        href:(location && location.href) ? location.href : '',
+        notes:'저장/불러오기 미테스트 시 해당 관련 CSS/JS는 제거 후보에서 제외해야 함'
       },
       screenVisits:{},
       cssScans:[],
@@ -76,8 +76,7 @@ BASE CLEANUP NOTE
       eventBindings:{},
       eventCalls:{},
       functionCalls:{},
-      functionWrapFailed:{},
-      functionWrapped:{},
+      functionFirstCall:{},
       restoreSteps:[],
       notes:[]
     };
@@ -87,50 +86,28 @@ BASE CLEANUP NOTE
   window.__AB_USAGE_LOG__ = log;
 
   function inc(bucket, key, add){
-    if(!key) key = '(unknown)';
+    key = key || '(unknown)';
     bucket[key] = (bucket[key] || 0) + (add || 1);
   }
 
   function pushNote(msg, data){
     try{
       log.notes.push({at:nowIso(), msg:String(msg), data:data || null});
-      if(log.notes.length > 500) log.notes.shift();
+      if(log.notes.length > 700) log.notes.shift();
     }catch(e){}
   }
 
-  window.__AB_USAGE_LOGGER__ = {
-    enabled:function(){ return enabled; },
-    enable:function(){ enabled = true; try{localStorage.setItem(STORE_KEY,'1');}catch(e){} log.meta.enabled=true; pushNote('logger enabled'); },
-    disable:function(){ enabled = false; try{localStorage.setItem(STORE_KEY,'0');}catch(e){} log.meta.enabled=false; pushNote('logger disabled'); },
-    reset:function(){ window.__AB_USAGE_LOG__ = log = emptyLog(); pushNote('logger reset'); return log; },
-    get:function(){ return log; },
-    copy:function(){
-      var text = JSON.stringify(log, null, 2);
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        return navigator.clipboard.writeText(text).then(function(){ return text; });
-      }
-      return text;
-    },
-    download:function(){
-      var blob = new Blob([JSON.stringify(log, null, 2)], {type:'application/json'});
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'ab_usage_log_' + new Date().toISOString().replace(/[:.]/g,'-') + '.json';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function(){ try{URL.revokeObjectURL(a.href); a.remove();}catch(e){} }, 0);
-    },
-    scanCss:scanCssUsage,
-    wrapFunctions:wrapKnownFunctions,
-    markScreen:markScreen
-  };
+  function hitFunction(name){
+    if(!enabled) return;
+    inc(log.functionCalls, name, 1);
+    if(!log.functionFirstCall[name]) log.functionFirstCall[name] = nowIso();
+  }
 
   function getElementLabel(target){
     try{
       if(!target) return '(null)';
       if(target === window) return 'window';
-      if(target === document) return 'document';
-      if(target.nodeType === 9) return 'document';
+      if(target === document || target.nodeType === 9) return 'document';
       if(target.nodeType === 1){
         var el = target;
         var parts = [el.tagName ? el.tagName.toLowerCase() : 'element'];
@@ -141,9 +118,11 @@ BASE CLEANUP NOTE
         }
         if(el.getAttribute){
           var dk = el.getAttribute('data-key');
-          var da = el.getAttribute('data-action') || el.getAttribute('data-repeat-add-v219') || el.getAttribute('data-tab');
+          var tab = el.getAttribute('data-tab');
+          var repeat = el.getAttribute('data-repeat-add-v219');
           if(dk) parts.push('[data-key="' + dk + '"]');
-          if(da) parts.push('[data-action="' + da + '"]');
+          if(tab) parts.push('[data-tab="' + tab + '"]');
+          if(repeat) parts.push('[data-repeat-add-v219="' + repeat + '"]');
         }
         return parts.join('');
       }
@@ -167,7 +146,7 @@ BASE CLEANUP NOTE
     function optionKey(options){
       if(options === true) return 'capture:true';
       if(options === false || options == null) return 'capture:false';
-      try{ return 'capture:' + !!options.capture + '|once:' + !!options.once + '|passive:' + !!options.passive; }
+      try { return 'capture:' + !!options.capture + '|once:' + !!options.once + '|passive:' + !!options.passive; }
       catch(e){ return 'options'; }
     }
 
@@ -182,10 +161,7 @@ BASE CLEANUP NOTE
       if(byListener[key]) return byListener[key];
 
       var wrapped = function(event){
-        if(enabled){
-          var label = getElementLabel(target);
-          inc(log.eventCalls, type + ' :: ' + label, 1);
-        }
+        if(enabled) inc(log.eventCalls, type + ' :: ' + getElementLabel(target), 1);
         if(typeof listener === 'function') return listener.call(this, event);
         return listener.handleEvent.call(listener, event);
       };
@@ -194,12 +170,7 @@ BASE CLEANUP NOTE
     }
 
     EventTarget.prototype.addEventListener = function(type, listener, options){
-      if(enabled){
-        try{
-          var label = getElementLabel(this);
-          inc(log.eventBindings, String(type) + ' :: ' + label, 1);
-        }catch(e){}
-      }
+      if(enabled) inc(log.eventBindings, String(type) + ' :: ' + getElementLabel(this), 1);
       return originalAdd.call(this, type, getWrapped(this, type, listener, options), options);
     };
 
@@ -214,41 +185,103 @@ BASE CLEANUP NOTE
     };
   }
 
-  function scanCssRules(ruleList, context, result){
-    if(!ruleList) return;
-    for(var i=0; i<ruleList.length; i++){
-      var rule = ruleList[i];
-      if(rule.cssRules){
-        var ctx = context;
-        try{
-          if(rule.conditionText){
-            ctx = context ? context + ' && ' + rule.conditionText : rule.conditionText;
-            inc(log.cssMediaRules, ctx, 1);
+  function stripCssComments(css){
+    return String(css || '').replace(/\/\*[\s\S]*?\*\//g, '');
+  }
+
+  function splitSelectorList(selectorText){
+    var result = [];
+    var current = '';
+    var depth = 0;
+    var quote = null;
+    for(var i=0; i<selectorText.length; i++){
+      var ch = selectorText[i];
+      if(quote){
+        current += ch;
+        if(ch === '\\'){
+          current += selectorText[++i] || '';
+          continue;
+        }
+        if(ch === quote) quote = null;
+        continue;
+      }
+      if(ch === '"' || ch === "'"){
+        quote = ch;
+        current += ch;
+        continue;
+      }
+      if(ch === '(' || ch === '[') depth++;
+      if(ch === ')' || ch === ']') depth = Math.max(0, depth - 1);
+      if(ch === ',' && depth === 0){
+        if(current.trim()) result.push(current.trim());
+        current = '';
+      }else{
+        current += ch;
+      }
+    }
+    if(current.trim()) result.push(current.trim());
+    return result;
+  }
+
+  function scanCssText(css, context, result){
+    css = stripCssComments(css);
+    var i = 0;
+    while(i < css.length){
+      var open = css.indexOf('{', i);
+      if(open < 0) break;
+      var selector = css.slice(i, open).trim();
+      var depth = 1;
+      var j = open + 1;
+      var quote = null;
+      while(j < css.length && depth > 0){
+        var ch = css[j];
+        if(quote){
+          if(ch === '\\'){
+            j += 2;
+            continue;
           }
-        }catch(e){}
-        scanCssRules(rule.cssRules, ctx, result);
+          if(ch === quote) quote = null;
+          j++;
+          continue;
+        }
+        if(ch === '"' || ch === "'"){
+          quote = ch;
+          j++;
+          continue;
+        }
+        if(ch === '{') depth++;
+        else if(ch === '}') depth--;
+        j++;
+      }
+      var body = css.slice(open + 1, j - 1);
+      i = j;
+
+      if(!selector) continue;
+
+      if(selector.charAt(0) === '@'){
+        if(/^@(media|supports|container)\b/i.test(selector)){
+          inc(log.cssMediaRules, selector, 1);
+          scanCssText(body, context ? context + ' && ' + selector : selector, result);
+        }
         continue;
       }
 
-      var selectorText = rule.selectorText;
-      if(!selectorText) continue;
-
-      var selectors = String(selectorText).split(',');
+      var selectors = splitSelectorList(selector);
       for(var s=0; s<selectors.length; s++){
-        var selector = selectors[s].trim();
-        if(!selector) continue;
+        var one = selectors[s];
+        if(!one) continue;
         try{
-          var count = document.querySelectorAll(selector).length;
+          var count = document.querySelectorAll(one).length;
           if(count > 0){
-            result.matched[selector] = (result.matched[selector] || 0) + count;
-            log.cssMatchedSelectors[selector] = Math.max(log.cssMatchedSelectors[selector] || 0, count);
+            result.matched[one] = (result.matched[one] || 0) + count;
+            log.cssMatchedSelectors[one] = Math.max(log.cssMatchedSelectors[one] || 0, count);
           }else{
-            result.unmatched[selector] = (result.unmatched[selector] || 0) + 1;
-            inc(log.cssUnmatchedSelectors, selector, 1);
+            result.unmatched[one] = (result.unmatched[one] || 0) + 1;
+            inc(log.cssUnmatchedSelectors, one, 1);
           }
         }catch(err){
-          result.invalid[selector] = String(err && err.message ? err.message : err);
-          log.cssInvalidSelectors[selector] = result.invalid[selector];
+          result.invalid[one] = String(err && err.message ? err.message : err);
+          log.cssInvalidSelectors[one] = result.invalid[one];
         }
       }
     }
@@ -257,19 +290,16 @@ BASE CLEANUP NOTE
   function scanCssUsage(){
     var result = {at:nowIso(), href:location.href, matched:{}, unmatched:{}, invalid:{}};
     try{
-      for(var i=0; i<document.styleSheets.length; i++){
-        var sheet = document.styleSheets[i];
-        try{ scanCssRules(sheet.cssRules, '', result); }
-        catch(err){
-          result.invalid['stylesheet['+i+']'] = String(err && err.message ? err.message : err);
-        }
+      var styles = document.querySelectorAll('style');
+      for(var i=0; i<styles.length; i++){
+        scanCssText(styles[i].textContent || '', '', result);
       }
-    }catch(e){
-      result.error = String(e && e.message ? e.message : e);
+    }catch(err){
+      result.error = String(err && err.message ? err.message : err);
     }
     log.cssScans.push(result);
-    if(log.cssScans.length > 30) log.cssScans.shift();
-    pushNote('css scan completed', {
+    if(log.cssScans.length > 40) log.cssScans.shift();
+    pushNote('raw css scan completed', {
       matched:Object.keys(result.matched).length,
       unmatched:Object.keys(result.unmatched).length,
       invalid:Object.keys(result.invalid).length
@@ -277,45 +307,55 @@ BASE CLEANUP NOTE
     return result;
   }
 
-  function wrapKnownFunctions(){
-    var wrappedCount = 0;
-    FUNCTION_NAMES.forEach(function(name){
-      try{
-        if(!name || name.indexOf('__AB_') === 0) return;
-        var fn = window[name];
-        if(typeof fn !== 'function') return;
-        if(fn.__AB_USAGE_WRAPPED__) return;
-
-        var wrapped = function(){
-          if(enabled) inc(log.functionCalls, name, 1);
-          return fn.apply(this, arguments);
-        };
-        try{ Object.defineProperty(wrapped, 'name', {value:name, configurable:true}); }catch(e){}
-        wrapped.__AB_USAGE_WRAPPED__ = true;
-        wrapped.__AB_USAGE_ORIGINAL__ = fn;
-        window[name] = wrapped;
-        log.functionWrapped[name] = true;
-        wrappedCount++;
-      }catch(err){
-        log.functionWrapFailed[name] = String(err && err.message ? err.message : err);
-      }
-    });
-    pushNote('function wrap completed', {wrapped:wrappedCount, failed:Object.keys(log.functionWrapFailed).length});
-    return wrappedCount;
+  function copyLog(){
+    var text = JSON.stringify(log, null, 2);
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(text).then(function(){ return text; });
+    }
+    return text;
   }
 
+  function downloadLog(){
+    var blob = new Blob([JSON.stringify(log, null, 2)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'ab_usage_log_v273_' + new Date().toISOString().replace(/[:.]/g,'-') + '.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ try{URL.revokeObjectURL(a.href); a.remove();}catch(e){} }, 0);
+  }
+
+  function resetLog(){
+    window.__AB_USAGE_LOG__ = log = emptyLog();
+    pushNote('logger reset');
+    return log;
+  }
+
+  window.__AB_USAGE_LOGGER__ = {
+    enabled:function(){ return enabled; },
+    enable:function(){ enabled=true; try{localStorage.setItem(STORE_KEY,'1');}catch(e){} log.meta.enabled=true; pushNote('logger enabled'); },
+    disable:function(){ enabled=false; try{localStorage.setItem(STORE_KEY,'0');}catch(e){} log.meta.enabled=false; pushNote('logger disabled'); },
+    reset:resetLog,
+    get:function(){ return log; },
+    copy:copyLog,
+    download:downloadLog,
+    scanCss:scanCssUsage,
+    hitFunction:hitFunction,
+    markScreen:markScreen
+  };
+
   function createPanel(){
-    if(document.getElementById('abUsageLoggerPanelV272')) return;
+    if(document.getElementById('abUsageLoggerPanelV273')) return;
+
     var panel = document.createElement('div');
-    panel.id = 'abUsageLoggerPanelV272';
+    panel.id = 'abUsageLoggerPanelV273';
     panel.innerHTML =
-      '<div class="ab-usage-log-head-v272">' +
-        '<strong>Usage Logger</strong>' +
+      '<div class="ab-usage-log-head-v273">' +
+        '<strong>Usage Logger v273</strong>' +
         '<button type="button" data-ab-log-close>×</button>' +
       '</div>' +
-      '<div class="ab-usage-log-body-v272">' +
+      '<div class="ab-usage-log-body-v273">' +
         '<button type="button" data-ab-log-css>CSS 스캔</button>' +
-        '<button type="button" data-ab-log-fn>함수 래핑</button>' +
         '<button type="button" data-ab-log-copy>JSON 복사</button>' +
         '<button type="button" data-ab-log-down>JSON 저장</button>' +
         '<button type="button" data-ab-log-reset>초기화</button>' +
@@ -324,7 +364,7 @@ BASE CLEANUP NOTE
       '</div>';
 
     var mini = document.createElement('button');
-    mini.id = 'abUsageLoggerMiniV272';
+    mini.id = 'abUsageLoggerMiniV273';
     mini.type = 'button';
     mini.textContent = 'LOG';
 
@@ -341,7 +381,6 @@ BASE CLEANUP NOTE
         'css unmatched: ' + Object.keys(data.cssUnmatchedSelectors).length,
         'events bound: ' + Object.keys(data.eventBindings).length,
         'events called: ' + Object.keys(data.eventCalls).length,
-        'functions wrapped: ' + Object.keys(data.functionWrapped).length,
         'functions called: ' + Object.keys(data.functionCalls).length,
         lastScan ? ('last scan: M ' + Object.keys(lastScan.matched).length + ' / U ' + Object.keys(lastScan.unmatched).length + ' / I ' + Object.keys(lastScan.invalid).length) : 'last scan: none'
       ].join('\n');
@@ -350,35 +389,34 @@ BASE CLEANUP NOTE
     }
 
     panel.querySelector('[data-ab-log-css]').addEventListener('click', function(){ scanCssUsage(); status(); });
-    panel.querySelector('[data-ab-log-fn]').addEventListener('click', function(){ wrapKnownFunctions(); status(); });
     panel.querySelector('[data-ab-log-copy]').addEventListener('click', function(){
-      var copied = window.__AB_USAGE_LOGGER__.copy();
+      var copied = copyLog();
       if(copied && copied.then) copied.then(status);
       else status();
     });
-    panel.querySelector('[data-ab-log-down]').addEventListener('click', function(){ window.__AB_USAGE_LOGGER__.download(); status(); });
-    panel.querySelector('[data-ab-log-reset]').addEventListener('click', function(){ window.__AB_USAGE_LOGGER__.reset(); status(); });
+    panel.querySelector('[data-ab-log-down]').addEventListener('click', function(){ downloadLog(); status(); });
+    panel.querySelector('[data-ab-log-reset]').addEventListener('click', function(){ resetLog(); status(); });
     panel.querySelector('[data-ab-log-toggle]').addEventListener('click', function(){
       if(enabled) window.__AB_USAGE_LOGGER__.disable();
       else window.__AB_USAGE_LOGGER__.enable();
       status();
     });
     panel.querySelector('[data-ab-log-close]').addEventListener('click', function(){
-      panel.classList.add('is-hidden-v272');
-      mini.classList.add('is-visible-v272');
+      panel.classList.add('is-hidden-v273');
+      mini.classList.add('is-visible-v273');
       try{localStorage.setItem(PANEL_KEY,'0');}catch(e){}
     });
     mini.addEventListener('click', function(){
-      panel.classList.remove('is-hidden-v272');
-      mini.classList.remove('is-visible-v272');
+      panel.classList.remove('is-hidden-v273');
+      mini.classList.remove('is-visible-v273');
       try{localStorage.setItem(PANEL_KEY,'1');}catch(e){}
       status();
     });
 
     try{
       if(localStorage.getItem(PANEL_KEY) === '0'){
-        panel.classList.add('is-hidden-v272');
-        mini.classList.add('is-visible-v272');
+        panel.classList.add('is-hidden-v273');
+        mini.classList.add('is-visible-v273');
       }
     }catch(e){}
 
@@ -387,10 +425,10 @@ BASE CLEANUP NOTE
 
   function installScreenVisitTracker(){
     document.addEventListener('click', function(e){
-      var target = e.target && e.target.closest ? e.target.closest('[data-tab],button,[role="tab"],.tab,.main-tab,.tab-btn') : null;
+      var target = e.target && e.target.closest ? e.target.closest('[data-tab],button,[role="tab"],.tab,.main-tab,.tab-btn,label.menu-item') : null;
       if(!target) return;
       var name = target.getAttribute('data-tab') || target.textContent || getElementLabel(target);
-      markScreen(String(name).trim().slice(0,80));
+      markScreen(String(name).trim().slice(0,100));
     }, true);
   }
 
@@ -400,13 +438,11 @@ BASE CLEANUP NOTE
     try{
       createPanel();
       installScreenVisitTracker();
-      setTimeout(function(){ scanCssUsage(); }, 500);
-      setTimeout(function(){ wrapKnownFunctions(); }, 900);
+      setTimeout(function(){ scanCssUsage(); }, 700);
     }catch(e){
       pushNote('logger boot failed', String(e && e.message ? e.message : e));
     }
   });
-
 })();
 </script>
 <!-- AB_USAGE_LOGGER_JS_END -->
@@ -13454,14 +13490,15 @@ body.ab-password-active-v195{overflow:hidden!important}
    제거 방법:
    - 이 AB_USAGE_LOGGER_CSS_START ~ AB_USAGE_LOGGER_CSS_END 블록 삭제
    - head 상단 AB_USAGE_LOGGER_JS_START ~ AB_USAGE_LOGGER_JS_END 블록 삭제
+   - 함수 내부 AB_FN_HIT_START ~ AB_FN_HIT_END 구간 전체 삭제
    - 운영 배포 전 반드시 제거한다.
 */
-#abUsageLoggerPanelV272{
+#abUsageLoggerPanelV273{
   position:fixed !important;
   right:10px !important;
   bottom:10px !important;
   z-index:2147483647 !important;
-  width:260px !important;
+  width:270px !important;
   max-width:calc(100vw - 20px) !important;
   border:1px solid #111827 !important;
   border-radius:12px !important;
@@ -13472,11 +13509,11 @@ body.ab-password-active-v195{overflow:hidden!important}
   font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif !important;
 }
 
-#abUsageLoggerPanelV272.is-hidden-v272{
+#abUsageLoggerPanelV273.is-hidden-v273{
   display:none !important;
 }
 
-#abUsageLoggerPanelV272 .ab-usage-log-head-v272{
+#abUsageLoggerPanelV273 .ab-usage-log-head-v273{
   display:flex !important;
   align-items:center !important;
   justify-content:space-between !important;
@@ -13488,7 +13525,7 @@ body.ab-password-active-v195{overflow:hidden!important}
   font-weight:900 !important;
 }
 
-#abUsageLoggerPanelV272 .ab-usage-log-head-v272 button{
+#abUsageLoggerPanelV273 .ab-usage-log-head-v273 button{
   display:inline-flex !important;
   align-items:center !important;
   justify-content:center !important;
@@ -13503,14 +13540,14 @@ body.ab-password-active-v195{overflow:hidden!important}
   cursor:pointer !important;
 }
 
-#abUsageLoggerPanelV272 .ab-usage-log-body-v272{
+#abUsageLoggerPanelV273 .ab-usage-log-body-v273{
   display:grid !important;
   grid-template-columns:1fr 1fr !important;
   gap:6px !important;
   padding:8px !important;
 }
 
-#abUsageLoggerPanelV272 .ab-usage-log-body-v272 button{
+#abUsageLoggerPanelV273 .ab-usage-log-body-v273 button{
   min-height:30px !important;
   border:1px solid #cbd5e1 !important;
   border-radius:8px !important;
@@ -13521,7 +13558,7 @@ body.ab-password-active-v195{overflow:hidden!important}
   cursor:pointer !important;
 }
 
-#abUsageLoggerPanelV272 .ab-usage-log-body-v272 pre{
+#abUsageLoggerPanelV273 .ab-usage-log-body-v273 pre{
   grid-column:1 / -1 !important;
   max-height:150px !important;
   margin:0 !important;
@@ -13535,7 +13572,7 @@ body.ab-password-active-v195{overflow:hidden!important}
   white-space:pre-wrap !important;
 }
 
-#abUsageLoggerMiniV272{
+#abUsageLoggerMiniV273{
   display:none !important;
   position:fixed !important;
   right:10px !important;
@@ -13553,7 +13590,7 @@ body.ab-password-active-v195{overflow:hidden!important}
   cursor:pointer !important;
 }
 
-#abUsageLoggerMiniV272.is-visible-v272{
+#abUsageLoggerMiniV273.is-visible-v273{
   display:inline-flex !important;
   align-items:center !important;
   justify-content:center !important;
@@ -14789,7 +14826,7 @@ var qsa = (selector, root=document) => Array.from(root.querySelectorAll(selector
  * 메모박스 노출은 CSS(.check-radio.bad:checked ~ .memo)를 1차 기준으로 처리하고,
  * JS는 로그와 복원 상태 보정만 담당한다.
  */
-function bindCheckButtons(){
+function bindCheckButtons(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindCheckButtons");}catch(e){}/*AB_FN_HIT_END*/
   var root = document.getElementById('secCheck');
   if(!root || root.getAttribute('data-check-bound-v1714') === '1') return;
   root.setAttribute('data-check-bound-v1714', '1');
@@ -14804,7 +14841,7 @@ function bindCheckButtons(){
 
    */
 
-  function syncRow(row){
+  function syncRow(row){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncRow");}catch(e){}/*AB_FN_HIT_END*/
     if(!row) return;
     var badRadio = qs('.check-radio.bad', row);
     var memo = qs('.memo', row);
@@ -14833,7 +14870,7 @@ function bindCheckButtons(){
 /**
  * bindLevelButtons는 고객대화 색상 선택 버튼을 단일 선택으로 처리한다.
  */
-function bindLevelButtons(){
+function bindLevelButtons(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindLevelButtons");}catch(e){}/*AB_FN_HIT_END*/
   qsa('[data-level-group] .level').forEach(function(button){
     var run = function(){
       var group = button.closest('[data-level-group]');
@@ -14851,7 +14888,7 @@ function bindLevelButtons(){
  * readTouchDiagramStates는 도면 radio 상태를 읽어 고객보고용 결과로 변환한다.
  * 현재 X/W/R은 모두 고객보고용에 포함하고, 주황 분리 기준 확정 시 internal 매핑만 조정한다.
  */
-function readTouchDiagramStates(role){
+function readTouchDiagramStates(role){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("readTouchDiagramStates");}catch(e){}/*AB_FN_HIT_END*/
   var shell = qs(`[data-diagram-role="${role}"]`);
   var result = {customer:[], internal:[]};
   if(!shell) return result;
@@ -14870,7 +14907,7 @@ function readTouchDiagramStates(role){
 /**
  * renderTagList는 결과 배열을 태그 형태로 출력하고, 빈 결과 카드는 숨긴다.
  */
-function renderTagList(cardId, parts, type){
+function renderTagList(cardId, parts, type){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("renderTagList");}catch(e){}/*AB_FN_HIT_END*/
   var card = qs(`#${cardId}`);
   if(!card) return;
   var list = qs('.taglist', card);
@@ -14888,7 +14925,7 @@ function renderTagList(cardId, parts, type){
 /**
  * buildDiagnosisReports는 사고/외판 도면 선택값을 고객보고용/회사보관용 카드로 갱신한다.
  */
-function buildDiagnosisReports(){
+function buildDiagnosisReports(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildDiagnosisReports");}catch(e){}/*AB_FN_HIT_END*/
   var accident = readTouchDiagramStates('accident');
   var panel = readTouchDiagramStates('panel');
   renderTagList('accidentCustomer', accident.customer, 'customer');
@@ -14900,7 +14937,7 @@ function buildDiagnosisReports(){
 /**
  * bindTouchDiagramChange는 도면 radio 변경 시 보고카드를 갱신한다.
  */
-function bindTouchDiagramChange(){
+function bindTouchDiagramChange(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindTouchDiagramChange");}catch(e){}/*AB_FN_HIT_END*/
   var root = document;
   if(root.__abTouchDiagramChangeBoundV1708) return;
   root.__abTouchDiagramChangeBoundV1708 = true;
@@ -14945,7 +14982,7 @@ function bindTouchDiagramChange(){
 /**
  * restoreDraft는 저장된 입력값과 도면 radio 상태를 복원한다.
  */
-function restoreDraft(){
+function restoreDraft(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("restoreDraft");}catch(e){}/*AB_FN_HIT_END*/
   try{
     var raw = localStorage.getItem(REPORT_STORAGE_KEY);
     if(!raw) return;
@@ -14973,7 +15010,7 @@ function restoreDraft(){
 /**
  * bindKmInputs는 주행거리 입력 완료 시 실제 입력값에 km를 붙인다.
  */
-function bindKmInputs(){
+function bindKmInputs(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindKmInputs");}catch(e){}/*AB_FN_HIT_END*/
   qsa('.km-input').forEach(function(input){
     input.addEventListener('focus', () => AB_KM_FOCUS(input));
     input.addEventListener('input', () => AB_KM_INPUT_LIVE(input));
@@ -14986,7 +15023,7 @@ function bindKmInputs(){
 /**
  * boot는 최초 렌더링과 이벤트 연결을 수행한다.
  */
-function boot(){
+function boot(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("boot");}catch(e){}/*AB_FN_HIT_END*/
   bindKmInputs();
   bindCheckButtons();
   bindLevelButtons();
@@ -15019,7 +15056,7 @@ boot();
 
    */
 
-  function colorClass(value){
+  function colorClass(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("colorClass");}catch(e){}/*AB_FN_HIT_END*/
     var n = parseInt(String(value || '').replace(/[^0-9]/g,''), 10) || 0;
     if(n >= 801) return 'danger';
     if(n >= 301) return 'warn';
@@ -15036,7 +15073,7 @@ boot();
 
    */
 
-  function cleanValue(raw){
+  function cleanValue(raw){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cleanValue");}catch(e){}/*AB_FN_HIT_END*/
     return String(raw || '').replace(/[^0-9]/g,'');
   }
 
@@ -15050,7 +15087,7 @@ boot();
 
    */
 
-  function ensure(id){
+  function ensure(id){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("ensure");}catch(e){}/*AB_FN_HIT_END*/
     if(!STORE[id]) STORE[id] = {v:'', w:false};
     return STORE[id];
   }
@@ -15065,13 +15102,13 @@ boot();
 
    */
 
-  function badge(id){ return document.getElementById('paintNativeBadge_' + id); }
+  function badge(id){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("badge");}catch(e){}/*AB_FN_HIT_END*/ return document.getElementById('paintNativeBadge_' + id); }
   /**
    * 함수: slot
    * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function slot(id){ return document.querySelector('.paint-native-slot[data-paint-id="' + id + '"]'); }
+  function slot(id){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("slot");}catch(e){}/*AB_FN_HIT_END*/ return document.querySelector('.paint-native-slot[data-paint-id="' + id + '"]'); }
 
   /**
 
@@ -15083,7 +15120,7 @@ boot();
 
    */
 
-  function paintBadgeTransform(id){
+  function paintBadgeTransform(id){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("paintBadgeTransform");}catch(e){}/*AB_FN_HIT_END*/
     if(id === 'B4') return 'translate(-94%,-50%)';
     if(id === 'C4') return 'translate(-14%,-50%)';
     return 'translate(-50%,-50%)';
@@ -15099,7 +15136,7 @@ boot();
 
    */
 
-  function makeBadgeNode(oldBadge, id, value, isW){
+  function makeBadgeNode(oldBadge, id, value, isW){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("makeBadgeNode");}catch(e){}/*AB_FN_HIT_END*/
     var nb = oldBadge.cloneNode(false);
     nb.id = 'paintNativeBadge_' + id;
 
@@ -15146,7 +15183,7 @@ boot();
 
    */
 
-  function replaceBadge(id, value){
+  function replaceBadge(id, value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("replaceBadge");}catch(e){}/*AB_FN_HIT_END*/
     var st = ensure(id);
     value = cleanValue(value);
     var old = badge(id);
@@ -15201,7 +15238,7 @@ boot();
 
    */
 
-  function commitValue(input, value, reason){
+  function commitValue(input, value, reason){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("commitValue");}catch(e){}/*AB_FN_HIT_END*/
     if(!input) return;
 
     var id = input.getAttribute('data-paint-id');
@@ -15227,7 +15264,7 @@ boot();
 
    */
 
-  function predictBeforeInput(input, ev){
+  function predictBeforeInput(input, ev){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("predictBeforeInput");}catch(e){}/*AB_FN_HIT_END*/
     var id = input.getAttribute('data-paint-id');
     if(!id) return;
 
@@ -15274,7 +15311,7 @@ boot();
 
    */
 
-  function toggleW(btn, ev){
+  function toggleW(btn, ev){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("toggleW");}catch(e){}/*AB_FN_HIT_END*/
     if(ev && ev.preventDefault) ev.preventDefault();
     if(ev && ev.stopPropagation) ev.stopPropagation();
 
@@ -15306,7 +15343,7 @@ boot();
 
    */
 
-  function bindInput(input){
+  function bindInput(input){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindInput");}catch(e){}/*AB_FN_HIT_END*/
     input.addEventListener('beforeinput', function(ev){
       predictBeforeInput(this, ev);
     }, false);
@@ -15345,7 +15382,7 @@ boot();
 
    */
 
-  function delegateInput(ev){
+  function delegateInput(ev){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("delegateInput");}catch(e){}/*AB_FN_HIT_END*/
     var t = ev.target;
     if(t && t.classList && t.classList.contains('paint-native-input')){
       commitValue(t, t.value, 'delegate-' + ev.type);
@@ -15362,7 +15399,7 @@ boot();
 
    */
 
-  function bind(){
+  function bind(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bind");}catch(e){}/*AB_FN_HIT_END*/
     var inputs = document.querySelectorAll('.paint-native-input');
     for(var i=0;i<inputs.length;i++){
       bindInput(inputs[i]);
@@ -15403,7 +15440,7 @@ boot();
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindGlassStatus(){
+  function bindGlassStatus(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindGlassStatus");}catch(e){}/*AB_FN_HIT_END*/
     var labels = {
       base: '',
       crack: '깨짐(금감)',
@@ -15460,7 +15497,7 @@ boot();
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindInsuranceOptions(){
+  function bindInsuranceOptions(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindInsuranceOptions");}catch(e){}/*AB_FN_HIT_END*/
     var buttons=document.querySelectorAll('.insurance-option');
     for(var i=0;i<buttons.length;i++){
       if(buttons[i].getAttribute('data-insurance-bound')==='1') continue;
@@ -15495,7 +15532,7 @@ boot();
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindInsuranceSelects(){
+  function bindInsuranceSelects(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindInsuranceSelects");}catch(e){}/*AB_FN_HIT_END*/
     var redMap = {
       totalFlood:['전손','침수'],
       usage:['리스','렌트','영업','관용','부활'],
@@ -15567,14 +15604,14 @@ boot();
    * onlyDigitsV16은 콤마/단위가 섞인 입력값에서 숫자만 추출한다.
    * 보험 총 건수/총 금액의 저장값을 숫자 문자열로 유지하기 위한 전용 유틸이다.
    */
-  function onlyDigitsV16(value){
+  function onlyDigitsV16(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigitsV16");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/\D/g, '');
   }
 
   /**
    * formatCommaV16은 숫자 문자열을 화면 표시용 천 단위 콤마 형식으로 변환한다.
    */
-  function formatCommaV16(digits){
+  function formatCommaV16(digits){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatCommaV16");}catch(e){}/*AB_FN_HIT_END*/
     return digits ? Number(digits).toLocaleString('ko-KR') : '';
   }
 
@@ -15582,7 +15619,7 @@ boot();
    * openNativeDateV16은 개별 날짜 wrapper 안의 native date input을 연다.
    * v15.9 반복문 클로저 충돌을 피하기 위해 wrapper를 인수로 직접 받는다.
    */
-  function openNativeDateV16(wrap){
+  function openNativeDateV16(wrap){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("openNativeDateV16");}catch(e){}/*AB_FN_HIT_END*/
     var picker = wrap ? wrap.querySelector('.bi-date-overlay') : null;
     if(!picker) return;
     try{
@@ -15598,7 +15635,7 @@ boot();
    * bindDateTouchV16은 진단일자/등록일자/제작일자 각각에 독립 터치 핸들러를 연결한다.
    * 특히 등록일자 영역의 우측 아이콘 터치 실패를 방지한다.
    */
-  function bindDateTouchV16(){
+  function bindDateTouchV16(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindDateTouchV16");}catch(e){}/*AB_FN_HIT_END*/
     var wraps = document.querySelectorAll('.date-dual-wrap');
     for(var i=0;i<wraps.length;i++){
       (function(wrap){
@@ -15630,7 +15667,7 @@ boot();
    * bindInsuranceSelectsV16은 보험·특수 이력 select 색상과 메모 노출을 v16 기준으로 재동기화한다.
    * 전손/침수/전소, 용도이력, 미확정여부의 기존 빨강 상태 규칙은 유지한다.
    */
-  function bindInsuranceSelectsV16(){
+  function bindInsuranceSelectsV16(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindInsuranceSelectsV16");}catch(e){}/*AB_FN_HIT_END*/
     var redMap = {
       totalFlood:['전손','침수','전소'],
       usage:['리스','렌트','영업','관용','부활'],
@@ -15665,7 +15702,7 @@ boot();
   /**
    * bindInsuranceNumberInputsV16은 보험 총 건수/총 금액을 콤마 표시로 보정하고 data-save-value에는 숫자만 남긴다.
    */
-  function bindInsuranceNumberInputsV16(){
+  function bindInsuranceNumberInputsV16(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindInsuranceNumberInputsV16");}catch(e){}/*AB_FN_HIT_END*/
     var inputs = document.querySelectorAll('.insurance-number-input');
     for(var i=0;i<inputs.length;i++){
       if(inputs[i].getAttribute('data-v160-number') === '1') continue;
@@ -15691,7 +15728,7 @@ boot();
    * bindSaveNumericPatchV16은 기존 저장 버튼 로직이 실행되기 직전에 숫자 저장 전용 필드의 value를 숫자만으로 잠시 바꾼다.
    * 기존 localStorage key와 저장 함수는 변경하지 않는다.
    */
-  function bindSaveNumericPatchV16(){
+  function bindSaveNumericPatchV16(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindSaveNumericPatchV16");}catch(e){}/*AB_FN_HIT_END*/
     var btn = document.getElementById('btnSave');
     if(!btn || btn.getAttribute('data-v160-save-patch') === '1') return;
     btn.setAttribute('data-v160-save-patch','1');
@@ -15715,7 +15752,7 @@ boot();
   /**
    * bootV16은 이번 수정 범위의 이벤트만 초기화한다.
    */
-  function bootV16(){
+  function bootV16(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bootV16");}catch(e){}/*AB_FN_HIT_END*/
     bindDateTouchV16();
     bindInsuranceSelectsV16();
     bindInsuranceNumberInputsV16();
@@ -15742,7 +15779,7 @@ boot();
    * onlyDigitsV163은 보험 이력 숫자 입력값에서 숫자만 추출한다.
    * 기존 저장 key는 변경하지 않고 표시값과 저장값을 분리하기 위한 보조 함수다.
    */
-  function onlyDigitsV163(value){
+  function onlyDigitsV163(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigitsV163");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/\D/g,'');
   }
 
@@ -15750,7 +15787,7 @@ boot();
    * formatCommaV163은 숫자 문자열을 천 단위 콤마 표시로 변환한다.
    * 빈 값은 빈 문자열로 유지하여 placeholder가 정상 노출되게 한다.
    */
-  function formatCommaV163(value){
+  function formatCommaV163(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatCommaV163");}catch(e){}/*AB_FN_HIT_END*/
     var digits = onlyDigitsV163(value);
     if(!digits) return '';
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -15760,7 +15797,7 @@ boot();
    * bindInsuranceNumberInputsV163은 보험이력 총 건수/총 금액 입력칸의 모바일 포커스와 입력 불가 상태를 보정한다.
    * wrapper 클릭 시에도 내부 input으로 포커스를 넘기고, 실제 저장용 숫자는 data-save-value에만 유지한다.
    */
-  function bindInsuranceNumberInputsV163(){
+  function bindInsuranceNumberInputsV163(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindInsuranceNumberInputsV163");}catch(e){}/*AB_FN_HIT_END*/
     var inputs = document.querySelectorAll('.insurance-basic-card .insurance-number-input');
     for(var i=0;i<inputs.length;i++){
       var input = inputs[i];
@@ -15813,7 +15850,7 @@ boot();
 
    */
 
-  function bootV163(){
+  function bootV163(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bootV163");}catch(e){}/*AB_FN_HIT_END*/
     bindInsuranceNumberInputsV163();
   }
 
@@ -15837,7 +15874,7 @@ boot();
    * cleanExteriorTreadV165는 외판 트레드 입력값에서 숫자와 소수점만 남긴다.
    * percent 단위는 화면 표시용으로만 유지하고 저장값에는 포함하지 않는다.
    */
-  function cleanExteriorTreadV165(value){
+  function cleanExteriorTreadV165(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cleanExteriorTreadV165");}catch(e){}/*AB_FN_HIT_END*/
     var raw = String(value || '').replace(/[^0-9.]/g, '');
     var parts = raw.split('.');
     if(parts.length > 1){
@@ -15850,7 +15887,7 @@ boot();
    * bindExteriorTreadInputsV165는 외판 B-9/B-10/C-9/C-10 트레드 입력칸의 숫자 입력만 허용한다.
    * 기존 localStorage key는 변경하지 않고 data-key 기반 저장 흐름에만 편승한다.
    */
-  function bindExteriorTreadInputsV165(){
+  function bindExteriorTreadInputsV165(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindExteriorTreadInputsV165");}catch(e){}/*AB_FN_HIT_END*/
     var inputs = document.querySelectorAll('.exterior-tread-input');
     for(var i=0;i<inputs.length;i++){
       var input = inputs[i];
@@ -15885,7 +15922,7 @@ boot();
 
    */
 
-  function bootExteriorV165(){
+  function bootExteriorV165(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bootExteriorV165");}catch(e){}/*AB_FN_HIT_END*/
     bindExteriorTreadInputsV165();
   }
 
@@ -15937,7 +15974,7 @@ boot();
    * 담당: 추가장착/튜닝 반복행 생성, 삭제, 재정렬 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function reindexProsTuningRows(rows){
+  function reindexProsTuningRows(rows){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("reindexProsTuningRows");}catch(e){}/*AB_FN_HIT_END*/
     if(!rows) return;
     var list = rows.querySelectorAll('.pros-tuning-row');
     for(var i=0;i<list.length;i++){
@@ -15971,7 +16008,7 @@ boot();
 
    */
 
-  function makeProsMinusButton(){
+  function makeProsMinusButton(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("makeProsMinusButton");}catch(e){}/*AB_FN_HIT_END*/
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'pros-tuning-minus';
@@ -15991,7 +16028,7 @@ boot();
 
    */
 
-  function bindProsTuningSingle(){
+  function bindProsTuningSingle(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindProsTuningSingle");}catch(e){}/*AB_FN_HIT_END*/
     var addButtons = document.querySelectorAll('[data-pros-add-tuning]');
     for(var i=0;i<addButtons.length;i++){
       var addBtn = addButtons[i];
@@ -16069,7 +16106,7 @@ boot();
    * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function applyBasicDangerSelect(select){
+  function applyBasicDangerSelect(select){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyBasicDangerSelect");}catch(e){}/*AB_FN_HIT_END*/
     if(!select) return;
     var dangerValue = select.getAttribute('data-danger-value') || '';
     var currentValue = select.value || '';
@@ -16090,7 +16127,7 @@ boot();
 
    */
 
-  function bindBasicDangerSelects(){
+  function bindBasicDangerSelects(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindBasicDangerSelects");}catch(e){}/*AB_FN_HIT_END*/
     var selects = document.querySelectorAll('#secInput select.basic-danger-watch');
     for(var i=0;i<selects.length;i++){
       var sel = selects[i];
@@ -16133,7 +16170,7 @@ boot();
    - change/input 이벤트는 차단하지 않아 저장/복원 흐름과 CSS :checked 반영은 유지된다.
 */
 (function(){
-  function bindCheckFastClick(){
+  function bindCheckFastClick(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindCheckFastClick");}catch(e){}/*AB_FN_HIT_END*/
     var sec = document.getElementById('secCheck');
     if(!sec || sec.getAttribute('data-check-fast-bound-v1679') === '1') return;
     sec.setAttribute('data-check-fast-bound-v1679', '1');
@@ -16170,7 +16207,7 @@ boot();
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindHeaderMenu(){
+  function bindHeaderMenu(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindHeaderMenu");}catch(e){}/*AB_FN_HIT_END*/
     var toggle = document.getElementById('menuToggle');
     if(!toggle) return;
 
@@ -16207,7 +16244,7 @@ boot();
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function onlyDigits(value){
+  function onlyDigits(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigits");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/[^\d]/g, '');
   }
 
@@ -16221,7 +16258,7 @@ boot();
 
    */
 
-  function formatYYMMDD(value){
+  function formatYYMMDD(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatYYMMDD");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0, 6);
     if(d.length <= 2) return d;
     if(d.length <= 4) return d.slice(0,2) + '-' + d.slice(2);
@@ -16238,7 +16275,7 @@ boot();
 
    */
 
-  function cleanupDateFields(){
+  function cleanupDateFields(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cleanupDateFields");}catch(e){}/*AB_FN_HIT_END*/
     var fields = document.querySelectorAll('#secInput .basicinfo-v5-field');
     for(var i=0;i<fields.length;i++){
       var label = fields[i].querySelector('.basicinfo-v5-label');
@@ -16274,7 +16311,7 @@ boot();
 
    */
 
-  function getTuningMain(){
+  function getTuningMain(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getTuningMain");}catch(e){}/*AB_FN_HIT_END*/
     return document.querySelector('#secInput select.tuning-main');
   }
 
@@ -16288,7 +16325,7 @@ boot();
 
    */
 
-  function getTuningStatus(){
+  function getTuningStatus(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getTuningStatus");}catch(e){}/*AB_FN_HIT_END*/
     var main = getTuningMain();
     return main ? main.value : '없음';
   }
@@ -16303,7 +16340,7 @@ boot();
 
    */
 
-  function refreshTuningMainOnly(){
+  function refreshTuningMainOnly(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("refreshTuningMainOnly");}catch(e){}/*AB_FN_HIT_END*/
     var main = getTuningMain();
     var extra = document.querySelector('#secInput .tuning-extra');
     if(main && extra){
@@ -16337,7 +16374,7 @@ boot();
 
    */
 
-  function addTuningRowFixed(){
+  function addTuningRowFixed(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("addTuningRowFixed");}catch(e){}/*AB_FN_HIT_END*/
     var list = document.querySelector('#secInput .tuning-list');
     if(!list) return;
 
@@ -16378,7 +16415,7 @@ boot();
 
    */
 
-  function normalizeTuningRowsFixed(){
+  function normalizeTuningRowsFixed(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("normalizeTuningRowsFixed");}catch(e){}/*AB_FN_HIT_END*/
     var rows = document.querySelectorAll('#secInput .tuning-row');
     for(var i=0;i<rows.length;i++){
       var row = rows[i];
@@ -16429,7 +16466,7 @@ boot();
 
    */
 
-  function bindV1694(){
+  function bindV1694(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindV1694");}catch(e){}/*AB_FN_HIT_END*/
     var sec = document.getElementById('secInput');
     if(!sec || sec.getAttribute('data-v1694-bound') === '1') return;
     sec.setAttribute('data-v1694-bound','1');
@@ -16501,7 +16538,7 @@ boot();
    * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function applyTuningMainColor(){
+  function applyTuningMainColor(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyTuningMainColor");}catch(e){}/*AB_FN_HIT_END*/
     var sel = document.querySelector('#secInput select.tuning-main');
     if(!sel) return;
 
@@ -16547,7 +16584,7 @@ boot();
 
    */
 
-  function normalizeFixedTuningRows(){
+  function normalizeFixedTuningRows(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("normalizeFixedTuningRows");}catch(e){}/*AB_FN_HIT_END*/
     var rows = document.querySelectorAll('#secInput .tuning-row');
     for(var i=0;i<rows.length;i++){
       var row = rows[i];
@@ -16580,7 +16617,7 @@ boot();
 
    */
 
-  function bindV1695(){
+  function bindV1695(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindV1695");}catch(e){}/*AB_FN_HIT_END*/
     var sec = document.getElementById('secInput');
     if(!sec || sec.getAttribute('data-v1695-bound') === '1') return;
     sec.setAttribute('data-v1695-bound','1');
@@ -16665,7 +16702,7 @@ boot();
    * 담당: 지정된 DOM 또는 내부 상태 값을 설정한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function setActiveTab(tabName){
+  function setActiveTab(tabName){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setActiveTab");}catch(e){}/*AB_FN_HIT_END*/
     document.body.classList.add('ab-tab-fast-v1697');
 
     var names = ['input','diag','exterior','check','order'];
@@ -16685,7 +16722,7 @@ boot();
 
    */
 
-  function getCheckedTabName(){
+  function getCheckedTabName(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getCheckedTabName");}catch(e){}/*AB_FN_HIT_END*/
     if(document.getElementById('tabOrder') && document.getElementById('tabOrder').checked) return 'order';
     if(document.getElementById('tabExterior') && document.getElementById('tabExterior').checked) return 'exterior';
     if(document.getElementById('tabDiag') && document.getElementById('tabDiag').checked) return 'diag';
@@ -16703,7 +16740,7 @@ boot();
 
    */
 
-  function bindFastTabs(){
+  function bindFastTabs(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindFastTabs");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-fast-tabs-bound-v1697') === '1') return;
     document.body.setAttribute('data-fast-tabs-bound-v1697','1');
 
@@ -16760,7 +16797,7 @@ boot();
    주의: 저장 key, 도면 좌표, 마커 좌표, radio name/id는 변경하지 않는다.
 */
 (function(){
-  function norm(value){
+  function norm(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("norm");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/\s+/g, '').trim();
   }
 
@@ -16774,7 +16811,7 @@ boot();
 
    */
 
-  function splitValues(text){
+  function splitValues(text){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("splitValues");}catch(e){}/*AB_FN_HIT_END*/
     return String(text || '')
       .split('|')
       .map(function(v){ return v.trim(); })
@@ -16791,7 +16828,7 @@ boot();
 
    */
 
-  function isActiveButton(el){
+  function isActiveButton(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isActiveButton");}catch(e){}/*AB_FN_HIT_END*/
     if(!el) return false;
     return (
       el.classList.contains('active') ||
@@ -16812,7 +16849,7 @@ boot();
 
    */
 
-  function getBoldValues(el){
+  function getBoldValues(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getBoldValues");}catch(e){}/*AB_FN_HIT_END*/
     var raw = el.getAttribute('data-bold-values') ||
               el.getAttribute('data-danger-values') ||
               el.getAttribute('data-red-values') ||
@@ -16831,7 +16868,7 @@ boot();
 
    */
 
-  function applySelect(el){
+  function applySelect(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applySelect");}catch(e){}/*AB_FN_HIT_END*/
     if(!el) return;
 
     var values = getBoldValues(el);
@@ -16865,7 +16902,7 @@ boot();
 
    */
 
-  function applyButton(el){
+  function applyButton(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyButton");}catch(e){}/*AB_FN_HIT_END*/
     if(!el) return;
 
     var values = getBoldValues(el);
@@ -16887,7 +16924,7 @@ boot();
 
    */
 
-  function applyAround(target){
+  function applyAround(target){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyAround");}catch(e){}/*AB_FN_HIT_END*/
     if(!target || !target.closest) return;
 
     var select = target.closest('select');
@@ -16907,7 +16944,7 @@ boot();
 
    */
 
-  function initialApply(){
+  function initialApply(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("initialApply");}catch(e){}/*AB_FN_HIT_END*/
     var root = document;
     var selects = root.querySelectorAll('select.ab-direct-bold-select, select.ab-ins-bold-select-v1670, select[data-bold-values], select[data-danger-value]');
     for(var i=0;i<selects.length;i++) applySelect(selects[i]);
@@ -16926,7 +16963,7 @@ boot();
 
    */
 
-  function bindUnifiedBoldV1709(){
+  function bindUnifiedBoldV1709(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindUnifiedBoldV1709");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-unified-bold-bound-v1709') === '1') return;
     document.body.setAttribute('data-unified-bold-bound-v1709','1');
 
@@ -16979,7 +17016,7 @@ boot();
    주의: 도면 좌표, 마커 좌표, radio id/name, localStorage key는 변경하지 않는다.
 */
 (function(){
-  function onlyDigits(value){
+  function onlyDigits(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigits");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/[^\d]/g, '');
   }
 
@@ -16993,7 +17030,7 @@ boot();
 
    */
 
-  function formatYYMMDD(value){
+  function formatYYMMDD(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatYYMMDD");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0, 6);
     if(d.length <= 2) return d;
     if(d.length <= 4) return d.slice(0,2) + '-' + d.slice(2);
@@ -17010,7 +17047,7 @@ boot();
 
    */
 
-  function kmLive(input){
+  function kmLive(input){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("kmLive");}catch(e){}/*AB_FN_HIT_END*/
     input.value = onlyDigits(input.value);
   }
 
@@ -17024,7 +17061,7 @@ boot();
 
    */
 
-  function kmFormat(input){
+  function kmFormat(input){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("kmFormat");}catch(e){}/*AB_FN_HIT_END*/
     var digits = onlyDigits(input.value);
     input.value = digits ? Number(digits).toLocaleString('ko-KR') + ' km' : '';
   }
@@ -17039,7 +17076,7 @@ boot();
 
    */
 
-  function togglePlateBadge(){
+  function togglePlateBadge(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("togglePlateBadge");}catch(e){}/*AB_FN_HIT_END*/
     var badge = document.querySelector('.plate-change-badge');
     if(!badge) return;
     var nowHidden = badge.style.display === 'none' || !badge.style.display;
@@ -17056,7 +17093,7 @@ boot();
 
    */
 
-  function cleanupDateCalendar(){
+  function cleanupDateCalendar(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cleanupDateCalendar");}catch(e){}/*AB_FN_HIT_END*/
     var fields = document.querySelectorAll('#secInput .basicinfo-v5-field');
     for(var i=0;i<fields.length;i++){
       var label = fields[i].querySelector('.basicinfo-v5-label');
@@ -17092,7 +17129,7 @@ boot();
 
    */
 
-  function bindBasicV1710(){
+  function bindBasicV1710(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindBasicV1710");}catch(e){}/*AB_FN_HIT_END*/
     var sec = document.getElementById('secInput');
     if(!sec || sec.getAttribute('data-basic-bound-v1710') === '1') return;
     sec.setAttribute('data-basic-bound-v1710', '1');
@@ -17169,7 +17206,7 @@ boot();
    - 좌표값(left/top %)은 그대로 두고, slot 내부 marker/badge의 기준점만 중앙에 고정한다.
 */
 (function(){
-  function sideTransform(id){
+  function sideTransform(id){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("sideTransform");}catch(e){}/*AB_FN_HIT_END*/
     if(id === 'B4') return 'translate(-94%,-50%)';
     if(id === 'B3') return 'translate(-8%,-50%)';
     if(id === 'C3') return 'translate(-118%,-50%)';
@@ -17187,7 +17224,7 @@ boot();
 
    */
 
-  function stabilizePaintSideNode(node){
+  function stabilizePaintSideNode(node){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("stabilizePaintSideNode");}catch(e){}/*AB_FN_HIT_END*/
     if(!node || !node.closest) return;
 
     var slot = node.closest('#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"]');
@@ -17233,7 +17270,7 @@ boot();
 
    */
 
-  function stabilizeAllPaintSide(){
+  function stabilizeAllPaintSide(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("stabilizeAllPaintSide");}catch(e){}/*AB_FN_HIT_END*/
     var nodes = document.querySelectorAll('#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"]');
     for(var i=0;i<nodes.length;i++) stabilizePaintSideNode(nodes[i]);
   }
@@ -17248,7 +17285,7 @@ boot();
 
    */
 
-  function bindPaintSideStabilizerV1713(){
+  function bindPaintSideStabilizerV1713(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindPaintSideStabilizerV1713");}catch(e){}/*AB_FN_HIT_END*/
     var card = document.querySelector('#secDiag .diag-paint-card');
     if(!card || card.getAttribute('data-paint-side-stable-v1713') === '1') return;
     card.setAttribute('data-paint-side-stable-v1713','1');
@@ -17308,7 +17345,7 @@ boot();
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
+  function onlyDigits(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigits");}catch(e){}/*AB_FN_HIT_END*/ return String(value || '').replace(/[^\d]/g, ''); }
 
   /**
 
@@ -17320,7 +17357,7 @@ boot();
 
    */
 
-  function commaNumber(value){
+  function commaNumber(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("commaNumber");}catch(e){}/*AB_FN_HIT_END*/
     var digits = onlyDigits(value);
     if(!digits) return '';
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -17336,7 +17373,7 @@ boot();
 
    */
 
-  function formatPhone(value){
+  function formatPhone(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatPhone");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0, 11);
     if(!d) return '';
     if(d.length <= 3) return d;
@@ -17354,7 +17391,7 @@ boot();
 
    */
 
-  function formatRrn(value){
+  function formatRrn(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatRrn");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0, 13);
     if(d.length <= 6) return d;
     return d.slice(0,6) + '-' + d.slice(6);
@@ -17370,7 +17407,7 @@ boot();
 
    */
 
-  function formatYYMM(value){
+  function formatYYMM(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatYYMM");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0, 4);
     if(d.length <= 2) return d;
     return d.slice(0,2) + '-' + d.slice(2);
@@ -17386,7 +17423,7 @@ boot();
 
    */
 
-  function formatMMDD(value){
+  function formatMMDD(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatMMDD");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0, 4);
     if(d.length <= 2) return d;
     return d.slice(0,2) + '-' + d.slice(2);
@@ -17402,7 +17439,7 @@ boot();
 
    */
 
-  function mmddKorean(value){
+  function mmddKorean(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("mmddKorean");}catch(e){}/*AB_FN_HIT_END*/
     value = String(value || '').trim();
     if(!value) return '';
     var m = value.match(/^(\d{1,2})-(\d{1,2})$/);
@@ -17412,7 +17449,7 @@ boot();
 
 
   /** MM-DD와 HH 입력값을 MM월 DD일 HH시 형식으로 변환한다. */
-  function certifiedDepartureKorean(mmddValue, hourValue){
+  function certifiedDepartureKorean(mmddValue, hourValue){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("certifiedDepartureKorean");}catch(e){}/*AB_FN_HIT_END*/
     var dateText = mmddKorean(mmddValue);
     var hourDigits = onlyDigits(hourValue).slice(0,2);
     var hourText = hourDigits ? String(parseInt(hourDigits,10)) + '시' : '';
@@ -17430,7 +17467,7 @@ boot();
 
    */
 
-  function getByKey(key){
+  function getByKey(key){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getByKey");}catch(e){}/*AB_FN_HIT_END*/
     var el = document.querySelector('#secOrder [data-key="' + key + '"]');
     if(!el) return '';
     return (el.value || '').trim();
@@ -17446,7 +17483,7 @@ boot();
 
    */
 
-  function dateSlash(key){
+  function dateSlash(key){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("dateSlash");}catch(e){}/*AB_FN_HIT_END*/
     var value = getByKey(key);
     if(!value) return '';
     var m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -17464,7 +17501,7 @@ boot();
 
    */
 
-  function getYear(){
+  function getYear(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getYear");}catch(e){}/*AB_FN_HIT_END*/
     var reg = getByKey('order_year_reg_ym');
     var model = getByKey('order_year_model_yy');
 
@@ -17493,7 +17530,7 @@ boot();
 
    */
 
-  function getSelectPlus(selectKey, inputKey){
+  function getSelectPlus(selectKey, inputKey){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getSelectPlus");}catch(e){}/*AB_FN_HIT_END*/
     var s = getByKey(selectKey);
     var i = getByKey(inputKey);
     if(s && i) return s + ' ' + i;
@@ -17510,7 +17547,7 @@ boot();
 
    */
 
-  function getMoney(prefix, appendFee){
+  function getMoney(prefix, appendFee){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getMoney");}catch(e){}/*AB_FN_HIT_END*/
     var amount = getByKey(prefix + '_amount');
     var unit = getByKey(prefix + '_unit') || '만원';
     if(!amount) return '';
@@ -17529,7 +17566,7 @@ boot();
 
    */
 
-  function getMoneyOrX(prefix, appendFee){
+  function getMoneyOrX(prefix, appendFee){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getMoneyOrX");}catch(e){}/*AB_FN_HIT_END*/
     return getMoney(prefix, appendFee) || 'X';
   }
 
@@ -17543,7 +17580,7 @@ boot();
 
    */
 
-  function getMoneyDate(prefix){
+  function getMoneyDate(prefix){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getMoneyDate");}catch(e){}/*AB_FN_HIT_END*/
     var amount = getByKey(prefix + '_amount');
     var unit = getByKey(prefix + '_unit') || '만원';
     var mmdd = mmddKorean(getByKey(prefix + '_date_mmdd'));
@@ -17563,7 +17600,7 @@ boot();
 
    */
 
-  function getAccount(prefix){
+  function getAccount(prefix){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getAccount");}catch(e){}/*AB_FN_HIT_END*/
     var bank = getByKey(prefix + '_bank');
     var number = getByKey(prefix + '_number');
     var holder = getByKey(prefix + '_holder');
@@ -17584,7 +17621,7 @@ boot();
 
    */
 
-  function getCountMemo(prefix){
+  function getCountMemo(prefix){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getCountMemo");}catch(e){}/*AB_FN_HIT_END*/
     var count = parseInt(getByKey(prefix + '_count_select') || '0', 10);
     if(!count || count <= 0) return 'X';
 
@@ -17603,17 +17640,17 @@ boot();
 
    */
 
-  function profitIsOpen(){
+  function profitIsOpen(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("profitIsOpen");}catch(e){}/*AB_FN_HIT_END*/
     var btn = document.getElementById('orderProfitToggle');
     return !!(btn && btn.getAttribute('data-open') === '1');
   }
 
   /** 검수자 값이 엔카인지 확인하여 금액 출력에 수수료 문구를 적용한다. */
-  function inspectorIsEncar(){
+  function inspectorIsEncar(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("inspectorIsEncar");}catch(e){}/*AB_FN_HIT_END*/
     return getByKey('order_inspector').replace(/\s+/g,'') === '엔카';
   }
 
-  function refreshCountDetail(wrap){
+  function refreshCountDetail(wrap){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("refreshCountDetail");}catch(e){}/*AB_FN_HIT_END*/
     var select = wrap ? wrap.querySelector('.order-count-select-v1717') : null;
     var count = select ? parseInt(select.value || '0', 10) : 0;
     if(wrap) wrap.setAttribute('data-open', count > 0 ? '1' : '0');
@@ -17629,7 +17666,7 @@ boot();
 
    */
 
-  function syncUnitButton(btn, hidden){
+  function syncUnitButton(btn, hidden){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncUnitButton");}catch(e){}/*AB_FN_HIT_END*/
     if(!btn || !hidden) return;
     var unit = hidden.value || btn.getAttribute('data-unit') || '만원';
     btn.textContent = unit;
@@ -17647,7 +17684,7 @@ boot();
 
    */
 
-  function toggleUnit(btn){
+  function toggleUnit(btn){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("toggleUnit");}catch(e){}/*AB_FN_HIT_END*/
     if(!btn) return;
     var wrap = btn.closest('.order-money-unit, .order-money-date');
     if(!wrap) return;
@@ -17670,7 +17707,7 @@ boot();
 
    */
 
-  function buildOrderTextV1717(){
+  function buildOrderTextV1717(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildOrderTextV1717");}catch(e){}/*AB_FN_HIT_END*/
     var fee = inspectorIsEncar();
     var lines = [];
 
@@ -17737,7 +17774,7 @@ boot();
 
    */
 
-  function bindOrderV1717(){
+  function bindOrderV1717(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindOrderV1717");}catch(e){}/*AB_FN_HIT_END*/
     var sec = document.getElementById('secOrder');
     if(!sec || sec.getAttribute('data-order-bound-v1717') === '1') return;
     sec.setAttribute('data-order-bound-v1717','1');
@@ -17867,7 +17904,7 @@ boot();
    - radio id/name 및 기존 CSS checked 구조는 그대로 유지한다.
 */
 (function(){
-  function setRadioByLabel(label){
+  function setRadioByLabel(label){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setRadioByLabel");}catch(e){}/*AB_FN_HIT_END*/
     if(!label) return false;
 
     var forId = label.getAttribute('for');
@@ -17897,7 +17934,7 @@ boot();
 
    */
 
-  function isDiagramMarkerLabel(label){
+  function isDiagramMarkerLabel(label){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isDiagramMarkerLabel");}catch(e){}/*AB_FN_HIT_END*/
     if(!label || !label.closest) return false;
     if(!label.closest('#secDiag')) return false;
 
@@ -17920,7 +17957,7 @@ boot();
 
    */
 
-  function bindMarkerStableV1718(){
+  function bindMarkerStableV1718(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindMarkerStableV1718");}catch(e){}/*AB_FN_HIT_END*/
     var root = document.getElementById('secDiag');
     if(!root || root.getAttribute('data-marker-stable-bound-v1718') === '1') return;
     root.setAttribute('data-marker-stable-bound-v1718','1');
@@ -17965,7 +18002,7 @@ boot();
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function onlyDigits(value){
+  function onlyDigits(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigits");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/[^\d]/g, '');
   }
 
@@ -17979,7 +18016,7 @@ boot();
 
    */
 
-  function commaNumber(value){
+  function commaNumber(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("commaNumber");}catch(e){}/*AB_FN_HIT_END*/
     var digits = onlyDigits(value);
     if(!digits) return '';
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -17995,7 +18032,7 @@ boot();
 
    */
 
-  function formatYMD(value){
+  function formatYMD(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatYMD");}catch(e){}/*AB_FN_HIT_END*/
     var d = onlyDigits(value).slice(0,8);
     if(d.length <= 4) return d;
     if(d.length <= 6) return d.slice(0,4) + '-' + d.slice(4);
@@ -18012,7 +18049,7 @@ boot();
 
    */
 
-  function norm(v){
+  function norm(v){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("norm");}catch(e){}/*AB_FN_HIT_END*/
     return String(v || '').replace(/\s+/g,'').trim();
   }
 
@@ -18026,7 +18063,7 @@ boot();
 
    */
 
-  function dangerValue(select){
+  function dangerValue(select){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("dangerValue");}catch(e){}/*AB_FN_HIT_END*/
     if(!select) return null;
     if(select.classList.contains('sticker-select')) return '없음';
     if(select.classList.contains('cluster-select')) return '상이';
@@ -18050,7 +18087,7 @@ boot();
 
    */
 
-  function applyDanger(select){
+  function applyDanger(select){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyDanger");}catch(e){}/*AB_FN_HIT_END*/
     var danger = dangerValue(select);
     if(!danger) return;
     var active = norm(select.value) === danger;
@@ -18081,7 +18118,7 @@ boot();
 
    */
 
-  function applyAllDanger(){
+  function applyAllDanger(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyAllDanger");}catch(e){}/*AB_FN_HIT_END*/
     var list = document.querySelectorAll([
       '#secInput .sticker-select',
       '#secInput .cluster-select',
@@ -18105,7 +18142,7 @@ boot();
 
    */
 
-  function syncMemos(){
+  function syncMemos(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncMemos");}catch(e){}/*AB_FN_HIT_END*/
     var cluster = document.querySelector('#secInput .cluster-select');
     var clusterMemo = document.querySelector('#secInput .cluster-memo');
     if(clusterMemo){
@@ -18138,7 +18175,7 @@ boot();
 
    */
 
-  function setPlateVisible(force){
+  function setPlateVisible(force){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setPlateVisible");}catch(e){}/*AB_FN_HIT_END*/
     var badge = document.querySelector('#secInput .plate-change-badge');
     if(!badge) return;
     var open = typeof force === 'boolean' ? force : !badge.classList.contains('plate-change-show-v1720');
@@ -18156,7 +18193,7 @@ boot();
 
    */
 
-  function setSunroof(state){
+  function setSunroof(state){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setSunroof");}catch(e){}/*AB_FN_HIT_END*/
     var badge = document.querySelector('#secDiag .exterior-sunroof-badge');
     var field = document.querySelector('[data-key="exteriorSunroofState"]');
     state = state === '점검' ? '점검' : '선루프';
@@ -18181,7 +18218,7 @@ boot();
    * 보증연장 버튼은 앞선 capture 이벤트에서 전파가 종료되므로
    * 이 함수 안에서 data-talk-level과 hidden input을 직접 동기화한다.
    */
-  function cycleTalk(btn){
+  function cycleTalk(btn){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cycleTalk");}catch(e){}/*AB_FN_HIT_END*/
     var cur = btn.getAttribute('data-value') || btn.getAttribute('data-talk-level') || '0';
     var arr = ['0','1','2','3','4','5'];
     var idx = arr.indexOf(cur);
@@ -18214,7 +18251,7 @@ boot();
 
    */
 
-  function disableAccA4A7(){
+  function disableAccA4A7(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("disableAccA4A7");}catch(e){}/*AB_FN_HIT_END*/
     var list = document.querySelectorAll('#secDiag .acc-card-a4a7-off-v1720 .acc-a4a7-hard-off-v1720, #secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"], #secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698');
     for(var i=0;i<list.length;i++){
       var el = list[i];
@@ -18238,7 +18275,7 @@ boot();
 
    */
 
-  function isA4A7Target(target){
+  function isA4A7Target(target){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isA4A7Target");}catch(e){}/*AB_FN_HIT_END*/
     if(!target || !target.closest) return false;
     var node = target.closest('#secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"], #secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698');
     if(node) return true;
@@ -18258,7 +18295,7 @@ boot();
 
    */
 
-  function bindV1720(){
+  function bindV1720(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindV1720");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-v1720-repair-bound') === '1') return;
     document.body.setAttribute('data-v1720-repair-bound', '1');
 
@@ -18381,7 +18418,7 @@ boot();
    * 담당: 번호판 배지 문구 보정 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function fixPlateBadgeText(){
+  function fixPlateBadgeText(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("fixPlateBadgeText");}catch(e){}/*AB_FN_HIT_END*/
     var badge = document.querySelector('#secInput .plate-change-badge');
     if(!badge) return;
     badge.textContent = '번호 변경예정';
@@ -18407,7 +18444,7 @@ boot();
    영향 범위: #secOrder #orderCopyOutput 출력값만 적용한다.
 */
 (function(){
-  function normalizeOrderOutputNewlines(){
+  function normalizeOrderOutputNewlines(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("normalizeOrderOutputNewlines");}catch(e){}/*AB_FN_HIT_END*/
     var output = document.getElementById('orderCopyOutput');
     if(!output || !output.value) return;
     if(output.value.indexOf('\\n') >= 0){
@@ -18425,7 +18462,7 @@ boot();
 
    */
 
-  function bindOrderNewlineFixV1722(){
+  function bindOrderNewlineFixV1722(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindOrderNewlineFixV1722");}catch(e){}/*AB_FN_HIT_END*/
     var submit = document.getElementById('orderSubmitBtn');
     var output = document.getElementById('orderCopyOutput');
     if(!submit || !output || submit.getAttribute('data-newline-fix-v1722') === '1') return;
@@ -18456,7 +18493,7 @@ boot();
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function onlyDigits(value){
+  function onlyDigits(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigits");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/[^\d]/g, '');
   }
 
@@ -18470,7 +18507,7 @@ boot();
 
    */
 
-  function formatDateText(value){
+  function formatDateText(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatDateText");}catch(e){}/*AB_FN_HIT_END*/
     var digits = onlyDigits(value).slice(0, 8);
     if(digits.length <= 4) return digits;
     if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
@@ -18487,7 +18524,7 @@ boot();
 
    */
 
-  function syncTextToNative(textInput){
+  function syncTextToNative(textInput){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncTextToNative");}catch(e){}/*AB_FN_HIT_END*/
     var wrap = textInput.closest ? textInput.closest('.date-dual-wrap') : textInput.parentNode;
     var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
     if(nativeDate && /^\d{4}-\d{2}-\d{2}$/.test(textInput.value)){
@@ -18505,7 +18542,7 @@ boot();
 
    */
 
-  function syncNativeToText(dateInput){
+  function syncNativeToText(dateInput){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncNativeToText");}catch(e){}/*AB_FN_HIT_END*/
     var wrap = dateInput.closest ? dateInput.closest('.date-dual-wrap') : dateInput.parentNode;
     var textInput = wrap ? wrap.querySelector('.date-ymd-input') : null;
     if(textInput){
@@ -18527,7 +18564,7 @@ boot();
 
    */
 
-  function openNativeDate(wrap){
+  function openNativeDate(wrap){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("openNativeDate");}catch(e){}/*AB_FN_HIT_END*/
     var picker = wrap ? wrap.querySelector('.bi-date-overlay') : null;
     if(!picker) return;
 
@@ -18554,7 +18591,7 @@ boot();
 
    */
 
-  function bindDateOldRestoreV1729(){
+  function bindDateOldRestoreV1729(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindDateOldRestoreV1729");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-date-old-restore-v1729') === '1') return;
     document.body.setAttribute('data-date-old-restore-v1729', '1');
 
@@ -18647,7 +18684,7 @@ boot();
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindDateCleanV1730(){
+  function bindDateCleanV1730(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindDateCleanV1730");}catch(e){}/*AB_FN_HIT_END*/
     var wrap = document.querySelector('#secInput .date-old-stable-v1730');
     if(!wrap || wrap.getAttribute('data-date-clean-bound-v1730') === '1') return;
     wrap.setAttribute('data-date-clean-bound-v1730', '1');
@@ -18688,7 +18725,7 @@ boot();
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function onlyDigits(value){
+  function onlyDigits(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("onlyDigits");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/[^\d]/g, '');
   }
   /**
@@ -18696,7 +18733,7 @@ boot();
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function formatDateText(value){
+  function formatDateText(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatDateText");}catch(e){}/*AB_FN_HIT_END*/
     var digits = onlyDigits(value).slice(0,8);
     if(digits.length <= 4) return digits;
     if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
@@ -18707,7 +18744,7 @@ boot();
    * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function syncNativeToText(native){
+  function syncNativeToText(native){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncNativeToText");}catch(e){}/*AB_FN_HIT_END*/
     var wrap = native.closest ? native.closest('.date-dual-wrap') : native.parentNode;
     var text = wrap ? wrap.querySelector('.date-ymd-input') : null;
     if(text && native.value){
@@ -18723,7 +18760,7 @@ boot();
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindDateCleanV1736(){
+  function bindDateCleanV1736(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindDateCleanV1736");}catch(e){}/*AB_FN_HIT_END*/
     var wrap = document.querySelector('#secInput .real-mini-calendar-v1736');
     if(!wrap || wrap.getAttribute('data-real-mini-calendar-v1736') === '1') return;
     wrap.setAttribute('data-real-mini-calendar-v1736','1');
@@ -18762,7 +18799,7 @@ boot();
    * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function cleanExteriorTreadV1739(){
+  function cleanExteriorTreadV1739(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cleanExteriorTreadV1739");}catch(e){}/*AB_FN_HIT_END*/
     var inputs = document.querySelectorAll('#secDiag input[data-key^="exterior_tread_"], #secDiag input.exterior-tread-input');
     for(var i=0;i<inputs.length;i++){
       var input = inputs[i];
@@ -18817,7 +18854,7 @@ boot();
    * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function normalizePlateBadgeV1752(){
+  function normalizePlateBadgeV1752(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("normalizePlateBadgeV1752");}catch(e){}/*AB_FN_HIT_END*/
     var badge = document.querySelector('#secInput .plate-change-badge');
     if(!badge) return;
 
@@ -18848,7 +18885,7 @@ boot();
 
    */
 
-  function bindPlateBadgeV1752(){
+  function bindPlateBadgeV1752(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindPlateBadgeV1752");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-plate-badge-v1752') === '1') return;
     document.body.setAttribute('data-plate-badge-v1752', '1');
 
@@ -18892,25 +18929,25 @@ boot();
     {no:'03', title:'외관/수리', tab:'exterior', section:'#secExterior', fallbackSection:'#secDiag', groupSelector:'article.diag-paint-card, article.diag-exterior-card, article.tire-state-card-v1696, article.report-card-ui, .report-card-ui, .touch-card, .card', scanByText:true, companyHideL:true},
     {no:'04', title:'점검', tab:'check', section:'#secCheck', companyHideL:false}
   ];
-  function qs(sel, root){ return (root || document).querySelector(sel); }
+  function qs(sel, root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("qs");}catch(e){}/*AB_FN_HIT_END*/ return (root || document).querySelector(sel); }
   /**
    * 함수: qsa
    * 담당: DOM 선택자를 안전하게 조회하는 헬퍼 함수다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function qsa(sel, root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("qsa");}catch(e){}/*AB_FN_HIT_END*/ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   /**
    * 함수: wait
    * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+  function wait(ms){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("wait");}catch(e){}/*AB_FN_HIT_END*/ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
   /**
    * 함수: waitFrame
    * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function waitFrame(count){
+  function waitFrame(count){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("waitFrame");}catch(e){}/*AB_FN_HIT_END*/
     count = count || 1;
     return new Promise(function(resolve){
       /**
@@ -18918,7 +18955,7 @@ boot();
        * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
        * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
        */
-      function next(n){
+      function next(n){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("next");}catch(e){}/*AB_FN_HIT_END*/
         if(n <= 0) return resolve();
         requestAnimationFrame(function(){ next(n - 1); });
       }
@@ -18936,7 +18973,7 @@ boot();
 
    */
 
-  function showLoading(msg){
+  function showLoading(msg){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("showLoading");}catch(e){}/*AB_FN_HIT_END*/
     var box = document.getElementById(LOADING_ID);
     if(!box){
       box = document.createElement('div');
@@ -18951,7 +18988,7 @@ boot();
    * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function hideLoading(){
+  function hideLoading(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("hideLoading");}catch(e){}/*AB_FN_HIT_END*/
     var ids = [
       LOADING_ID,
       'reportRealCaptureLoadingV1758',
@@ -18977,7 +19014,7 @@ boot();
 
    */
 
-  function safeFileName(value){
+  function safeFileName(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("safeFileName");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/[\\/:*?"<>|\s]+/g, '_').replace(/_+/g,'_').replace(/^_|_$/g,'');
   }
 
@@ -19617,7 +19654,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function qsa(sel, root){
+  function qsa(sel, root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("qsa");}catch(e){}/*AB_FN_HIT_END*/
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
   }
 
@@ -19631,7 +19668,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function textOf(el){
+  function textOf(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("textOf");}catch(e){}/*AB_FN_HIT_END*/
     return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim();
   }
 
@@ -19645,7 +19682,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function findWrapPpfCard(){
+  function findWrapPpfCard(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("findWrapPpfCard");}catch(e){}/*AB_FN_HIT_END*/
     var direct = document.querySelector('.wrapppf-card-fix-v1724, article.wrapppf-card-fix-v1724, .wrapppf-card');
     if(direct) return direct;
 
@@ -19669,7 +19706,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function findSelect(card){
+  function findSelect(card){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("findSelect");}catch(e){}/*AB_FN_HIT_END*/
     if(!card) return null;
     return card.querySelector(
       'select.wrap-select, select.wrap-select-fix-v1724, select[data-key*="wrap"], select[data-key*="ppf"], select'
@@ -19686,7 +19723,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function findMemo(card){
+  function findMemo(card){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("findMemo");}catch(e){}/*AB_FN_HIT_END*/
     if(!card) return null;
 
     var memo = card.querySelector(
@@ -19722,7 +19759,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function selectedIsOn(select){
+  function selectedIsOn(select){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("selectedIsOn");}catch(e){}/*AB_FN_HIT_END*/
     if(!select) return false;
 
     var value = (select.value || '').trim();
@@ -19744,7 +19781,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function applyWrapPpfMemoV1763(){
+  function applyWrapPpfMemoV1763(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyWrapPpfMemoV1763");}catch(e){}/*AB_FN_HIT_END*/
     var card = findWrapPpfCard();
     if(!card){
       return;
@@ -19795,7 +19832,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function bindWrapPpfMemoV1763(){
+  function bindWrapPpfMemoV1763(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindWrapPpfMemoV1763");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-wrapppf-v1763') === '1') return;
     document.body.setAttribute('data-wrapppf-v1763', '1');
 
@@ -19850,13 +19887,13 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function qs(sel, root){ return (root || document).querySelector(sel); }
+  function qs(sel, root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("qs");}catch(e){}/*AB_FN_HIT_END*/ return (root || document).querySelector(sel); }
   /**
    * 함수: qsa
    * 담당: DOM 선택자를 안전하게 조회하는 헬퍼 함수다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function qsa(sel, root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("qsa");}catch(e){}/*AB_FN_HIT_END*/ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
   /**
 
@@ -19868,7 +19905,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function selectedText(select){
+  function selectedText(select){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("selectedText");}catch(e){}/*AB_FN_HIT_END*/
     if(!select) return '';
     if(select.options && select.selectedIndex >= 0){
       return (select.options[select.selectedIndex].textContent || '').trim();
@@ -19886,7 +19923,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function syncFormValuesForClone(original, clone){
+  function syncFormValuesForClone(original, clone){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncFormValuesForClone");}catch(e){}/*AB_FN_HIT_END*/
     var originals = original.querySelectorAll('input, select, textarea');
     var clones = clone.querySelectorAll('input, select, textarea');
 
@@ -19940,7 +19977,7 @@ function isVisibleCaptureTarget(el){
    * stripTransientPrintUi는 화면 조작용 임시 UI를 PDF clone에서 제거한다.
    * 도막 입력 패널은 열림/닫힘 상태와 관계없이 출력물에 포함하지 않는다.
    */
-  function stripTransientPrintUi(root){
+  function stripTransientPrintUi(root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("stripTransientPrintUi");}catch(e){}/*AB_FN_HIT_END*/
     if(!root) return;
 
     qsa(
@@ -19964,7 +20001,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function makeReadonlyForPrint(root){
+  function makeReadonlyForPrint(root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("makeReadonlyForPrint");}catch(e){}/*AB_FN_HIT_END*/
     qsa('input, textarea', root).forEach(function(el){
       if(el.type === 'hidden'){
         el.remove();
@@ -19986,7 +20023,7 @@ function isVisibleCaptureTarget(el){
    * @param {Element} slot 마커 slot 요소
    * @returns {HTMLInputElement[]} 해당 slot의 상태 radio 배열
    */
-  function collectSlotStateRadiosV193(slot){
+  function collectSlotStateRadiosV193(slot){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("collectSlotStateRadiosV193");}catch(e){}/*AB_FN_HIT_END*/
     var radios = [];
     var previous = slot ? slot.previousElementSibling : null;
 
@@ -20005,7 +20042,7 @@ function isVisibleCaptureTarget(el){
    * @param {HTMLInputElement[]} radios 하나의 slot에 속한 상태 radio 배열
    * @returns {string} 마커별 고유 키
    */
-  function getPrintRadioKeyV193(radios){
+  function getPrintRadioKeyV193(radios){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getPrintRadioKeyV193");}catch(e){}/*AB_FN_HIT_END*/
     var first = radios && radios.length ? radios[0] : null;
     return first ? (first.getAttribute('data-print-radio-name-v193') || first.id || '') : '';
   }
@@ -20018,7 +20055,7 @@ function isVisibleCaptureTarget(el){
    * @param {Element} root 출력용 복제 DOM의 최상위 요소
    * @returns {Object<string, string>} 마커별 W 또는 P 변환표
    */
-  function buildCustomerMarkerMapV193(root){
+  function buildCustomerMarkerMapV193(root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildCustomerMarkerMapV193");}catch(e){}/*AB_FN_HIT_END*/
     var markerMap = {};
     if(!root) return markerMap;
 
@@ -20052,7 +20089,7 @@ function isVisibleCaptureTarget(el){
    * @param {Element} root 출력용 복제 DOM의 최상위 요소
    * @param {Object<string, string>} markerMap 마커별 W/P 변환표
    */
-  function applyCustomerMarkerMapV193(root, markerMap){
+  function applyCustomerMarkerMapV193(root, markerMap){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyCustomerMarkerMapV193");}catch(e){}/*AB_FN_HIT_END*/
     if(!root) return;
 
     qsa('.touch-diagram-shell .slot', root).forEach(function(slot){
@@ -20090,7 +20127,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function removeReportRoot(){
+  function removeReportRoot(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removeReportRoot");}catch(e){}/*AB_FN_HIT_END*/
     var old = document.getElementById(ROOT_ID);
     if(old) old.remove();
     var bar = document.getElementById(BAR_ID);
@@ -20107,7 +20144,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function cloneSection(title, selector){
+  function cloneSection(title, selector){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cloneSection");}catch(e){}/*AB_FN_HIT_END*/
     var src = qs(selector);
     if(!src) return null;
 
@@ -20158,7 +20195,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function textOfPrintNode(el){
+  function textOfPrintNode(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("textOfPrintNode");}catch(e){}/*AB_FN_HIT_END*/
     return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim();
   }
 
@@ -20172,7 +20209,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function isWholeDiagClone(el){
+  function isWholeDiagClone(el){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isWholeDiagClone");}catch(e){}/*AB_FN_HIT_END*/
     return !!(el && el.id === 'secDiag');
   }
 
@@ -20186,7 +20223,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function nearestPrintCard(el, root){
+  function nearestPrintCard(el, root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("nearestPrintCard");}catch(e){}/*AB_FN_HIT_END*/
     if(!el) return null;
     var card = el.closest('article, .report-card-ui, .touch-card, .card');
     if(!card || card === root || isWholeDiagClone(card)) return null;
@@ -20203,7 +20240,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function collectCardsByTitle(root, titleRegex){
+  function collectCardsByTitle(root, titleRegex){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("collectCardsByTitle");}catch(e){}/*AB_FN_HIT_END*/
     var found = [];
     qsa('h1,h2,h3,h4,.report-output-title-v1741,.section-title,.card-title,.touch-title,.report-card-title,[class*="title"],[class*="badge"],article,.report-card-ui,.touch-card,.card', root).forEach(function(el){
       var txt = textOfPrintNode(el);
@@ -20232,7 +20269,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function removePrintCards(cards){
+  function removePrintCards(cards){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removePrintCards");}catch(e){}/*AB_FN_HIT_END*/
     cards.forEach(function(card){
       if(card && card.parentElement){
         card.remove();
@@ -20250,7 +20287,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function pruneDiagCloneForMode(clone, mode){
+  function pruneDiagCloneForMode(clone, mode){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("pruneDiagCloneForMode");}catch(e){}/*AB_FN_HIT_END*/
     /*
       v17.82:
       v17.75~v17.76의 최상위 카드 필터 방식은 #secDiag 내부 구조가 하나의 큰 wrapper로 묶여 있을 때
@@ -20277,7 +20314,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function cloneFilteredDiagSection(title, mode){
+  function cloneFilteredDiagSection(title, mode){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cloneFilteredDiagSection");}catch(e){}/*AB_FN_HIT_END*/
     var src = qs('#secDiag');
     if(!src) return null;
 
@@ -20354,7 +20391,7 @@ function isVisibleCaptureTarget(el){
    */
 
 
-  function cloneExteriorSection(){
+  function cloneExteriorSection(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cloneExteriorSection");}catch(e){}/*AB_FN_HIT_END*/
     /*
       v17.75:
       외관/수리 카드가 #secDiag 컨텍스트에서는 정상이고 #secExterior/개별 카드 clone에서는 깨진다.
@@ -20395,7 +20432,7 @@ function isVisibleCaptureTarget(el){
    *
    * .diagram-corner-badge와 도면 이미지/마커는 제거하지 않는다.
    */
-  function removeLegacyDiagramTitlesV162(root){
+  function removeLegacyDiagramTitlesV162(root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removeLegacyDiagramTitlesV162");}catch(e){}/*AB_FN_HIT_END*/
     if(!root) return;
 
     qsa(
@@ -20410,7 +20447,7 @@ function isVisibleCaptureTarget(el){
    * markOuterDiagnosticCardV158은 지정 제목의 최상위 진단 카드를 표시한다.
    * 내부 도면 카드(touch-card / paint-diagram-block)는 변경하지 않는다.
    */
-  function markOuterDiagnosticCardV158(section, titleRegex){
+  function markOuterDiagnosticCardV158(section, titleRegex){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("markOuterDiagnosticCardV158");}catch(e){}/*AB_FN_HIT_END*/
     if(!section) return null;
 
     var body = qs('.report-print-section-body-v1773', section);
@@ -20436,7 +20473,7 @@ function isVisibleCaptureTarget(el){
   /**
    * removePrintPagesV141은 이전 인쇄 전용 페이지를 제거한다.
    */
-  function removePrintPagesV141(){
+  function removePrintPagesV141(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removePrintPagesV141");}catch(e){}/*AB_FN_HIT_END*/
     var old = document.getElementById('reportPrintPagesV141');
     if(old) old.remove();
   }
@@ -20444,7 +20481,7 @@ function isVisibleCaptureTarget(el){
   /**
    * findPrintSectionV141은 완성된 v118 출력 복사본에서 제목으로 섹션을 찾는다.
    */
-  function findPrintSectionV141(reportRoot, title){
+  function findPrintSectionV141(reportRoot, title){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("findPrintSectionV141");}catch(e){}/*AB_FN_HIT_END*/
     var found = null;
     qsa('.report-print-section-v1773', reportRoot).some(function(section){
       var heading = qs('.report-print-section-title-v1773', section);
@@ -20461,7 +20498,7 @@ function isVisibleCaptureTarget(el){
   /**
    * clonePrintSectionV141은 화면에 완성된 출력 섹션 전체를 그대로 복제한다.
    */
-  function clonePrintSectionV141(reportRoot, title){
+  function clonePrintSectionV141(reportRoot, title){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("clonePrintSectionV141");}catch(e){}/*AB_FN_HIT_END*/
     var source = findPrintSectionV141(reportRoot, title);
     return source ? source.cloneNode(true) : null;
   }
@@ -20469,7 +20506,7 @@ function isVisibleCaptureTarget(el){
   /**
    * removeSectionTitleV141은 페이지 공통 제목 사용 시 내부 제목만 제거한다.
    */
-  function removeSectionTitleV141(section){
+  function removeSectionTitleV141(section){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removeSectionTitleV141");}catch(e){}/*AB_FN_HIT_END*/
     if(!section) return;
     var title = qs('.report-print-section-title-v1773', section);
     if(title) title.remove();
@@ -20479,7 +20516,7 @@ function isVisibleCaptureTarget(el){
    * removeCardsByTitleV141은 완성된 섹션 복사본에서 지정 카드만 제거한다.
    * 카드 내부 도면과 마커는 수정하지 않는다.
    */
-  function removeCardsByTitleV141(section, regex){
+  function removeCardsByTitleV141(section, regex){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removeCardsByTitleV141");}catch(e){}/*AB_FN_HIT_END*/
     if(!section) return;
     var body = qs('.report-print-section-body-v1773', section);
     var context = body ? body.firstElementChild : section;
@@ -20489,7 +20526,7 @@ function isVisibleCaptureTarget(el){
   /**
    * createPrintPageV141은 A4 인쇄 페이지 wrapper를 만든다.
    */
-  function createPrintPageV141(root, className){
+  function createPrintPageV141(root, className){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("createPrintPageV141");}catch(e){}/*AB_FN_HIT_END*/
     var page = document.createElement('section');
     page.className = 'report-print-page-v141' + (className ? ' ' + className : '');
     root.appendChild(page);
@@ -20499,7 +20536,7 @@ function isVisibleCaptureTarget(el){
   /**
    * appendPageTitleV141은 페이지 제목을 한 번만 추가한다.
    */
-  function appendPageTitleV141(page, title){
+  function appendPageTitleV141(page, title){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("appendPageTitleV141");}catch(e){}/*AB_FN_HIT_END*/
     var heading = document.createElement('div');
     heading.className = 'report-print-page-title-v141';
     heading.textContent = title;
@@ -20510,7 +20547,7 @@ function isVisibleCaptureTarget(el){
    * buildPrintPagesFromCopyV141은 화면용 출력 복사본을 유지한 채,
    * 실제 인쇄에서만 사용할 페이지 root를 별도로 만든다.
    */
-  function buildPrintPagesFromCopyV141(reportRoot){
+  function buildPrintPagesFromCopyV141(reportRoot){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildPrintPagesFromCopyV141");}catch(e){}/*AB_FN_HIT_END*/
     removePrintPagesV141();
 
     var printRoot = document.createElement('main');
@@ -20691,7 +20728,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function buildReport(mode){
+  function buildReport(mode){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildReport");}catch(e){}/*AB_FN_HIT_END*/
     removeReportRoot();
 
     var root = document.createElement('main');
@@ -20745,7 +20782,7 @@ function isVisibleCaptureTarget(el){
    * syncPrintSectionTitleWidths는 각 탭 제목 폭을 해당 탭의 실제 내용 폭과 맞춘다.
    * print media에서 문서 전체 폭으로 늘어나지 않도록 px 단위 inline 폭을 고정한다.
    */
-  function syncPrintSectionTitleWidths(root){
+  function syncPrintSectionTitleWidths(root){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncPrintSectionTitleWidths");}catch(e){}/*AB_FN_HIT_END*/
     if(!root) return;
 
     qsa('.report-print-section-v1773', root).forEach(function(section){
@@ -20780,7 +20817,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function buildBar(){
+  function buildBar(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildBar");}catch(e){}/*AB_FN_HIT_END*/
     var bar = document.createElement('div');
     bar.id = BAR_ID;
     bar.className = 'report-print-bar-v1773';
@@ -20805,7 +20842,7 @@ function isVisibleCaptureTarget(el){
    * 원본 HTML에는 JPEG Base64를 유지하고,
    * 정리 결과는 브라우저 메모리의 blob URL로만 사용한다.
    */
-  async function cleanDiagramImageSourceV164(source, sampleImage){
+  async function cleanDiagramImageSourceV164(source, sampleImage){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cleanDiagramImageSourceV164");}catch(e){}/*AB_FN_HIT_END*/
     if(!source || !sampleImage) return source;
 
     window.__diagramCleanCacheV164 = window.__diagramCleanCacheV164 || new Map();
@@ -20865,7 +20902,7 @@ function isVisibleCaptureTarget(el){
 
              */
 
-            function isNearWhite(index){
+            function isNearWhite(index){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isNearWhite");}catch(e){}/*AB_FN_HIT_END*/
               var offset = index * 4;
               return pixels[offset] >= threshold &&
                 pixels[offset + 1] >= threshold &&
@@ -20882,7 +20919,7 @@ function isVisibleCaptureTarget(el){
 
              */
 
-            function enqueue(index){
+            function enqueue(index){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("enqueue");}catch(e){}/*AB_FN_HIT_END*/
               if(index < 0 || index >= total || visited[index] || !isNearWhite(index)){
                 return;
               }
@@ -20960,7 +20997,7 @@ function isVisibleCaptureTarget(el){
    * prepareDiagramImagesForPrintV164는 출력 대상 도면 이미지를
    * JPEG 원본에서 메모리 PNG blob으로 교체한 뒤 완료를 기다린다.
    */
-  async function prepareDiagramImagesForPrintV164(){
+  async function prepareDiagramImagesForPrintV164(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("prepareDiagramImagesForPrintV164");}catch(e){}/*AB_FN_HIT_END*/
     var images = qsa(
       'img[alt="상단 도면"], img[alt="측면 도면"], img[alt="하부 도면"]',
       document
@@ -21002,7 +21039,7 @@ function isVisibleCaptureTarget(el){
 
          */
 
-        function finish(){
+        function finish(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("finish");}catch(e){}/*AB_FN_HIT_END*/
           if(settled) return;
           settled = true;
           image.removeEventListener('load', finish);
@@ -21026,7 +21063,7 @@ function isVisibleCaptureTarget(el){
    * isIOSPrintV183은 iPhone/iPad 계열 WebKit 환경을 판별한다.
    * iPadOS의 MacIntel + touchPoints 환경도 포함한다.
    */
-  function isIOSPrintV183(){
+  function isIOSPrintV183(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isIOSPrintV183");}catch(e){}/*AB_FN_HIT_END*/
     var ua = navigator.userAgent || '';
     var platform = navigator.platform || '';
 
@@ -21044,7 +21081,7 @@ function isVisibleCaptureTarget(el){
   function createIOSCheckColumnV183(
     sourceContext,
     cards
-  ){
+  ){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("createIOSCheckColumnV183");}catch(e){}/*AB_FN_HIT_END*/
     var column = document.createElement('div');
     column.className =
       'report-print-ios-check-column-v183';
@@ -21074,7 +21111,7 @@ function isVisibleCaptureTarget(el){
     rightCards,
     sourceContext,
     showTitle
-  ){
+  ){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("createIOSCheckPageV183");}catch(e){}/*AB_FN_HIT_END*/
     var page = createPrintPageV141(
       printRoot,
       'report-print-ios-check-page-v183'
@@ -21116,7 +21153,7 @@ function isVisibleCaptureTarget(el){
    * - 2 랩핑/PPF 여부
    * - 진단스캐너 안내
    */
-  function prepareIOSBasicPageV183(printRoot){
+  function prepareIOSBasicPageV183(printRoot){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("prepareIOSBasicPageV183");}catch(e){}/*AB_FN_HIT_END*/
     var page1 = qs(
       '.report-print-page1-v141',
       printRoot
@@ -21193,7 +21230,7 @@ function isVisibleCaptureTarget(el){
    * 단일열 여러 장으로 분할하는 문제를 막기 위해
    * 점검 카드를 명시적인 3개 A4 페이지로 만든다.
    */
-  function prepareIOSCheckPagesV183(printRoot){
+  function prepareIOSCheckPagesV183(printRoot){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("prepareIOSCheckPagesV183");}catch(e){}/*AB_FN_HIT_END*/
     var continuation = qs(
       '.report-print-continuation-v141',
       printRoot
@@ -21219,7 +21256,7 @@ function isVisibleCaptureTarget(el){
 
      */
 
-    function cardNumber(card){
+    function cardNumber(card){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cardNumber");}catch(e){}/*AB_FN_HIT_END*/
       var no = card
         ? qs('h2 .no', card)
         : null;
@@ -21238,7 +21275,7 @@ function isVisibleCaptureTarget(el){
 
      */
 
-    function take(numbers){
+    function take(numbers){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("take");}catch(e){}/*AB_FN_HIT_END*/
       return cards.filter(function(card){
         return numbers.indexOf(
           cardNumber(card)
@@ -21276,7 +21313,7 @@ function isVisibleCaptureTarget(el){
   /**
    * removeEmptyIOSPrintPagesV183은 내용이 없는 페이지 wrapper를 제거한다.
    */
-  function removeEmptyIOSPrintPagesV183(printRoot){
+  function removeEmptyIOSPrintPagesV183(printRoot){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("removeEmptyIOSPrintPagesV183");}catch(e){}/*AB_FN_HIT_END*/
     qsa(
       '.report-print-page-v141',
       printRoot
@@ -21306,7 +21343,7 @@ function isVisibleCaptureTarget(el){
    * prepareIOSPrintPagesV183은 V165 출력 구조를 유지하면서
    * iPhone에서만 명시적인 페이지 구성으로 변환한다.
    */
-  function prepareIOSPrintPagesV183(printRoot){
+  function prepareIOSPrintPagesV183(printRoot){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("prepareIOSPrintPagesV183");}catch(e){}/*AB_FN_HIT_END*/
     if(!isIOSPrintV183() || !printRoot){
       document.body.classList.remove(
         'report-print-ios-v183'
@@ -21323,7 +21360,7 @@ function isVisibleCaptureTarget(el){
     removeEmptyIOSPrintPagesV183(printRoot);
   }
 
-  async function openPreview(mode){
+  async function openPreview(mode){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("openPreview");}catch(e){}/*AB_FN_HIT_END*/
     repairMainTabHandlersV1784();
     await prepareDiagramImagesForPrintV164();
     var root = buildReport(mode);
@@ -21362,7 +21399,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function clearReportTabBodyClassesV1784(){
+  function clearReportTabBodyClassesV1784(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("clearReportTabBodyClassesV1784");}catch(e){}/*AB_FN_HIT_END*/
     /*
       v17.84:
       PDF 미리보기 진입/종료 후 body class와 radio checked 상태가 어긋나면
@@ -21410,7 +21447,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function repairMainTabHandlersV1784(){
+  function repairMainTabHandlersV1784(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("repairMainTabHandlersV1784");}catch(e){}/*AB_FN_HIT_END*/
     var map = {
       tabInput:'input',
       tabDiag:'diag',
@@ -21455,7 +21492,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function closePreview(){
+  function closePreview(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("closePreview");}catch(e){}/*AB_FN_HIT_END*/
     removePrintPagesV141();
     removeReportRoot();
     clearReportTabBodyClassesV1784();
@@ -21472,7 +21509,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function bindPrintButtons(){
+  function bindPrintButtons(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindPrintButtons");}catch(e){}/*AB_FN_HIT_END*/
     var root = qs('#reportOutputSection');
     if(!root || qs('.report-mobile-print-wrap-v1773', root)) return;
 
@@ -21520,7 +21557,7 @@ function isVisibleCaptureTarget(el){
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindSubmitTabV1777(){
+  function bindSubmitTabV1777(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindSubmitTabV1777");}catch(e){}/*AB_FN_HIT_END*/
     var submit = document.getElementById('tabSubmit');
     if(!submit || submit.getAttribute('data-bind-v1777') === '1') return;
     submit.setAttribute('data-bind-v1777', '1');
@@ -21554,7 +21591,7 @@ function isVisibleCaptureTarget(el){
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindSubmitPdfButtonsV1778(){
+  function bindSubmitPdfButtonsV1778(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindSubmitPdfButtonsV1778");}catch(e){}/*AB_FN_HIT_END*/
     var customer = document.getElementById('btnCustomerSubmitPdfV1778');
     var company = document.getElementById('btnCompanySubmitPdfV1778');
 
@@ -21568,7 +21605,7 @@ function isVisibleCaptureTarget(el){
 
      */
 
-    function openPdf(mode){
+    function openPdf(mode){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("openPdf");}catch(e){}/*AB_FN_HIT_END*/
       /*
         v17.84:
         제출 탭에서 PDF 미리보기를 연 뒤 기존 탭 상태가 꼬이는 문제를 줄이기 위해
@@ -21617,7 +21654,7 @@ function isVisibleCaptureTarget(el){
    - 기존 localStorage key와 restoreDraft 함수는 변경하지 않는다.
 */
 (function(){
-  function syncProsWarrantyButtonFromHidden(){
+  function syncProsWarrantyButtonFromHidden(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncProsWarrantyButtonFromHidden");}catch(e){}/*AB_FN_HIT_END*/
     var input = document.querySelector('[data-key="prosWarrantyLevel"]');
     var btn = document.querySelector('[data-pros-warranty-cycle="1"]');
     if(!input || !btn) return;
@@ -21640,7 +21677,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function syncProsWarrantyHiddenFromButton(btn){
+  function syncProsWarrantyHiddenFromButton(btn){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncProsWarrantyHiddenFromButton");}catch(e){}/*AB_FN_HIT_END*/
     var input = document.querySelector('[data-key="prosWarrantyLevel"]');
     if(!input || !btn) return;
 
@@ -21669,7 +21706,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function bindProsWarrantyV70(){
+  function bindProsWarrantyV70(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindProsWarrantyV70");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-pros-warranty-v70-bound') === '1') return;
     document.body.setAttribute('data-pros-warranty-v70-bound', '1');
 
@@ -21713,7 +21750,7 @@ function isVisibleCaptureTarget(el){
   /**
    * 관리 상태확인 hidden input과 radio 요소를 조회한다.
    */
-  function getMaintenanceStatusElsV73(){
+  function getMaintenanceStatusElsV73(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("getMaintenanceStatusElsV73");}catch(e){}/*AB_FN_HIT_END*/
     var hidden = document.querySelector('[data-key="prosMaintenanceStatus"]');
     var ok = document.getElementById('prosMaintenanceStatus_ok');
     var bad = document.getElementById('prosMaintenanceStatus_bad');
@@ -21723,7 +21760,7 @@ function isVisibleCaptureTarget(el){
   /**
    * hidden 저장값을 기준으로 보유/미보유 라디오 상태를 복원한다.
    */
-  function applyMaintenanceStatusValueToRadioV73(){
+  function applyMaintenanceStatusValueToRadioV73(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("applyMaintenanceStatusValueToRadioV73");}catch(e){}/*AB_FN_HIT_END*/
     var els = getMaintenanceStatusElsV73();
     if(!els.hidden || !els.ok || !els.bad) return;
 
@@ -21742,7 +21779,7 @@ function isVisibleCaptureTarget(el){
   /**
    * 라디오 선택값을 기존 data-key 저장값으로 동기화한다.
    */
-  function syncMaintenanceStatusValueFromRadioV73(){
+  function syncMaintenanceStatusValueFromRadioV73(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncMaintenanceStatusValueFromRadioV73");}catch(e){}/*AB_FN_HIT_END*/
     var els = getMaintenanceStatusElsV73();
     if(!els.hidden || !els.ok || !els.bad) return;
 
@@ -21756,7 +21793,7 @@ function isVisibleCaptureTarget(el){
   /**
    * 관리 상태확인 라디오 이벤트를 한 번만 연결한다.
    */
-  function bindMaintenanceStatusV73(){
+  function bindMaintenanceStatusV73(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindMaintenanceStatusV73");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body && document.body.getAttribute('data-maintenance-status-v73-bound') === '1') return;
     if(document.body) document.body.setAttribute('data-maintenance-status-v73-bound', '1');
 
@@ -21812,7 +21849,7 @@ function isVisibleCaptureTarget(el){
    * @param {string} value 사용자가 입력한 차량번호
    * @returns {string} 조회용으로 정규화한 차량번호
    */
-  function normalizeVehicleNumberV194(value){
+  function normalizeVehicleNumberV194(value){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("normalizeVehicleNumberV194");}catch(e){}/*AB_FN_HIT_END*/
     return String(value || '').replace(/\s+/g, '').replace(/-/g, '').trim();
   }
 
@@ -21822,7 +21859,7 @@ function isVisibleCaptureTarget(el){
    * @param {string} message 표시할 문구
    * @param {boolean} isError 오류 문구 여부
    */
-  function setEntryLoadMessageV194(message, isError){
+  function setEntryLoadMessageV194(message, isError){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setEntryLoadMessageV194");}catch(e){}/*AB_FN_HIT_END*/
     var element = document.getElementById('entryLoadMessageV194');
     if(!element) return;
     element.textContent = message || '';
@@ -21836,7 +21873,7 @@ function isVisibleCaptureTarget(el){
    * @param {'PRE_INPUT'|'DIRECT_FIELD'|'LOAD_EXISTING'} entryMode 최초 진입 방식
    * @param {'PRE_INPUT'|'FIELD_IN_PROGRESS'} stage 현재 진행단계
    */
-  function enterReportV194(entryMode, stage){
+  function enterReportV194(entryMode, stage){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("enterReportV194");}catch(e){}/*AB_FN_HIT_END*/
     try{
       sessionStorage.setItem(ENTRY_SESSION_KEY_V194, entryMode);
       sessionStorage.setItem(ENTRY_STAGE_SESSION_KEY_V194, stage);
@@ -21863,7 +21900,7 @@ function isVisibleCaptureTarget(el){
    * requestExistingReportV194는 차량번호 기반 Google Sheets 조회를 요청하는
    * 사용자 정의 이벤트를 발생시킨다. API 연동 모듈은 이 이벤트를 받아 처리한다.
    */
-  function requestExistingReportV194(){
+  function requestExistingReportV194(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("requestExistingReportV194");}catch(e){}/*AB_FN_HIT_END*/
     var input = document.getElementById('entryVehicleNoV194');
     var vehicleNumber = normalizeVehicleNumberV194(input ? input.value : '');
 
@@ -21896,7 +21933,7 @@ function isVisibleCaptureTarget(el){
   /**
    * bindEntryModeScreenV194는 첫 진입 화면의 버튼 이벤트를 한 번만 연결한다.
    */
-  function bindEntryModeScreenV194(){
+  function bindEntryModeScreenV194(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindEntryModeScreenV194");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-entry-mode-bound-v194') === '1') return;
     document.body.setAttribute('data-entry-mode-bound-v194', '1');
 
@@ -21986,7 +22023,7 @@ function isVisibleCaptureTarget(el){
    * @param {string} message 표시할 문구
    * @param {boolean} isError 오류 여부
    */
-  function setPasswordMessageV195(message, isError){
+  function setPasswordMessageV195(message, isError){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setPasswordMessageV195");}catch(e){}/*AB_FN_HIT_END*/
     var element = document.getElementById('passwordGateMessageV195');
     if(!element) return;
     element.textContent = message || '';
@@ -21997,7 +22034,7 @@ function isVisibleCaptureTarget(el){
    * showEntryModeAfterPasswordV195는 인증 완료 후 비밀번호 화면을 닫고
    * 첫 진입 모드 선택 화면을 표시한다.
    */
-  function showEntryModeAfterPasswordV195(){
+  function showEntryModeAfterPasswordV195(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("showEntryModeAfterPasswordV195");}catch(e){}/*AB_FN_HIT_END*/
     var passwordScreen = document.getElementById('passwordGateScreenV195');
     var entryScreen = document.getElementById('entryModeScreenV194');
     if(passwordScreen) passwordScreen.hidden = true;
@@ -22017,7 +22054,7 @@ function isVisibleCaptureTarget(el){
    * @param {string} password 사용자가 입력한 비밀번호
    * @returns {Promise<boolean>} 인증 성공 여부
    */
-  function verifyPasswordWithAppsScriptV195(password){
+  function verifyPasswordWithAppsScriptV195(password){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("verifyPasswordWithAppsScriptV195");}catch(e){}/*AB_FN_HIT_END*/
     if(!PASSWORD_WEB_APP_URL_V195){
       setPasswordMessageV195('Apps Script 웹앱 URL이 아직 설정되지 않았습니다.', true);
       return Promise.resolve(false);
@@ -22044,7 +22081,7 @@ function isVisibleCaptureTarget(el){
   /**
    * requestPasswordVerificationV195는 입력값을 검사하고 인증 요청을 한 번만 실행한다.
    */
-  function requestPasswordVerificationV195(){
+  function requestPasswordVerificationV195(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("requestPasswordVerificationV195");}catch(e){}/*AB_FN_HIT_END*/
     var input = document.getElementById('passwordInputV195');
     var button = document.getElementById('passwordVerifyBtnV195');
     var password = input ? String(input.value || '') : '';
@@ -22090,7 +22127,7 @@ function isVisibleCaptureTarget(el){
   /**
    * bindPasswordGateV195는 비밀번호 화면 이벤트를 한 번만 연결한다.
    */
-  function bindPasswordGateV195(){
+  function bindPasswordGateV195(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindPasswordGateV195");}catch(e){}/*AB_FN_HIT_END*/
     if(document.body.getAttribute('data-password-bound-v195') === '1') return;
     document.body.setAttribute('data-password-bound-v195', '1');
 
@@ -22155,9 +22192,9 @@ function isVisibleCaptureTarget(el){
   var busyV197=false;
 
   /** 차량번호 비교를 위해 공백과 하이픈을 제거한다. */
-  function normalizeVehicleNoV197(v){return String(v||'').replace(/\s+/g,'').replace(/-/g,'').trim();}
+  function normalizeVehicleNoV197(v){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("normalizeVehicleNoV197");}catch(e){}/*AB_FN_HIT_END*/return String(v||'').replace(/\s+/g,'').replace(/-/g,'').trim();}
   /** CSS selector에 사용할 문자열을 안전하게 이스케이프한다. */
-  function cssEscapeV197(v){return window.CSS&&CSS.escape?CSS.escape(String(v)):String(v).replace(/(["\\])/g,'\\$1');}
+  function cssEscapeV197(v){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("cssEscapeV197");}catch(e){}/*AB_FN_HIT_END*/return window.CSS&&CSS.escape?CSS.escape(String(v)):String(v).replace(/(["\\])/g,'\\$1');}
   /** 저장 안내 토스트를 자동으로 닫기 위한 타이머 식별자이다. */
   var statusTimerV206=0;
   /** 상태 안내문구를 플로팅 버튼 위에 표시한다. */
@@ -22768,11 +22805,11 @@ function isVisibleCaptureTarget(el){
     updateMetaV197();
   }
   /** 첫 진입 화면의 기존 데이터 불러오기 이벤트를 실제 API와 연결한다. */
-  function bindEntryLoadV197(){document.addEventListener('ab-diag-request-load-v194',function(ev){ev.preventDefault();var vehicleNumber=ev.detail&&ev.detail.vehicleNumber||'';loadByVehicleV197(vehicleNumber);},false);}
+  function bindEntryLoadV197(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindEntryLoadV197");}catch(e){}/*AB_FN_HIT_END*/document.addEventListener('ab-diag-request-load-v194',function(ev){ev.preventDefault();var vehicleNumber=ev.detail&&ev.detail.vehicleNumber||'';loadByVehicleV197(vehicleNumber);},false);}
   /** 외부 디버깅 및 테스트용 공개 API이다. */
   window.AB_DIAG_DB_V197={collect:collectReportV197,restore:restoreReportV197,save:saveV197,loadByVehicle:loadByVehicleV197,getCurrent:function(){return currentRecordV197;}};
   /** 저장 모듈을 초기화하고 Android 뒤로가기 캐시 복원 시 저장 아이콘 위치를 다시 정규화한다. */
-  function bootV197(){installToolbarV197();bindEntryLoadV197();}
+  function bootV197(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bootV197");}catch(e){}/*AB_FN_HIT_END*/installToolbarV197();bindEntryLoadV197();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootV197,false);else bootV197();
   window.addEventListener('pageshow',function(event){
     if(event.persisted||document.getElementById('abDbBarV197')){
@@ -22794,53 +22831,53 @@ function isVisibleCaptureTarget(el){
    * 담당: 매입금액 산정 입력 동기화, 반복항목, 계산, 출력문 복사를 담당한다. 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function sec(){return document.getElementById('secPriceCalcV218');}
+  function sec(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("sec");}catch(e){}/*AB_FN_HIT_END*/return document.getElementById('secPriceCalcV218');}
   /**
    * 함수: digitsNumber
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function digitsNumber(v){var n=parseFloat(String(v||'').replace(/,/g,'').replace(/[^0-9.-]/g,''));return isFinite(n)?n:0;}
+  function digitsNumber(v){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("digitsNumber");}catch(e){}/*AB_FN_HIT_END*/var n=parseFloat(String(v||'').replace(/,/g,'').replace(/[^0-9.-]/g,''));return isFinite(n)?n:0;}
   /**
    * 함수: formatNumber
    * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function formatNumber(n){if(!isFinite(n))return '';var rounded=Math.round(n*100)/100;return rounded.toLocaleString('ko-KR',{maximumFractionDigits:2});}
+  function formatNumber(n){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("formatNumber");}catch(e){}/*AB_FN_HIT_END*/if(!isFinite(n))return '';var rounded=Math.round(n*100)/100;return rounded.toLocaleString('ko-KR',{maximumFractionDigits:2});}
   /**
    * 함수: field
    * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function field(key){return document.querySelector('#secPriceCalcV218 [data-key="'+key+'"]');}
+  function field(key){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("field");}catch(e){}/*AB_FN_HIT_END*/return document.querySelector('#secPriceCalcV218 [data-key="'+key+'"]');}
   /**
    * 함수: value
    * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function value(key){var el=field(key);return el?String(el.value||'').trim():'';}
+  function value(key){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("value");}catch(e){}/*AB_FN_HIT_END*/var el=field(key);return el?String(el.value||'').trim():'';}
   /**
    * 함수: setValue
    * 담당: 지정된 DOM 또는 내부 상태 값을 설정한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function setValue(key,v,force){var el=field(key);if(!el)return;if(force||!el.value)el.value=v||'';}
+  function setValue(key,v,force){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("setValue");}catch(e){}/*AB_FN_HIT_END*/var el=field(key);if(!el)return;if(force||!el.value)el.value=v||'';}
   /**
    * 함수: basePriceNumber
    * 담당: 매입금액 산정 입력 동기화, 반복항목, 계산, 출력문 복사를 담당한다. 관련 세부 처리를 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function basePriceNumber(){var raw=value('price_calc_base_price');var matches=raw.match(/[0-9][0-9,]*(?:\.[0-9]+)?/g)||[];return matches.length?digitsNumber(matches[matches.length-1]):0;}
+  function basePriceNumber(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("basePriceNumber");}catch(e){}/*AB_FN_HIT_END*/var raw=value('price_calc_base_price');var matches=raw.match(/[0-9][0-9,]*(?:\.[0-9]+)?/g)||[];return matches.length?digitsNumber(matches[matches.length-1]):0;}
   /**
    * 함수: findBasicByLabel
    * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function findBasicByLabel(labelText){var labels=document.querySelectorAll('#secInput .basicinfo-v5-label');for(var i=0;i<labels.length;i++){if(String(labels[i].textContent||'').replace(/\s+/g,'').indexOf(labelText.replace(/\s+/g,''))!==-1){var wrap=labels[i].closest('.basicinfo-v5-field');var input=wrap&&wrap.querySelector('input,textarea,select');return input?String(input.value||'').trim():'';}}return '';}
+  function findBasicByLabel(labelText){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("findBasicByLabel");}catch(e){}/*AB_FN_HIT_END*/var labels=document.querySelectorAll('#secInput .basicinfo-v5-label');for(var i=0;i<labels.length;i++){if(String(labels[i].textContent||'').replace(/\s+/g,'').indexOf(labelText.replace(/\s+/g,''))!==-1){var wrap=labels[i].closest('.basicinfo-v5-field');var input=wrap&&wrap.querySelector('input,textarea,select');return input?String(input.value||'').trim():'';}}return '';}
   /** 기본 탭 값을 비어 있는 경우에만 자동 반영하여 사용자의 직접 입력값을 유지한다. */
-  function syncBasicV219(){setValue('price_calc_base_price',findBasicByLabel('가격(입찰가,선택/조율가격)'),false);setValue('price_calc_vehicle_no',findBasicByLabel('차량번호'),false);setValue('price_calc_car_name',findBasicByLabel('차량이름'),false);}
-  function revealStoredRowsV219(){var root=sec();if(!root)return;var groups=root.querySelectorAll('[data-repeat-row-v219]');for(var i=0;i<groups.length;i++){var row=groups[i];var inputs=row.querySelectorAll('input');var hasValue=false;for(var j=0;j<inputs.length;j++){if(String(inputs[j].value||'').trim()){hasValue=true;break;}}if(hasValue)row.hidden=false;}}
-  function addRepeatRowV219(name){
+  function syncBasicV219(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("syncBasicV219");}catch(e){}/*AB_FN_HIT_END*/setValue('price_calc_base_price',findBasicByLabel('가격(입찰가,선택/조율가격)'),false);setValue('price_calc_vehicle_no',findBasicByLabel('차량번호'),false);setValue('price_calc_car_name',findBasicByLabel('차량이름'),false);}
+  function revealStoredRowsV219(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("revealStoredRowsV219");}catch(e){}/*AB_FN_HIT_END*/var root=sec();if(!root)return;var groups=root.querySelectorAll('[data-repeat-row-v219]');for(var i=0;i<groups.length;i++){var row=groups[i];var inputs=row.querySelectorAll('input');var hasValue=false;for(var j=0;j<inputs.length;j++){if(String(inputs[j].value||'').trim()){hasValue=true;break;}}if(hasValue)row.hidden=false;}}
+  function addRepeatRowV219(name){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("addRepeatRowV219");}catch(e){}/*AB_FN_HIT_END*/
     var root=sec();if(!root)return;
     var rows=root.querySelectorAll('[data-repeat-row-v219="'+name+'"]');
     if(!rows.length)return;
@@ -22868,12 +22905,12 @@ function isVisibleCaptureTarget(el){
     var first=row.querySelector('input');if(first)first.focus();
   }
   /** v227: 자동 산출 총액은 기본 계산하되 사용자가 직접 입력한 총액은 유지한다. */
-  function calculateV219(){var root=sec();if(!root)return;['outer','panel','wheel'].forEach(function(name){var c=root.querySelector('[data-multiply-count="'+name+'"]');var e=root.querySelector('[data-multiply-each="'+name+'"]');var totalEl=root.querySelector('[data-multiply-total="'+name+'"]');if(totalEl&&totalEl.getAttribute('data-manual-v227')!=='1')totalEl.value=formatNumber(digitsNumber(c&&c.value)*digitsNumber(e&&e.value));});var ac=digitsNumber(value('price_calc_accident_count'));var ap=digitsNumber(value('price_calc_accident_each_percent'));var totalPercent=ac*ap;setValue('price_calc_accident_total_percent',formatNumber(totalPercent),true);var accidentAmount=field('price_calc_accident_amount');if(accidentAmount&&accidentAmount.getAttribute('data-manual-v227')!=='1')setValue('price_calc_accident_amount',formatNumber(basePriceNumber()*totalPercent/100),true);var total=0;var amounts=root.querySelectorAll('[data-calc-amount="1"]');for(var i=0;i<amounts.length;i++)total+=digitsNumber(amounts[i].value);setValue('price_calc_deduction_total',formatNumber(total),true);var finalInput=field('price_calc_final_amount');if(finalInput&&finalInput.getAttribute('data-manual-v218')!=='1')setValue('price_calc_final_amount',formatNumber(Math.max(0,basePriceNumber()-total)),true);}
+  function calculateV219(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("calculateV219");}catch(e){}/*AB_FN_HIT_END*/var root=sec();if(!root)return;['outer','panel','wheel'].forEach(function(name){var c=root.querySelector('[data-multiply-count="'+name+'"]');var e=root.querySelector('[data-multiply-each="'+name+'"]');var totalEl=root.querySelector('[data-multiply-total="'+name+'"]');if(totalEl&&totalEl.getAttribute('data-manual-v227')!=='1')totalEl.value=formatNumber(digitsNumber(c&&c.value)*digitsNumber(e&&e.value));});var ac=digitsNumber(value('price_calc_accident_count'));var ap=digitsNumber(value('price_calc_accident_each_percent'));var totalPercent=ac*ap;setValue('price_calc_accident_total_percent',formatNumber(totalPercent),true);var accidentAmount=field('price_calc_accident_amount');if(accidentAmount&&accidentAmount.getAttribute('data-manual-v227')!=='1')setValue('price_calc_accident_amount',formatNumber(basePriceNumber()*totalPercent/100),true);var total=0;var amounts=root.querySelectorAll('[data-calc-amount="1"]');for(var i=0;i<amounts.length;i++)total+=digitsNumber(amounts[i].value);setValue('price_calc_deduction_total',formatNumber(total),true);var finalInput=field('price_calc_final_amount');if(finalInput&&finalInput.getAttribute('data-manual-v218')!=='1')setValue('price_calc_final_amount',formatNumber(Math.max(0,basePriceNumber()-total)),true);}
   /** v249: 최종금액은 신규 입력/불러오기에서는 자동 계산하고, 사용자가 직접 수정한 경우만 수동값으로 유지한다. */
-  function clearFinalManualV249(){var finalInput=field('price_calc_final_amount');if(finalInput)finalInput.removeAttribute('data-manual-v218');}
+  function clearFinalManualV249(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("clearFinalManualV249");}catch(e){}/*AB_FN_HIT_END*/var finalInput=field('price_calc_final_amount');if(finalInput)finalInput.removeAttribute('data-manual-v218');}
   /** v249: 가격·감가금액·자동총액 산출 입력만 최종금액 자동 재계산 트리거로 본다. */
-  function isFinalAmountDriverV249(target){if(!target)return false;if(target.getAttribute('data-calc-amount')==='1')return true;if(target.hasAttribute('data-multiply-count')||target.hasAttribute('data-multiply-each'))return true;var key=target.getAttribute('data-key')||'';return key==='price_calc_base_price'||key==='price_calc_accident_count'||key==='price_calc_accident_each_percent';}
-  function repeatedDetailsV219(prefix,label,amountOnly){
+  function isFinalAmountDriverV249(target){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("isFinalAmountDriverV249");}catch(e){}/*AB_FN_HIT_END*/if(!target)return false;if(target.getAttribute('data-calc-amount')==='1')return true;if(target.hasAttribute('data-multiply-count')||target.hasAttribute('data-multiply-each'))return true;var key=target.getAttribute('data-key')||'';return key==='price_calc_base_price'||key==='price_calc_accident_count'||key==='price_calc_accident_each_percent';}
+  function repeatedDetailsV219(prefix,label,amountOnly){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("repeatedDetailsV219");}catch(e){}/*AB_FN_HIT_END*/
     var root=sec();var lines=[];if(!root)return lines;
     var rows=root.querySelectorAll('[data-repeat-row-v219="'+prefix+'"]');
     for(var i=0;i<rows.length;i++){
@@ -22891,19 +22928,19 @@ function isVisibleCaptureTarget(el){
    * 담당: 매입금액 산정 결과 출력문을 생성한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function buildTextV219(){calculateV219();function money(key){var v=value(key);return v?v+' 만':' 만';}function detail(a,b){return value(a)+' / '+money(b);}var lines=[];lines.push('가격(입찰가,선택/조율가격) : '+value('price_calc_base_price'));lines.push('차량번호 : '+value('price_calc_vehicle_no'));lines.push('차 명 : '+value('price_calc_car_name'));lines.push('계기판이상 : '+money('price_calc_cluster_amount'));lines.push('등급상이 : '+money('price_calc_grade_amount'));lines.push('사고 : '+value('price_calc_accident_count')+' 개 / 개당 '+value('price_calc_accident_each_percent')+'% / 총 '+value('price_calc_accident_total_percent')+'% / '+money('price_calc_accident_amount'));lines=lines.concat(repeatedDetailsV219('leak','누유',false));lines.push('외판 : '+value('price_calc_outer_count')+' 개 / 개당 '+value('price_calc_outer_each')+'만 / '+money('price_calc_outer_amount'));lines.push('판금 : '+value('price_calc_panel_count')+' 개 / 개당 '+value('price_calc_panel_each')+'만 / '+money('price_calc_panel_amount'));lines=lines.concat(repeatedDetailsV219('damage','파손',false));lines.push('휠기스 : '+value('price_calc_wheel_count')+' 개 / 개당 '+value('price_calc_wheel_each')+'만 / '+money('price_calc_wheel_amount'));lines=lines.concat(repeatedDetailsV219('tire','타이어',false));lines=lines.concat(repeatedDetailsV219('oil','오일교환',true));lines=lines.concat(repeatedDetailsV219('scanner','진단기',false));lines.push('');lines.push('■고장 및 수리');lines=lines.concat(repeatedDetailsV219('repair','',false));lines=lines.concat(repeatedDetailsV219('interior','실내파손',false));lines.push('유리,썬팅 : '+money('price_calc_glass_amount'));lines.push('실내크리닝 : '+money('price_calc_cleaning_amount'));lines=lines.concat(repeatedDetailsV219('missing','구성품 소실',false));lines.push('보수킷,스페어타이어 (무) : '+money('price_calc_spare_tire_amount'));lines.push('스페어키 소실 : '+money('price_calc_spare_key_amount'));lines.push('소화기여부 : '+money('price_calc_extinguisher_amount'));lines=lines.concat(repeatedDetailsV219('other','기타감가',false));lines.push('차감 합계 : -'+money('price_calc_deduction_total'));lines.push('');lines.push('▶최종금액 : '+money('price_calc_final_amount'));lines.push('코멘트 : '+value('price_calc_comment'));return lines.join('\n');}
+  function buildTextV219(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("buildTextV219");}catch(e){}/*AB_FN_HIT_END*/calculateV219();function money(key){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("money");}catch(e){}/*AB_FN_HIT_END*/var v=value(key);return v?v+' 만':' 만';}function detail(a,b){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("detail");}catch(e){}/*AB_FN_HIT_END*/return value(a)+' / '+money(b);}var lines=[];lines.push('가격(입찰가,선택/조율가격) : '+value('price_calc_base_price'));lines.push('차량번호 : '+value('price_calc_vehicle_no'));lines.push('차 명 : '+value('price_calc_car_name'));lines.push('계기판이상 : '+money('price_calc_cluster_amount'));lines.push('등급상이 : '+money('price_calc_grade_amount'));lines.push('사고 : '+value('price_calc_accident_count')+' 개 / 개당 '+value('price_calc_accident_each_percent')+'% / 총 '+value('price_calc_accident_total_percent')+'% / '+money('price_calc_accident_amount'));lines=lines.concat(repeatedDetailsV219('leak','누유',false));lines.push('외판 : '+value('price_calc_outer_count')+' 개 / 개당 '+value('price_calc_outer_each')+'만 / '+money('price_calc_outer_amount'));lines.push('판금 : '+value('price_calc_panel_count')+' 개 / 개당 '+value('price_calc_panel_each')+'만 / '+money('price_calc_panel_amount'));lines=lines.concat(repeatedDetailsV219('damage','파손',false));lines.push('휠기스 : '+value('price_calc_wheel_count')+' 개 / 개당 '+value('price_calc_wheel_each')+'만 / '+money('price_calc_wheel_amount'));lines=lines.concat(repeatedDetailsV219('tire','타이어',false));lines=lines.concat(repeatedDetailsV219('oil','오일교환',true));lines=lines.concat(repeatedDetailsV219('scanner','진단기',false));lines.push('');lines.push('■고장 및 수리');lines=lines.concat(repeatedDetailsV219('repair','',false));lines=lines.concat(repeatedDetailsV219('interior','실내파손',false));lines.push('유리,썬팅 : '+money('price_calc_glass_amount'));lines.push('실내크리닝 : '+money('price_calc_cleaning_amount'));lines=lines.concat(repeatedDetailsV219('missing','구성품 소실',false));lines.push('보수킷,스페어타이어 (무) : '+money('price_calc_spare_tire_amount'));lines.push('스페어키 소실 : '+money('price_calc_spare_key_amount'));lines.push('소화기여부 : '+money('price_calc_extinguisher_amount'));lines=lines.concat(repeatedDetailsV219('other','기타감가',false));lines.push('차감 합계 : -'+money('price_calc_deduction_total'));lines.push('');lines.push('▶최종금액 : '+money('price_calc_final_amount'));lines.push('코멘트 : '+value('price_calc_comment'));return lines.join('\n');}
   /**
    * 함수: copyText
    * 담당: 매입금액 산정 출력문을 클립보드에 복사한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function copyText(text,button){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){var old=button.textContent;button.textContent='복사완료';setTimeout(function(){button.textContent=old;},1200);});return;}var ta=document.getElementById('priceCalcCopyOutputV218');ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}}
+  function copyText(text,button){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("copyText");}catch(e){}/*AB_FN_HIT_END*/if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){var old=button.textContent;button.textContent='복사완료';setTimeout(function(){button.textContent=old;},1200);});return;}var ta=document.getElementById('priceCalcCopyOutputV218');ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}}
   /**
    * 함수: bindV219
    * 담당: 매입금액 산정 화면의 입력, 반복행, 계산 이벤트를 초기 바인딩한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
-  function bindV219(){var root=sec();if(!root||root.dataset.boundV219==='1')return;root.dataset.boundV219='1';root.addEventListener('click',function(ev){
+  function bindV219(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("bindV219");}catch(e){}/*AB_FN_HIT_END*/var root=sec();if(!root||root.dataset.boundV219==='1')return;root.dataset.boundV219='1';root.addEventListener('click',function(ev){
     var remove=ev.target.closest('[data-repeat-remove-v220]');
     if(remove){var row=remove.closest('[data-repeat-row-v219]');if(row){row.remove();clearFinalManualV249();calculateV219();}return;}
     var add=ev.target.closest('[data-repeat-add-v219]');
@@ -22929,7 +22966,7 @@ function isVisibleCaptureTarget(el){
    - 상단 헤더, 매입금액 산정 제목 높이를 실측하여 차감/최종 요약 박스의 sticky 기준점을 갱신한다.
    - 웹/모바일 모두 mainTabs 변경, 메뉴 클릭, 리사이즈, 회전 이후 다시 계산한다. */
 (function(){
-  function updatePriceCalcStickyOffset(){
+  function updatePriceCalcStickyOffset(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("updatePriceCalcStickyOffset");}catch(e){}/*AB_FN_HIT_END*/
     var root = document.documentElement;
     var priceTab = document.getElementById('tabPriceCalc');
     var header = document.querySelector('.header');
@@ -22959,7 +22996,7 @@ function isVisibleCaptureTarget(el){
 
    */
 
-  function schedulePriceCalcStickyOffset(){
+  function schedulePriceCalcStickyOffset(){/*AB_FN_HIT_START*/try{window.__AB_USAGE_LOGGER__&&window.__AB_USAGE_LOGGER__.hitFunction("schedulePriceCalcStickyOffset");}catch(e){}/*AB_FN_HIT_END*/
     updatePriceCalcStickyOffset();
     window.requestAnimationFrame(function(){
       updatePriceCalcStickyOffset();

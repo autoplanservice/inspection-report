@@ -25,37 +25,65 @@ BASE CLEANUP NOTE
 */
 
 /* CLEAN_CSS_SOURCE_01 */
-/* STYLE_BLOCK_01  */
+/*
+  CSS SECTION INDEX
+  01. 공통 레이아웃/헤더/탭/입력 카드
+  02. 사고·외관·도막 터치 도면 및 도막 수치 입력 UI
+  03. 모바일/브라우저 보정 및 입력 요소 크기 통일
+  04. 메뉴·제출·PDF 미리보기/출력 관련 스타일
+  05. 매입오더 작성 화면 스타일
+  06. 매입금액 산정 화면 스타일
+  07. 저장/불러오기 플로팅 버튼 스타일
+  08. 최종 sticky/요약/반복항목 보정 스타일
+
+  정리 원칙:
+  - 기능 selector, id, data-key, localStorage key는 변경하지 않는다.
+  - 기존 우선순위가 화면 동작에 영향을 주므로 CSS 선언 순서는 유지한다.
+  - 아래 주석은 기능 구역 식별용이며 동작에는 영향을 주지 않는다.
+*/
+/* STYLE_BLOCK_01: 기본 화면 공통 CSS
+   - 앱 레이아웃, 상단 헤더, 탭, 입력 카드, 사고/도막 도면, 모바일 보정, 제출/PDF 기본 스타일을 포함한다. */
+/* 공통 초기화: 전체 box-sizing과 body/app 기본 폭을 설정한다. */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f3f4f6;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Arial,sans-serif}
 body{padding:10px 8px 86px;overflow-x:hidden}
 .app{width:100%;max-width:560px;margin:0 auto}
+/* 상단 헤더: 앱 제목, 안내문, 탭을 감싸는 고정성 헤더 카드 스타일이다. */
 .header{position:relative;z-index:100;background:#111827;color:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .header h1{font-size:18px;line-height:1.25;margin:0 0 6px;font-weight:900;letter-spacing:-.04em}
 .header p{font-size:12px;line-height:1.45;margin:0;color:#d1d5db}
+/* 탭 전환 radio: 실제 radio는 숨기고 label 터치로 섹션을 전환한다. */
 .tab-radio{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+/* 상단 탭 버튼: 기본/사고/점검 등 주요 섹션 이동 버튼이다. */
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;position:relative;z-index:200}
 .tabs label{height:38px;border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent;cursor:pointer;user-select:none;-webkit-user-select:none}
 #tabInput:checked ~ .header label[for="tabInput"],#tabDiag:checked ~ .header label[for="tabDiag"],#tabCheck:checked ~ .header label[for="tabCheck"]{background:#fff;color:#111827}
+/* 섹션 표시 제어: 선택된 탭에 해당하는 section만 화면에 표시한다. */
 .section{display:none}
 #tabInput:checked ~ #secInput{display:block}
 #tabDiag:checked ~ #secDiag{display:block}
 #tabCheck:checked ~ #secCheck{display:block}
+/* 공통 입력 카드: 각 진단 항목을 담는 흰색 라운드 카드 스타일이다. */
 .report-card-ui{background:#fff;border:1px solid #d8dee8;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 2px 10px rgba(15,23,42,.04)}
 .report-card-ui h2{font-size:15px;margin:0 0 12px;font-weight:900;display:flex;align-items:center;gap:7px;letter-spacing:-.02em}
 .no{display:inline-flex;align-items:center;justify-content:center;height:22px;min-width:22px;border-radius:999px;background:#111827;color:#fff;font-size:11px;font-weight:900;padding:0 8px}
+/* 공통 그리드 유틸: 2열/3열 입력 배치를 위한 기본 grid 클래스다. */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+/* 공통 입력 필드: 라벨과 입력요소를 세로로 배치한다. */
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:11px;font-weight:900;color:#374151;display:block;height:auto;border:0;background:transparent;padding:0;justify-content:flex-start}
+/* 공통 입력요소: text/select/textarea 기본 테두리, 라운드, 포커스 기준이다. */
 input,select,textarea{width:100%;border:1px solid #cfd6e1;border-radius:10px;padding:10px 9px;font-size:14px;background:#fff;color:#111827;outline:none}
 textarea{min-height:78px;resize:vertical;line-height:1.5}
 input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}
+/* 등급 선택 버튼: 1~5단계 색상 레벨 선택 UI를 담당한다. */
 .level-row{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
 .level{height:38px;border:2px solid transparent;border-radius:12px;font-size:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .lv1{background:#ef4444}.lv2{background:#f97316}.lv3{background:#eab308}.lv4{background:#22c55e}.lv5{background:#3b82f6}
 .level.active{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.15)}
 .hint{font-size:12px;line-height:1.55;color:#6b7280;margin:8px 0 0}
+/* 결과 패널: 사고/외관 선택 결과 태그와 내부 표시 영역을 담당한다. */
 .split-result{display:none;border-radius:14px;border:1px solid #d8dee8;padding:12px;margin-top:10px;background:#fafafa}
 .split-result.show{display:block}
 .split-result h3{font-size:14px;margin:0 0 8px;font-weight:900}
@@ -72,14 +100,18 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
   border:0!important;
   overflow:hidden!important;
 }
+/* 태그 리스트: 고객/내부 진단 결과 태그 표시 UI다. */
 .taglist{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
 .tag{display:inline-flex;align-items:center;min-height:28px;border-radius:999px;padding:0 10px;font-size:12px;font-weight:900;background:#e5e7eb;color:#111827}
 .tag.customer{background:#fee2e2;color:#991b1b}
 .tag.internal{background:#ffedd5;color:#9a3412}
+/* 간단 도막 입력 그리드: 부위명과 수치 입력을 나란히 배치한다. */
 .paint-grid{display:grid;grid-template-columns:1fr 88px;gap:8px;align-items:center}
 .paint-grid div{font-size:13px;font-weight:900}
+/* 휠 상태 영역: 4개 휠 입력 박스를 균등 배치한다. */
 .wheel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .wheel-box{height:72px;border:1px dashed #9ca3af;border-radius:12px;background:#f9fafb;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:900;color:#6b7280}
+/* 점검 라인: 정상/이상 radio와 메모 입력을 한 행에 배치한다. */
 .checkline{display:grid;grid-template-columns:1fr 64px 64px;gap:7px;align-items:center;padding:8px 0;border-bottom:1px solid #eef1f5}
 .checkline:last-child{border-bottom:0}
 .check-title{font-size:13px;font-weight:900}
@@ -110,14 +142,17 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
   display:block;
 }
 
+/* 하단 고정 버튼바: 저장/제출 등 주요 하단 버튼 영역이다. */
 .bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid #d8dee8;padding:8px;z-index:120}
 .bottom-inner{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{height:42px;border-radius:12px;font-size:14px;font-weight:900;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn.secondary{border:1px solid #cfd6e1;background:#fff;color:#111827}
 .btn.primary{border:0;background:#111827;color:#fff}
+/* 사고/외관 터치 도면: 차량 도면 이미지와 X/W/R/L 마커 클릭영역을 담당한다. */
 .touch-diagram-shell{margin:0 -12px}
 .touch-diagram-title{font-size:12px;font-weight:900;color:#4b5563;margin:8px 0 6px;padding:0 4px}
 .touch-diagram-subtitle{font-size:12px;font-weight:900;color:#111827;margin:10px 2px 6px;padding:6px 8px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:8px}
+/* 도면 카드: 차량 이미지, slot, hit 영역의 기준 컨테이너다. */
 .touch-card{background:#fff;border:1px solid #d9dee5;border-radius:10px;padding:0;margin:0 auto 8px;width:calc(100vw - 28px);max-width:540px;overflow:hidden}
 .touch-card .fig{position:relative;line-height:0;margin:0 auto;overflow:visible;width:100%;max-width:540px}
 .touch-card .fig img{display:block;width:100%;height:auto;margin:0;pointer-events:none;-webkit-user-drag:none;user-select:none}
@@ -140,8 +175,10 @@ input:focus,select:focus,textarea:focus{border-color:#111827;box-shadow:0 0 0 3p
 .touch-card .st2:checked + .st3 + .slot .h2{display:flex !important}
 .touch-card .st3:checked + .slot .h3{display:flex !important}
 
+/* 도막 진단 도면: 도막 수치 입력용 차량 도면 블록이다. */
 .paint-diagram-block{margin:12px 0 14px}
 
+/* 도막 도면 보조점/선/입력박스: 도막 좌표와 수치 표시 요소다. */
 .paint-dot{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border-radius:999px;background:#9ca3af;border:1px solid #6b7280;z-index:5}
 .paint-line{position:absolute;height:1px;background:#9ca3af;transform:translateY(-50%);z-index:4}
 .paint-line.left{transform:translateY(-50%)}
@@ -1162,6 +1199,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   pointer-events:none !important;
 }
 
+/* 도막 native 입력 UI: 모바일 터치 안정성을 위해 radio/slot/panel 구조를 사용한다. */
 .paint-native-radio{
   position:absolute !important;
   left:-9999px !important;
@@ -1171,6 +1209,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
   opacity:0 !important;
 }
 
+/* 도막 native slot: 도막 부위별 터치 영역과 배지 위치 기준이다. */
 .paint-native-slot{
   position:absolute !important;
   width:44px !important;
@@ -1247,6 +1286,7 @@ input[type="date"]{-webkit-appearance:none;appearance:none;display:block;width:1
 .paint-native-badge.warn{background:#f59e0b !important;}
 .paint-native-badge.danger{background:#ef4444 !important;}
 
+/* 도막 수치 입력 패널: 선택 부위, 수치, W 버튼, 닫기 버튼을 표시한다. */
 .paint-native-panel{
   display:none !important;
   width:100% !important;
@@ -6871,7 +6911,8 @@ textarea::-ms-input-placeholder{
 #tabExterior:checked ~ #secInput,
 #tabExterior:checked ~ #secDiag,
 #tabExterior:checked ~ #secCheck,
-#tabExterior:checked ~ #secOrder{
+#tabExterior:checked ~ /* 매입오더 작성 화면: 오더 입력 폼 전체 섹션 스타일이다. */
+#secOrder{
   display:none!important;
 }
 
@@ -7295,7 +7336,8 @@ body.ab-tab-fast-v1697 #secDiag .report-card-ui{
 }
 
 /* 매입오더 작성 별도 섹션 */
-#secOrder .order-page-title-card-v1699{
+#secOrder /* 오더/산정 페이지 제목 카드: 별도 화면 상단 제목 바 스타일이다. */
+.order-page-title-card-v1699{
   width:100%!important;
   min-height:42px!important;
   margin:10px 0!important;
@@ -9840,7 +9882,8 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
    - 화면 미리보기 기준은 기존 카드/상단 영역과 같은 560px 폭으로 맞춤
    - 실제 print 시에는 기존 @media print 규칙에 따라 100% 출력 유지
 */
-body.report-print-preview-v1773 #reportPrintRootV1773{
+body.report-print-preview-v1773 /* PDF 미리보기 루트: 고객/회사 보고용 복제 DOM 출력 컨테이너다. */
+#reportPrintRootV1773{
   width:calc(100vw - 24px)!important;
   max-width:560px!important;
   margin:0 auto!important;
@@ -9865,6 +9908,7 @@ body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-section-body
   margin-right:auto!important;
 }
 
+/* 인쇄/PDF 공통: 브라우저 출력 시 레이아웃과 색상 보존을 담당한다. */
 @media print{
   body.report-print-preview-v1773 #reportPrintRootV1773,
   body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-head-v1773,
@@ -10876,7 +10920,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   line-height:1 !important;
 }
 
-/* STYLE_BLOCK_02 id="reportPrintDiagramUnifiedV161" */
+/* STYLE_BLOCK_02: PDF 출력 도면 레이아웃 통합
+   - 사고/도막/외관 도면을 PDF 페이지에서 균일하게 배치한다. */
 @media print{
   /*
     v161 - 도면 출력 CSS 단일화
@@ -11119,7 +11164,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   }
 }
 
-/* STYLE_BLOCK_03 id="reportPrintLegacyTitleGuardV162" */
+/* STYLE_BLOCK_03: PDF 출력 legacy 제목 방어 규칙
+   - 동적 복제 과정에서 남는 도면 제목/캡션 영역을 출력에서 제거한다. */
 @media print{
   /*
     v162 - 방어 규칙
@@ -11151,7 +11197,8 @@ html body #secCheck .pros-warranty-head-v70 .pros-warranty-cycle-v70{
   }
 }
 
-/* STYLE_BLOCK_04 id="reportPrintIOSV190" */
+/* STYLE_BLOCK_04: iPhone/Safari PDF 출력 전용 보정
+   - iOS Safari의 print 분할/축소 기준을 별도 처리한다. */
 @media print{
   @page{
     size:A4 portrait;
@@ -11588,10 +11635,12 @@ body.ab-password-active-v195{overflow:hidden!important}
   #passwordVerifyBtnV195{width:100%}
 }
 
-/* STYLE_BLOCK_05  */
+/* STYLE_BLOCK_05: 매입금액 산정 메뉴/페이지 진입
+   - 상단 메뉴 선택 시 매입금액 산정 섹션 표시/숨김을 담당한다. */
 /* v218 - 매입금액 산정 메뉴/페이지 */
 .menu-item + .menu-item{margin-top:6px!important}
-#tabPriceCalc:checked ~ #secPriceCalcV218{display:block!important}
+#tabPriceCalc:checked ~ /* 매입금액 산정 화면: 가격, 감가항목, 차감합계, 최종금액 입력 UI 전체 기준이다. */
+#secPriceCalcV218{display:block!important}
 #tabPriceCalc:checked ~ #secInput,#tabPriceCalc:checked ~ #secDiag,#tabPriceCalc:checked ~ #secExterior,#tabPriceCalc:checked ~ #secCheck,#tabPriceCalc:checked ~ #secSubmit,#tabPriceCalc:checked ~ #secOrder{display:none!important}
 #tabInput:checked ~ #secPriceCalcV218,#tabDiag:checked ~ #secPriceCalcV218,#tabExterior:checked ~ #secPriceCalcV218,#tabCheck:checked ~ #secPriceCalcV218,#tabSubmit:checked ~ #secPriceCalcV218,#tabOrder:checked ~ #secPriceCalcV218{display:none!important}
 #secPriceCalcV218{padding-bottom:96px!important}
@@ -11658,7 +11707,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   .price-calc-repeat-row-v219{grid-template-columns:minmax(0,1fr) 78px 24px!important}
 }
 
-/* STYLE_BLOCK_06  */
+/* STYLE_BLOCK_06: 매입오더/매입금액 산정 기본 입력 레이아웃
+   - 라벨 위, 입력박스 아래 구조와 기본 탭 계열 입력 정렬을 담당한다. */
 /* v222: 매입오더 작성 및 매입금액 산정 입력 레이아웃을 기본 탭 형식으로 통일한다.
    - 작은 검은 점 + 항목명
    - 입력요소는 항목명 아래 배치
@@ -11790,7 +11840,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   grid-template-columns:minmax(0,1fr) 26px!important;
 }
 
-/* STYLE_BLOCK_07  */
+/* STYLE_BLOCK_07: 매입금액 산정 금액 단위 표시
+   - 만 단위, 차감 합계 음수 기호 등 입력박스 내부 단위 표시를 담당한다. */
 /* v223: 매입금액 산정의 금액 단위를 입력박스 내부 우측에 표시한다.
    차감 합계의 음수 기호도 입력박스 내부 좌측에 검정색으로 표시한다. */
 #secPriceCalcV218 .price-calc-input-unit-v223{
@@ -11841,7 +11892,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   align-items:center!important;
 }
 
-/* STYLE_BLOCK_08  */
+/* STYLE_BLOCK_08: 매입금액 산정 입력박스 규격 통일
+   - 단일 입력, 금액 입력, 반복행, 복합 계산행의 높이/폭/간격 기준을 맞춘다. */
 /* v225: 매입금액 산정 입력박스 규격 및 복합행 정렬 통일
    - 기능/키/계산 로직은 변경하지 않는다.
    - 단일 입력은 전체 폭, 내용+금액은 동일 비율, 복합 계산행은 동일 높이와 균등 폭을 사용한다. */
@@ -11946,7 +11998,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_09  */
+/* STYLE_BLOCK_09: 사고/외판/판금/휠기스 소형 계산행
+   - 개수, 개당, 총%, 합계 입력칸의 소형 그리드와 단위 표시를 담당한다. */
 /* v229: 매입금액 산정 사고/외판/판금/휠기스 소형 입력박스 단위 내장 보정
    - 계산 key와 저장 key는 유지한다.
    - 개/%, 개당/만, 총/% 표시만 입력박스 내부로 이동한다. */
@@ -12023,7 +12076,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_10  */
+/* STYLE_BLOCK_10: 개당 입력칸 placeholder 보정
+   - 외판/판금/휠기스의 개당 문구가 실제 입력값을 가리지 않게 처리한다. */
 /* v230: 외판·판금·휠기스 개당 입력칸 보정
    - 개당 문구가 입력 공간을 차지하지 않도록 사고의 개당 % 칸과 같은 placeholder 방식으로 전환한다.
    - 계산 key, 저장 key, 총합 직접입력 기능은 변경하지 않는다. */
@@ -12055,7 +12109,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_11  */
+/* STYLE_BLOCK_11: Android 소형 계산행 최종 보정
+   - 사고 개수 placeholder, 개당 placeholder, 합계 표시 위치 등 Android 표시를 보정한다. */
 /* v231: 매입금액 산정 소형 계산행 Android 최종 보정
    - 사고 개수 placeholder 제거, 개당 placeholder 폰트 통일, 총액 입력박스 = 표시를 추가한다.
    - 계산식, 저장 key, data-key, localStorage key는 변경하지 않는다. */
@@ -12130,8 +12185,10 @@ body.ab-password-active-v195{overflow:hidden!important}
   }
 }
 
-/* STYLE_BLOCK_12  */
+/* STYLE_BLOCK_12: 저장/불러오기 플로팅 버튼
+   - 모바일·웹 공통 하단 플로팅 저장 메뉴 위치와 아이콘 버튼을 담당한다. */
 /* v208: 모바일·웹 공통 저장 아이콘 플로팅 버튼 */
+/* 저장/불러오기 플로팅 바: 구글시트 저장/불러오기 버튼 컨테이너다. */
 .ab-dbbar-v197{
   position:fixed !important;
   right:max(12px, env(safe-area-inset-right, 0px)) !important;
@@ -12273,7 +12330,8 @@ body.ab-password-active-v195{overflow:hidden!important}
  #secPriceCalcV218 .price-calc-repeat-row-v219.amount-only.price-calc-added-row-v220{grid-template-columns:minmax(0,1fr) 24px 36px!important}
 }
 
-/* STYLE_BLOCK_13  */
+/* STYLE_BLOCK_13: 반복 입력행과 차감 합계 보강
+   - 누유/파손/수리 등 반복행 폭과 차감 합계 음수 표기를 통일한다. */
 /* v226: 매입금액 산정 반복 입력행 최종 규격 및 차감 음수 표기 보강 */
 #secPriceCalcV218{--price-calc-v226-height:42px;--price-calc-v226-amount-width:92px;--price-calc-v226-remove-width:36px;--price-calc-v226-gap:7px}
 #secPriceCalcV218 #priceCalcBasePriceV218,#secPriceCalcV218 #priceCalcVehicleNoV218,#secPriceCalcV218 #priceCalcCarNameV218{width:100%!important;height:var(--price-calc-v226-height)!important;min-height:var(--price-calc-v226-height)!important;background:#fff!important;color:#111827!important;cursor:text!important}
@@ -12294,7 +12352,8 @@ body.ab-password-active-v195{overflow:hidden!important}
 #secPriceCalcV218 [data-repeat-row-v219="oil"],#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223,#secPriceCalcV218 [data-repeat-row-v219="oil"]>.price-calc-input-unit-v223>input{display:block!important;width:100%!important;min-width:0!important;max-width:none!important;flex:1 1 auto!important;box-sizing:border-box!important}
 #secPriceCalcV218 [data-repeat-row-v219="oil"].price-calc-added-row-v220>.price-calc-input-unit-v223{width:100%!important}
 
-/* STYLE_BLOCK_14  */
+/* STYLE_BLOCK_14: 파손 반복행 누락 보정
+   - 파손 항목의 부위/금액 행을 다른 반복항목과 동일한 규격으로 맞춘다. */
 /* v232: 파손 반복 입력행 누락 보정
    - v226 반복행 통일 CSS에서 damage만 빠져 Android에서 부위/금액 폭이 다른 항목과 불일치하던 문제를 수정한다.
    - 계산식, 저장 key, 추가/삭제 로직은 변경하지 않는다. */
@@ -12320,7 +12379,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   box-sizing:border-box!important;
 }
 
-/* STYLE_BLOCK_15  */
+/* STYLE_BLOCK_15: 매입금액 산정 최종 레이아웃
+   - 차감/최종 요약, 항목추가 버튼, 2열/3열 묶음, 타이어 반복형 구조를 담당한다. */
 /* v247: v232 기준 매입금액 산정 부분 재배치 보정
    - 차감 합계/최종금액을 매입금액 산정 헤더 바로 아래에 2열 고정형으로 배치한다.
    - 항목추가 버튼은 실선/일반 굵기로 변경한다.
@@ -12501,7 +12561,8 @@ body.ab-password-active-v195{overflow:hidden!important}
   #secPriceCalcV218 .price-calc-repair-card-v247 .price-calc-third-repair-v247{grid-column:span 2!important;}
 }
 
-/* STYLE_BLOCK_16  */
+/* STYLE_BLOCK_16: 매입금액 산정 sticky 고정 보정
+   - 상단 헤더 아래에 매입금액 산정 제목과 차감/최종 요약을 고정한다. */
 /* v248: 매입금액 산정 상단 고정 보정
    - 기존 sticky 헤더 높이를 CSS 변수로 계산하여 매입금액 산정 제목과 차감/최종 요약을 헤더 아래에 고정한다.
    - v247의 모바일 top:4px 보정을 최종 우선순위에서 덮어쓴다. */
@@ -13000,6 +13061,123 @@ body.ab-password-active-v195{overflow:hidden!important}
   #secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
     padding-left:7px !important;
     padding-right:22px !important;
+  }
+}
+
+
+
+/* v265 BUGFIX: 기본 탭 차량번호/차량이름 라벨 높이 및 입력박스 상단 정렬
+   - 차량번호 라벨에 변경예정 버튼/배지가 붙어도 차량이름 입력박스와 세로 기준선을 맞춘다. */
+#secInput .plate-field-align-v1751 > .basicinfo-v5-label-row,
+#secInput .carname-field-align-v1751 > .basicinfo-v5-label{
+  height:24px !important;
+  min-height:24px !important;
+  margin:0 0 6px 0 !important;
+  display:flex !important;
+  align-items:center !important;
+  line-height:1 !important;
+  box-sizing:border-box !important;
+}
+#secInput .plate-field-align-v1751,
+#secInput .carname-field-align-v1751{
+  align-self:start !important;
+}
+#secInput .plate-field-align-v1751 > .bi-input,
+#secInput .carname-field-align-v1751 > .bi-input{
+  height:48px !important;
+  min-height:48px !important;
+}
+
+/* v265 BUGFIX: 매입금액 산정 사고/외판/판금/휠기스 계산행 정렬 복구
+   - 합계 라벨이 입력박스에 붙거나 세로로 찌그러지는 문제를 막는다.
+   - 사고는 2줄 구조, 외판/판금/휠기스는 한 줄 구조를 유지한다. */
+#secPriceCalcV218 .price-calc-eq-label-v253{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:54px !important;
+  min-width:54px !important;
+  max-width:54px !important;
+  height:42px !important;
+  min-height:42px !important;
+  border-radius:10px !important;
+  background:#ffffff !important;
+  border:1px solid #cfd7e3 !important;
+  color:#111827 !important;
+  -webkit-text-fill-color:#111827 !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+  box-sizing:border-box !important;
+  margin:0 !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+  display:grid !important;
+  grid-template-columns:58px 76px 74px !important;
+  grid-auto-rows:42px !important;
+  column-gap:8px !important;
+  row-gap:8px !important;
+  align-items:center !important;
+  justify-content:start !important;
+  width:auto !important;
+  max-width:100% !important;
+  overflow:visible !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-compact-unit-v229:nth-of-type(1){grid-column:1 !important;grid-row:1 !important;}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-compact-unit-v229:nth-of-type(2){grid-column:2 !important;grid-row:1 !important;}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-total-percent-unit-v229{grid-column:3 !important;grid-row:1 !important;}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-eq-label-v253{grid-column:1 !important;grid-row:2 !important;}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-result-unit-v231{grid-column:2 / span 2 !important;grid-row:2 !important;width:116px !important;min-width:116px !important;max-width:116px !important;}
+
+#secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+  display:grid !important;
+  grid-template-columns:58px 74px 54px 88px !important;
+  gap:8px !important;
+  align-items:center !important;
+  justify-content:start !important;
+  width:auto !important;
+  max-width:100% !important;
+  overflow:visible !important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident) > .price-calc-result-unit-v231{
+  width:88px !important;
+  min-width:88px !important;
+  max-width:88px !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-compact-unit-v229,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-total-percent-unit-v229,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231{
+  height:42px !important;
+  min-height:42px !important;
+  margin:0 !important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-compact-unit-v229 > input,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-total-percent-unit-v229 > input,
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231 > input{
+  height:42px !important;
+  min-height:42px !important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+    grid-template-columns:54px 70px 68px !important;
+    column-gap:7px !important;
+    row-gap:7px !important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253 > .price-calc-result-unit-v231{
+    width:108px !important;
+    min-width:108px !important;
+    max-width:108px !important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+    grid-template-columns:54px 70px 50px 84px !important;
+    gap:7px !important;
+  }
+  #secPriceCalcV218 .price-calc-eq-label-v253{
+    width:50px !important;
+    min-width:50px !important;
+    max-width:50px !important;
+    font-size:11px !important;
   }
 }
 
@@ -14192,6 +14370,11 @@ body.ab-password-active-v195{overflow:hidden!important}
 </section>
 </div>
 <script>
+/**
+ * SCRIPT_BLOCK_01: 초기 입력 UI 바인딩, 사고/외관 태그 생성, draft 복원과 boot 진입을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 
 window.AB_KM_DIGITS=function(value){return String(value||'').replace(/[^\d]/g,'');};
 window.AB_KM_FOCUS=function(input){input.value=window.AB_KM_DIGITS(input.value);};
@@ -14231,6 +14414,16 @@ function bindCheckButtons(){
   var root = document.getElementById('secCheck');
   if(!root || root.getAttribute('data-check-bound-v1714') === '1') return;
   root.setAttribute('data-check-bound-v1714', '1');
+
+  /**
+
+   * 함수: syncRow
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function syncRow(row){
     if(!row) return;
@@ -14334,10 +14527,25 @@ function bindTouchDiagramChange(){
   root.__abTouchDiagramChangeBoundV1708 = true;
 
   var scheduled = false;
+  /**
+   * 함수: run
+   * 담당: 초기 입력 UI 바인딩, 사고/외관 태그 생성, draft 복원과 boot 진입 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   var run = function(){
     scheduled = false;
     buildDiagnosisReports();
   };
+
+  /**
+
+   * 함수: schedule
+
+   * 담당: 초기 입력 UI 바인딩, 사고/외관 태그 생성, draft 복원과 boot 진입 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   var schedule = function(){
     if(scheduled) return;
@@ -14414,8 +14622,23 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_02: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   var STORE = {};
+
+  /**
+
+   * 함수: colorClass
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function colorClass(value){
     var n = parseInt(String(value || '').replace(/[^0-9]/g,''), 10) || 0;
@@ -14424,23 +14647,78 @@ boot();
     return 'base';
   }
 
+  /**
+
+   * 함수: cleanValue
+
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function cleanValue(raw){
     return String(raw || '').replace(/[^0-9]/g,'');
   }
+
+  /**
+
+   * 함수: ensure
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function ensure(id){
     if(!STORE[id]) STORE[id] = {v:'', w:false};
     return STORE[id];
   }
 
+  /**
+
+   * 함수: badge
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function badge(id){ return document.getElementById('paintNativeBadge_' + id); }
+  /**
+   * 함수: slot
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function slot(id){ return document.querySelector('.paint-native-slot[data-paint-id="' + id + '"]'); }
+
+  /**
+
+   * 함수: paintBadgeTransform
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function paintBadgeTransform(id){
     if(id === 'B4') return 'translate(-94%,-50%)';
     if(id === 'C4') return 'translate(-14%,-50%)';
     return 'translate(-50%,-50%)';
   }
+
+  /**
+
+   * 함수: makeBadgeNode
+
+   * 담당: 재사용 가능한 DOM 요소 또는 표시 노드를 생성한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function makeBadgeNode(oldBadge, id, value, isW){
     var nb = oldBadge.cloneNode(false);
@@ -14478,6 +14756,16 @@ boot();
 
     return nb;
   }
+
+  /**
+
+   * 함수: replaceBadge
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function replaceBadge(id, value){
     var st = ensure(id);
@@ -14524,6 +14812,16 @@ boot();
 
   }
 
+  /**
+
+   * 함수: commitValue
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function commitValue(input, value, reason){
     if(!input) return;
 
@@ -14539,6 +14837,16 @@ boot();
     replaceBadge(id, value, reason);
 
   }
+
+  /**
+
+   * 함수: predictBeforeInput
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function predictBeforeInput(input, ev){
     var id = input.getAttribute('data-paint-id');
@@ -14577,6 +14885,16 @@ boot();
 
   }
 
+  /**
+
+   * 함수: toggleW
+
+   * 담당: UI 상태를 전환하거나 특정 선택을 제한한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function toggleW(btn, ev){
     if(ev && ev.preventDefault) ev.preventDefault();
     if(ev && ev.stopPropagation) ev.stopPropagation();
@@ -14598,6 +14916,16 @@ boot();
 
     return false;
   }
+
+  /**
+
+   * 함수: bindInput
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindInput(input){
     input.addEventListener('beforeinput', function(ev){
@@ -14628,12 +14956,32 @@ boot();
     }, false);
   }
 
+  /**
+
+   * 함수: delegateInput
+
+   * 담당: 도막 진단 native 입력 패널, 수치 배지, W 토글 및 도막 값 반영 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function delegateInput(ev){
     var t = ev.target;
     if(t && t.classList && t.classList.contains('paint-native-input')){
       commitValue(t, t.value, 'delegate-' + ev.type);
     }
   }
+
+  /**
+
+   * 함수: bind
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bind(){
     var inputs = document.querySelectorAll('.paint-native-input');
@@ -14665,7 +15013,17 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_03: 유리/썬팅 상태 선택 버튼 바인딩을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindGlassStatus
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindGlassStatus(){
     var labels = {
       base: '',
@@ -14712,7 +15070,17 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_04: 보험이력 선택 UI 초기 바인딩을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindInsuranceOptions
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindInsuranceOptions(){
     var buttons=document.querySelectorAll('.insurance-option');
     for(var i=0;i<buttons.length;i++){
@@ -14737,7 +15105,17 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_05: 보험이력 select 변경 이벤트 동기화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindInsuranceSelects
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindInsuranceSelects(){
     var redMap = {
       totalFlood:['전손','침수'],
@@ -14751,6 +15129,16 @@ boot();
       if(sels[i].getAttribute('data-insurance-bound')==='1') continue;
 
       sels[i].setAttribute('data-insurance-bound','1');
+
+      /**
+
+       * 함수: handler
+
+       * 담당: 보험이력 select 변경 이벤트 동기화를 담당한다. 관련 세부 처리를 수행한다.
+
+       * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+       */
 
       var handler = function(){
         var key = this.getAttribute('data-insurance-select');
@@ -14788,6 +15176,11 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_06: 날짜/보험 금액 입력 보정 및 저장용 숫자 포맷 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
 
@@ -14832,6 +15225,11 @@ boot();
       (function(wrap){
         if(wrap.getAttribute('data-v160-date-touch') === '1') return;
         wrap.setAttribute('data-v160-date-touch','1');
+        /**
+         * 함수: handler
+         * 담당: 날짜/보험 금액 입력 보정 및 저장용 숫자 포맷 보정 관련 세부 처리를 수행한다.
+         * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+         */
         var handler = function(event){
           var rect = wrap.getBoundingClientRect();
           var point = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0] : event;
@@ -14863,6 +15261,11 @@ boot();
     for(var i=0;i<selects.length;i++){
       if(selects[i].getAttribute('data-v160-insurance') === '1') continue;
       selects[i].setAttribute('data-v160-insurance','1');
+      /**
+       * 함수: sync
+       * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+       * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+       */
       var sync = function(){
         var key = this.getAttribute('data-insurance-select');
         var value = this.value;
@@ -14889,6 +15292,11 @@ boot();
       if(inputs[i].getAttribute('data-v160-number') === '1') continue;
       inputs[i].setAttribute('data-v160-number','1');
       inputs[i].setAttribute('inputmode','numeric');
+      /**
+       * 함수: sync
+       * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+       * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+       */
       var sync = function(){
         var digits = onlyDigitsV16(this.value);
         this.setAttribute('data-save-value', digits);
@@ -14944,6 +15352,11 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_07: 보험 숫자 입력 보정의 후속 안정화 패치를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
   /**
@@ -14979,6 +15392,11 @@ boot();
       input.setAttribute('autocomplete','off');
       if(input.getAttribute('data-v163-number') !== '1'){
         input.setAttribute('data-v163-number','1');
+        /**
+         * 함수: sync
+         * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+         * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+         */
         var sync = function(){
           var digits = onlyDigitsV163(this.value);
           this.setAttribute('data-save-value', digits);
@@ -15006,6 +15424,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: bootV163
+
+   * 담당: 보험 숫자 입력 보정의 후속 안정화 패치를 담당한다. 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function bootV163(){
     bindInsuranceNumberInputsV163();
   }
@@ -15019,6 +15447,11 @@ boot();
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_08: 외관/타이어 입력값 정리와 live 포맷 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
   /**
@@ -15063,6 +15496,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: bootExteriorV165
+
+   * 담당: 외관/타이어 입력값 정리와 live 포맷 보정 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function bootExteriorV165(){
     bindExteriorTreadInputsV165();
   }
@@ -15075,6 +15518,11 @@ boot();
   window.addEventListener('load', bootExteriorV165, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_09: 외관/수리 진단 보정용 즉시 실행 스크립트 영역이다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
   /**
@@ -15099,7 +15547,17 @@ boot();
   };
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_10: 추가장착/튜닝 반복행 생성, 삭제, 재정렬을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: reindexProsTuningRows
+   * 담당: 추가장착/튜닝 반복행 생성, 삭제, 재정렬 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function reindexProsTuningRows(rows){
     if(!rows) return;
     var list = rows.querySelectorAll('.pros-tuning-row');
@@ -15124,6 +15582,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: makeProsMinusButton
+
+   * 담당: 재사용 가능한 DOM 요소 또는 표시 노드를 생성한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function makeProsMinusButton(){
     var btn = document.createElement('button');
     btn.type = 'button';
@@ -15133,6 +15601,16 @@ boot();
     btn.textContent = '-';
     return btn;
   }
+
+  /**
+
+   * 함수: bindProsTuningSingle
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindProsTuningSingle(){
     var addButtons = document.querySelectorAll('[data-pros-add-tuning]');
@@ -15201,7 +15679,17 @@ boot();
   window.addEventListener('load', bindProsTuningSingle, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_11: 기본 탭 위험요소 select 색상 적용을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: applyBasicDangerSelect
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function applyBasicDangerSelect(select){
     if(!select) return;
     var dangerValue = select.getAttribute('data-danger-value') || '';
@@ -15212,6 +15700,16 @@ boot();
       select.classList.remove('basic-danger-active');
     }
   }
+
+  /**
+
+   * 함수: bindBasicDangerSelects
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindBasicDangerSelects(){
     var selects = document.querySelectorAll('#secInput select.basic-danger-watch');
@@ -15241,6 +15739,11 @@ boot();
   window.addEventListener('pageshow', bindBasicDangerSelects, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_12: 점검 항목 빠른 클릭/터치 반응 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v16.79 - 점검 탭 선택버튼 클릭 시 전역 볼드 스캔 차단
    원인:
    - v16.67/v16.68 계열의 전역 click 핸들러가 모든 button/label/input을 반복 스캔한다.
@@ -15277,7 +15780,17 @@ boot();
   window.addEventListener('load', bindCheckFastClick, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_13: 상단 헤더 메뉴 열기/닫기 바인딩을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindHeaderMenu
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindHeaderMenu(){
     var toggle = document.getElementById('menuToggle');
     if(!toggle) return;
@@ -15304,10 +15817,30 @@ boot();
   window.addEventListener('load', bindHeaderMenu, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_14: 추가장착/튜닝 메인 행과 날짜/거리 입력 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: onlyDigits
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
   }
+
+  /**
+
+   * 함수: formatYYMMDD
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function formatYYMMDD(value){
     var d = onlyDigits(value).slice(0, 6);
@@ -15315,6 +15848,16 @@ boot();
     if(d.length <= 4) return d.slice(0,2) + '-' + d.slice(2);
     return d.slice(0,2) + '-' + d.slice(2,4) + '-' + d.slice(4);
   }
+
+  /**
+
+   * 함수: cleanupDateFields
+
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function cleanupDateFields(){
     var fields = document.querySelectorAll('#secInput .basicinfo-v5-field');
@@ -15342,14 +15885,44 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: getTuningMain
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getTuningMain(){
     return document.querySelector('#secInput select.tuning-main');
   }
+
+  /**
+
+   * 함수: getTuningStatus
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function getTuningStatus(){
     var main = getTuningMain();
     return main ? main.value : '없음';
   }
+
+  /**
+
+   * 함수: refreshTuningMainOnly
+
+   * 담당: 현재 입력/선택 상태를 기준으로 화면 표시를 갱신한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function refreshTuningMainOnly(){
     var main = getTuningMain();
@@ -15374,6 +15947,16 @@ boot();
       }
     }
   }
+
+  /**
+
+   * 함수: addTuningRowFixed
+
+   * 담당: 추가장착/튜닝 메인 행과 날짜/거리 입력 보정 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function addTuningRowFixed(){
     var list = document.querySelector('#secInput .tuning-list');
@@ -15405,6 +15988,16 @@ boot();
     row.appendChild(remove);
     list.appendChild(row);
   }
+
+  /**
+
+   * 함수: normalizeTuningRowsFixed
+
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function normalizeTuningRowsFixed(){
     var rows = document.querySelectorAll('#secInput .tuning-row');
@@ -15446,6 +16039,16 @@ boot();
       }
     }
   }
+
+  /**
+
+   * 함수: bindV1694
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindV1694(){
     var sec = document.getElementById('secInput');
@@ -15508,7 +16111,17 @@ boot();
   window.addEventListener('load', bindV1694, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_15: 튜닝 행 색상과 고정행 정규화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: applyTuningMainColor
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function applyTuningMainColor(){
     var sel = document.querySelector('#secInput select.tuning-main');
     if(!sel) return;
@@ -15545,6 +16158,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: normalizeFixedTuningRows
+
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function normalizeFixedTuningRows(){
     var rows = document.querySelectorAll('#secInput .tuning-row');
     for(var i=0;i<rows.length;i++){
@@ -15567,6 +16190,16 @@ boot();
       }
     }
   }
+
+  /**
+
+   * 함수: bindV1695
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindV1695(){
     var sec = document.getElementById('secInput');
@@ -15642,7 +16275,17 @@ boot();
   window.addEventListener('load', bindV1695, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_16: 탭 활성화 상태와 빠른 탭 전환을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: setActiveTab
+   * 담당: 지정된 DOM 또는 내부 상태 값을 설정한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function setActiveTab(tabName){
     document.body.classList.add('ab-tab-fast-v1697');
 
@@ -15653,6 +16296,16 @@ boot();
     document.body.classList.add('ab-tab-' + tabName);
   }
 
+  /**
+
+   * 함수: getCheckedTabName
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getCheckedTabName(){
     if(document.getElementById('tabOrder') && document.getElementById('tabOrder').checked) return 'order';
     if(document.getElementById('tabExterior') && document.getElementById('tabExterior').checked) return 'exterior';
@@ -15660,6 +16313,16 @@ boot();
     if(document.getElementById('tabCheck') && document.getElementById('tabCheck').checked) return 'check';
     return 'input';
   }
+
+  /**
+
+   * 함수: bindFastTabs
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindFastTabs(){
     if(document.body.getAttribute('data-fast-tabs-bound-v1697') === '1') return;
@@ -15705,6 +16368,11 @@ boot();
   window.addEventListener('load', bindFastTabs, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_17: 선택형 버튼/라디오의 강조 표시 통합 적용을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v17.09 - 선택값 볼드 처리 단일 위임 핸들러
    목적:
    - v16.67/v16.68/v16.69/v16.70의 전역 재스캔 방식 제거 후 필요한 볼드 기능만 유지한다.
@@ -15717,12 +16385,32 @@ boot();
     return String(value || '').replace(/\s+/g, '').trim();
   }
 
+  /**
+
+   * 함수: splitValues
+
+   * 담당: 선택형 버튼/라디오의 강조 표시 통합 적용 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function splitValues(text){
     return String(text || '')
       .split('|')
       .map(function(v){ return v.trim(); })
       .filter(Boolean);
   }
+
+  /**
+
+   * 함수: isActiveButton
+
+   * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function isActiveButton(el){
     if(!el) return false;
@@ -15735,6 +16423,16 @@ boot();
     );
   }
 
+  /**
+
+   * 함수: getBoldValues
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getBoldValues(el){
     var raw = el.getAttribute('data-bold-values') ||
               el.getAttribute('data-danger-values') ||
@@ -15743,6 +16441,16 @@ boot();
               '';
     return splitValues(raw).map(norm);
   }
+
+  /**
+
+   * 함수: applySelect
+
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function applySelect(el){
     if(!el) return;
@@ -15768,6 +16476,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: applyButton
+
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function applyButton(el){
     if(!el) return;
 
@@ -15780,6 +16498,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: applyAround
+
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function applyAround(target){
     if(!target || !target.closest) return;
 
@@ -15790,6 +16518,16 @@ boot();
     if(button) applyButton(button);
   }
 
+  /**
+
+   * 함수: initialApply
+
+   * 담당: 선택형 버튼/라디오의 강조 표시 통합 적용 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function initialApply(){
     var root = document;
     var selects = root.querySelectorAll('select.ab-direct-bold-select, select.ab-ins-bold-select-v1670, select[data-bold-values], select[data-danger-value]');
@@ -15798,6 +16536,16 @@ boot();
     var buttons = root.querySelectorAll('.ab-direct-bold-button, button[data-bold-values], label[data-bold-values]');
     for(var j=0;j<buttons.length;j++) applyButton(buttons[j]);
   }
+
+  /**
+
+   * 함수: bindUnifiedBoldV1709
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindUnifiedBoldV1709(){
     if(document.body.getAttribute('data-unified-bold-bound-v1709') === '1') return;
@@ -15839,6 +16587,11 @@ boot();
   window.addEventListener('load', bindUnifiedBoldV1709, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_18: 기본정보 날짜, 주행거리, 번호판 배지 표시를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v17.10 - 기본정보/번호판/날짜 단일 핸들러
    목적:
    - v15.3~v15.9 계열의 중복 기본정보 핸들러를 제거하고 필요한 기능만 단일화한다.
@@ -15851,6 +16604,16 @@ boot();
     return String(value || '').replace(/[^\d]/g, '');
   }
 
+  /**
+
+   * 함수: formatYYMMDD
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function formatYYMMDD(value){
     var d = onlyDigits(value).slice(0, 6);
     if(d.length <= 2) return d;
@@ -15858,14 +16621,44 @@ boot();
     return d.slice(0,2) + '-' + d.slice(2,4) + '-' + d.slice(4);
   }
 
+  /**
+
+   * 함수: kmLive
+
+   * 담당: 기본정보 날짜, 주행거리, 번호판 배지 표시를 담당한다. 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function kmLive(input){
     input.value = onlyDigits(input.value);
   }
+
+  /**
+
+   * 함수: kmFormat
+
+   * 담당: 기본정보 날짜, 주행거리, 번호판 배지 표시를 담당한다. 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function kmFormat(input){
     var digits = onlyDigits(input.value);
     input.value = digits ? Number(digits).toLocaleString('ko-KR') + ' km' : '';
   }
+
+  /**
+
+   * 함수: togglePlateBadge
+
+   * 담당: UI 상태를 전환하거나 특정 선택을 제한한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function togglePlateBadge(){
     var badge = document.querySelector('.plate-change-badge');
@@ -15873,6 +16666,16 @@ boot();
     var nowHidden = badge.style.display === 'none' || !badge.style.display;
     badge.style.display = nowHidden ? 'inline-flex' : 'none';
   }
+
+  /**
+
+   * 함수: cleanupDateCalendar
+
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function cleanupDateCalendar(){
     var fields = document.querySelectorAll('#secInput .basicinfo-v5-field');
@@ -15899,6 +16702,16 @@ boot();
       }
     }
   }
+
+  /**
+
+   * 함수: bindBasicV1710
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindBasicV1710(){
     var sec = document.getElementById('secInput');
@@ -15966,6 +16779,11 @@ boot();
   window.addEventListener('load', bindBasicV1710, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_19: 도막 좌우측면 노드 안정화 및 위치 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v17.13 - 도막 좌/우 측면진단 badge/marker inline 위치 재고정
    목적:
    - paint badge가 cloneNode로 교체될 때 CSS만으로 위치가 흔들리는 것을 방지한다.
@@ -15979,6 +16797,16 @@ boot();
     if(id === 'C4') return 'translate(-14%,-50%)';
     return 'translate(-50%,-50%)';
   }
+
+  /**
+
+   * 함수: stabilizePaintSideNode
+
+   * 담당: 도막 좌우측면 노드 안정화 및 위치 보정 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function stabilizePaintSideNode(node){
     if(!node || !node.closest) return;
@@ -16016,10 +16844,30 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: stabilizeAllPaintSide
+
+   * 담당: 도막 좌우측면 노드 안정화 및 위치 보정 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function stabilizeAllPaintSide(){
     var nodes = document.querySelectorAll('#secDiag .diag-paint-card .paint-native-slot[data-paint-role="side"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="B"], #secDiag .diag-paint-card .paint-native-slot[data-paint-id^="C"]');
     for(var i=0;i<nodes.length;i++) stabilizePaintSideNode(nodes[i]);
   }
+
+  /**
+
+   * 함수: bindPaintSideStabilizerV1713
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindPaintSideStabilizerV1713(){
     var card = document.querySelector('#secDiag .diag-paint-card');
@@ -16070,14 +16918,44 @@ boot();
   window.addEventListener('load', bindPaintSideStabilizerV1713, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_20: 매입오더 작성 화면의 값 수집, 금액 포맷, 출력문 생성을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: onlyDigits
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function onlyDigits(value){ return String(value || '').replace(/[^\d]/g, ''); }
+
+  /**
+
+   * 함수: commaNumber
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function commaNumber(value){
     var digits = onlyDigits(value);
     if(!digits) return '';
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
+
+  /**
+
+   * 함수: formatPhone
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function formatPhone(value){
     var d = onlyDigits(value).slice(0, 11);
@@ -16087,11 +16965,31 @@ boot();
     return d.slice(0,3) + '-' + d.slice(3,7) + '-' + d.slice(7);
   }
 
+  /**
+
+   * 함수: formatRrn
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function formatRrn(value){
     var d = onlyDigits(value).slice(0, 13);
     if(d.length <= 6) return d;
     return d.slice(0,6) + '-' + d.slice(6);
   }
+
+  /**
+
+   * 함수: formatYYMM
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function formatYYMM(value){
     var d = onlyDigits(value).slice(0, 4);
@@ -16099,11 +16997,31 @@ boot();
     return d.slice(0,2) + '-' + d.slice(2);
   }
 
+  /**
+
+   * 함수: formatMMDD
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function formatMMDD(value){
     var d = onlyDigits(value).slice(0, 4);
     if(d.length <= 2) return d;
     return d.slice(0,2) + '-' + d.slice(2);
   }
+
+  /**
+
+   * 함수: mmddKorean
+
+   * 담당: 매입오더 작성 화면의 값 수집, 금액 포맷, 출력문 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function mmddKorean(value){
     value = String(value || '').trim();
@@ -16123,11 +17041,31 @@ boot();
     return dateText || hourText || '';
   }
 
+  /**
+
+   * 함수: getByKey
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getByKey(key){
     var el = document.querySelector('#secOrder [data-key="' + key + '"]');
     if(!el) return '';
     return (el.value || '').trim();
   }
+
+  /**
+
+   * 함수: dateSlash
+
+   * 담당: 매입오더 작성 화면의 값 수집, 금액 포맷, 출력문 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function dateSlash(key){
     var value = getByKey(key);
@@ -16136,6 +17074,16 @@ boot();
     if(!m) return value;
     return String(parseInt(m[2],10)) + '/' + String(parseInt(m[3],10));
   }
+
+  /**
+
+   * 함수: getYear
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function getYear(){
     var reg = getByKey('order_year_reg_ym');
@@ -16156,12 +17104,32 @@ boot();
     return regText || modelText || '';
   }
 
+  /**
+
+   * 함수: getSelectPlus
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getSelectPlus(selectKey, inputKey){
     var s = getByKey(selectKey);
     var i = getByKey(inputKey);
     if(s && i) return s + ' ' + i;
     return s || i || '';
   }
+
+  /**
+
+   * 함수: getMoney
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function getMoney(prefix, appendFee){
     var amount = getByKey(prefix + '_amount');
@@ -16172,9 +17140,29 @@ boot();
     return out;
   }
 
+  /**
+
+   * 함수: getMoneyOrX
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getMoneyOrX(prefix, appendFee){
     return getMoney(prefix, appendFee) || 'X';
   }
+
+  /**
+
+   * 함수: getMoneyDate
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function getMoneyDate(prefix){
     var amount = getByKey(prefix + '_amount');
@@ -16185,6 +17173,16 @@ boot();
     if(amount) return amount + ' ' + unit;
     return mmdd;
   }
+
+  /**
+
+   * 함수: getAccount
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function getAccount(prefix){
     var bank = getByKey(prefix + '_bank');
@@ -16197,6 +17195,16 @@ boot();
     return arr.join(' ');
   }
 
+  /**
+
+   * 함수: getCountMemo
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function getCountMemo(prefix){
     var count = parseInt(getByKey(prefix + '_count_select') || '0', 10);
     if(!count || count <= 0) return 'X';
@@ -16205,6 +17213,16 @@ boot();
     var base = String(count) + '개';
     return memo ? (base + '/' + memo) : base;
   }
+
+  /**
+
+   * 함수: profitIsOpen
+
+   * 담당: 매입오더 작성 화면의 값 수집, 금액 포맷, 출력문 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function profitIsOpen(){
     var btn = document.getElementById('orderProfitToggle');
@@ -16222,6 +17240,16 @@ boot();
     if(wrap) wrap.setAttribute('data-open', count > 0 ? '1' : '0');
   }
 
+  /**
+
+   * 함수: syncUnitButton
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function syncUnitButton(btn, hidden){
     if(!btn || !hidden) return;
     var unit = hidden.value || btn.getAttribute('data-unit') || '만원';
@@ -16229,6 +17257,16 @@ boot();
     btn.setAttribute('data-unit', unit);
     btn.classList.add('active');
   }
+
+  /**
+
+   * 함수: toggleUnit
+
+   * 담당: UI 상태를 전환하거나 특정 선택을 제한한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function toggleUnit(btn){
     if(!btn) return;
@@ -16242,6 +17280,16 @@ boot();
     hidden.value = next;
     syncUnitButton(btn, hidden);
   }
+
+  /**
+
+   * 함수: buildOrderTextV1717
+
+   * 담당: 화면 표시용 DOM 또는 출력 문자열을 생성한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function buildOrderTextV1717(){
     var fee = inspectorIsEncar();
@@ -16299,6 +17347,16 @@ boot();
 
     return lines.join('\n');
   }
+
+  /**
+
+   * 함수: bindOrderV1717
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindOrderV1717(){
     var sec = document.getElementById('secOrder');
@@ -16418,6 +17476,11 @@ boot();
   window.addEventListener('load', bindOrderV1717, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_21: 도면 마커 라디오 상태 안정화와 라벨 클릭 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v17.18 - 마커 label 기본 포커스/스크롤 방지
    목적:
    - 마커 label 클릭 시 브라우저가 hidden radio로 포커스를 이동하면서 첫 클릭에 도면/스크롤이 흔들리는 현상을 방지한다.
@@ -16445,6 +17508,16 @@ boot();
     return true;
   }
 
+  /**
+
+   * 함수: isDiagramMarkerLabel
+
+   * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function isDiagramMarkerLabel(label){
     if(!label || !label.closest) return false;
     if(!label.closest('#secDiag')) return false;
@@ -16457,6 +17530,16 @@ boot();
       !!label.closest('.paint-fig-bent')
     );
   }
+
+  /**
+
+   * 함수: bindMarkerStableV1718
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindMarkerStableV1718(){
     var root = document.getElementById('secDiag');
@@ -16492,16 +17575,46 @@ boot();
   window.addEventListener('load', bindMarkerStableV1718, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_22: 위험요소/메모/선루프/대화형 선택 상태 동기화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: onlyDigits
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
   }
+
+  /**
+
+   * 함수: commaNumber
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function commaNumber(value){
     var digits = onlyDigits(value);
     if(!digits) return '';
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
+
+  /**
+
+   * 함수: formatYMD
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function formatYMD(value){
     var d = onlyDigits(value).slice(0,8);
@@ -16510,9 +17623,29 @@ boot();
     return d.slice(0,4) + '-' + d.slice(4,6) + '-' + d.slice(6);
   }
 
+  /**
+
+   * 함수: norm
+
+   * 담당: 위험요소/메모/선루프/대화형 선택 상태 동기화를 담당한다. 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function norm(v){
     return String(v || '').replace(/\s+/g,'').trim();
   }
+
+  /**
+
+   * 함수: dangerValue
+
+   * 담당: 위험요소/메모/선루프/대화형 선택 상태 동기화를 담당한다. 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function dangerValue(select){
     if(!select) return null;
@@ -16527,6 +17660,16 @@ boot();
     var explicit = select.getAttribute('data-danger-value');
     return explicit ? norm(explicit) : null;
   }
+
+  /**
+
+   * 함수: applyDanger
+
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function applyDanger(select){
     var danger = dangerValue(select);
@@ -16549,6 +17692,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: applyAllDanger
+
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function applyAllDanger(){
     var list = document.querySelectorAll([
       '#secInput .sticker-select',
@@ -16562,6 +17715,16 @@ boot();
     ].join(','));
     for(var i=0;i<list.length;i++) applyDanger(list[i]);
   }
+
+  /**
+
+   * 함수: syncMemos
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function syncMemos(){
     var cluster = document.querySelector('#secInput .cluster-select');
@@ -16586,6 +17749,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: setPlateVisible
+
+   * 담당: 지정된 DOM 또는 내부 상태 값을 설정한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function setPlateVisible(force){
     var badge = document.querySelector('#secInput .plate-change-badge');
     if(!badge) return;
@@ -16593,6 +17766,16 @@ boot();
     badge.classList.toggle('plate-change-show-v1720', open);
     badge.style.display = open ? 'inline-flex' : 'none';
   }
+
+  /**
+
+   * 함수: setSunroof
+
+   * 담당: 지정된 DOM 또는 내부 상태 값을 설정한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function setSunroof(state){
     var badge = document.querySelector('#secDiag .exterior-sunroof-badge');
@@ -16642,6 +17825,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: disableAccA4A7
+
+   * 담당: UI 상태를 전환하거나 특정 선택을 제한한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function disableAccA4A7(){
     var list = document.querySelectorAll('#secDiag .acc-card-a4a7-off-v1720 .acc-a4a7-hard-off-v1720, #secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"], #secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698');
     for(var i=0;i<list.length;i++){
@@ -16656,6 +17849,16 @@ boot();
     }
   }
 
+  /**
+
+   * 함수: isA4A7Target
+
+   * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function isA4A7Target(target){
     if(!target || !target.closest) return false;
     var node = target.closest('#secDiag .acc-card-a4a7-off-v1720 [data-disabled-marker-v1720="1"], #secDiag .acc-card-a4a7-off-v1698 .acc-disabled-marker-v1698');
@@ -16665,6 +17868,16 @@ boot();
     var attrs = [slot.getAttribute('data-part'), slot.getAttribute('for'), slot.id, slot.className, slot.textContent].join(' ');
     return /\bA-4\b|\bA-7\b|A4|A7/.test(attrs);
   }
+
+  /**
+
+   * 함수: bindV1720
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindV1720(){
     if(document.body.getAttribute('data-v1720-repair-bound') === '1') return;
@@ -16778,7 +17991,17 @@ boot();
   }, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_23: 번호판 배지 문구 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: fixPlateBadgeText
+   * 담당: 번호판 배지 문구 보정 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function fixPlateBadgeText(){
     var badge = document.querySelector('#secInput .plate-change-badge');
     if(!badge) return;
@@ -16793,6 +18016,11 @@ boot();
   window.addEventListener('load', fixPlateBadgeText, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_24: 매입오더 출력 줄바꿈 정규화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v17.22 - 매입오더 제출 출력 줄바꿈 보정
    목적:
    - 제출하기 후 복사 텍스트에 문자 그대로 \n 이 출력되는 문제를 방지한다.
@@ -16807,6 +18035,16 @@ boot();
       output.value = output.value.replace(/\\n/g, '\n');
     }
   }
+
+  /**
+
+   * 함수: bindOrderNewlineFixV1722
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindOrderNewlineFixV1722(){
     var submit = document.getElementById('orderSubmitBtn');
@@ -16828,10 +18066,30 @@ boot();
   window.addEventListener('load', bindOrderNewlineFixV1722, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_25: 구형 날짜 텍스트와 native date 입력 동기화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: onlyDigits
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
   }
+
+  /**
+
+   * 함수: formatDateText
+
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function formatDateText(value){
     var digits = onlyDigits(value).slice(0, 8);
@@ -16840,6 +18098,16 @@ boot();
     return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
   }
 
+  /**
+
+   * 함수: syncTextToNative
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function syncTextToNative(textInput){
     var wrap = textInput.closest ? textInput.closest('.date-dual-wrap') : textInput.parentNode;
     var nativeDate = wrap ? wrap.querySelector('.bi-date-overlay') : null;
@@ -16847,6 +18115,16 @@ boot();
       nativeDate.value = textInput.value;
     }
   }
+
+  /**
+
+   * 함수: syncNativeToText
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function syncNativeToText(dateInput){
     var wrap = dateInput.closest ? dateInput.closest('.date-dual-wrap') : dateInput.parentNode;
@@ -16859,6 +18137,16 @@ boot();
       }catch(e){}
     }
   }
+
+  /**
+
+   * 함수: openNativeDate
+
+   * 담당: 팝업, 날짜 선택기, PDF/다운로드 창 등 외부 표시 영역을 연다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function openNativeDate(wrap){
     var picker = wrap ? wrap.querySelector('.bi-date-overlay') : null;
@@ -16876,6 +18164,16 @@ boot();
       try{ picker.click(); }catch(e){}
     }
   }
+
+  /**
+
+   * 함수: bindDateOldRestoreV1729
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindDateOldRestoreV1729(){
     if(document.body.getAttribute('data-date-old-restore-v1729') === '1') return;
@@ -16919,6 +18217,16 @@ boot();
         if(wrap.getAttribute('data-v1729-date-touch') === '1') return;
         wrap.setAttribute('data-v1729-date-touch','1');
 
+        /**
+
+         * 함수: handler
+
+         * 담당: 구형 날짜 텍스트와 native date 입력 동기화를 담당한다. 관련 세부 처리를 수행한다.
+
+         * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+         */
+
         var handler = function(event){
           var rect = wrap.getBoundingClientRect();
           var point = event && event.changedTouches && event.changedTouches.length ? event.changedTouches[0] : event;
@@ -16949,7 +18257,17 @@ boot();
   window.addEventListener('load', bindDateOldRestoreV1729, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_26: 날짜 입력 정리 후속 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindDateCleanV1730
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindDateCleanV1730(){
     var wrap = document.querySelector('#secInput .date-old-stable-v1730');
     if(!wrap || wrap.getAttribute('data-date-clean-bound-v1730') === '1') return;
@@ -16980,16 +18298,36 @@ boot();
   window.addEventListener('load', bindDateCleanV1730, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_27: 날짜 텍스트 포맷과 native date 동기화 후속 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: onlyDigits
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function onlyDigits(value){
     return String(value || '').replace(/[^\d]/g, '');
   }
+  /**
+   * 함수: formatDateText
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function formatDateText(value){
     var digits = onlyDigits(value).slice(0,8);
     if(digits.length <= 4) return digits;
     if(digits.length <= 6) return digits.slice(0,4) + '-' + digits.slice(4);
     return digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
   }
+  /**
+   * 함수: syncNativeToText
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function syncNativeToText(native){
     var wrap = native.closest ? native.closest('.date-dual-wrap') : native.parentNode;
     var text = wrap ? wrap.querySelector('.date-ymd-input') : null;
@@ -17001,6 +18339,11 @@ boot();
       }catch(e){}
     }
   }
+  /**
+   * 함수: bindDateCleanV1736
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindDateCleanV1736(){
     var wrap = document.querySelector('#secInput .real-mini-calendar-v1736');
     if(!wrap || wrap.getAttribute('data-real-mini-calendar-v1736') === '1') return;
@@ -17029,7 +18372,17 @@ boot();
   window.addEventListener('load', bindDateCleanV1736, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_28: 외관/타이어 입력 정리 후속 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: cleanExteriorTreadV1739
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function cleanExteriorTreadV1739(){
     var inputs = document.querySelectorAll('#secDiag input[data-key^="exterior_tread_"], #secDiag input.exterior-tread-input');
     for(var i=0;i<inputs.length;i++){
@@ -17074,7 +18427,17 @@ boot();
   setTimeout(cleanExteriorTreadV1739, 100);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_29: 차량번호 배지 표시 정규화와 바인딩을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: normalizePlateBadgeV1752
+   * 담당: 입력값 또는 DOM 상태를 기준 형식으로 정규화한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function normalizePlateBadgeV1752(){
     var badge = document.querySelector('#secInput .plate-change-badge');
     if(!badge) return;
@@ -17095,6 +18458,16 @@ boot();
       badge.style.opacity = '1';
     }
   }
+
+  /**
+
+   * 함수: bindPlateBadgeV1752
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindPlateBadgeV1752(){
     if(document.body.getAttribute('data-plate-badge-v1752') === '1') return;
@@ -17119,6 +18492,11 @@ boot();
   window.addEventListener('load', bindPlateBadgeV1752, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_30: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   var LOADING_ID = 'reportRealCaptureLoadingV1762';
   var BODY_FLAG = 'data-real-tab-capture-v1762';
@@ -17136,11 +18514,31 @@ boot();
     {no:'04', title:'점검', tab:'check', section:'#secCheck', companyHideL:false}
   ];
   function qs(sel, root){ return (root || document).querySelector(sel); }
+  /**
+   * 함수: qsa
+   * 담당: DOM 선택자를 안전하게 조회하는 헬퍼 함수다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  /**
+   * 함수: wait
+   * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+  /**
+   * 함수: waitFrame
+   * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function waitFrame(count){
     count = count || 1;
     return new Promise(function(resolve){
+      /**
+       * 함수: next
+       * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
+       * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+       */
       function next(n){
         if(n <= 0) return resolve();
         requestAnimationFrame(function(){ next(n - 1); });
@@ -17148,6 +18546,16 @@ boot();
       next(count);
     });
   }
+
+  /**
+
+   * 함수: showLoading
+
+   * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function showLoading(msg){
     var box = document.getElementById(LOADING_ID);
@@ -17159,6 +18567,11 @@ boot();
     }
     box.textContent = msg || '화면 캡처 준비 중...';
   }
+  /**
+   * 함수: hideLoading
+   * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function hideLoading(){
     var ids = [
       LOADING_ID,
@@ -17174,6 +18587,16 @@ boot();
       if(el) el.remove();
     });
   }
+
+  /**
+
+   * 함수: safeFileName
+
+   * 담당: 이미지 캡처/전체 다운로드, 캡처 대상 수집, 탭별 캡처 흐름 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function safeFileName(value){
     return String(value || '').replace(/[\\/:*?"<>|\s]+/g, '_').replace(/_+/g,'_').replace(/^_|_$/g,'');
@@ -17798,15 +19221,50 @@ function isVisibleCaptureTarget(el){
   window.addEventListener('load', bootRealCapture, false);
 })();
 </script><script>
+/**
+ * SCRIPT_BLOCK_31: PPF/랩핑 선택 상태와 메모 표시 동기화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+
+  /**
+
+   * 함수: qsa
+
+   * 담당: DOM 선택자를 안전하게 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function qsa(sel, root){
     return Array.prototype.slice.call((root || document).querySelectorAll(sel));
   }
 
+  /**
+
+   * 함수: textOf
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function textOf(el){
     return (el && (el.innerText || el.textContent) || '').replace(/\s+/g,' ').trim();
   }
+
+  /**
+
+   * 함수: findWrapPpfCard
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function findWrapPpfCard(){
     var direct = document.querySelector('.wrapppf-card-fix-v1724, article.wrapppf-card-fix-v1724, .wrapppf-card');
@@ -17822,12 +19280,32 @@ function isVisibleCaptureTarget(el){
     return null;
   }
 
+  /**
+
+   * 함수: findSelect
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function findSelect(card){
     if(!card) return null;
     return card.querySelector(
       'select.wrap-select, select.wrap-select-fix-v1724, select[data-key*="wrap"], select[data-key*="ppf"], select'
     );
   }
+
+  /**
+
+   * 함수: findMemo
+
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function findMemo(card){
     if(!card) return null;
@@ -17855,6 +19333,16 @@ function isVisibleCaptureTarget(el){
     return null;
   }
 
+  /**
+
+   * 함수: selectedIsOn
+
+   * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function selectedIsOn(select){
     if(!select) return false;
 
@@ -17866,6 +19354,16 @@ function isVisibleCaptureTarget(el){
 
     return value === '있음' || label === '있음' || /있음|O|해당/.test(value + ' ' + label);
   }
+
+  /**
+
+   * 함수: applyWrapPpfMemoV1763
+
+   * 담당: 수집된 값 또는 선택 상태를 화면 UI에 반영한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function applyWrapPpfMemoV1763(){
     var card = findWrapPpfCard();
@@ -17908,6 +19406,16 @@ function isVisibleCaptureTarget(el){
 
   }
 
+  /**
+
+   * 함수: bindWrapPpfMemoV1763
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function bindWrapPpfMemoV1763(){
     if(document.body.getAttribute('data-wrapppf-v1763') === '1') return;
     document.body.setAttribute('data-wrapppf-v1763', '1');
@@ -17943,13 +19451,43 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_32: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   var ROOT_ID = 'reportPrintRootV1773';
   var BAR_ID = 'reportPrintBarV1773';
   var PREV_CLASS = 'report-print-preview-v1773';
 
+  /**
+
+   * 함수: qs
+
+   * 담당: DOM 선택자를 안전하게 조회하는 헬퍼 함수다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function qs(sel, root){ return (root || document).querySelector(sel); }
+  /**
+   * 함수: qsa
+   * 담당: DOM 선택자를 안전하게 조회하는 헬퍼 함수다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function qsa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  /**
+
+   * 함수: selectedText
+
+   * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function selectedText(select){
     if(!select) return '';
@@ -17958,6 +19496,16 @@ function isVisibleCaptureTarget(el){
     }
     return (select.value || '').trim();
   }
+
+  /**
+
+   * 함수: syncFormValuesForClone
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function syncFormValuesForClone(original, clone){
     var originals = original.querySelectorAll('input, select, textarea');
@@ -18026,6 +19574,16 @@ function isVisibleCaptureTarget(el){
       element.remove();
     });
   }
+
+  /**
+
+   * 함수: makeReadonlyForPrint
+
+   * 담당: 재사용 가능한 DOM 요소 또는 표시 노드를 생성한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function makeReadonlyForPrint(root){
     qsa('input, textarea', root).forEach(function(el){
@@ -18143,12 +19701,32 @@ function isVisibleCaptureTarget(el){
     console.log('[AB_DIAG][CUSTOMER_MARKER_MAP_V193]', markerMap);
   }
 
+  /**
+
+   * 함수: removeReportRoot
+
+   * 담당: 출력/복제 과정에서 불필요한 DOM 요소를 제거한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function removeReportRoot(){
     var old = document.getElementById(ROOT_ID);
     if(old) old.remove();
     var bar = document.getElementById(BAR_ID);
     if(bar) bar.remove();
   }
+
+  /**
+
+   * 함수: cloneSection
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function cloneSection(title, selector){
     var src = qs(selector);
@@ -18191,13 +19769,43 @@ function isVisibleCaptureTarget(el){
     return outer;
   }
 
+  /**
+
+   * 함수: textOfPrintNode
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function textOfPrintNode(el){
     return (el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim();
   }
 
+  /**
+
+   * 함수: isWholeDiagClone
+
+   * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function isWholeDiagClone(el){
     return !!(el && el.id === 'secDiag');
   }
+
+  /**
+
+   * 함수: nearestPrintCard
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function nearestPrintCard(el, root){
     if(!el) return null;
@@ -18205,6 +19813,16 @@ function isVisibleCaptureTarget(el){
     if(!card || card === root || isWholeDiagClone(card)) return null;
     return card;
   }
+
+  /**
+
+   * 함수: collectCardsByTitle
+
+   * 담당: 화면의 현재 입력값과 선택 상태를 저장 가능한 형태로 수집한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function collectCardsByTitle(root, titleRegex){
     var found = [];
@@ -18225,6 +19843,16 @@ function isVisibleCaptureTarget(el){
     return found;
   }
 
+  /**
+
+   * 함수: removePrintCards
+
+   * 담당: 출력/복제 과정에서 불필요한 DOM 요소를 제거한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function removePrintCards(cards){
     cards.forEach(function(card){
       if(card && card.parentElement){
@@ -18232,6 +19860,16 @@ function isVisibleCaptureTarget(el){
       }
     });
   }
+
+  /**
+
+   * 함수: pruneDiagCloneForMode
+
+   * 담당: 출력/복제 과정에서 불필요한 DOM 요소를 제거한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function pruneDiagCloneForMode(clone, mode){
     /*
@@ -18249,6 +19887,16 @@ function isVisibleCaptureTarget(el){
       removePrintCards(collectCardsByTitle(clone, /보험|특수\s*이력|보험·특수|사고\s*진단확인|사고진단|사고\s*진단/));
     }
   }
+
+  /**
+
+   * 함수: cloneFilteredDiagSection
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function cloneFilteredDiagSection(title, mode){
     var src = qs('#secDiag');
@@ -18310,6 +19958,21 @@ function isVisibleCaptureTarget(el){
 
     return outer;
   }
+
+
+  /**
+
+
+   * 함수: cloneExteriorSection
+
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+
+   */
 
 
   function cloneExteriorSection(){
@@ -18639,6 +20302,16 @@ function isVisibleCaptureTarget(el){
     return printRoot;
   }
 
+  /**
+
+   * 함수: buildReport
+
+   * 담당: 화면 표시용 DOM 또는 출력 문자열을 생성한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function buildReport(mode){
     removeReportRoot();
 
@@ -18718,6 +20391,16 @@ function isVisibleCaptureTarget(el){
     });
   }
 
+  /**
+
+   * 함수: buildBar
+
+   * 담당: 화면 표시용 DOM 또는 출력 문자열을 생성한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function buildBar(){
     var bar = document.createElement('div');
     bar.id = BAR_ID;
@@ -18793,12 +20476,32 @@ function isVisibleCaptureTarget(el){
             var tail = 0;
             var threshold = 248;
 
+            /**
+
+             * 함수: isNearWhite
+
+             * 담당: 현재 값이나 DOM 상태가 특정 조건에 해당하는지 판별한다.
+
+             * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+             */
+
             function isNearWhite(index){
               var offset = index * 4;
               return pixels[offset] >= threshold &&
                 pixels[offset + 1] >= threshold &&
                 pixels[offset + 2] >= threshold;
             }
+
+            /**
+
+             * 함수: enqueue
+
+             * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+             * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+             */
 
             function enqueue(index){
               if(index < 0 || index >= total || visited[index] || !isNearWhite(index)){
@@ -18909,6 +20612,16 @@ function isVisibleCaptureTarget(el){
 
       await new Promise(function(resolve){
         var settled = false;
+
+        /**
+
+         * 함수: finish
+
+         * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+         * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+         */
 
         function finish(){
           if(settled) return;
@@ -19117,6 +20830,16 @@ function isVisibleCaptureTarget(el){
       sourceContext
     );
 
+    /**
+
+     * 함수: cardNumber
+
+     * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+     * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+     */
+
     function cardNumber(card){
       var no = card
         ? qs('h2 .no', card)
@@ -19125,6 +20848,16 @@ function isVisibleCaptureTarget(el){
         ? parseInt(no.textContent, 10)
         : 0;
     }
+
+    /**
+
+     * 함수: take
+
+     * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+     * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+     */
 
     function take(numbers){
       return cards.filter(function(card){
@@ -19240,6 +20973,16 @@ function isVisibleCaptureTarget(el){
     }, 450);
   }
 
+  /**
+
+   * 함수: clearReportTabBodyClassesV1784
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function clearReportTabBodyClassesV1784(){
     /*
       v17.84:
@@ -19278,6 +21021,16 @@ function isVisibleCaptureTarget(el){
     document.body.classList.add('ab-tab-' + name);
   }
 
+  /**
+
+   * 함수: repairMainTabHandlersV1784
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function repairMainTabHandlersV1784(){
     var map = {
       tabInput:'input',
@@ -19313,12 +21066,32 @@ function isVisibleCaptureTarget(el){
     });
   }
 
+  /**
+
+   * 함수: closePreview
+
+   * 담당: PDF 출력용 DOM 복제, 고객용/회사용 필터링, 인쇄 레이아웃 생성 관련 세부 처리를 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function closePreview(){
     removePrintPagesV141();
     removeReportRoot();
     clearReportTabBodyClassesV1784();
     repairMainTabHandlersV1784();
   }
+
+  /**
+
+   * 함수: bindPrintButtons
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindPrintButtons(){
     var root = qs('#reportOutputSection');
@@ -19357,7 +21130,17 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_33: 제출 탭 진입 버튼 바인딩을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindSubmitTabV1777
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindSubmitTabV1777(){
     var submit = document.getElementById('tabSubmit');
     if(!submit || submit.getAttribute('data-bind-v1777') === '1') return;
@@ -19381,10 +21164,30 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_34: PDF 버튼과 PDF 창 열기 보정을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
+  /**
+   * 함수: bindSubmitPdfButtonsV1778
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindSubmitPdfButtonsV1778(){
     var customer = document.getElementById('btnCustomerSubmitPdfV1778');
     var company = document.getElementById('btnCompanySubmitPdfV1778');
+
+    /**
+
+     * 함수: openPdf
+
+     * 담당: 팝업, 날짜 선택기, PDF/다운로드 창 등 외부 표시 영역을 연다.
+
+     * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+     */
 
     function openPdf(mode){
       /*
@@ -19423,6 +21226,11 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_35: 보증연장 버튼과 hidden 값 동기화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v71 - 보증연장 선택값 저장/복원 동기화 위치 보정
    목적:
    - 보증연장 버튼은 검수자 코멘트와 동일한 클릭 순환 UI를 사용한다.
@@ -19443,6 +21251,16 @@ function isVisibleCaptureTarget(el){
     btn.textContent = value || '선택';
   }
 
+  /**
+
+   * 함수: syncProsWarrantyHiddenFromButton
+
+   * 담당: 서로 다른 입력 요소 또는 내부 상태 값을 동기화한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
+
   function syncProsWarrantyHiddenFromButton(btn){
     var input = document.querySelector('[data-key="prosWarrantyLevel"]');
     if(!input || !btn) return;
@@ -19461,6 +21279,16 @@ function isVisibleCaptureTarget(el){
       input.dispatchEvent(new Event('change', {bubbles:true}));
     }catch(e){}
   }
+
+  /**
+
+   * 함수: bindProsWarrantyV70
+
+   * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function bindProsWarrantyV70(){
     if(document.body.getAttribute('data-pros-warranty-v70-bound') === '1') return;
@@ -19489,6 +21317,11 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_36: 관리 상태확인 라디오/값 동기화를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* v73 - 관리 상태확인(내역서 보유) 저장값 동기화 및 캡처창 코드노출 방지
    목적:
    - UI는 보유확인 카드의 보유/미보유와 동일한 radio/label 구조를 사용한다.
@@ -19575,6 +21408,11 @@ function isVisibleCaptureTarget(el){
   - v85/v86 신규 날짜 우회 방식은 포함하지 않는다.
 -->
 <script>
+/**
+ * SCRIPT_BLOCK_37: 차량번호 기반 기존 리포트 조회와 리포트 화면 진입을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
 
@@ -19740,6 +21578,11 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_38: 비밀번호 게이트와 Apps Script 검증을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
 
@@ -19916,6 +21759,11 @@ function isVisibleCaptureTarget(el){
 </script>
 
 <script>
+/**
+ * SCRIPT_BLOCK_39: Apps Script API 저장/불러오기, 리포트 상태 수집/복원, 도막 W 상태 복원을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
   /** Google Sheets Apps Script 웹앱 URL이다. */
@@ -19990,10 +21838,49 @@ function isVisibleCaptureTarget(el){
   /** 동적 추가행을 저장된 개수로 재구성한다. */
   function restoreDynamicV197(d){
     d=d||{};
-    var tBtn=document.querySelector('#secInput .tuning-add-btn');while(tBtn&&document.querySelectorAll('#secInput .tuning-list .tuning-row').length<(d.tuningRows||0))tBtn.click();
-    var pBtn=document.querySelector('[data-pros-add-tuning]');while(pBtn&&document.querySelectorAll('[data-pros-tuning-rows] .pros-tuning-row').length<(d.prosRows||1))pBtn.click();
+
+    /*
+     * 불러오기 안정화(v265)
+     * - 저장 데이터의 동적 행 개수가 과도하거나 버튼 클릭으로 행이 증가하지 않는 경우
+     *   기존 while 루프가 무한 반복되어 화면이 멈출 수 있었다.
+     * - 각 그룹별 최대 복원 개수와 증가 여부 확인을 넣어 특정 데이터에서도 멈추지 않게 한다.
+     */
+    function safeTargetCount(value, fallback, max){
+      var number=parseInt(value,10);
+      if(!isFinite(number)||number<0)number=fallback;
+      return Math.min(Math.max(number, fallback), max);
+    }
+
+    function safeClickUntil(button, countSelector, target, maxClicks, debugName){
+      if(!button)return;
+      var clicks=0;
+      var last=-1;
+      while(document.querySelectorAll(countSelector).length<target&&clicks<maxClicks){
+        var before=document.querySelectorAll(countSelector).length;
+        if(before===last)break;
+        last=before;
+        try{button.click();}catch(error){console.warn('[AB_DIAG][RESTORE_DYNAMIC_CLICK_FAIL]',debugName,error);break;}
+        clicks+=1;
+        var after=document.querySelectorAll(countSelector).length;
+        if(after<=before)break;
+      }
+      if(document.querySelectorAll(countSelector).length<target){
+        console.warn('[AB_DIAG][RESTORE_DYNAMIC_LIMITED]',debugName,{target:target,current:document.querySelectorAll(countSelector).length,clicks:clicks});
+      }
+    }
+
+    var tBtn=document.querySelector('#secInput .tuning-add-btn');
+    safeClickUntil(tBtn,'#secInput .tuning-list .tuning-row',safeTargetCount(d.tuningRows,0,40),60,'tuningRows');
+
+    var pBtn=document.querySelector('[data-pros-add-tuning]');
+    safeClickUntil(pBtn,'[data-pros-tuning-rows] .pros-tuning-row',safeTargetCount(d.prosRows,1,40),60,'prosRows');
+
     var counts=d.priceCalcRows||{};
-    ['leak','damage','tire','oil','scanner','repair','interior','missing','other'].forEach(function(name){var btn=document.querySelector('#secPriceCalcV218 [data-repeat-add-v219="'+name+'"]');var target=Math.max(1,parseInt(counts[name]||1,10));while(btn&&document.querySelectorAll('#secPriceCalcV218 [data-repeat-row-v219="'+name+'"]').length<target)btn.click();});
+    ['leak','damage','tire','oil','scanner','repair','interior','missing','other'].forEach(function(name){
+      var btn=document.querySelector('#secPriceCalcV218 [data-repeat-add-v219="'+name+'"]');
+      var target=safeTargetCount(counts[name],1,40);
+      safeClickUntil(btn,'#secPriceCalcV218 [data-repeat-row-v219="'+name+'"]',target,60,'priceCalcRows.'+name);
+    });
   }
   /**
    * 저장 대상 입력 컨트롤을 DOM 순서대로 반환한다.
@@ -20516,15 +22403,60 @@ function isVisibleCaptureTarget(el){
 })();
 </script>
 <script>
+/**
+ * SCRIPT_BLOCK_40: 매입금액 산정 입력 동기화, 반복항목, 계산, 출력문 복사를 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 (function(){
   'use strict';
+  /**
+   * 함수: sec
+   * 담당: 매입금액 산정 입력 동기화, 반복항목, 계산, 출력문 복사를 담당한다. 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function sec(){return document.getElementById('secPriceCalcV218');}
+  /**
+   * 함수: digitsNumber
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function digitsNumber(v){var n=parseFloat(String(v||'').replace(/,/g,'').replace(/[^0-9.-]/g,''));return isFinite(n)?n:0;}
+  /**
+   * 함수: formatNumber
+   * 담당: 입력값을 숫자/날짜/문자열 형식에 맞게 정제하고 표시 형식으로 변환한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function formatNumber(n){if(!isFinite(n))return '';var rounded=Math.round(n*100)/100;return rounded.toLocaleString('ko-KR',{maximumFractionDigits:2});}
+  /**
+   * 함수: field
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function field(key){return document.querySelector('#secPriceCalcV218 [data-key="'+key+'"]');}
+  /**
+   * 함수: value
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function value(key){var el=field(key);return el?String(el.value||'').trim():'';}
+  /**
+   * 함수: setValue
+   * 담당: 지정된 DOM 또는 내부 상태 값을 설정한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function setValue(key,v,force){var el=field(key);if(!el)return;if(force||!el.value)el.value=v||'';}
+  /**
+   * 함수: basePriceNumber
+   * 담당: 매입금액 산정 입력 동기화, 반복항목, 계산, 출력문 복사를 담당한다. 관련 세부 처리를 수행한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function basePriceNumber(){var raw=value('price_calc_base_price');var matches=raw.match(/[0-9][0-9,]*(?:\.[0-9]+)?/g)||[];return matches.length?digitsNumber(matches[matches.length-1]):0;}
+  /**
+   * 함수: findBasicByLabel
+   * 담당: 지정된 DOM, 입력값, 선택 상태를 조회하는 헬퍼 함수다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function findBasicByLabel(labelText){var labels=document.querySelectorAll('#secInput .basicinfo-v5-label');for(var i=0;i<labels.length;i++){if(String(labels[i].textContent||'').replace(/\s+/g,'').indexOf(labelText.replace(/\s+/g,''))!==-1){var wrap=labels[i].closest('.basicinfo-v5-field');var input=wrap&&wrap.querySelector('input,textarea,select');return input?String(input.value||'').trim():'';}}return '';}
   /** 기본 탭 값을 비어 있는 경우에만 자동 반영하여 사용자의 직접 입력값을 유지한다. */
   function syncBasicV219(){setValue('price_calc_base_price',findBasicByLabel('가격(입찰가,선택/조율가격)'),false);setValue('price_calc_vehicle_no',findBasicByLabel('차량번호'),false);setValue('price_calc_car_name',findBasicByLabel('차량이름'),false);}
@@ -20575,8 +22507,23 @@ function isVisibleCaptureTarget(el){
     }
     return lines;
   }
+  /**
+   * 함수: buildTextV219
+   * 담당: 매입금액 산정 결과 출력문을 생성한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function buildTextV219(){calculateV219();function money(key){var v=value(key);return v?v+' 만':' 만';}function detail(a,b){return value(a)+' / '+money(b);}var lines=[];lines.push('가격(입찰가,선택/조율가격) : '+value('price_calc_base_price'));lines.push('차량번호 : '+value('price_calc_vehicle_no'));lines.push('차 명 : '+value('price_calc_car_name'));lines.push('계기판이상 : '+money('price_calc_cluster_amount'));lines.push('등급상이 : '+money('price_calc_grade_amount'));lines.push('사고 : '+value('price_calc_accident_count')+' 개 / 개당 '+value('price_calc_accident_each_percent')+'% / 총 '+value('price_calc_accident_total_percent')+'% / '+money('price_calc_accident_amount'));lines=lines.concat(repeatedDetailsV219('leak','누유',false));lines.push('외판 : '+value('price_calc_outer_count')+' 개 / 개당 '+value('price_calc_outer_each')+'만 / '+money('price_calc_outer_amount'));lines.push('판금 : '+value('price_calc_panel_count')+' 개 / 개당 '+value('price_calc_panel_each')+'만 / '+money('price_calc_panel_amount'));lines=lines.concat(repeatedDetailsV219('damage','파손',false));lines.push('휠기스 : '+value('price_calc_wheel_count')+' 개 / 개당 '+value('price_calc_wheel_each')+'만 / '+money('price_calc_wheel_amount'));lines=lines.concat(repeatedDetailsV219('tire','타이어',false));lines=lines.concat(repeatedDetailsV219('oil','오일교환',true));lines=lines.concat(repeatedDetailsV219('scanner','진단기',false));lines.push('');lines.push('■고장 및 수리');lines=lines.concat(repeatedDetailsV219('repair','',false));lines=lines.concat(repeatedDetailsV219('interior','실내파손',false));lines.push('유리,썬팅 : '+money('price_calc_glass_amount'));lines.push('실내크리닝 : '+money('price_calc_cleaning_amount'));lines=lines.concat(repeatedDetailsV219('missing','구성품 소실',false));lines.push('보수킷,스페어타이어 (무) : '+money('price_calc_spare_tire_amount'));lines.push('스페어키 소실 : '+money('price_calc_spare_key_amount'));lines.push('소화기여부 : '+money('price_calc_extinguisher_amount'));lines=lines.concat(repeatedDetailsV219('other','기타감가',false));lines.push('차감 합계 : -'+money('price_calc_deduction_total'));lines.push('');lines.push('▶최종금액 : '+money('price_calc_final_amount'));lines.push('코멘트 : '+value('price_calc_comment'));return lines.join('\n');}
+  /**
+   * 함수: copyText
+   * 담당: 매입금액 산정 출력문을 클립보드에 복사한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function copyText(text,button){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){var old=button.textContent;button.textContent='복사완료';setTimeout(function(){button.textContent=old;},1200);});return;}var ta=document.getElementById('priceCalcCopyOutputV218');ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}}
+  /**
+   * 함수: bindV219
+   * 담당: 매입금액 산정 화면의 입력, 반복행, 계산 이벤트를 초기 바인딩한다.
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+   */
   function bindV219(){var root=sec();if(!root||root.dataset.boundV219==='1')return;root.dataset.boundV219='1';root.addEventListener('click',function(ev){
     var remove=ev.target.closest('[data-repeat-remove-v220]');
     if(remove){var row=remove.closest('[data-repeat-row-v219]');if(row){row.remove();clearFinalManualV249();calculateV219();}return;}
@@ -20594,6 +22541,11 @@ function isVisibleCaptureTarget(el){
 
 
 <script>
+/**
+ * SCRIPT_BLOCK_41: 매입금액 산정 sticky 상단 위치 계산과 반응형 재계산을 담당한다.
+ * 원칙: 화면 동작을 유지하면서 담당 영역을 명확히 구분한다.
+ */
+
 /* 매입금액 산정: 상단 고정 위치 계산
    - 상단 헤더, 매입금액 산정 제목 높이를 실측하여 차감/최종 요약 박스의 sticky 기준점을 갱신한다.
    - 웹/모바일 모두 mainTabs 변경, 메뉴 클릭, 리사이즈, 회전 이후 다시 계산한다. */
@@ -20617,6 +22569,16 @@ function isVisibleCaptureTarget(el){
       document.body.classList.remove('ab-price-calc-active');
     }
   }
+
+  /**
+
+   * 함수: schedulePriceCalcStickyOffset
+
+   * 담당: 렌더링 이후 sticky 위치 재계산을 예약한다.
+
+   * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
+
+   */
 
   function schedulePriceCalcStickyOffset(){
     updatePriceCalcStickyOffset();

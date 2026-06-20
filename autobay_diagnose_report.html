@@ -12519,6 +12519,66 @@ body.ab-password-active-v195{overflow:hidden!important}
     top:calc(var(--ab-price-sticky-header-h,126px) + var(--ab-price-title-h,42px) + 14px) !important;
   }
 }
+
+
+/* v253: 매입금액 산정 최종 보정 - 섹션 라벨 색상, 항목추가 버튼, 외부 = 라벨 */
+#secPriceCalcV218 .price-calc-basic-card-v247 > .order-soft-section-title-v1699,
+#secPriceCalcV218 .price-calc-repair-card-v247 > .order-soft-section-title-v1699{
+  background:#334155!important;
+  border:1px solid #475569!important;
+  color:#ffffff!important;
+  background-image:none!important;
+  box-shadow:none!important;
+}
+#secPriceCalcV218 .price-calc-add-btn-v219{
+  font-size:11px!important;
+  font-weight:800!important;
+  border-style:solid!important;
+}
+#secPriceCalcV218 .price-calc-eq-label-v253{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:18px!important;
+  min-width:18px!important;
+  height:38px!important;
+  color:#111827!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  box-sizing:border-box!important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+  grid-template-columns:54px 64px 68px 18px minmax(82px,1fr)!important;
+  gap:6px!important;
+}
+#secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+  grid-template-columns:64px 76px 18px minmax(88px,1fr)!important;
+  gap:6px!important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231{
+  margin-left:0!important;
+}
+#secPriceCalcV218 .price-calc-has-eq-label-v253 .price-calc-result-unit-v231>input{
+  padding-left:10px!important;
+  padding-right:24px!important;
+}
+@media(max-width:430px){
+  #secPriceCalcV218 .price-calc-multi-v218.accident.price-calc-has-eq-label-v253{
+    grid-template-columns:44px 54px 58px 16px minmax(72px,1fr)!important;
+    gap:5px!important;
+  }
+  #secPriceCalcV218 .price-calc-multi-v218.price-calc-has-eq-label-v253:not(.accident){
+    grid-template-columns:52px 66px 16px minmax(74px,1fr)!important;
+    gap:5px!important;
+  }
+  #secPriceCalcV218 .price-calc-eq-label-v253{
+    width:16px!important;
+    min-width:16px!important;
+    height:38px!important;
+    font-size:13px!important;
+  }
+}
 </style>
 <!--
   v89 정리6차
@@ -13676,10 +13736,10 @@ body.ab-password-active-v195{overflow:hidden!important}
 <div class="price-calc-field-v218 price-calc-half-v247"><label>차명</label><input data-key="price_calc_car_name" id="priceCalcCarNameV218" placeholder="기본탭 차량이름 자동 반영"/></div>
 <div class="price-calc-field-v218 price-calc-half-v247"><label>계기판이상</label><div class="price-calc-money-v218"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_cluster_amount" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 price-calc-half-v247"><label>등급상이</label><div class="price-calc-money-v218"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_grade_amount" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
-<div class="price-calc-field-v218 full"><label>사고</label><div class="price-calc-multi-v218 accident"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_count" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_each_percent" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">%</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-total-percent-unit-v229"><span class="price-calc-prefix-v223">총</span><input data-key="price_calc_accident_total_percent" readonly=""/><span class="price-calc-suffix-v223">%</span></div><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><span class="price-calc-prefix-v223 price-calc-equal-prefix-v231">=</span><input data-calc-amount="1" data-key="price_calc_accident_amount" data-manual-total-v227="accident" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>사고</label><div class="price-calc-multi-v218 accident price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_count" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_each_percent" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">%</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-total-percent-unit-v229"><span class="price-calc-prefix-v223">총</span><input data-key="price_calc_accident_total_percent" readonly=""/><span class="price-calc-suffix-v223">%</span></div><span class="price-calc-eq-label-v253">=</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_accident_amount" data-manual-total-v227="accident" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>누유</label><div class="price-calc-repeat-group-v219"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="leak"><input data-key="price_calc_leak_part_1" placeholder="부위"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_leak_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="leak" type="button">+ 항목추가</button></div></div>
-<div class="price-calc-field-v218 full"><label>외판</label><div class="price-calc-multi-v218"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_outer_count" data-multiply-count="outer" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_outer_each" data-multiply-each="outer" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><span class="price-calc-prefix-v223 price-calc-equal-prefix-v231">=</span><input data-calc-amount="1" data-key="price_calc_outer_amount" data-manual-total-v227="outer" data-multiply-total="outer" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
-<div class="price-calc-field-v218 full"><label>판금</label><div class="price-calc-multi-v218"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_panel_count" data-multiply-count="panel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_panel_each" data-multiply-each="panel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><span class="price-calc-prefix-v223 price-calc-equal-prefix-v231">=</span><input data-calc-amount="1" data-key="price_calc_panel_amount" data-manual-total-v227="panel" data-multiply-total="panel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>외판</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_outer_count" data-multiply-count="outer" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_outer_each" data-multiply-each="outer" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">=</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_outer_amount" data-manual-total-v227="outer" data-multiply-total="outer" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
+<div class="price-calc-field-v218 full"><label>판금</label><div class="price-calc-multi-v218 price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_panel_count" data-multiply-count="panel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_panel_each" data-multiply-each="panel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><span class="price-calc-eq-label-v253">=</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_panel_amount" data-manual-total-v227="panel" data-multiply-total="panel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>파손</label><div class="price-calc-repeat-group-v219"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="damage"><input data-key="price_calc_damage_part_1" placeholder="부위"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_damage_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="damage" type="button">+ 항목추가</button></div></div>
 <div class="price-calc-field-v218 full"><label>휠기스</label><div class="price-calc-multi-v218"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_wheel_count" data-multiply-count="wheel" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-each-unit-v229"><input data-key="price_calc_wheel_each" data-multiply-each="wheel" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">만</span></div><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><span class="price-calc-prefix-v223 price-calc-equal-prefix-v231">=</span><input data-calc-amount="1" data-key="price_calc_wheel_amount" data-manual-total-v227="wheel" data-multiply-total="wheel" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>타이어</label><div class="price-calc-repeat-group-v219 price-calc-tire-repeat-v247"><div class="price-calc-repeat-row-v219" data-repeat-index-v220="1" data-repeat-row-v219="tire"><input data-key="price_calc_tire_part_1" placeholder="개"/><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_tire_amount_1" inputmode="decimal" placeholder="금액"/><span class="price-calc-suffix-v223">만</span></div></div><button class="price-calc-add-btn-v219" data-repeat-add-v219="tire" type="button">+ 항목추가</button></div></div>

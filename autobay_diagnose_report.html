@@ -3391,8 +3391,10 @@ button{
 }
 .km-suffix-wrap::after{content:"km" !important;}
 .year-suffix-wrap::after{content:"연식" !important;}
+.price-suffix-wrap::after{content:"만" !important;}
 .km-suffix-wrap .km-comma-input,
-.year-suffix-wrap .year-input{text-align:right !important;}
+.year-suffix-wrap .year-input,
+.price-suffix-wrap .bi-input{text-align:right !important;}
 
 /* 랩핑/PPF 메모는 있음 선택 시에만 노출한다. */
 .wrapppf-card{display:flex !important;flex-direction:column !important;gap:8px !important;}
@@ -3772,7 +3774,7 @@ button{
   pointer-events:none !important;
 }
 .insurance-basic-card .money-suffix-wrap::after{
-  content:"원" !important;
+  content:"만" !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
@@ -12892,7 +12894,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 </div></div></div>
 <div class="basicinfo-v5-field full">
 <div class="basicinfo-v5-label">가격(입찰가, 선택/조율가격)</div>
-<input class="bi-input" data-key="basicBidPrice" inputmode="numeric" maxlength="6" placeholder="가격" type="text"/>
+<div class="unit-suffix-wrap price-suffix-wrap"><input class="bi-input" data-key="basicBidPrice" inputmode="numeric" maxlength="6" placeholder="가격" type="text"/></div>
 </div>
 </div>
 </article><article class="report-card-ui wrapppf-card-fix-v1724"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>

@@ -12902,7 +12902,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 </div></div></div>
 <div class="basicinfo-v5-field full">
 <div class="basicinfo-v5-label">가격(입찰가, 선택/조율가격)</div>
-<textarea class="bi-input price-textarea" placeholder="가격 입력"></textarea>
+<textarea class="bi-input price-textarea" data-key="basicBidPrice" inputmode="numeric" maxlength="6" placeholder="가격 입력"></textarea>
 </div>
 </div>
 </article><article class="report-card-ui wrapppf-card-fix-v1724"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>
@@ -12941,7 +12941,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 </div>
 <div class="field">
 <label>보험이력 총 금액</label>
-<div class="unit-suffix-wrap money-suffix-wrap"><input autocomplete="off" class="bi-input insurance-number-input" data-key="insuranceTotalAmount" data-save-number="1" inputmode="numeric" placeholder="총 금액 입력" style="font-weight:400!important" type="text"/></div>
+<div class="unit-suffix-wrap money-suffix-wrap"><input autocomplete="off" class="bi-input insurance-number-input" data-key="insuranceTotalAmount" data-save-number="1" inputmode="numeric" maxlength="6" placeholder="총 금액 입력" style="font-weight:400!important" type="text"/></div>
 </div>
 </div>
 <div class="insurance-select-group" data-insurance-key="usage">
@@ -13741,7 +13741,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 <label class="check-choice bad" for="function_12_bad">이상</label>
 <input class="memo" data-key="function_12_memo" placeholder="이상 메모 입력"/>
 </div>
-<div class="checkline" data-check-key="function_17"><div class="check-title">사이드뷰미러 작동</div><input class="check-radio ok" data-check="ok" id="function_17_ok" name="function_17_state" type="radio"/><label class="check-choice ok" for="function_17_ok">양호</label><input class="check-radio bad" data-check="bad" id="function_17_bad" name="function_17_state" type="radio"/><label class="check-choice bad" for="function_17_bad">이상</label><input class="memo" data-key="function_17_memo" placeholder="이상 메모 입력"/></div>
+<div class="checkline" data-check-key="function_17"><div class="check-title">사이드미러 작동</div><input class="check-radio ok" data-check="ok" id="function_17_ok" name="function_17_state" type="radio"/><label class="check-choice ok" for="function_17_ok">양호</label><input class="check-radio bad" data-check="bad" id="function_17_bad" name="function_17_state" type="radio"/><label class="check-choice bad" for="function_17_bad">이상</label><input class="memo" data-key="function_17_memo" placeholder="이상 메모 입력"/></div>
 <div class="checkline" data-check-key="function_13">
 <div class="check-title">에어쇼바 작동</div>
 <input class="check-radio ok" data-check="ok" id="function_13_ok" name="function_13_state" type="radio"/>
@@ -13863,9 +13863,9 @@ body.ab-password-active-v195{overflow:hidden!important}
 <article class="report-card-ui price-calc-card-v218 price-calc-basic-card-v247">
 <div class="order-soft-section-title-v1699">기본</div>
 <div class="price-calc-grid-v218">
-<div class="price-calc-field-v218 full price-calc-basic-price-v219"><label>가격(입찰가,선택/조율가격)</label><input data-key="price_calc_base_price" id="priceCalcBasePriceV218" inputmode="decimal" placeholder="기본탭 가격 자동 반영"/></div>
-<div class="price-calc-field-v218 price-calc-half-v247"><label>차량번호</label><input data-key="price_calc_vehicle_no" id="priceCalcVehicleNoV218" placeholder="기본탭 차량번호 자동 반영"/></div>
-<div class="price-calc-field-v218 price-calc-half-v247"><label>차명</label><input data-key="price_calc_car_name" id="priceCalcCarNameV218" placeholder="기본탭 차량이름 자동 반영"/></div>
+<div class="price-calc-field-v218 full price-calc-basic-price-v219"><label>가격(입찰가,선택/조율가격)</label><input data-key="price_calc_base_price" id="priceCalcBasePriceV218" inputmode="decimal" placeholder="기본탭 가격 자동 반영" readonly="readonly"/></div>
+<div class="price-calc-field-v218 price-calc-half-v247"><label>차량번호</label><input data-key="price_calc_vehicle_no" id="priceCalcVehicleNoV218" placeholder="기본탭 차량번호 자동 반영" readonly="readonly"/></div>
+<div class="price-calc-field-v218 price-calc-half-v247"><label>차명</label><input data-key="price_calc_car_name" id="priceCalcCarNameV218" placeholder="기본탭 차량이름 자동 반영" readonly="readonly"/></div>
 <div class="price-calc-field-v218 price-calc-half-v247"><label>계기판이상</label><div class="price-calc-money-v218"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_cluster_amount" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 price-calc-half-v247"><label>등급상이</label><div class="price-calc-money-v218"><div class="price-calc-input-unit-v223"><input data-calc-amount="1" data-key="price_calc_grade_amount" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
 <div class="price-calc-field-v218 full"><label>사고</label><div class="price-calc-multi-v218 accident price-calc-has-eq-label-v253"><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_count" inputmode="numeric"/><span class="price-calc-suffix-v223">개</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229"><input data-key="price_calc_accident_each_percent" inputmode="decimal" placeholder="개당"/><span class="price-calc-suffix-v223">%</span></div><div class="price-calc-input-unit-v223 price-calc-compact-unit-v229 price-calc-total-percent-unit-v229"><span class="price-calc-prefix-v223">총</span><input data-key="price_calc_accident_total_percent" readonly=""/><span class="price-calc-suffix-v223">%</span></div><span class="price-calc-eq-label-v253">합계</span><div class="price-calc-input-unit-v223 price-calc-result-unit-v231"><input data-calc-amount="1" data-key="price_calc_accident_amount" placeholder="결과" data-manual-total-v227="accident" inputmode="decimal"/><span class="price-calc-suffix-v223">만</span></div></div></div>
@@ -14102,10 +14102,6 @@ function restoreDraft(){
     Object.entries(saved.fields || {}).forEach(([key, value]) => {
       var el = qs(`[data-key="${key}"]`);
       if(el) el.value = value;
-    });
-    (saved.radios || []).forEach(function(item){
-      var input = item.id ? document.getElementById(item.id) : null;
-      if(input) input.checked = !!item.checked;
     });
     (saved.checks || []).forEach(function(item){
       var row = qs(`.checkline[data-check-key="${item.key}"]`);
@@ -14896,6 +14892,15 @@ boot();
   }
 
   /**
+   * 숫자 5자리 제한 후 천 단위 쉼표를 적용한다.
+   */
+  function formatLimitedCommaV282(value){
+    var digits=onlyDigitsV163(value).slice(0,5);
+    if(!digits)return '';
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  /**
    * formatCommaV163은 숫자 문자열을 천 단위 콤마 표시로 변환한다.
    * 빈 값은 빈 문자열로 유지하여 placeholder가 정상 노출되게 한다.
    */
@@ -14926,9 +14931,11 @@ boot();
          * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
          */
         var sync = function(){
-          var digits = onlyDigitsV163(this.value);
-          this.setAttribute('data-save-value', digits);
-          this.value = formatCommaV163(digits);
+          var isTotalAmount=this.getAttribute('data-key')==='insuranceTotalAmount';
+          var digits=onlyDigitsV163(this.value);
+          if(isTotalAmount)digits=digits.slice(0,5);
+          this.setAttribute('data-save-value',digits);
+          this.value=isTotalAmount?formatLimitedCommaV282(digits):formatCommaV163(digits);
         };
         input.addEventListener('input', sync, false);
         input.addEventListener('change', sync, false);
@@ -14953,6 +14960,26 @@ boot();
   }
 
   /**
+   * 기본 탭 가격 입력을 숫자 5자리로 제한하고 천 단위 쉼표로 표시한다.
+   */
+  function bindBasicPriceInputV282(){
+    var input=document.querySelector('#secInput .price-textarea[data-key="basicBidPrice"]');
+    if(!input||input.getAttribute('data-v282-price-bound')==='1')return;
+    input.setAttribute('data-v282-price-bound','1');
+    input.setAttribute('inputmode','numeric');
+    input.setAttribute('maxlength','6');
+    var sync=function(){
+      var formatted=formatLimitedCommaV282(input.value);
+      input.value=formatted;
+      input.setAttribute('data-save-value',onlyDigitsV163(formatted));
+    };
+    input.addEventListener('input',sync,false);
+    input.addEventListener('change',sync,false);
+    input.addEventListener('blur',sync,false);
+    sync();
+  }
+
+  /**
 
    * 함수: bootV163
 
@@ -14964,6 +14991,7 @@ boot();
 
   function bootV163(){
     bindInsuranceNumberInputsV163();
+    bindBasicPriceInputV282();
   }
 
   if(document.readyState === 'loading'){
@@ -20969,6 +20997,21 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
+   * 신규 현장입력/사전입력 진입 시 브라우저 BFCache나 과거 draft에서 남은 도면 radio를 초기화한다.
+   * 기존 데이터 불러오기에서는 저장 JSON 복원을 사용하므로 이 초기화를 실행하지 않는다.
+   */
+  function resetFreshDiagramMarkersV282(){
+    var root=document.getElementById('reportAppV194');
+    if(!root)return;
+    Array.prototype.slice.call(root.querySelectorAll('.touch-diagram-shell input[type="radio"]')).forEach(function(input){
+      input.checked=false;
+    });
+    try{
+      root.dispatchEvent(new Event('change',{bubbles:true}));
+    }catch(error){}
+  }
+
+  /**
    * enterReportV194는 선택한 진입 모드와 진행단계를 sessionStorage에 기록하고
    * 기존 진단리포트 DOM을 표시한다.
    *
@@ -20976,6 +21019,9 @@ function isVisibleCaptureTarget(el){
    * @param {'PRE_INPUT'|'FIELD_IN_PROGRESS'} stage 현재 진행단계
    */
   function enterReportV194(entryMode, stage){
+    if(entryMode==='DIRECT_FIELD'||entryMode==='PRE_INPUT'){
+      resetFreshDiagramMarkersV282();
+    }
     try{
       sessionStorage.setItem(ENTRY_SESSION_KEY_V194, entryMode);
       sessionStorage.setItem(ENTRY_STAGE_SESSION_KEY_V194, stage);
@@ -21512,6 +21558,9 @@ function isVisibleCaptureTarget(el){
    * @returns {Object}
    */
   function collectReportV197(){
+    if(typeof window.AB_PRICE_CALC_SYNC_BASE_V284==='function'){
+      window.AB_PRICE_CALC_SYNC_BASE_V284();
+    }
     var controls=getReportControlsV201();
     var counts={};
     var values=[];
@@ -21752,7 +21801,10 @@ function isVisibleCaptureTarget(el){
     currentRecordV197={diagnosisId:data.diagnosisId||'',revision:Number(data.revision||0),stage:data.stage||'',entryMode:data.entryMode||''};
     document.body.setAttribute('data-entry-mode-v194',data.entryMode||'LOAD_EXISTING');
     document.body.setAttribute('data-entry-stage-v194',data.stage||'FIELD_IN_PROGRESS');
-    console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V203]',currentRecordV197);
+    if(typeof window.AB_PRICE_CALC_SYNC_BASE_V284==='function'){
+      window.AB_PRICE_CALC_SYNC_BASE_V284();
+    }
+    console.log('[AB_DIAG][SHEET_LOAD_COMPLETE_V284]',currentRecordV197);
   }
   /** 기본정보에서 시트 색인용 메타데이터를 읽는다. */
   /**
@@ -21855,7 +21907,27 @@ function isVisibleCaptureTarget(el){
     console.log('[AB_DIAG][LOAD_BASIC_TAB_V216]');
   }
   /** 차량번호로 가장 최근 저장 건을 조회하고 복원한다. */
-  function loadByVehicleV197(vehicleNumber){if(busyV197)return Promise.resolve();busyV197=true;setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);return apiV197('loadByVehicle',{vehicleNumber:normalizeVehicleNoV197(vehicleNumber)}).then(function(r){restoreReportV197(r.data);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');activateBasicTabAfterLoadV216();setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);updateMetaV197();}).catch(function(e){setStatusV197(e.message||'불러오기 실패',true);if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);console.error('[AB_DIAG][SHEET_LOAD_FAIL_V197]',e);}).finally(function(){busyV197=false;});}
+  function loadByVehicleV197(vehicleNumber){
+    if(busyV197)return Promise.resolve();
+    var normalizedVehicleNumber=normalizeVehicleNoV197(vehicleNumber);
+    busyV197=true;
+    setStatusV197('차량번호로 저장 데이터를 조회하고 있습니다.',false);
+    return apiV197('loadByVehicle',{
+      vehicleNumber:normalizedVehicleNumber
+    }).then(function(r){
+      restoreReportV197(r.data);
+      if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.enterReport('LOAD_EXISTING',r.data.stage||'FIELD_IN_PROGRESS');
+      activateBasicTabAfterLoadV216();
+      setStatusV197('불러오기 완료 · '+r.data.diagnosisId+' · 수정버전 '+r.data.revision,false);
+      updateMetaV197();
+    }).catch(function(e){
+      setStatusV197(e.message||'불러오기 실패',true);
+      if(window.AB_DIAG_ENTRY_V194)window.AB_DIAG_ENTRY_V194.setLoadMessage(e.message||'저장 데이터가 없습니다.',true);
+      console.error('[AB_DIAG][SHEET_LOAD_FAIL_V283]',e);
+    }).finally(function(){
+      busyV197=false;
+    });
+  }
   /** 도구막대의 현재 진단 메타정보를 갱신한다. */
   function updateMetaV197(){var el=document.getElementById('abDbMetaV197');if(el)el.textContent=currentRecordV197.diagnosisId?('진단ID '+currentRecordV197.diagnosisId+' / 수정버전 '+currentRecordV197.revision):'아직 서버에 저장되지 않은 신규 진단';}
   /**
@@ -21976,8 +22048,60 @@ function isVisibleCaptureTarget(el){
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
   function findBasicByLabel(labelText){var labels=document.querySelectorAll('#secInput .basicinfo-v5-label');for(var i=0;i<labels.length;i++){if(String(labels[i].textContent||'').replace(/\s+/g,'').indexOf(labelText.replace(/\s+/g,''))!==-1){var wrap=labels[i].closest('.basicinfo-v5-field');var input=wrap&&wrap.querySelector('input,textarea,select');return input?String(input.value||'').trim():'';}}return '';}
-  /** 기본 탭 값을 비어 있는 경우에만 자동 반영하여 사용자의 직접 입력값을 유지한다. */
-  function syncBasicV219(){setValue('price_calc_base_price',findBasicByLabel('가격(입찰가,선택/조율가격)'),false);setValue('price_calc_vehicle_no',findBasicByLabel('차량번호'),false);setValue('price_calc_car_name',findBasicByLabel('차량이름'),false);}
+  /**
+   * 가격·차량번호·차명은 기본 탭을 단일 기준값으로 사용한다.
+   * 매입금액 산정의 동일 항목은 저장 호환용 복제 필드이며 항상 기본 탭 값으로 강제 동기화한다.
+   */
+  function syncBasicV219(){
+    [
+      ['price_calc_base_price','가격(입찰가,선택/조율가격)'],
+      ['price_calc_vehicle_no','차량번호'],
+      ['price_calc_car_name','차량이름']
+    ].forEach(function(pair){
+      setValue(pair[0],findBasicByLabel(pair[1]),true);
+    });
+  }
+
+  /**
+   * 기본 탭의 기준정보가 변경되면 매입금액 산정의 복제 필드를 즉시 갱신한다.
+   */
+  function bindBasicSourceSyncV284(){
+    var basic=document.getElementById('secInput');
+    if(!basic||basic.getAttribute('data-price-base-sync-v284')==='1')return;
+    basic.setAttribute('data-price-base-sync-v284','1');
+    var sources=[];
+    var labels=basic.querySelectorAll('.basicinfo-v5-label');
+    Array.prototype.forEach.call(labels,function(label){
+      var normalized=String(label.textContent||'').replace(/\s+/g,'');
+      if(
+        normalized.indexOf('가격(입찰가,선택/조율가격)')!==-1||
+        normalized.indexOf('차량번호')!==-1||
+        normalized.indexOf('차량이름')!==-1
+      ){
+        var wrap=label.closest('.basicinfo-v5-field');
+        var input=wrap&&wrap.querySelector('input,textarea,select');
+        if(input)sources.push(input);
+      }
+    });
+    sources.forEach(function(input){
+      input.addEventListener('input',function(){
+        syncBasicV219();
+        clearFinalManualV249();
+        calculateV219();
+      },false);
+      input.addEventListener('change',function(){
+        syncBasicV219();
+        clearFinalManualV249();
+        calculateV219();
+      },false);
+    });
+  }
+
+  window.AB_PRICE_CALC_SYNC_BASE_V284=function(){
+    syncBasicV219();
+    clearFinalManualV249();
+    calculateV219();
+  };
   function revealStoredRowsV219(){var root=sec();if(!root)return;var groups=root.querySelectorAll('[data-repeat-row-v219]');for(var i=0;i<groups.length;i++){var row=groups[i];var inputs=row.querySelectorAll('input');var hasValue=false;for(var j=0;j<inputs.length;j++){if(String(inputs[j].value||'').trim()){hasValue=true;break;}}if(hasValue)row.hidden=false;}}
   function addRepeatRowV219(name){
     var root=sec();if(!root)return;
@@ -22047,7 +22171,7 @@ function isVisibleCaptureTarget(el){
     if(remove){var row=remove.closest('[data-repeat-row-v219]');if(row){row.remove();clearFinalManualV249();calculateV219();}return;}
     var add=ev.target.closest('[data-repeat-add-v219]');
     if(add){addRepeatRowV219(add.getAttribute('data-repeat-add-v219'));clearFinalManualV249();calculateV219();}
-  });root.addEventListener('input',function(ev){var target=ev.target;if(target&&target.getAttribute('inputmode')){if(target.getAttribute('inputmode')==='numeric')target.value=String(target.value||'').replace(/[^0-9]/g,'');else if(target.getAttribute('inputmode')==='decimal')target.value=String(target.value||'').replace(/[^0-9.,-]/g,'');}if(target&&target.id==='priceCalcFinalAmountV218'){if(ev&&ev.isTrusted)target.setAttribute('data-manual-v218','1');return;}if(target&&isFinalAmountDriverV249(target))clearFinalManualV249();if(target&&target.getAttribute('data-manual-total-v227')){target.setAttribute('data-manual-v227','1');calculateV219();return;}if(target&&target.hasAttribute('data-multiply-count')){var multiplyName=target.getAttribute('data-multiply-count');var multiplyTotal=root.querySelector('[data-multiply-total="'+multiplyName+'"]');if(multiplyTotal)multiplyTotal.removeAttribute('data-manual-v227');}if(target&&target.hasAttribute('data-multiply-each')){var multiplyEachName=target.getAttribute('data-multiply-each');var multiplyEachTotal=root.querySelector('[data-multiply-total="'+multiplyEachName+'"]');if(multiplyEachTotal)multiplyEachTotal.removeAttribute('data-manual-v227');}if(target&&(target.getAttribute('data-key')==='price_calc_accident_count'||target.getAttribute('data-key')==='price_calc_accident_each_percent'||target.getAttribute('data-key')==='price_calc_base_price')){var accidentTotal=field('price_calc_accident_amount');if(accidentTotal)accidentTotal.removeAttribute('data-manual-v227');}calculateV219();});var tab=document.getElementById('tabPriceCalc');if(tab)tab.addEventListener('change',function(){if(tab.checked){syncBasicV219();revealStoredRowsV219();calculateV219();window.scrollTo(0,0);}});var submit=document.getElementById('priceCalcSubmitBtnV218');if(submit)submit.addEventListener('click',function(){var text=buildTextV219();var out=document.getElementById('priceCalcCopyOutputV218');out.value=text;document.getElementById('priceCalcOutputCardV218').classList.add('active');copyText(text,submit);});var copy=document.getElementById('priceCalcCopyBtnV218');if(copy)copy.addEventListener('click',function(){copyText(document.getElementById('priceCalcCopyOutputV218').value,copy);});syncBasicV219();revealStoredRowsV219();calculateV219();}
+  });root.addEventListener('input',function(ev){var target=ev.target;if(target&&target.getAttribute('inputmode')){if(target.getAttribute('inputmode')==='numeric')target.value=String(target.value||'').replace(/[^0-9]/g,'');else if(target.getAttribute('inputmode')==='decimal')target.value=String(target.value||'').replace(/[^0-9.,-]/g,'');}if(target&&target.id==='priceCalcFinalAmountV218'){if(ev&&ev.isTrusted)target.setAttribute('data-manual-v218','1');return;}if(target&&isFinalAmountDriverV249(target))clearFinalManualV249();if(target&&target.getAttribute('data-manual-total-v227')){target.setAttribute('data-manual-v227','1');calculateV219();return;}if(target&&target.hasAttribute('data-multiply-count')){var multiplyName=target.getAttribute('data-multiply-count');var multiplyTotal=root.querySelector('[data-multiply-total="'+multiplyName+'"]');if(multiplyTotal)multiplyTotal.removeAttribute('data-manual-v227');}if(target&&target.hasAttribute('data-multiply-each')){var multiplyEachName=target.getAttribute('data-multiply-each');var multiplyEachTotal=root.querySelector('[data-multiply-total="'+multiplyEachName+'"]');if(multiplyEachTotal)multiplyEachTotal.removeAttribute('data-manual-v227');}if(target&&(target.getAttribute('data-key')==='price_calc_accident_count'||target.getAttribute('data-key')==='price_calc_accident_each_percent'||target.getAttribute('data-key')==='price_calc_base_price')){var accidentTotal=field('price_calc_accident_amount');if(accidentTotal)accidentTotal.removeAttribute('data-manual-v227');}calculateV219();});var tab=document.getElementById('tabPriceCalc');if(tab)tab.addEventListener('change',function(){if(tab.checked){syncBasicV219();revealStoredRowsV219();calculateV219();window.scrollTo(0,0);}});var submit=document.getElementById('priceCalcSubmitBtnV218');if(submit)submit.addEventListener('click',function(){syncBasicV219();var text=buildTextV219();var out=document.getElementById('priceCalcCopyOutputV218');out.value=text;document.getElementById('priceCalcOutputCardV218').classList.add('active');copyText(text,submit);});var copy=document.getElementById('priceCalcCopyBtnV218');if(copy)copy.addEventListener('click',function(){copyText(document.getElementById('priceCalcCopyOutputV218').value,copy);});bindBasicSourceSyncV284();syncBasicV219();revealStoredRowsV219();calculateV219();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindV219,false);else bindV219();
 })();
 </script>

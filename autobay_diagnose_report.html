@@ -21379,7 +21379,17 @@ function isVisibleCaptureTarget(el){
     }else if(base.indexOf('name:')===0){
       list=Array.prototype.slice.call(root.querySelectorAll('[name="'+cssEscapeV197(base.slice(5))+'"]'));
     }else if(base.indexOf('placeholder:')===0){
-      list=Array.prototype.slice.call(root.querySelectorAll('[placeholder="'+cssEscapeV197(base.slice(12))+'"]'));
+      var legacyPlaceholder=base.slice(12);
+      /*
+       * 기본 탭 가격은 과거 textarea에서 placeholder "가격 입력"을 안정키로 사용했다.
+       * 현재 단일 input은 data-key="basicBidPrice", placeholder="가격"이므로
+       * 기존 구글시트 JSON의 placeholder 키를 현재 필드로 연결한다.
+       */
+      if(legacyPlaceholder==='가격 입력'){
+        list=Array.prototype.slice.call(root.querySelectorAll('[data-key="basicBidPrice"]'));
+      }else{
+        list=Array.prototype.slice.call(root.querySelectorAll('[placeholder="'+cssEscapeV197(legacyPlaceholder)+'"]'));
+      }
     }else if(base.indexOf('index:')===0){
       return all[parseInt(base.slice(6),10)]||null;
     }

@@ -3344,16 +3344,6 @@ button{
   display:flex !important;
 }
 
-/* 가격 입력은 줄바꿈이 가능한 메모형 입력으로 사용한다. */
-.basicinfo-v5-field .price-textarea{
-  height:auto !important;
-  min-height:76px !important;
-  line-height:1.45 !important;
-  padding:10px 12px !important;
-  resize:vertical !important;
-  white-space:pre-wrap !important;
-}
-
 .km-comma-input{
   text-align:right !important;
 }
@@ -3666,7 +3656,7 @@ button{
   text-align:right !important;
 }
 .count-suffix-wrap::after{content:"건" !important;}
-.money-suffix-wrap::after{content:"원" !important;}
+.money-suffix-wrap::after{content:"만" !important;}
 .count-suffix-wrap .insurance-number-input,
 .money-suffix-wrap .insurance-number-input{
   padding-right:44px !important;
@@ -12902,7 +12892,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 </div></div></div>
 <div class="basicinfo-v5-field full">
 <div class="basicinfo-v5-label">가격(입찰가, 선택/조율가격)</div>
-<textarea class="bi-input price-textarea" data-key="basicBidPrice" inputmode="numeric" maxlength="6" placeholder="가격 입력"></textarea>
+<input class="bi-input" data-key="basicBidPrice" inputmode="numeric" maxlength="6" placeholder="가격" type="text"/>
 </div>
 </div>
 </article><article class="report-card-ui wrapppf-card-fix-v1724"><h2><span class="no">2</span> 랩핑 / PPF 여부</h2>
@@ -14963,7 +14953,7 @@ boot();
    * 기본 탭 가격 입력을 숫자 5자리로 제한하고 천 단위 쉼표로 표시한다.
    */
   function bindBasicPriceInputV282(){
-    var input=document.querySelector('#secInput .price-textarea[data-key="basicBidPrice"]');
+    var input=document.querySelector('#secInput [data-key="basicBidPrice"]');
     if(!input||input.getAttribute('data-v282-price-bound')==='1')return;
     input.setAttribute('data-v282-price-bound','1');
     input.setAttribute('inputmode','numeric');

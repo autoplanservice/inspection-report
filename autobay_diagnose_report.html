@@ -20995,9 +20995,41 @@ function isVisibleCaptureTarget(el){
   function resetFreshDiagramMarkersV282(){
     var root=document.getElementById('reportAppV194');
     if(!root)return;
-    Array.prototype.slice.call(root.querySelectorAll('.touch-diagram-shell input[type="radio"]')).forEach(function(input){
-      input.checked=false;
+
+    /**
+     * 사고·외관 도면은 각 부위 radio 그룹의 기본 상태인 st0만 선택한다.
+     * 모든 radio를 해제하면 st0 기반의 첫 터치영역(.h0)도 사라져 마커 입력이 불가능해진다.
+     */
+    Array.prototype.slice.call(
+      root.querySelectorAll('.touch-diagram-shell .touch-card input[type="radio"].st')
+    ).forEach(function(input){
+      input.checked=input.classList.contains('st0');
     });
+
+    /**
+     * 도막 진단은 사고·외관 st 그룹과 별도 구조이므로
+     * 각 name 그룹의 paint-native-none만 기본값으로 선택한다.
+     */
+    var paintGroups={};
+    Array.prototype.slice.call(
+      root.querySelectorAll('.paint-native-radio[name]')
+    ).forEach(function(input){
+      var name=input.name||'';
+      if(!name)return;
+      if(!paintGroups[name])paintGroups[name]=[];
+      paintGroups[name].push(input);
+    });
+
+    Object.keys(paintGroups).forEach(function(name){
+      var group=paintGroups[name];
+      var noneInput=null;
+      group.forEach(function(input){
+        if(input.classList.contains('paint-native-none'))noneInput=input;
+        input.checked=false;
+      });
+      if(noneInput)noneInput.checked=true;
+    });
+
     try{
       root.dispatchEvent(new Event('change',{bubbles:true}));
     }catch(error){}

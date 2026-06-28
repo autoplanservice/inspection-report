@@ -50,7 +50,32 @@ body{padding:10px 8px 86px;overflow-x:hidden}
 .app{width:100%;max-width:560px;margin:0 auto}
 /* 상단 헤더: 앱 제목, 안내문, 탭을 감싸는 고정성 헤더 카드 스타일이다. */
 .header{position:relative;z-index:100;background:#111827;color:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 10px 24px rgba(0,0,0,.18)}
-.header h1{font-size:18px;line-height:1.25;margin:0 0 6px;font-weight:900;letter-spacing:-.04em}
+.header h1{font-size:18px;line-height:1.25;margin:0;font-weight:900;letter-spacing:-.04em}
+.header-title-row-v290{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-right:44px;
+  margin:0 0 6px;
+}
+.header-home-btn-v290{
+  flex:0 0 32px;
+  width:32px;
+  height:32px;
+  border:1px solid rgba(255,255,255,.75);
+  border-radius:10px;
+  background:#fff;
+  color:#111827;
+  font-size:18px;
+  font-weight:1000;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
 .header p{font-size:12px;line-height:1.45;margin:0;color:#d1d5db}
 /* 탭 전환 radio: 실제 radio는 숨기고 label 터치로 섹션을 전환한다. */
 .tab-radio{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
@@ -9607,7 +9632,7 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
 }
 #secSubmit .report-submit-pdf-btns-v1778{
   display:grid!important;
-  grid-template-columns:1fr 1fr!important;
+  grid-template-columns:1fr 1fr 1fr!important;
   gap:10px!important;
 }
 #secSubmit #btnCustomerSubmitPdfV1778{
@@ -9615,12 +9640,67 @@ body.ab-tab-fast-v1697.ab-tab-submit .header .tabs label[for="tabSubmit"]{
   color:#fff!important;
 }
 #secSubmit #btnCompanySubmitPdfV1778{
+  display:none!important;
   background:#fff!important;
   color:#111827!important;
   border:1px solid #cfd7e3!important;
 }
+body.ab-company-pdf-allowed-v290 #secSubmit #btnCompanySubmitPdfV1778{
+  display:block!important;
+}
+#secSubmit #btnSubmitSaveReportV290{
+  background:#2563eb!important;
+  color:#fff!important;
+  border-color:#2563eb!important;
+}
+.company-pdf-auth-v290{
+  margin-top:10px!important;
+  padding:10px!important;
+  border:1px solid #d8dee8!important;
+  border-radius:14px!important;
+  background:#f9fafb!important;
+}
+.company-pdf-auth-title-v290{
+  margin:0 0 8px!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  color:#374151!important;
+}
+.company-pdf-auth-row-v290{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 96px!important;
+  gap:8px!important;
+}
+#companyPdfPasswordInputV290{
+  height:42px!important;
+  min-height:42px!important;
+}
+#companyPdfPasswordBtnV290{
+  height:42px!important;
+  border:0!important;
+  border-radius:11px!important;
+  background:#111827!important;
+  color:#fff!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+.company-pdf-auth-message-v290{
+  min-height:18px!important;
+  margin-top:7px!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+  color:#6b7280!important;
+}
+body.ab-company-pdf-allowed-v290 #companyPdfAuthV290{
+  display:none!important;
+}
 @media (max-width:640px){
   #secSubmit .report-submit-pdf-btns-v1778{
+    grid-template-columns:1fr!important;
+  }
+  .company-pdf-auth-row-v290{
     grid-template-columns:1fr!important;
   }
 }
@@ -12784,7 +12864,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 <input class="tab-radio" id="tabDiag" name="mainTabs" type="radio"/><input class="tab-radio" id="tabExterior" name="mainTabs" type="radio"/>
 <input class="tab-radio" id="tabCheck" name="mainTabs" type="radio"/><input class="tab-radio" id="tabSubmit" name="mainTabs" type="radio"/><input class="tab-radio" id="tabOrder" name="mainTabs" type="radio"/><input class="tab-radio" id="tabPriceCalc" name="mainTabs" type="radio"/>
 <input class="menu-toggle" id="menuToggle" type="checkbox"/><header class="header">
-<h1>오토베이 현장 매입 진단리포트</h1><label aria-label="메뉴 열기" class="menu-open-btn" for="menuToggle" title="메뉴">☰</label>
+<div class="header-title-row-v290"><h1>오토베이 현장 매입 진단리포트</h1><button aria-label="홈 메뉴" class="header-home-btn-v290" id="headerHomeBtnV290" title="홈" type="button">⌂</button></div><label aria-label="메뉴 열기" class="menu-open-btn" for="menuToggle" title="메뉴">☰</label>
 <p>현장 매입 진단리포트</p>
 <div class="tabs">
 <label for="tabInput">기본</label>
@@ -13840,10 +13920,19 @@ body.ab-password-active-v195{overflow:hidden!important}
 <span class="report-output-badge-v1741">PDF</span>
 <span>리포트 제출</span>
 </div>
-<div class="report-output-desc-v1741">버튼 클릭 시 PDF 저장용 화면이 생성되고 인쇄 및 PDF 저장 창이 실행됩니다.</div>
+<div class="report-output-desc-v1741">버튼 클릭 시 PDF 출력용 화면이 생성되고 인쇄 및 PDF 저장 창이 실행됩니다.</div>
 <div class="report-output-btns-v1744 report-output-btns-v1745 report-submit-pdf-btns-v1778">
-<button class="report-output-btn-v1741 customer" id="btnCustomerSubmitPdfV1778" type="button">고객보고용 PDF 저장</button>
-<button class="report-output-btn-v1741 company" id="btnCompanySubmitPdfV1778" type="button">회사보고용 PDF 저장</button>
+<button class="report-output-btn-v1741 customer" id="btnCustomerSubmitPdfV1778" type="button">고객보고용 PDF 출력</button>
+<button class="report-output-btn-v1741 company" id="btnCompanySubmitPdfV1778" type="button">회사보고용 PDF 출력</button>
+<button class="report-output-btn-v1741" id="btnSubmitSaveReportV290" type="button">매입진단리포트 저장</button>
+</div>
+<div class="company-pdf-auth-v290" id="companyPdfAuthV290">
+<div class="company-pdf-auth-title-v290">회사보고용 PDF 권한 확인</div>
+<div class="company-pdf-auth-row-v290">
+<input autocomplete="off" id="companyPdfPasswordInputV290" placeholder="회사보고용 비밀번호" type="password"/>
+<button id="companyPdfPasswordBtnV290" type="button">확인</button>
+</div>
+<div aria-live="polite" class="company-pdf-auth-message-v290" id="companyPdfAuthMessageV290"></div>
 </div>
 <div class="report-mobile-print-wrap-v1773" style="display:none!important"></div>
 </section></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>인증 탁송출발</label><div class="order-inline order-certified-departure-v217"><input class="order-mmdd-input-v1716" data-key="order_certified_departure_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/><input class="order-hour-input-v217" data-key="order_certified_departure_hour" inputmode="numeric" maxlength="2" placeholder="HH"/></div></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-count-detail-v1717" data-count-prefix="order_accident"><select class="order-select order-count-select-v1717" data-key="order_accident_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_accident_memo" placeholder="사고 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-count-detail-v1717" data-count-prefix="order_outer"><select class="order-select order-count-select-v1717" data-key="order_outer_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_outer_memo" placeholder="외판 내용 입력" rows="2"></textarea></div></div><div class="order-field full"><label>수리</label><div class="order-count-detail-v1717" data-count-prefix="order_repair"><select class="order-select order-count-select-v1717" data-key="order_repair_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_repair_memo" placeholder="수리 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_deposit_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_balance_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>인수일</label><input class="order-mmdd-input-v1716 order-takeover-mmdd-v217" data-key="order_takeover_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section><section class="section" id="secPriceCalcV218">
@@ -20713,9 +20802,111 @@ function isVisibleCaptureTarget(el){
    * 담당: 관련 UI 이벤트 리스너를 등록하고 초기 바인딩을 수행한다.
    * 주의: 기존 id/data-key/localStorage/API 연동을 변경하지 않는다.
    */
+  var COMPANY_PDF_SESSION_KEY_V290 = 'AB_DIAG_COMPANY_PDF_VERIFIED_V290';
+  var COMPANY_PDF_WEB_APP_URL_V290 = 'https://script.google.com/macros/s/AKfycbxQROwfsCxlWnhhJ1aabnagtN58UAonHuqct57WmMbX1ethYlPjg-R39fQ7oayZP1HgIg/exec';
+  var API_TOKEN_SESSION_KEY_V290 = 'AB_DIAG_API_TOKEN_V197';
+
+  function setCompanyPdfMessageV290(message, isError){
+    var element = document.getElementById('companyPdfAuthMessageV290');
+    if(!element) return;
+    element.textContent = message || '';
+    element.style.color = isError ? '#b91c1c' : '#6b7280';
+  }
+
+  function setCompanyPdfAllowedV290(allowed){
+    document.body.classList.toggle('ab-company-pdf-allowed-v290', !!allowed);
+  }
+
+  function restoreCompanyPdfSessionV290(){
+    try{
+      setCompanyPdfAllowedV290(sessionStorage.getItem(COMPANY_PDF_SESSION_KEY_V290) === '1');
+    }catch(error){
+      setCompanyPdfAllowedV290(false);
+    }
+  }
+
+  function verifyCompanyPdfPasswordV290(password){
+    var body = new URLSearchParams();
+    body.set('action', 'verifyCompanyPassword');
+    body.set('password', password);
+    try{
+      var token = sessionStorage.getItem(API_TOKEN_SESSION_KEY_V290) || '';
+      if(token) body.set('token', token);
+    }catch(error){}
+
+    return fetch(COMPANY_PDF_WEB_APP_URL_V290, {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+      body: body.toString(),
+      redirect: 'follow',
+      cache: 'no-store'
+    }).then(function(response){
+      if(!response.ok) throw new Error('HTTP_' + response.status);
+      return response.json();
+    }).then(function(result){
+      return result || {ok:false, verified:false};
+    });
+  }
+
+  function requestCompanyPdfPasswordV290(){
+    var input = document.getElementById('companyPdfPasswordInputV290');
+    var button = document.getElementById('companyPdfPasswordBtnV290');
+    var password = input ? String(input.value || '') : '';
+
+    if(!password){
+      setCompanyPdfMessageV290('회사보고용 비밀번호를 입력해 주세요.', true);
+      if(input) input.focus();
+      return;
+    }
+
+    if(button && button.disabled) return;
+    if(button) button.disabled = true;
+    setCompanyPdfMessageV290('권한을 확인하고 있습니다.', false);
+
+    verifyCompanyPdfPasswordV290(password).then(function(result){
+      if(input) input.value = '';
+      var verified = !!(result && result.ok === true && result.verified === true);
+      if(!verified){
+        setCompanyPdfMessageV290(result && result.message ? result.message : '회사보고용 비밀번호가 일치하지 않습니다.', true);
+        if(input) input.focus();
+        return;
+      }
+      try{
+        sessionStorage.setItem(COMPANY_PDF_SESSION_KEY_V290, '1');
+      }catch(error){}
+      setCompanyPdfAllowedV290(true);
+      setCompanyPdfMessageV290('', false);
+    }).catch(function(error){
+      if(input) input.value = '';
+      setCompanyPdfMessageV290('회사보고용 권한 확인 중 연결 오류가 발생했습니다.', true);
+      console.error('[AB_DIAG][COMPANY_PDF_VERIFY_FAIL_V290]', error);
+      if(input) input.focus();
+    }).finally(function(){
+      if(button) button.disabled = false;
+    });
+  }
+
+  function runSubmitSaveV290(){
+    if(window.AB_DIAG_DB_V197 && typeof window.AB_DIAG_DB_V197.save === 'function'){
+      window.AB_DIAG_DB_V197.save();
+      return;
+    }
+    var floatingSave = document.getElementById('abDbSaveV197');
+    if(floatingSave){
+      floatingSave.click();
+      return;
+    }
+    alert('저장 모듈이 아직 준비되지 않았습니다. 페이지를 새로고침 후 다시 실행해 주세요.');
+  }
+
   function bindSubmitPdfButtonsV1778(){
     var customer = document.getElementById('btnCustomerSubmitPdfV1778');
     var company = document.getElementById('btnCompanySubmitPdfV1778');
+    var save = document.getElementById('btnSubmitSaveReportV290');
+    var companyPasswordButton = document.getElementById('companyPdfPasswordBtnV290');
+    var companyPasswordInput = document.getElementById('companyPdfPasswordInputV290');
+
+    restoreCompanyPdfSessionV290();
 
     /**
 
@@ -20741,7 +20932,7 @@ function isVisibleCaptureTarget(el){
         window.__openReportPrintV1773(mode);
         return;
       }
-      alert('PDF 저장 모듈이 아직 준비되지 않았습니다. 페이지를 새로고침 후 다시 실행해 주세요.');
+      alert('PDF 출력 모듈이 아직 준비되지 않았습니다. 페이지를 새로고침 후 다시 실행해 주세요.');
     }
 
     if(customer && customer.getAttribute('data-bind-v1778') !== '1'){
@@ -20751,7 +20942,34 @@ function isVisibleCaptureTarget(el){
 
     if(company && company.getAttribute('data-bind-v1778') !== '1'){
       company.setAttribute('data-bind-v1778', '1');
-      company.addEventListener('click', function(){ openPdf('company'); }, false);
+      company.addEventListener('click', function(){
+        if(!document.body.classList.contains('ab-company-pdf-allowed-v290')){
+          setCompanyPdfMessageV290('회사보고용 권한 확인 후 출력할 수 있습니다.', true);
+          if(companyPasswordInput) companyPasswordInput.focus();
+          return;
+        }
+        openPdf('company');
+      }, false);
+    }
+
+    if(save && save.getAttribute('data-bind-v290') !== '1'){
+      save.setAttribute('data-bind-v290', '1');
+      save.addEventListener('click', runSubmitSaveV290, false);
+    }
+
+    if(companyPasswordButton && companyPasswordButton.getAttribute('data-bind-v290') !== '1'){
+      companyPasswordButton.setAttribute('data-bind-v290', '1');
+      companyPasswordButton.addEventListener('click', requestCompanyPdfPasswordV290, false);
+    }
+
+    if(companyPasswordInput && companyPasswordInput.getAttribute('data-bind-v290') !== '1'){
+      companyPasswordInput.setAttribute('data-bind-v290', '1');
+      companyPasswordInput.addEventListener('keydown', function(event){
+        if(event.key === 'Enter'){
+          event.preventDefault();
+          requestCompanyPdfPasswordV290();
+        }
+      }, false);
     }
   }
 
@@ -21069,6 +21287,23 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
+   * showEntryHomeV290은 모바일 뒤로가기 대신 사용할 홈 메뉴를 표시한다.
+   * 현재 입력 데이터는 지우지 않고 화면만 진입 메뉴로 되돌린다.
+   */
+  function showEntryHomeV290(){
+    var screen = document.getElementById('entryModeScreenV194');
+    var app = document.getElementById('reportAppV194');
+    var loadPanel = document.getElementById('entryLoadPanelV194');
+    var existingButton = document.getElementById('entryExistingBtnV194');
+    if(app) app.hidden = true;
+    if(screen) screen.hidden = false;
+    if(loadPanel) loadPanel.classList.remove('show');
+    if(existingButton) existingButton.setAttribute('aria-expanded','false');
+    document.body.classList.add('ab-entry-active-v194');
+    window.scrollTo(0,0);
+  }
+
+  /**
    * requestExistingReportV194는 차량번호 기반 Google Sheets 조회를 요청하는
    * 사용자 정의 이벤트를 발생시킨다. API 연동 모듈은 이 이벤트를 받아 처리한다.
    */
@@ -21115,6 +21350,11 @@ function isVisibleCaptureTarget(el){
     var loadPanel = document.getElementById('entryLoadPanelV194');
     var loadButton = document.getElementById('entryVehicleLoadBtnV194');
     var vehicleInput = document.getElementById('entryVehicleNoV194');
+    var homeButton = document.getElementById('headerHomeBtnV290');
+
+    if(homeButton){
+      homeButton.addEventListener('click', showEntryHomeV290, false);
+    }
 
     if(preButton){
       preButton.addEventListener('click', function(){
@@ -21154,6 +21394,7 @@ function isVisibleCaptureTarget(el){
    */
   window.AB_DIAG_ENTRY_V194 = {
     enterReport: enterReportV194,
+    showHome: showEntryHomeV290,
     setLoadMessage: setEntryLoadMessageV194,
     normalizeVehicleNumber: normalizeVehicleNumberV194
   };

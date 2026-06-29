@@ -20809,10 +20809,23 @@ function isVisibleCaptureTarget(el){
 
   function bindPrintButtons(){
     var root = qs('#reportOutputSection');
-    if(!root || qs('.report-mobile-print-wrap-v1773', root)) return;
+    if(!root) return;
 
-    var wrap = document.createElement('div');
+    /*
+      v298:
+      기존 HTML에 .report-mobile-print-wrap-v1773 빈 요소가 이미 있으면
+      아래 모바일 버튼 생성 로직이 return 되면서 탭 repair/매입금액 산정 자동 미리보기도 실행되지 않았다.
+      탭 바인딩과 자동 미리보기 확인은 return 조건보다 먼저 실행해야 한다.
+    */
+    repairMainTabHandlersV1784();
+    setTimeout(ensurePriceCalcPreviewV297, 0);
+
+    if(qs('.report-mobile-print-wrap-v1773[data-generated-v1773="1"]', root)) return;
+
+    var existingWrap = qs('.report-mobile-print-wrap-v1773', root);
+    var wrap = existingWrap || document.createElement('div');
     wrap.className = 'report-mobile-print-wrap-v1773';
+    wrap.setAttribute('data-generated-v1773', '1');
     wrap.innerHTML =
       '<div class="report-mobile-print-title-v1773">모바일 PDF 저장</div>' +
       '<div class="report-mobile-print-desc-v1773">모바일에서는 화면캡처 대신 PDF 저장용 리포트를 생성합니다. 버튼 클릭 시 저장용 화면이 열리고 인쇄/PDF 저장 창이 실행됩니다.</div>' +
@@ -20820,7 +20833,12 @@ function isVisibleCaptureTarget(el){
         '<button class="report-mobile-print-btn-v1773 customer" id="btnCustomerMobilePrintV1773" type="button">고객보고용 PDF 저장</button>' +
         '<button class="report-mobile-print-btn-v1773 company" id="btnCompanyMobilePrintV1773" type="button">회사보고용 PDF 저장</button>' +
       '</div>';
-    root.appendChild(wrap);
+
+    if(!existingWrap){
+      root.appendChild(wrap);
+    }else{
+      wrap.removeAttribute('style');
+    }
 
     qs('#btnCustomerMobilePrintV1773', wrap).addEventListener('click', function(){
       openPreview('customer');
@@ -20829,9 +20847,6 @@ function isVisibleCaptureTarget(el){
     qs('#btnCompanyMobilePrintV1773', wrap).addEventListener('click', function(){
       openPreview('company');
     }, false);
-
-    repairMainTabHandlersV1784();
-    setTimeout(ensurePriceCalcPreviewV297, 0);
   }
 
   if(document.readyState === 'loading'){

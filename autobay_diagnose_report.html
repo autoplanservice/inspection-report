@@ -9666,11 +9666,33 @@ body.ab-company-pdf-allowed-v290 #secSubmit #btnCompanySubmitPdfV1778{
 */
 body.report-print-preview-v1773 /* PDF 미리보기 루트: 고객/회사 보고용 복제 DOM 출력 컨테이너다. */
 #reportPrintRootV1773{
+  position:relative!important;
   width:calc(100vw - 24px)!important;
   max-width:560px!important;
-  margin:0 auto!important;
+  margin:42px auto 0!important;
   padding:0!important;
   background:#f3f5f7!important;
+}
+
+/* PDF 출력 미리보기 화면 상단에 파란색 식별 라벨을 표시한다. */
+body.report-print-preview-v1773 #reportPrintRootV1773::before{
+  content:"미리보기";
+  position:absolute;
+  left:0;
+  top:-34px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:88px;
+  height:28px;
+  padding:0 12px;
+  border-radius:10px 10px 0 0;
+  background:#2563eb;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:-0.01em;
+  box-shadow:0 4px 10px rgba(37,99,235,.18);
 }
 
 body.report-print-preview-v1773 #reportPrintRootV1773 .report-print-head-v1773,
@@ -13869,7 +13891,7 @@ body.ab-password-active-v195{overflow:hidden!important}
 <h2><span class="no">19</span> 코멘트</h2>
 <div class="field"><label class="comment-item-title-v1674 customer-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">고객 코멘트</label><textarea data-key="customerCommentMemo" placeholder="고객에게 질문한 주행 이슈, 기타 특이사항, 고객의 전달사항 입력"></textarea></div>
 <div class="field customer-talk-field"><div class="customer-talk-head"><span class="customer-talk-title comment-item-title-v1674 inspector-comment-label-v1675" style="font-size:13px!important;line-height:1.35!important">검수자 코멘트</span><span class="customer-talk-spacer"></span><button class="customer-talk-cycle" data-talk-level="0" type="button">선택</button><span class="customer-talk-time">일정시간</span></div><textarea class="customer-talk-memo" data-key="inspectorCommentMemo" placeholder="고객도 같이 보는 관점의 검수자 코멘트를 입력"></textarea></div>
-</article></section><section class="section" id="secSubmit"><article class="report-card-ui submit-guide-card-v1777"><h2><span class="no">제출</span> 리포트 제출/출력</h2><p class="hint">PDF/출력용 미리보기 화면입니다. 안정화 후 숨김처리 예정입니다.</p></article><section class="report-output-card-v1741 report-output-card-v1745 report-submit-pdf-only-v1778" id="reportOutputSection">
+</article></section><section class="section" id="secSubmit"><article class="report-card-ui submit-guide-card-v1777"><h2><span class="no">제출</span> 리포트 제출/출력</h2></article><section class="report-output-card-v1741 report-output-card-v1745 report-submit-pdf-only-v1778" id="reportOutputSection">
 <div class="report-output-title-v1741">
 <span class="report-output-badge-v1741">PDF</span>
 <span>리포트 제출</span>
@@ -20620,6 +20642,18 @@ function isVisibleCaptureTarget(el){
       radio.setAttribute('data-tab-repair-v1784', '1');
       radio.addEventListener('change', function(){
         if(!radio.checked) return;
+
+        /*
+          v293:
+          PDF 미리보기는 제출 탭에서만 유지한다.
+          다른 탭으로 이동할 때는 body class만 제거하지 않고
+          실제 미리보기 DOM/인쇄 페이지 DOM까지 제거한다.
+        */
+        if(id !== 'tabSubmit'){
+          removePrintPagesV141();
+          removeReportRoot();
+        }
+
         document.body.classList.remove(
           'report-print-preview-v1773',
           'report-mobile-save-mode-v1769',
@@ -20637,6 +20671,15 @@ function isVisibleCaptureTarget(el){
         document.body.classList.add('ab-tab-' + map[id]);
       }, true);
     });
+
+    if(document.body.getAttribute('data-preview-submit-only-v293') !== '1'){
+      document.body.setAttribute('data-preview-submit-only-v293', '1');
+      document.addEventListener('change', function(event){
+        var target = event.target;
+        if(!target || !target.matches || !target.matches('input[name="mainTabs"]')) return;
+        setTimeout(closePreviewIfNotSubmitV293, 0);
+      }, true);
+    }
   }
 
   /**
@@ -20654,6 +20697,25 @@ function isVisibleCaptureTarget(el){
     removeReportRoot();
     clearReportTabBodyClassesV1784();
     repairMainTabHandlersV1784();
+  }
+
+  /**
+   * closePreviewIfNotSubmitV293은 CSS/JS 탭 상태가 어긋나는 경우에도
+   * 제출 탭이 아니면 PDF 미리보기를 닫아 다른 탭에 잔존하지 않게 한다.
+   */
+  function closePreviewIfNotSubmitV293(){
+    var submit = document.getElementById('tabSubmit');
+    if(submit && submit.checked) return;
+    if(document.body.classList.contains('report-print-preview-v1773') ||
+       document.getElementById('reportPrintRootV1773') ||
+       document.getElementById('reportPrintPagesV141')){
+      removePrintPagesV141();
+      removeReportRoot();
+      document.body.classList.remove(
+        'report-print-preview-v1773',
+        'report-print-ios-v183'
+      );
+    }
   }
 
   /**

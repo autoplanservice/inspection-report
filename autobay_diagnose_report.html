@@ -22535,3 +22535,231 @@ function isVisibleCaptureTarget(el){
 
 </body>
 </html>
+<script>
+/**
+ * SCRIPT_BLOCK_42: 매입오더 기본/점검 탭 값 자동 반영을 담당한다.
+ * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
+ */
+(function(){
+  'use strict';
+
+  function normalizeTextV299(value){
+    return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+  }
+
+  function onlyDigitsV299(value){
+    return String(value || '').replace(/[^\d]/g, '');
+  }
+
+  function addCommaV299(value){
+    var digits = onlyDigitsV299(value);
+    if(!digits) return '';
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function dispatchValueChangedV299(element, inputEvent){
+    if(!element) return;
+    try{
+      if(inputEvent) element.dispatchEvent(new Event('input', {bubbles:true}));
+      element.dispatchEvent(new Event('change', {bubbles:true}));
+    }catch(error){}
+  }
+
+  function setOrderValueV299(key, value, options){
+    var element = document.querySelector('#secOrder [data-key="' + key + '"]');
+    var textValue = normalizeTextV299(value);
+    if(!element || !textValue) return false;
+    if(element.value === textValue) return true;
+    element.value = textValue;
+    dispatchValueChangedV299(element, !(options && options.noInputEvent));
+    return true;
+  }
+
+  function getBasicFieldByLabelV299(labelText){
+    var section = document.getElementById('secInput');
+    if(!section) return null;
+    var target = normalizeTextV299(labelText);
+    var fields = Array.prototype.slice.call(section.querySelectorAll('.basicinfo-v5-field'));
+    for(var i=0; i<fields.length; i++){
+      var label = fields[i].querySelector('.basicinfo-v5-label');
+      if(!label) continue;
+      if(normalizeTextV299(label.textContent) === target) return fields[i];
+    }
+    return null;
+  }
+
+  function getBasicValueByLabelV299(labelText){
+    var field = getBasicFieldByLabelV299(labelText);
+    if(!field) return '';
+    var input = field.querySelector('input:not(.bi-date-overlay), textarea, select');
+    if(!input) return '';
+    return normalizeTextV299(input.value);
+  }
+
+  function formatMonthDayV299(value){
+    var raw = normalizeTextV299(value);
+    if(!raw) return '';
+
+    var parts = raw.match(/\d+/g) || [];
+    var month = '';
+    var day = '';
+
+    if(parts.length >= 3){
+      month = parts[parts.length - 2];
+      day = parts[parts.length - 1];
+    }else{
+      var digits = onlyDigitsV299(raw);
+      if(digits.length === 8){
+        month = digits.substring(4, 6);
+        day = digits.substring(6, 8);
+      }else if(digits.length === 6){
+        month = digits.substring(2, 4);
+        day = digits.substring(4, 6);
+      }else if(digits.length === 4){
+        month = digits.substring(0, 2);
+        day = digits.substring(2, 4);
+      }
+    }
+
+    if(!month || !day) return raw;
+    month = String(parseInt(month, 10) || '').trim();
+    day = String(parseInt(day, 10) || '').trim();
+    if(!month || !day) return raw;
+    return month + '/' + day;
+  }
+
+  function formatYearMonthV299(value){
+    var raw = normalizeTextV299(value);
+    if(!raw) return '';
+
+    var parts = raw.match(/\d+/g) || [];
+    var year = '';
+    var month = '';
+
+    if(parts.length >= 2){
+      year = parts[0];
+      month = parts[1];
+    }else{
+      var digits = onlyDigitsV299(raw);
+      if(digits.length >= 6){
+        year = digits.substring(0, digits.length === 8 ? 4 : 2);
+        month = digits.substring(digits.length === 8 ? 4 : 2, digits.length === 8 ? 6 : 4);
+      }else if(digits.length === 4){
+        year = digits.substring(0, 2);
+        month = digits.substring(2, 4);
+      }
+    }
+
+    if(!year || !month) return raw;
+    if(year.length === 4) year = year.substring(2);
+    year = year.padStart(2, '0').slice(-2);
+    month = String(parseInt(month, 10) || '').padStart(2, '0');
+    if(month === '00') return raw;
+    return year + '-' + month;
+  }
+
+  function formatYearModelV299(value){
+    var digits = onlyDigitsV299(value);
+    if(!digits) return '';
+    if(digits.length >= 4) return digits.slice(-2);
+    return digits.padStart(2, '0').slice(-2);
+  }
+
+  function formatMileageKmV299(value){
+    var comma = addCommaV299(value);
+    return comma ? comma + 'km' : '';
+  }
+
+  function getCheckedLabelTextV299(input){
+    if(!input || !input.id) return '';
+    var label = document.querySelector('label[for="' + input.id + '"]');
+    return label ? normalizeTextV299(label.textContent) : '';
+  }
+
+  function syncOrderSpareKeyV299(){
+    var checked = document.querySelector('#secCheck input[name="owned_1_state"]:checked');
+    if(!checked) return;
+
+    var labelText = getCheckedLabelTextV299(checked);
+    var memo = normalizeTextV299((document.querySelector('#secCheck [data-key="owned_1_memo"]') || {}).value || '');
+    var yn = '';
+    var location = '';
+
+    if(labelText.indexOf('2개') !== -1){
+      yn = 'O';
+      location = labelText;
+    }else if(labelText.indexOf('1개') !== -1){
+      yn = 'X';
+      location = '1개' + (memo ? '(' + memo + ')' : '');
+    }else{
+      location = labelText;
+    }
+
+    if(yn) setOrderValueV299('order_spare_key_yn', yn);
+    if(location) setOrderValueV299('order_spare_key_location', location);
+  }
+
+  function syncOrderFromBasicAndCheckV299(){
+    var diagnosisDate = getBasicValueByLabelV299('진단일자');
+    var manager = getBasicValueByLabelV299('담당자');
+    var carNo = getBasicValueByLabelV299('차량번호');
+    var regDate = getBasicValueByLabelV299('등록일자');
+    var modelYear = getBasicValueByLabelV299('연식');
+    var mileageAfter = getBasicValueByLabelV299('주행거리 (후)');
+
+    setOrderValueV299('order_date', formatMonthDayV299(diagnosisDate));
+    setOrderValueV299('order_dealer', manager);
+    setOrderValueV299('order_inspector', manager);
+    setOrderValueV299('order_car_no', carNo);
+    setOrderValueV299('order_year_reg_ym', formatYearMonthV299(regDate));
+    setOrderValueV299('order_year_model_yy', formatYearModelV299(modelYear));
+    setOrderValueV299('order_mileage', formatMileageKmV299(mileageAfter), {noInputEvent:true});
+    syncOrderSpareKeyV299();
+  }
+
+  function isOrderTabActiveV299(){
+    var tab = document.getElementById('tabOrder');
+    return !!(tab && tab.checked);
+  }
+
+  function syncOrderIfActiveV299(){
+    if(!isOrderTabActiveV299()) return;
+    syncOrderFromBasicAndCheckV299();
+  }
+
+  function bindOrderAutoFillV299(){
+    if(document.body.getAttribute('data-order-autofill-v299') === '1') return;
+    document.body.setAttribute('data-order-autofill-v299', '1');
+
+    var orderTab = document.getElementById('tabOrder');
+    if(orderTab){
+      orderTab.addEventListener('change', function(){
+        if(orderTab.checked) setTimeout(syncOrderFromBasicAndCheckV299, 0);
+      }, true);
+    }
+
+    var inputSection = document.getElementById('secInput');
+    if(inputSection){
+      inputSection.addEventListener('input', function(){ setTimeout(syncOrderIfActiveV299, 0); }, true);
+      inputSection.addEventListener('change', function(){ setTimeout(syncOrderIfActiveV299, 0); }, true);
+    }
+
+    var ownedCard = document.querySelector('#secCheck [data-check-card="owned"]');
+    if(ownedCard){
+      ownedCard.addEventListener('input', function(){ setTimeout(syncOrderIfActiveV299, 0); }, true);
+      ownedCard.addEventListener('change', function(){ setTimeout(syncOrderIfActiveV299, 0); }, true);
+    }
+
+    setTimeout(syncOrderIfActiveV299, 0);
+  }
+
+  window.AB_SYNC_ORDER_FROM_SOURCE_V299 = syncOrderFromBasicAndCheckV299;
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindOrderAutoFillV299, false);
+  }else{
+    bindOrderAutoFillV299();
+  }
+  window.addEventListener('load', bindOrderAutoFillV299, false);
+})();
+</script>

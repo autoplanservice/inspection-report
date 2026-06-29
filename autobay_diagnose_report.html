@@ -13847,13 +13847,15 @@ body.ab-password-active-v195{overflow:hidden!important}
 <input class="memo" data-key="media_6_memo" placeholder="이상 메모 입력"/>
 </div></article><article class="report-card-ui" data-check-card="drive"><h2><span class="no">15</span> 시운전 점검</h2><div class="ab-checkline ab-options-2" data-check-key="drive_0" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">엔진떨림 점검</div><input class="ab-check-radio ok" data-key="drive_0_state" id="drive_0_0" name="drive_0_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_0_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_0_state" id="drive_0_1" name="drive_0_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_0_1">이상</label><input class="ab-check-memo" data-key="drive_0_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_1" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">미션튕김 점검</div><input class="ab-check-radio ok" data-key="drive_1_state" id="drive_1_0" name="drive_1_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_1_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_1_state" id="drive_1_1" name="drive_1_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_1_1">이상</label><input class="ab-check-memo" data-key="drive_1_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_2" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">방지턱 점검</div><input class="ab-check-radio ok" data-key="drive_2_state" id="drive_2_0" name="drive_2_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_2_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_2_state" id="drive_2_1" name="drive_2_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_2_1">이상</label><input class="ab-check-memo" data-key="drive_2_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_3" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">브레이크 점검</div><input class="ab-check-radio ok" data-key="drive_3_state" id="drive_3_0" name="drive_3_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_3_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_3_state" id="drive_3_1" name="drive_3_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_3_1">이상</label><input class="ab-check-memo" data-key="drive_3_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_4" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">조향 점검</div><input class="ab-check-radio ok" data-key="drive_4_state" id="drive_4_0" name="drive_4_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_4_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_4_state" id="drive_4_1" name="drive_4_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_4_1">이상</label><input class="ab-check-memo" data-key="drive_4_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div></article><article class="report-card-ui" data-check-card="interior_memo"><h2><span class="no">16</span> 기타 특이사항</h2><div class="field"><label>점검항목에 없는 기타 특이사항이 있는 경우 작성합니다.</label><textarea data-key="interiorSpecialMemo" placeholder="항목에 없는 기타 특이사항을 입력"></textarea></div></article><article class="report-card-ui" data-check-card="owned">
 <h2><span class="no">17</span> 보유확인</h2>
-<div class="checkline" data-check-key="owned_1">
+<div class="checkline" data-check-key="owned_1" data-owned-memo-mode="ok_only">
 <div class="check-title">키 개수</div>
 <input class="check-radio ok" data-check="ok" id="owned_1_ok" name="owned_1_state" type="radio" checked=""/>
 <label class="check-choice ok" for="owned_1_ok">2개 이상</label>
-<input class="check-radio bad" data-check="bad" id="owned_1_bad" name="owned_1_state" type="radio"/>
-<label class="check-choice bad" for="owned_1_bad">1개</label>
-<input class="memo" data-key="owned_1_memo" placeholder="이상 메모 입력"/>
+<input class="check-radio ok owned-show-memo" data-check="ok" id="owned_1_one" name="owned_1_state" type="radio"/>
+<label class="check-choice ok" for="owned_1_one">1개</label>
+<input class="check-radio bad owned-show-memo" data-check="bad" id="owned_1_bad" name="owned_1_state" type="radio"/>
+<label class="check-choice bad" for="owned_1_bad">없음</label>
+<input class="memo" data-key="owned_1_memo" placeholder="1개 또는 없음 위치/특이사항 입력"/>
 </div><div class="checkline" data-check-key="owned_2" data-owned-memo-mode="ok_only">
 <div class="check-title">구성품</div>
 <input class="check-radio ok owned-show-memo" data-check="ok" id="owned_2_ok" name="owned_2_state" type="radio" checked=""/>
@@ -22539,6 +22541,7 @@ function isVisibleCaptureTarget(el){
 /**
  * SCRIPT_BLOCK_42: 매입오더 기본/점검 탭 값 자동 반영을 담당한다.
  * v300: 매입오더 날짜는 6/29가 아니라 2026-06-29 형식으로 반영한다.
+ * v301: 키 개수 없음 선택지를 추가하고, 매입오더 스페어키 여부 O/X 반영 기준을 조정한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){
@@ -22693,10 +22696,13 @@ function isVisibleCaptureTarget(el){
 
     if(labelText.indexOf('2개') !== -1){
       yn = 'O';
-      location = labelText;
+      location = '2개 이상';
     }else if(labelText.indexOf('1개') !== -1){
-      yn = 'X';
+      yn = 'O';
       location = '1개' + (memo ? '(' + memo + ')' : '');
+    }else if(labelText.indexOf('없음') !== -1){
+      yn = 'X';
+      location = '없음' + (memo ? '(' + memo + ')' : '');
     }else{
       location = labelText;
     }

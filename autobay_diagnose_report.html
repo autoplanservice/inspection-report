@@ -10204,51 +10204,6 @@ body.ab-tab-fast-v1697.ab-tab-order .header .tabs label:not([for="tabOrder"]){
   color:#ffffff !important;
   font-weight:900 !important;
 }
-.report-mobile-print-wrap-v1773{
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid #e5e7eb;
-}
-.report-mobile-print-title-v1773{
-  font-size:13px;
-  font-weight:900;
-  color:#111827;
-  margin:0 0 8px;
-}
-.report-mobile-print-desc-v1773{
-  font-size:12px;
-  line-height:1.55;
-  color:#4b5563;
-  margin:0 0 10px;
-}
-.report-mobile-print-btns-v1773{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.report-mobile-print-btn-v1773{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:42px;
-  padding:0 14px;
-  border-radius:12px;
-  border:1px solid #cbd5e1;
-  background:#fff;
-  color:#111827;
-  font-size:13px;
-  font-weight:900;
-  cursor:pointer;
-}
-.report-mobile-print-btn-v1773.customer{
-  background:#111827;
-  border-color:#111827;
-  color:#fff;
-}
-.report-mobile-print-btn-v1773.company{
-  background:#fff;
-  color:#111827;
-}
 #reportPrintRootV1773{
   display:none;
   width:100%;
@@ -10355,10 +10310,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   cursor:pointer;
 }
 @media (max-width:640px){
-  .report-mobile-print-btns-v1773{
-    display:grid;
-    grid-template-columns:1fr;
-  }
   #reportPrintRootV1773{
     padding:10px;
   }
@@ -12784,16 +12735,6 @@ body.ab-password-active-v195{overflow:hidden!important}
 
 
 
-/* v306 - 제출 탭의 과거 모바일 PDF 저장 영역은 노출하지 않는다. */
-#secSubmit .report-mobile-print-wrap-v1773{
-  display:none!important;
-  visibility:hidden!important;
-  height:0!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-}
 
 </style>
 <!--
@@ -13918,7 +13859,6 @@ body.ab-password-active-v195{overflow:hidden!important}
 <button class="report-output-btn-v1741 company" id="btnCompanySubmitPdfV1778" type="button">회사보고용 PDF 출력</button>
 <button class="report-output-btn-v1741" id="btnSubmitSaveReportV290" type="button">매입진단리포트 저장</button>
 </div>
-<div class="report-mobile-print-wrap-v1773" style="display:none!important"></div>
 </section></section><section class="section" id="secOrder"><article class="order-page-title-card-v1699">매입오더 작성</article><article class="report-card-ui order-card order-direct-card"><h2 class="order-soft-section-title-v1699">바로지시사항</h2><div class="order-field full no-label-v1699"><textarea data-key="order_direct_instruction" placeholder="바로지시사항 입력"></textarea></div></article><article class="report-card-ui order-card order-main-card" data-order-main="1"><h2 class="order-main-title-hidden-v1699">■■■ 매 입 ■■■</h2><div class="order-subtitle order-soft-section-title-v1699">차량정보</div><div class="order-grid"><div class="order-field"><label>날짜</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>담당딜러</label><input data-key="order_dealer" placeholder="담당딜러 입력"/></div><div class="order-field"><label>검 수 자</label><input data-key="order_inspector" placeholder="검수자 입력"/></div><div class="order-field"><label>견적</label><select class="order-select" data-key="order_estimator"><option value="">선택</option><option value="가훈">가훈</option><option value="현우">현우</option><option value="대표님">대표님</option></select></div><div class="order-field"><label>경로</label><select class="order-select" data-key="order_route"><option value="">선택</option><option value="낙찰">낙찰</option><option value="디비">디비</option><option value="대차">대차</option><option value="지인">지인</option></select></div><div class="order-field"><label>인증 탁송출발</label><div class="order-inline order-certified-departure-v217"><input class="order-mmdd-input-v1716" data-key="order_certified_departure_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/><input class="order-hour-input-v217" data-key="order_certified_departure_hour" inputmode="numeric" maxlength="2" placeholder="HH"/></div></div><div class="order-field"><label>차량이름</label><input data-key="order_car_name" placeholder="차량이름 입력"/></div><div class="order-field"><label>차량번호</label><input data-key="order_car_no" placeholder="차량번호 입력"/></div><div class="order-field"><label>연식</label><div class="order-inline order-year-wrap"><input class="order-yy-month-input" data-key="order_year_reg_ym" inputmode="numeric" maxlength="5" placeholder="YY-MM"/><input class="order-year-model-yy-input" data-key="order_year_model_yy" inputmode="numeric" maxlength="2" placeholder="YY"/></div></div><div class="order-field"><label>등급</label><input data-key="order_grade" placeholder="등급 입력"/></div><div class="order-field"><label>연료</label><input data-key="order_fuel" placeholder="연료 입력"/></div><div class="order-field"><label>배기량</label><input class="order-comma-number" data-key="order_displacement" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field"><label>주행</label><input class="order-comma-number" data-key="order_mileage" inputmode="numeric" placeholder="숫자 입력"/></div><div class="order-field full"><label>사고</label><div class="order-count-detail-v1717" data-count-prefix="order_accident"><select class="order-select order-count-select-v1717" data-key="order_accident_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_accident_memo" placeholder="사고 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>미확정</label><select class="order-select" data-key="order_unconfirmed"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select></div><div class="order-field"><label>전손/침수/직수/계기판/</label><select class="order-select" data-key="order_special_history"><option value="">선택</option><option value="X">X</option><option value="전손">전손</option><option value="침수">침수</option><option value="직수">직수</option><option value="계기판 이상">계기판 이상</option></select></div><div class="order-field full"><label>외판</label><div class="order-count-detail-v1717" data-count-prefix="order_outer"><select class="order-select order-count-select-v1717" data-key="order_outer_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_outer_memo" placeholder="외판 내용 입력" rows="2"></textarea></div></div><div class="order-field full"><label>수리</label><div class="order-count-detail-v1717" data-count-prefix="order_repair"><select class="order-select order-count-select-v1717" data-key="order_repair_count_select"><option value="0">0 개</option><option value="1">1 개</option><option value="2">2 개</option><option value="3">3 개</option><option value="4">4 개</option><option value="5">5 개</option><option value="6">6 개</option><option value="7">7 개</option><option value="8">8 개</option><option value="9">9 개</option><option value="10">10 개</option></select><textarea class="order-count-memo-v1717" data-key="order_repair_memo" placeholder="수리 내용 입력" rows="2"></textarea></div></div><div class="order-field"><label>스페어키 여부/위치</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_spare_key_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_spare_key_location" placeholder="위치 입력"/></div></div></div></article><article class="report-card-ui order-card order-money-card-v1702"><div class="order-subtitle order-soft-section-title-v1699 order-money-title-v1701 order-card-section-title-v1702">금액,송금,위험요소</div><div class="order-grid"><div class="order-field"><label>서류발송일</label><div class="date-dual-wrap order-date-dual-wrap"><input class="bi-input date-text-input date-ymd-input order-date-text" data-key="order_doc_send_date" inputmode="numeric" maxlength="10" placeholder="YYYY-MM-DD"/><input aria-label="날짜 달력" class="bi-date-overlay order-date-overlay" type="date"/></div></div><div class="order-field"><label>서류위치</label><input data-key="order_doc_location" placeholder="서류위치 입력"/></div><div class="order-field"><label>사업자여부/종류</label><div class="order-inline order-select-plus-input"><select class="order-select" data-key="order_business_yn"><option value="">선택</option><option value="O">O</option><option value="X">X</option></select><input data-key="order_business_type" placeholder="종류 입력"/></div></div><div class="order-field"><label>현금,캐피탈,리스,렌트</label><select class="order-select" data-key="order_payment_type"><option value="">선택</option><option value="현금">현금</option><option value="캐피탈">캐피탈</option><option value="리스">리스</option><option value="렌트">렌트</option></select></div><div class="order-field"><label>압류(특수)</label><input data-key="order_seizure" placeholder="압류/특수 내용 입력"/></div><div class="order-field"><label>차주송금금액(제시금액)</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_owner_transfer_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_owner_transfer_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>실매입금액</label><div class="order-inline order-money-unit order-money-unit-ref-v1713 order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_real_buy_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_real_buy_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계약금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_deposit_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_deposit_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_deposit_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>잔   금</label><div class="order-inline order-money-date order-money-date-compact-v1713 order-money-date-tight-v1715 order-money-date-one-row-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_balance_amount" inputmode="numeric" placeholder="숫자 입력"/><div class="order-inline order-small-unit order-small-unit-fixed-v1713 order-small-unit-tight-v1715 order-small-unit-onebtn-v1716"><button class="order-unit-btn active order-unit-btn-fixed-v1713 order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_balance_unit" type="hidden" value="만원"/></div><input class="order-mmdd-input-v1716" data-key="order_balance_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div></div><div class="order-field"><label>인수일</label><input class="order-mmdd-input-v1716 order-takeover-mmdd-v217" data-key="order_takeover_date_mmdd" inputmode="numeric" maxlength="5" placeholder="MM-DD"/></div><div class="order-field"><label>반환금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_return_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_return_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>계산서금액</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_invoice_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_invoice_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>이름</label><input data-key="order_account_name" placeholder="이름 입력"/></div><div class="order-field"><label>계좌/예금주</label><div class="order-inline order-account"><input data-key="order_account_bank" placeholder="은행"/><input data-key="order_account_number" placeholder="계좌번호"/><input data-key="order_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>캐피탈계좌(압류)</label><input data-key="order_capital_account" placeholder="캐피탈계좌 입력"/></div><div class="order-field"><label>차주번호</label><input autocomplete="tel" class="order-phone" data-key="order_owner_phone" inputmode="tel" placeholder="010-0000-0000"/></div></div></article><article class="report-card-ui order-card order-profit-card-v1702"><div class="order-profit-toggle-wrap order-profit-toggle-wrap-v1701 order-profit-card-head-v1702"><div class="order-subtitle order-profit-title order-profit-title-v1701 order-card-section-title-v1702 order-profit-title-inline-v1704"><span class="order-profit-title-inner-v1704"><button class="order-profit-toggle order-profit-toggle-inline-v1704" data-open="0" id="orderProfitToggle" type="button">▷</button><span class="order-profit-title-text-v1704">수익금 있을 경우 클릭 후 작성</span></span></div></div><div class="order-grid order-profit-grid" data-profit-open="0"><div class="order-field"><label>알선수익금(소개비)</label><div class="order-inline order-money-unit order-money-unit-tight-v1715 order-money-unit-ref-v1715 order-money-unit-onebtn-v1716"><input autocomplete="off" class="order-comma-number" data-key="order_referral_profit_amount" inputmode="numeric" placeholder="숫자 입력"/><button class="order-unit-btn active order-unit-btn-tight-v1715 order-unit-toggle-v1716" data-unit="만원" type="button">만원</button><input data-key="order_referral_profit_unit" type="hidden" value="만원"/></div></div><div class="order-field"><label>소개비이름</label><input data-key="order_referral_name" placeholder="소개비이름 입력"/></div><div class="order-field"><label>소개비계좌</label><div class="order-inline order-account"><input data-key="order_referral_account_bank" placeholder="은행"/><input data-key="order_referral_account_number" placeholder="계좌번호"/><input data-key="order_referral_account_holder" placeholder="예금주"/></div></div><div class="order-field"><label>원천주민번호(해당시작성)</label><input class="order-rrn" data-key="order_withholding_rrn" inputmode="numeric" maxlength="14" placeholder="000000-0000000"/></div></div></article><div class="order-submit-wrap"><button class="order-submit-btn" id="orderSubmitBtn" type="button">제출하기</button></div><article class="report-card-ui order-output-card"><h2>복사/붙여넣기 결과</h2><textarea class="order-copy-output" id="orderCopyOutput" placeholder="제출하기 버튼을 누르면 입력값이 복사 가능한 형식으로 생성됩니다." readonly="readonly"></textarea><button class="order-copy-btn" id="orderCopyBtn" type="button">전체 복사</button></article></section><section class="section" id="secPriceCalcV218">
 <article class="order-page-title-card-v1699">매입금액 산정</article><article class="report-card-ui price-calc-summary-v218 price-calc-summary-sticky-v247">
 <div class="price-calc-summary-row-v218"><strong>차감 합계</strong><div><div class="price-calc-input-unit-v223 price-calc-input-unit-prefix-v223"><span class="price-calc-prefix-v223">-</span><input data-key="price_calc_deduction_total" id="priceCalcDeductionTotalV218" readonly=""/><span class="price-calc-suffix-v223">만</span></div></div></div>
@@ -20825,20 +20765,8 @@ function isVisibleCaptureTarget(el){
     var root = qs('#reportOutputSection');
     if(!root) return;
 
-    /*
-      v306:
-      모바일 PDF 저장 영역은 이전에 제거/숨김 처리한 영역이므로 다시 생성하거나 표시하지 않는다.
-      단, v298에서 필요했던 탭 repair/매입금액 산정 자동 미리보기 바인딩은 유지한다.
-    */
     repairMainTabHandlersV1784();
     setTimeout(ensurePriceCalcPreviewV297, 0);
-
-    var mobileWrap = qs('.report-mobile-print-wrap-v1773', root);
-    if(mobileWrap){
-      mobileWrap.innerHTML = '';
-      mobileWrap.setAttribute('style', 'display:none!important');
-      mobileWrap.setAttribute('aria-hidden', 'true');
-    }
   }
 
   if(document.readyState === 'loading'){
@@ -22534,7 +22462,7 @@ function isVisibleCaptureTarget(el){
  * v303: 키 개수는 2개 이상/1개만 유지하고, 매입오더는 2개 이상=O, 1개=X로 반영한다.
  * v304: 매입오더 주행 자동입력값에는 km를 붙이지 않아 제출 출력 시 km 중복을 방지한다.
  * v305: 키 개수 행의 전용 grid/CSS를 제거해 보유확인 기본 배치로 원복한다.
- * v306: 제출 탭의 과거 모바일 PDF 저장 영역을 다시 숨김 처리한다.
+ * v307: 제출 탭의 미사용 출력 보조 영역 DOM/CSS/정리 로직을 제거한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){

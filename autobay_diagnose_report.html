@@ -22507,6 +22507,7 @@ function isVisibleCaptureTarget(el){
  * v310: 매입금액 산정 자동 미리보기는 회사보고용으로 생성하고, 탭 이탈 시 미리보기를 제거한다.
  * v311: 매입오더 제출 출력 시 계좌/예금주 계좌번호는 숫자만 붙여서 출력한다.
  * v312: 소개비계좌 계좌번호도 숫자만 붙여서 출력한다.
+ * v313: 스페어키 여부/위치 출력은 O/X와 메모 괄호만 나오도록 키 개수 텍스트를 제거한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){
@@ -22537,7 +22538,8 @@ function isVisibleCaptureTarget(el){
   function setOrderValueV299(key, value, options){
     var element = document.querySelector('#secOrder [data-key="' + key + '"]');
     var textValue = normalizeTextV299(value);
-    if(!element || !textValue) return false;
+    var allowEmpty = !!(options && options.allowEmpty);
+    if(!element || (!textValue && !allowEmpty)) return false;
     if(element.value === textValue) return true;
     element.value = textValue;
     dispatchValueChangedV299(element, !(options && options.noInputEvent));
@@ -22660,16 +22662,14 @@ function isVisibleCaptureTarget(el){
 
     if(labelText.indexOf('2개') !== -1){
       yn = 'O';
-      location = '2개 이상' + (memo ? '(' + memo + ')' : '');
+      location = memo ? '(' + memo + ')' : '';
     }else if(labelText.indexOf('1개') !== -1){
       yn = 'X';
-      location = '1개' + (memo ? '(' + memo + ')' : '');
-    }else{
-      location = labelText;
+      location = memo ? '(' + memo + ')' : '';
     }
 
     if(yn) setOrderValueV299('order_spare_key_yn', yn);
-    if(location) setOrderValueV299('order_spare_key_location', location);
+    setOrderValueV299('order_spare_key_location', location, {allowEmpty:true});
   }
 
   function syncOrderFromBasicAndCheckV299(){

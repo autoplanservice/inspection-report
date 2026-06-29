@@ -16783,10 +16783,15 @@ boot();
 
    */
 
-  function getAccount(prefix){
+  function getAccount(prefix, cleanNumber){
     var bank = getByKey(prefix + '_bank');
     var number = getByKey(prefix + '_number');
     var holder = getByKey(prefix + '_holder');
+
+    if(cleanNumber && number){
+      number = String(number).replace(/\D/g, '');
+    }
+
     var arr = [];
     if(bank) arr.push(bank);
     if(number) arr.push(number);
@@ -16931,7 +16936,7 @@ boot();
     lines.push('▷반환금액 : ' + getMoneyOrX('order_return', false));
     lines.push('▷계산서금액 : ' + getMoney('order_invoice', false));
     lines.push('▷이름 : ' + getByKey('order_account_name'));
-    lines.push('▷계좌/예금주 : ' + getAccount('order_account'));
+    lines.push('▷계좌/예금주 : ' + getAccount('order_account', true));
     lines.push('▷캐피탈계좌(압류) : ' + (getByKey('order_capital_account') || 'X'));
     lines.push('▷차주번호 : ' + (fee ? 'X' : (getByKey('order_owner_phone') || 'x')));
 
@@ -16940,7 +16945,7 @@ boot();
       lines.push('---수익금 있을때만---');
       lines.push('알선수익금(소개비) : ' + getMoney('order_referral_profit', false));
       lines.push('소개비이름 : ' + getByKey('order_referral_name'));
-      lines.push('소개비계좌 : ' + getAccount('order_referral_account'));
+      lines.push('소개비계좌 : ' + getAccount('order_referral_account', true));
       lines.push('원천주민번호(해당시작성) : ' + getByKey('order_withholding_rrn'));
     }
 
@@ -22500,6 +22505,8 @@ function isVisibleCaptureTarget(el){
  * v305: 키 개수 행의 전용 grid/CSS를 제거해 보유확인 기본 배치로 원복한다.
  * v307: 제출 탭의 미사용 출력 보조 영역 DOM/CSS/정리 로직을 제거한다.
  * v310: 매입금액 산정 자동 미리보기는 회사보고용으로 생성하고, 탭 이탈 시 미리보기를 제거한다.
+ * v311: 매입오더 제출 출력 시 계좌/예금주 계좌번호는 숫자만 붙여서 출력한다.
+ * v312: 소개비계좌 계좌번호도 숫자만 붙여서 출력한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){

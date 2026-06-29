@@ -12736,6 +12736,44 @@ body.ab-password-active-v195{overflow:hidden!important}
 
 
 
+
+/* v310 - PDF 미리보기 도막 수치 배지 뒤 회색 박스 제거.
+   원인: 미리보기 전용 broad selector([class*="paint"][class*="value"])가
+   .paint-value-text까지 잡아 회색 background/border를 줄 수 있어 배지 내부만 원복한다. */
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-native-slot,
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-native-slot.has-value,
+#reportPrintPagesV141 #secDiag .paint-native-slot,
+#reportPrintPagesV141 #secDiag .paint-native-slot.has-value{
+  background:transparent!important;
+  background-color:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-native-badge .paint-value-text,
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-native-badge .paint-w-prefix,
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-v98-badge .paint-value-text,
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-v98-badge .paint-w-prefix,
+#reportPrintPagesV141 #secDiag .paint-native-badge .paint-value-text,
+#reportPrintPagesV141 #secDiag .paint-native-badge .paint-w-prefix,
+#reportPrintPagesV141 #secDiag .paint-v98-badge .paint-value-text,
+#reportPrintPagesV141 #secDiag .paint-v98-badge .paint-w-prefix{
+  background:transparent!important;
+  background-color:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  outline:0!important;
+  padding:0!important;
+}
+
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-native-badge.has-value,
+body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-v98-badge.has-value,
+#reportPrintPagesV141 #secDiag .paint-native-badge.has-value,
+#reportPrintPagesV141 #secDiag .paint-v98-badge.has-value{
+  border:0!important;
+  overflow:hidden!important;
+}
+
 </style>
 <!--
   v89 정리6차
@@ -20607,7 +20645,7 @@ function isVisibleCaptureTarget(el){
       removeReportRoot();
     }catch(error){}
 
-    openPreview('customer', {
+    openPreview('company', {
       autoPrint:false,
       keepScroll:true,
       source:'pricecalc-auto'
@@ -20647,13 +20685,12 @@ function isVisibleCaptureTarget(el){
         if(!radio.checked) return;
 
         /*
-          v295:
-          PDF 미리보기는 제출 탭과 매입금액 산정 탭에서 유지하며, 매입금액 산정 탭에서는 자동 생성한다.
-          제출/매입금액 산정 탭에서는 미리보기 DOM뿐 아니라
-          report-print-preview-v1773 표시 class도 유지해야 한다.
-          그 외 탭으로 이동할 때만 실제 미리보기 DOM/인쇄 페이지 DOM까지 제거한다.
+          v310:
+          매입금액 산정 자동 미리보기는 매입금액 산정 탭에서만 유지한다.
+          다른 탭으로 이동하면 실제 미리보기 DOM/인쇄 페이지 DOM까지 제거한다.
+          매입금액 산정 탭 진입 시에는 항상 회사보고용 미리보기를 새로 생성한다.
         */
-        var keepPreview = (id === 'tabSubmit' || id === 'tabPriceCalc');
+        var keepPreview = (id === 'tabPriceCalc');
         var hadPreview = document.body.classList.contains('report-print-preview-v1773') ||
           !!document.getElementById('reportPrintRootV1773') ||
           !!document.getElementById('reportPrintPagesV141');
@@ -20686,7 +20723,7 @@ function isVisibleCaptureTarget(el){
         document.body.classList.add('ab-tab-fast-v1697');
         document.body.classList.add('ab-tab-' + map[id]);
 
-        if(id === 'tabPriceCalc' && !hadPreview){
+        if(id === 'tabPriceCalc'){
           setTimeout(ensurePriceCalcPreviewV297, 0);
         }
       }, true);
@@ -20727,12 +20764,11 @@ function isVisibleCaptureTarget(el){
 
   /**
    * closePreviewIfNotSubmitV293은 CSS/JS 탭 상태가 어긋나는 경우에도
-   * 제출/매입금액 산정 탭이 아니면 PDF 미리보기를 닫아 다른 탭에 잔존하지 않게 한다.
+   * 매입금액 산정 탭이 아니면 PDF 미리보기를 닫아 다른 탭에 잔존하지 않게 한다.
    */
   function closePreviewIfNotSubmitV293(){
-    var submit = document.getElementById('tabSubmit');
     var priceCalc = document.getElementById('tabPriceCalc');
-    var allowedTab = (submit && submit.checked) || (priceCalc && priceCalc.checked);
+    var allowedTab = !!(priceCalc && priceCalc.checked);
     if(allowedTab){
       if(document.getElementById('reportPrintRootV1773') || document.getElementById('reportPrintPagesV141')){
         document.body.classList.add('report-print-preview-v1773');
@@ -22463,6 +22499,7 @@ function isVisibleCaptureTarget(el){
  * v304: 매입오더 주행 자동입력값에는 km를 붙이지 않아 제출 출력 시 km 중복을 방지한다.
  * v305: 키 개수 행의 전용 grid/CSS를 제거해 보유확인 기본 배치로 원복한다.
  * v307: 제출 탭의 미사용 출력 보조 영역 DOM/CSS/정리 로직을 제거한다.
+ * v310: 매입금액 산정 자동 미리보기는 회사보고용으로 생성하고, 탭 이탈 시 미리보기를 제거한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){

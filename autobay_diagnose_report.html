@@ -22538,6 +22538,7 @@ function isVisibleCaptureTarget(el){
 <script>
 /**
  * SCRIPT_BLOCK_42: 매입오더 기본/점검 탭 값 자동 반영을 담당한다.
+ * v300: 매입오더 날짜는 6/29가 아니라 2026-06-29 형식으로 반영한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){
@@ -22596,36 +22597,41 @@ function isVisibleCaptureTarget(el){
     return normalizeTextV299(input.value);
   }
 
-  function formatMonthDayV299(value){
+  function formatOrderFullDateV300(value){
     var raw = normalizeTextV299(value);
     if(!raw) return '';
 
     var parts = raw.match(/\d+/g) || [];
+    var year = '';
     var month = '';
     var day = '';
 
     if(parts.length >= 3){
-      month = parts[parts.length - 2];
-      day = parts[parts.length - 1];
+      year = parts[0];
+      month = parts[1];
+      day = parts[2];
     }else{
       var digits = onlyDigitsV299(raw);
       if(digits.length === 8){
+        year = digits.substring(0, 4);
         month = digits.substring(4, 6);
         day = digits.substring(6, 8);
       }else if(digits.length === 6){
+        year = digits.substring(0, 2);
         month = digits.substring(2, 4);
         day = digits.substring(4, 6);
-      }else if(digits.length === 4){
-        month = digits.substring(0, 2);
-        day = digits.substring(2, 4);
       }
     }
 
-    if(!month || !day) return raw;
-    month = String(parseInt(month, 10) || '').trim();
-    day = String(parseInt(day, 10) || '').trim();
-    if(!month || !day) return raw;
-    return month + '/' + day;
+    if(!year || !month || !day) return raw;
+    if(year.length === 2) year = '20' + year;
+    if(year.length !== 4) return raw;
+
+    month = String(parseInt(month, 10) || '').padStart(2, '0');
+    day = String(parseInt(day, 10) || '').padStart(2, '0');
+    if(month === '00' || day === '00') return raw;
+
+    return year + '-' + month + '-' + day;
   }
 
   function formatYearMonthV299(value){
@@ -22707,7 +22713,7 @@ function isVisibleCaptureTarget(el){
     var modelYear = getBasicValueByLabelV299('연식');
     var mileageAfter = getBasicValueByLabelV299('주행거리 (후)');
 
-    setOrderValueV299('order_date', formatMonthDayV299(diagnosisDate));
+    setOrderValueV299('order_date', formatOrderFullDateV300(diagnosisDate));
     setOrderValueV299('order_dealer', manager);
     setOrderValueV299('order_inspector', manager);
     setOrderValueV299('order_car_no', carNo);

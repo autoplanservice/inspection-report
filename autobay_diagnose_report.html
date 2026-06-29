@@ -12782,24 +12782,17 @@ body.ab-password-active-v195{overflow:hidden!important}
 
 
 
-/* v303 - 보유확인 키 개수는 2개 이상/1개 두 선택지만 한 행으로 고정한다. */
-#secCheck [data-check-card="owned"] .owned-key-count-row-v303{
-  grid-template-columns:minmax(0,1fr) 88px 88px!important;
-}
-#secCheck [data-check-card="owned"] .owned-key-count-row-v303 .memo{
-  grid-column:1 / 4!important;
-}
-@media (max-width:420px){
-  #secCheck [data-check-card="owned"] .owned-key-count-row-v303{
-    grid-template-columns:minmax(0,1fr) 78px 64px!important;
-  }
-  #secCheck [data-check-card="owned"] .owned-key-count-row-v303 .check-choice{
-    min-width:0!important;
-    width:100%!important;
-    max-width:none!important;
-    padding:0 4px!important;
-    font-size:11px!important;
-  }
+
+
+/* v306 - 제출 탭의 과거 모바일 PDF 저장 영역은 노출하지 않는다. */
+#secSubmit .report-mobile-print-wrap-v1773{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
 }
 
 </style>
@@ -13868,13 +13861,13 @@ body.ab-password-active-v195{overflow:hidden!important}
 <input class="memo" data-key="media_6_memo" placeholder="이상 메모 입력"/>
 </div></article><article class="report-card-ui" data-check-card="drive"><h2><span class="no">15</span> 시운전 점검</h2><div class="ab-checkline ab-options-2" data-check-key="drive_0" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">엔진떨림 점검</div><input class="ab-check-radio ok" data-key="drive_0_state" id="drive_0_0" name="drive_0_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_0_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_0_state" id="drive_0_1" name="drive_0_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_0_1">이상</label><input class="ab-check-memo" data-key="drive_0_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_1" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">미션튕김 점검</div><input class="ab-check-radio ok" data-key="drive_1_state" id="drive_1_0" name="drive_1_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_1_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_1_state" id="drive_1_1" name="drive_1_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_1_1">이상</label><input class="ab-check-memo" data-key="drive_1_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_2" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">방지턱 점검</div><input class="ab-check-radio ok" data-key="drive_2_state" id="drive_2_0" name="drive_2_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_2_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_2_state" id="drive_2_1" name="drive_2_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_2_1">이상</label><input class="ab-check-memo" data-key="drive_2_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_3" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">브레이크 점검</div><input class="ab-check-radio ok" data-key="drive_3_state" id="drive_3_0" name="drive_3_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_3_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_3_state" id="drive_3_1" name="drive_3_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_3_1">이상</label><input class="ab-check-memo" data-key="drive_3_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div><div class="ab-checkline ab-options-2" data-check-key="drive_4" style="grid-template-columns:1fr repeat(2, 78px);"><div class="ab-check-title">조향 점검</div><input class="ab-check-radio ok" data-key="drive_4_state" id="drive_4_0" name="drive_4_state" type="radio" value="양호" checked=""/><label class="ab-choice ok" for="drive_4_0">양호</label><input class="ab-check-radio bad ab-show-memo" data-key="drive_4_state" id="drive_4_1" name="drive_4_state" type="radio" value="이상"/><label class="ab-choice bad" for="drive_4_1">이상</label><input class="ab-check-memo" data-key="drive_4_memo" placeholder="메모 입력" style="grid-column:1 / 4;"/></div></article><article class="report-card-ui" data-check-card="interior_memo"><h2><span class="no">16</span> 기타 특이사항</h2><div class="field"><label>점검항목에 없는 기타 특이사항이 있는 경우 작성합니다.</label><textarea data-key="interiorSpecialMemo" placeholder="항목에 없는 기타 특이사항을 입력"></textarea></div></article><article class="report-card-ui" data-check-card="owned">
 <h2><span class="no">17</span> 보유확인</h2>
-<div class="checkline owned-key-count-row-v303" data-check-key="owned_1" data-owned-memo-mode="ok_only" style="grid-template-columns:minmax(0,1fr) 88px 88px;">
+<div class="checkline" data-check-key="owned_1" data-owned-memo-mode="ok_only">
 <div class="check-title">키 개수</div>
 <input class="check-radio ok owned-show-memo" data-check="ok" id="owned_1_ok" name="owned_1_state" type="radio" checked=""/>
 <label class="check-choice ok" for="owned_1_ok">2개 이상</label>
 <input class="check-radio bad owned-show-memo" data-check="bad" id="owned_1_bad" name="owned_1_state" type="radio"/>
 <label class="check-choice bad" for="owned_1_bad">1개</label>
-<input class="memo" data-key="owned_1_memo" placeholder="키 위치/특이사항 입력" style="grid-column:1 / 4;"/>
+<input class="memo" data-key="owned_1_memo" placeholder="키 위치/특이사항 입력"/>
 </div><div class="checkline" data-check-key="owned_2" data-owned-memo-mode="ok_only">
 <div class="check-title">구성품</div>
 <input class="check-radio ok owned-show-memo" data-check="ok" id="owned_2_ok" name="owned_2_state" type="radio" checked=""/>
@@ -20833,41 +20826,19 @@ function isVisibleCaptureTarget(el){
     if(!root) return;
 
     /*
-      v298:
-      기존 HTML에 .report-mobile-print-wrap-v1773 빈 요소가 이미 있으면
-      아래 모바일 버튼 생성 로직이 return 되면서 탭 repair/매입금액 산정 자동 미리보기도 실행되지 않았다.
-      탭 바인딩과 자동 미리보기 확인은 return 조건보다 먼저 실행해야 한다.
+      v306:
+      모바일 PDF 저장 영역은 이전에 제거/숨김 처리한 영역이므로 다시 생성하거나 표시하지 않는다.
+      단, v298에서 필요했던 탭 repair/매입금액 산정 자동 미리보기 바인딩은 유지한다.
     */
     repairMainTabHandlersV1784();
     setTimeout(ensurePriceCalcPreviewV297, 0);
 
-    if(qs('.report-mobile-print-wrap-v1773[data-generated-v1773="1"]', root)) return;
-
-    var existingWrap = qs('.report-mobile-print-wrap-v1773', root);
-    var wrap = existingWrap || document.createElement('div');
-    wrap.className = 'report-mobile-print-wrap-v1773';
-    wrap.setAttribute('data-generated-v1773', '1');
-    wrap.innerHTML =
-      '<div class="report-mobile-print-title-v1773">모바일 PDF 저장</div>' +
-      '<div class="report-mobile-print-desc-v1773">모바일에서는 화면캡처 대신 PDF 저장용 리포트를 생성합니다. 버튼 클릭 시 저장용 화면이 열리고 인쇄/PDF 저장 창이 실행됩니다.</div>' +
-      '<div class="report-mobile-print-btns-v1773">' +
-        '<button class="report-mobile-print-btn-v1773 customer" id="btnCustomerMobilePrintV1773" type="button">고객보고용 PDF 저장</button>' +
-        '<button class="report-mobile-print-btn-v1773 company" id="btnCompanyMobilePrintV1773" type="button">회사보고용 PDF 저장</button>' +
-      '</div>';
-
-    if(!existingWrap){
-      root.appendChild(wrap);
-    }else{
-      wrap.removeAttribute('style');
+    var mobileWrap = qs('.report-mobile-print-wrap-v1773', root);
+    if(mobileWrap){
+      mobileWrap.innerHTML = '';
+      mobileWrap.setAttribute('style', 'display:none!important');
+      mobileWrap.setAttribute('aria-hidden', 'true');
     }
-
-    qs('#btnCustomerMobilePrintV1773', wrap).addEventListener('click', function(){
-      openPreview('customer');
-    }, false);
-
-    qs('#btnCompanyMobilePrintV1773', wrap).addEventListener('click', function(){
-      openPreview('company');
-    }, false);
   }
 
   if(document.readyState === 'loading'){
@@ -22562,6 +22533,8 @@ function isVisibleCaptureTarget(el){
  * v300: 매입오더 날짜는 6/29가 아니라 2026-06-29 형식으로 반영한다.
  * v303: 키 개수는 2개 이상/1개만 유지하고, 매입오더는 2개 이상=O, 1개=X로 반영한다.
  * v304: 매입오더 주행 자동입력값에는 km를 붙이지 않아 제출 출력 시 km 중복을 방지한다.
+ * v305: 키 개수 행의 전용 grid/CSS를 제거해 보유확인 기본 배치로 원복한다.
+ * v306: 제출 탭의 과거 모바일 PDF 저장 영역을 다시 숨김 처리한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){

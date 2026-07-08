@@ -21571,6 +21571,20 @@ function isVisibleCaptureTarget(el){
   /** 저장 중 중복 요청을 막는 상태값이다. */
   var busyV197=false;
 
+  /**
+   * v314: 저장 진입점을 하나의 busy 상태로 잠그고
+   * 플로팅 저장 버튼과 제출 탭 저장 버튼을 동시에 비활성화한다.
+   */
+  function setSaveBusyV314(isBusy){
+    busyV197=!!isBusy;
+    ['abDbSaveV197','btnSubmitSaveReportV290'].forEach(function(id){
+      var button=document.getElementById(id);
+      if(!button)return;
+      button.disabled=!!isBusy;
+      button.setAttribute('aria-busy',isBusy?'true':'false');
+    });
+  }
+
   /** 차량번호 비교를 위해 공백과 하이픈을 제거한다. */
   function normalizeVehicleNoV197(v){return String(v||'').replace(/\s+/g,'').replace(/-/g,'').trim();}
   /** CSS selector에 사용할 문자열을 안전하게 이스케이프한다. */
@@ -22100,11 +22114,14 @@ function isVisibleCaptureTarget(el){
 
   /** 현재 진입 모드에 맞는 상태로 전체 JSON을 압축 저장한다. */
   async function saveV197(){
-    if(busyV197)return;
+    if(busyV197){
+      console.warn('[AB_DIAG][SAVE_REENTRY_BLOCKED_V314]');
+      return;
+    }
     var meta=getMetaV197();
     if(!meta.vehicleNumber){setStatusV197('차량번호를 입력해 주세요.',true);return;}
     if(!meta.manager){setStatusV197('담당자를 입력해 주세요.',true);return;}
-    busyV197=true;
+    setSaveBusyV314(true);
     setStatusV197('전체 항목을 압축하여 저장하고 있습니다.',false);
     try{
       var report=collectReportV197();
@@ -22128,14 +22145,18 @@ function isVisibleCaptureTarget(el){
       currentRecordV197.revision=Number(r.revision||1);
       report.diagnosisId=r.diagnosisId;
       report.revision=currentRecordV197.revision;
-      setStatusV197('저장 완료 · '+r.diagnosisId+' · 수정버전 '+r.revision,false);
+      setStatusV197(
+        (r.deduplicated?'중복 저장 차단 · ':'저장 완료 · ')+
+        r.diagnosisId+' · 수정버전 '+r.revision,
+        false
+      );
       updateMetaV197();
-      console.log('[AB_DIAG][SHEET_SAVE_COMPLETE_V202]',r);
+      console.log('[AB_DIAG][SHEET_SAVE_COMPLETE_V314]',r);
     }catch(e){
       setStatusV197(e.message||'저장 실패',true);
-      console.error('[AB_DIAG][SHEET_SAVE_FAIL_V202]',e);
+      console.error('[AB_DIAG][SHEET_SAVE_FAIL_V314]',e);
     }finally{
-      busyV197=false;
+      setSaveBusyV314(false);
     }
   }
   /** 불러오기 완료 후 기본정보 탭을 활성화하고 화면 상단으로 이동한다. */
@@ -22216,8 +22237,11 @@ function isVisibleCaptureTarget(el){
 
     var saveButton=document.getElementById('abDbSaveV197');
     if(saveButton){
+      saveButton.disabled=!!busyV197;
+      saveButton.setAttribute('aria-busy',busyV197?'true':'false');
       saveButton.addEventListener('click',saveV197);
     }
+    setSaveBusyV314(busyV197);
     updateMetaV197();
   }
   /** 첫 진입 화면의 기존 데이터 불러오기 이벤트를 실제 API와 연결한다. */
@@ -22508,6 +22532,7 @@ function isVisibleCaptureTarget(el){
  * v311: 매입오더 제출 출력 시 계좌/예금주 계좌번호는 숫자만 붙여서 출력한다.
  * v312: 소개비계좌 계좌번호도 숫자만 붙여서 출력한다.
  * v313: 스페어키 여부/위치 출력은 O/X와 메모 괄호만 나오도록 키 개수 텍스트를 제거한다.
+ * v314: 저장 중 두 저장 버튼을 동시에 잠그고 재진입 요청을 명시적으로 차단한다.
  * 원칙: 기존 매입오더 data-key와 저장/불러오기 구조는 변경하지 않는다.
  */
 (function(){

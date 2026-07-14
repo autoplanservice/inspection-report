@@ -20076,8 +20076,96 @@ function isVisibleCaptureTarget(el){
       setTimeout(function(){
         window.__reportPrintLockV225 = false;
       }, 1000);
+
+      /* v226: 일부 모바일 Chromium에서 afterprint가 누락될 수 있어 출력 종료 후정리를 보조 예약한다. */
+      setTimeout(function(){
+        if(document.body.classList.contains(PREV_CLASS) ||
+           document.getElementById(ROOT_ID) ||
+           document.getElementById('reportPrintPagesV141')){
+          cleanupAfterPrintV226('fallback');
+        }
+      }, 7000);
     }
   }
+
+  /**
+   * restoreDiagramImagesAfterPrintV226은 PDF 출력용으로 blob URL로 교체된 도면 이미지를
+   * 원본 Base64 src로 되돌려 출력 종료 후 메모리 점유가 계속 남지 않게 한다.
+   * 주의: PDF 레이아웃과 도면 좌표는 변경하지 않고 src만 원복한다.
+   */
+  function restoreDiagramImagesAfterPrintV226(){
+    qsa('img[data-original-diagram-src-v164]', document).forEach(function(image){
+      var originalSource = image.getAttribute('data-original-diagram-src-v164') || '';
+      if(!originalSource) return;
+
+      try{
+        if(image.getAttribute('src') !== originalSource){
+          image.setAttribute('src', originalSource);
+        }
+      }catch(e){}
+    });
+  }
+
+  /**
+   * releaseDiagramBlobCacheAfterPrintV226은 v164 도면 정리 과정에서 생성된 blob URL 캐시를
+   * PDF 출력이 끝난 뒤 해제한다.
+   * 목적: PDF 저장 완료 직후 Chrome/Edge 렌더러가 무거운 이미지 메모리를 계속 보유하는 상황을 줄인다.
+   */
+  function releaseDiagramBlobCacheAfterPrintV226(){
+    var cache = window.__diagramCleanCacheV164;
+    if(!cache || !cache.forEach) return;
+
+    try{
+      cache.forEach(function(value){
+        Promise.resolve(value).then(function(url){
+          try{
+            if(typeof url === 'string' && url.indexOf('blob:') === 0 && window.URL && URL.revokeObjectURL){
+              URL.revokeObjectURL(url);
+            }
+          }catch(e){}
+        }).catch(function(){});
+      });
+      cache.clear();
+    }catch(e){}
+  }
+
+  /**
+   * cleanupAfterPrintV226은 PDF 저장/취소 후 출력 복제 DOM과 blob 이미지를 정리한다.
+   * 목적:
+   * - PDF 저장은 완료되지만 그 직후 STATUS_BREAKPOINT가 발생하는 경우를 줄인다.
+   * - 출력 종료 직후 복제 DOM, 인쇄 전용 페이지, blob 캐시를 한 번에 해제한다.
+   */
+  function cleanupAfterPrintV226(reason){
+    if(window.__reportPrintCleanupTimerV226){
+      clearTimeout(window.__reportPrintCleanupTimerV226);
+    }
+
+    window.__reportPrintCleanupTimerV226 = setTimeout(function(){
+      try{ restoreDiagramImagesAfterPrintV226(); }catch(e){}
+      try{ removePrintPagesV141(); }catch(e){}
+      try{ removeReportRoot(); }catch(e){}
+      try{ clearReportTabBodyClassesV1784(); }catch(e){}
+      try{ repairMainTabHandlersV1784(); }catch(e){}
+      try{ releaseDiagramBlobCacheAfterPrintV226(); }catch(e){}
+
+      window.__reportPrintLockV225 = false;
+      console.log('[AB_DIAG][PRINT_CLEANUP_V226]', reason || 'afterprint');
+    }, 900);
+  }
+
+  /**
+   * bindAfterPrintCleanupV226은 브라우저의 afterprint 이벤트에 후정리 루틴을 1회만 연결한다.
+   * 일부 Android/Chromium 환경은 afterprint가 불안정할 수 있어 runStablePrintV225에서도 보조 예약을 건다.
+   */
+  function bindAfterPrintCleanupV226(){
+    if(window.__reportPrintAfterPrintBoundV226) return;
+    window.__reportPrintAfterPrintBoundV226 = true;
+
+    window.addEventListener('afterprint', function(){
+      cleanupAfterPrintV226('afterprint');
+    }, false);
+  }
+
 
   /**
 
@@ -20877,10 +20965,12 @@ function isVisibleCaptureTarget(el){
    */
 
   function closePreview(){
+    restoreDiagramImagesAfterPrintV226();
     removePrintPagesV141();
     removeReportRoot();
     clearReportTabBodyClassesV1784();
     repairMainTabHandlersV1784();
+    releaseDiagramBlobCacheAfterPrintV226();
   }
 
   /**
@@ -20931,6 +21021,8 @@ function isVisibleCaptureTarget(el){
   }else{
     bindPrintButtons();
   }
+
+  bindAfterPrintCleanupV226();
 
   window.__openReportPrintV1773 = openPreview;
   window.__closeReportPrintV1773 = closePreview;

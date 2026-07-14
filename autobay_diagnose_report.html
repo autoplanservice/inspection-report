@@ -19986,6 +19986,100 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
+   * waitForPrintStableV225는 PDF 출력 직전 이미지 decode와 레이아웃 안정화를 기다린다.
+   * 목적:
+   * - Base64 도면/휠/사진 이미지가 완전히 해석되기 전에 window.print()가 실행되는 것을 방지한다.
+   * - Chrome/Edge PDF 렌더러의 STATUS_BREAKPOINT 발생 가능성을 낮춘다.
+   * 주의:
+   * - PDF DOM 구조, A2 레이아웃, 도면 좌표, 저장/불러오기 로직은 변경하지 않는다.
+   * - 이미지 오류나 decode 지연이 있어도 제한 시간 후 출력 흐름을 계속 진행한다.
+   */
+  async function waitForPrintStableV225(root){
+    var target = root || document;
+    var images = [];
+
+    try{
+      images = Array.prototype.slice.call(
+        target.querySelectorAll ? target.querySelectorAll('img') : []
+      );
+    }catch(e){
+      images = [];
+    }
+
+    function waitOneImage(img){
+      return new Promise(function(resolve){
+        var finished = false;
+        var timer = null;
+
+        function finish(){
+          if(finished) return;
+          finished = true;
+          if(timer) clearTimeout(timer);
+          resolve();
+        }
+
+        timer = setTimeout(finish, 2500);
+
+        try{
+          if(img.complete && img.naturalWidth > 0){
+            if(img.decode){
+              img.decode().then(finish).catch(finish);
+            }else{
+              finish();
+            }
+            return;
+          }
+
+          img.addEventListener('load', finish, { once:true });
+          img.addEventListener('error', finish, { once:true });
+        }catch(e){
+          finish();
+        }
+      });
+    }
+
+    await Promise.all(images.map(waitOneImage));
+
+    await new Promise(function(resolve){
+      if(!window.requestAnimationFrame){
+        setTimeout(resolve, 80);
+        return;
+      }
+
+      requestAnimationFrame(function(){
+        requestAnimationFrame(resolve);
+      });
+    });
+  }
+
+  /**
+   * runStablePrintV225는 PDF 출력 중복 실행을 막고 안정화 대기 후 window.print()를 호출한다.
+   * 목적:
+   * - 자동 출력과 사용자의 PDF 저장 버튼 클릭이 겹쳐 렌더러 부담이 증가하는 것을 방지한다.
+   * - 출력 직전 후처리 함수를 한 번 더 실행할 수 있게 한다.
+   */
+  async function runStablePrintV225(root, beforePrint){
+    if(window.__reportPrintLockV225) return false;
+
+    window.__reportPrintLockV225 = true;
+
+    try{
+      await waitForPrintStableV225(root || document.getElementById(ROOT_ID) || document);
+
+      if(typeof beforePrint === 'function'){
+        beforePrint();
+      }
+
+      window.print();
+      return true;
+    }finally{
+      setTimeout(function(){
+        window.__reportPrintLockV225 = false;
+      }, 1000);
+    }
+  }
+
+  /**
 
    * 함수: buildBar
 
@@ -20004,8 +20098,23 @@ function isVisibleCaptureTarget(el){
       '<button id="reportPrintCloseV1773" type="button">닫기</button>';
     document.body.appendChild(bar);
 
-    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
-      window.print();
+    qs('#reportPrintRunV1773', bar).addEventListener('click', async function(){
+      var button = this;
+      var originalText = button.textContent;
+
+      try{
+        button.disabled = true;
+        button.textContent = 'PDF 준비중';
+
+        await runStablePrintV225(
+          document.getElementById(ROOT_ID) || document
+        );
+      }finally{
+        setTimeout(function(){
+          button.disabled = false;
+          button.textContent = originalText || 'PDF 저장';
+        }, 800);
+      }
     }, false);
 
     qs('#reportPrintCloseV1773', bar).addEventListener('click', function(){
@@ -20573,13 +20682,20 @@ function isVisibleCaptureTarget(el){
       return;
     }
 
-    setTimeout(function(){
+    setTimeout(async function(){
       if(isIOSPrintV183()){
         removeEmptyIOSPrintPagesV183(printRoot);
       }
 
       syncPrintSectionTitleWidths(root);
-      window.print();
+
+      await runStablePrintV225(printRoot || root || document, function(){
+        if(isIOSPrintV183()){
+          removeEmptyIOSPrintPagesV183(printRoot);
+        }
+
+        syncPrintSectionTitleWidths(root);
+      });
     }, 450);
   }
 

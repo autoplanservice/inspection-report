@@ -19986,63 +19986,51 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * waitForPrintStableV225는 PDF 출력 직전 이미지 decode와 레이아웃 안정화를 기다린다.
-   * 목적:
-   * - Base64 도면/휠/사진 이미지가 완전히 해석되기 전에 window.print()가 실행되는 것을 방지한다.
-   * - Chrome/Edge PDF 렌더러의 STATUS_BREAKPOINT 발생 가능성을 낮춘다.
-   * 주의:
-   * - PDF DOM 구조, A2 레이아웃, 도면 좌표, 저장/불러오기 로직은 변경하지 않는다.
-   * - 이미지 오류나 decode 지연이 있어도 제한 시간 후 출력 흐름을 계속 진행한다.
+   * waitForPrintImagesAndFramesV230은 PDF 출력 직전 실제 인쇄 대상 DOM의 이미지 decode와
+   * 레이아웃 계산 2프레임을 기다린다.
+   * 목적: 고객용 PDF 저장 후 STATUS_BREAKPOINT 발생 가능성을 낮추기 위한 출력 직전 안정화다.
+   * 주의: PDF 레이아웃, 도면 좌표, 저장/불러오기, Apps Script 연동은 변경하지 않는다.
    */
-  async function waitForPrintStableV225(root){
+  async function waitForPrintImagesAndFramesV230(root){
     var target = root || document;
-    var images = [];
+    var images = Array.prototype.slice.call(
+      target.querySelectorAll ? target.querySelectorAll('img') : []
+    );
 
-    try{
-      images = Array.prototype.slice.call(
-        target.querySelectorAll ? target.querySelectorAll('img') : []
-      );
-    }catch(e){
-      images = [];
-    }
-
-    function waitOneImage(img){
+    await Promise.all(images.map(function(image){
       return new Promise(function(resolve){
-        var finished = false;
-        var timer = null;
+        var settled = false;
 
         function finish(){
-          if(finished) return;
-          finished = true;
-          if(timer) clearTimeout(timer);
+          if(settled) return;
+          settled = true;
+          image.removeEventListener('load', finish);
+          image.removeEventListener('error', finish);
           resolve();
         }
 
-        timer = setTimeout(finish, 2500);
-
         try{
-          if(img.complete && img.naturalWidth > 0){
-            if(img.decode){
-              img.decode().then(finish).catch(finish);
+          if(image.complete && image.naturalWidth > 0){
+            if(image.decode){
+              image.decode().then(finish).catch(finish);
             }else{
               finish();
             }
             return;
           }
 
-          img.addEventListener('load', finish, { once:true });
-          img.addEventListener('error', finish, { once:true });
-        }catch(e){
+          image.addEventListener('load', finish, {once:true});
+          image.addEventListener('error', finish, {once:true});
+          setTimeout(finish, 2500);
+        }catch(error){
           finish();
         }
       });
-    }
-
-    await Promise.all(images.map(waitOneImage));
+    }));
 
     await new Promise(function(resolve){
       if(!window.requestAnimationFrame){
-        setTimeout(resolve, 80);
+        setTimeout(resolve, 90);
         return;
       }
 
@@ -20053,118 +20041,77 @@ function isVisibleCaptureTarget(el){
   }
 
   /**
-   * runStablePrintV225는 PDF 출력 중복 실행을 막고 안정화 대기 후 window.print()를 호출한다.
-   * 목적:
-   * - 자동 출력과 사용자의 PDF 저장 버튼 클릭이 겹쳐 렌더러 부담이 증가하는 것을 방지한다.
-   * - 출력 직전 후처리 함수를 한 번 더 실행할 수 있게 한다.
+   * runStablePrintV230은 window.print 직접 호출을 대체한다.
+   * 실제 인쇄 대상 DOM을 안정화한 뒤 print를 실행하고, 중복 실행을 방지한다.
    */
-  async function runStablePrintV225(root, beforePrint){
-    if(window.__reportPrintLockV225) return false;
+  async function runStablePrintV230(root){
+    if(window.__abDiagStablePrintRunningV230){
+      return;
+    }
 
-    window.__reportPrintLockV225 = true;
+    window.__abDiagStablePrintRunningV230 = true;
 
     try{
-      await waitForPrintStableV225(root || document.getElementById(ROOT_ID) || document);
-
-      if(typeof beforePrint === 'function'){
-        beforePrint();
-      }
-
+      await waitForPrintImagesAndFramesV230(root || document);
       window.print();
-      return true;
+    }catch(error){
+      console.error('[AB_DIAG][PDF_PRINT_STABILITY_V230_ERROR]', error);
+      window.print();
     }finally{
       setTimeout(function(){
-        window.__reportPrintLockV225 = false;
-      }, 1000);
-
-      /* v226: 일부 모바일 Chromium에서 afterprint가 누락될 수 있어 출력 종료 후정리를 보조 예약한다. */
-      setTimeout(function(){
-        if(document.body.classList.contains(PREV_CLASS) ||
-           document.getElementById(ROOT_ID) ||
-           document.getElementById('reportPrintPagesV141')){
-          cleanupAfterPrintV226('fallback');
-        }
-      }, 7000);
+        window.__abDiagStablePrintRunningV230 = false;
+      }, 1500);
     }
   }
 
   /**
-   * restoreDiagramImagesAfterPrintV226은 PDF 출력용으로 blob URL로 교체된 도면 이미지를
-   * 원본 Base64 src로 되돌려 출력 종료 후 메모리 점유가 계속 남지 않게 한다.
-   * 주의: PDF 레이아웃과 도면 좌표는 변경하지 않고 src만 원복한다.
+   * detachReportPreviewRootV230은 고객용 경량 PDF 출력에서 중간 생성물인
+   * 화면 미리보기 root만 제거한다.
+   * 실제 인쇄 대상인 #reportPrintPagesV141은 유지하므로 PDF 레이아웃은 변경하지 않는다.
    */
-  function restoreDiagramImagesAfterPrintV226(){
-    qsa('img[data-original-diagram-src-v164]', document).forEach(function(image){
-      var originalSource = image.getAttribute('data-original-diagram-src-v164') || '';
-      if(!originalSource) return;
-
-      try{
-        if(image.getAttribute('src') !== originalSource){
-          image.setAttribute('src', originalSource);
-        }
-      }catch(e){}
-    });
+  function detachReportPreviewRootV230(root){
+    if(root && root.parentNode){
+      root.parentNode.removeChild(root);
+    }
   }
 
   /**
-   * releaseDiagramBlobCacheAfterPrintV226은 v164 도면 정리 과정에서 생성된 blob URL 캐시를
-   * PDF 출력이 끝난 뒤 해제한다.
-   * 목적: PDF 저장 완료 직후 Chrome/Edge 렌더러가 무거운 이미지 메모리를 계속 보유하는 상황을 줄인다.
+   * restoreScreenAfterLightCustomerPrintV230은 고객용 경량 PDF 출력 후
+   * 화면 표시 상태만 원래 앱으로 복귀시킨다.
+   * 출력 DOM 제거는 PDF 저장 복귀 타이밍과 충돌할 수 있어 여기서 수행하지 않는다.
    */
-  function releaseDiagramBlobCacheAfterPrintV226(){
-    var cache = window.__diagramCleanCacheV164;
-    if(!cache || !cache.forEach) return;
-
-    try{
-      cache.forEach(function(value){
-        Promise.resolve(value).then(function(url){
-          try{
-            if(typeof url === 'string' && url.indexOf('blob:') === 0 && window.URL && URL.revokeObjectURL){
-              URL.revokeObjectURL(url);
-            }
-          }catch(e){}
-        }).catch(function(){});
-      });
-      cache.clear();
-    }catch(e){}
-  }
-
-  /**
-   * cleanupAfterPrintV226은 PDF 저장/취소 후 출력 복제 DOM과 blob 이미지를 정리한다.
-   * 목적:
-   * - PDF 저장은 완료되지만 그 직후 STATUS_BREAKPOINT가 발생하는 경우를 줄인다.
-   * - 출력 종료 직후 복제 DOM, 인쇄 전용 페이지, blob 캐시를 한 번에 해제한다.
-   */
-  function cleanupAfterPrintV226(reason){
-    if(window.__reportPrintCleanupTimerV226){
-      clearTimeout(window.__reportPrintCleanupTimerV226);
+  function restoreScreenAfterLightCustomerPrintV230(){
+    if(document.body.getAttribute('data-light-customer-print-v230') !== '1'){
+      return;
     }
 
-    window.__reportPrintCleanupTimerV226 = setTimeout(function(){
-      try{ restoreDiagramImagesAfterPrintV226(); }catch(e){}
-      try{ removePrintPagesV141(); }catch(e){}
-      try{ removeReportRoot(); }catch(e){}
-      try{ clearReportTabBodyClassesV1784(); }catch(e){}
-      try{ repairMainTabHandlersV1784(); }catch(e){}
-      try{ releaseDiagramBlobCacheAfterPrintV226(); }catch(e){}
+    setTimeout(function(){
+      if(document.body.getAttribute('data-light-customer-print-v230') !== '1'){
+        return;
+      }
 
-      window.__reportPrintLockV225 = false;
-      console.log('[AB_DIAG][PRINT_CLEANUP_V226]', reason || 'afterprint');
-    }, 900);
+      document.body.classList.remove(
+        PREV_CLASS,
+        'report-print-ios-v183'
+      );
+      document.body.removeAttribute('data-light-customer-print-v230');
+      clearReportTabBodyClassesV1784();
+      repairMainTabHandlersV1784();
+    }, 1200);
   }
 
   /**
-   * bindAfterPrintCleanupV226은 브라우저의 afterprint 이벤트에 후정리 루틴을 1회만 연결한다.
-   * 일부 Android/Chromium 환경은 afterprint가 불안정할 수 있어 runStablePrintV225에서도 보조 예약을 건다.
+   * bindLightCustomerAfterPrintV230은 고객용 경량 PDF 출력 후 화면 복귀만 처리한다.
+   * DOM/이미지 제거는 하지 않는다.
    */
-  function bindAfterPrintCleanupV226(){
-    if(window.__reportPrintAfterPrintBoundV226) return;
-    window.__reportPrintAfterPrintBoundV226 = true;
+  (function bindLightCustomerAfterPrintV230(){
+    if(window.__abDiagLightCustomerAfterPrintBoundV230){
+      return;
+    }
 
-    window.addEventListener('afterprint', function(){
-      cleanupAfterPrintV226('afterprint');
-    }, false);
-  }
+    window.__abDiagLightCustomerAfterPrintBoundV230 = true;
+    window.addEventListener('afterprint', restoreScreenAfterLightCustomerPrintV230, false);
+  })();
 
 
   /**
@@ -20186,23 +20133,12 @@ function isVisibleCaptureTarget(el){
       '<button id="reportPrintCloseV1773" type="button">닫기</button>';
     document.body.appendChild(bar);
 
-    qs('#reportPrintRunV1773', bar).addEventListener('click', async function(){
-      var button = this;
-      var originalText = button.textContent;
-
-      try{
-        button.disabled = true;
-        button.textContent = 'PDF 준비중';
-
-        await runStablePrintV225(
-          document.getElementById(ROOT_ID) || document
-        );
-      }finally{
-        setTimeout(function(){
-          button.disabled = false;
-          button.textContent = originalText || 'PDF 저장';
-        }, 800);
-      }
+    qs('#reportPrintRunV1773', bar).addEventListener('click', function(){
+      runStablePrintV230(
+        document.getElementById('reportPrintPagesV141') ||
+        document.getElementById(ROOT_ID) ||
+        document
+      );
     }, false);
 
     qs('#reportPrintCloseV1773', bar).addEventListener('click', function(){
@@ -20738,14 +20674,48 @@ function isVisibleCaptureTarget(el){
   async function openPreview(mode, options){
     var opts = options || {};
     var shouldAutoPrint = opts.autoPrint !== false;
+    var lightCustomerPrintV230 = mode === 'customer' &&
+      opts.lightCustomerPrintV230 === true;
 
     repairMainTabHandlersV1784();
-    await prepareDiagramImagesForPrintV164();
+
+    /*
+      v230:
+      고객용 PDF 경량 출력에서는 화면 미리보기 DOM과 Canvas 도면 정리를 생략한다.
+      원인 대상은 일부 차량에서 고객용 PDF 저장 후 발생하는 Chrome STATUS_BREAKPOINT이며,
+      실제 인쇄 대상인 #reportPrintPagesV141만 생성해 출력 메모리 부담을 줄인다.
+      회사보고용 및 일반 미리보기 경로는 기존 흐름을 유지한다.
+    */
+    if(!lightCustomerPrintV230){
+      await prepareDiagramImagesForPrintV164();
+    }
+
     var root = buildReport(mode);
     var printRoot = buildPrintPagesFromCopyV141(root);
     prepareIOSPrintPagesV183(printRoot);
 
     document.body.classList.add(PREV_CLASS);
+
+    if(lightCustomerPrintV230){
+      document.body.setAttribute('data-light-customer-print-v230', '1');
+
+      if(!opts.keepScroll){
+        window.scrollTo(0,0);
+      }
+
+      detachReportPreviewRootV230(root);
+
+      setTimeout(function(){
+        if(isIOSPrintV183()){
+          removeEmptyIOSPrintPagesV183(printRoot);
+        }
+
+        runStablePrintV230(printRoot || document);
+      }, 450);
+
+      return;
+    }
+
     buildBar();
 
     if(!opts.keepScroll){
@@ -20770,20 +20740,13 @@ function isVisibleCaptureTarget(el){
       return;
     }
 
-    setTimeout(async function(){
+    setTimeout(function(){
       if(isIOSPrintV183()){
         removeEmptyIOSPrintPagesV183(printRoot);
       }
 
       syncPrintSectionTitleWidths(root);
-
-      await runStablePrintV225(printRoot || root || document, function(){
-        if(isIOSPrintV183()){
-          removeEmptyIOSPrintPagesV183(printRoot);
-        }
-
-        syncPrintSectionTitleWidths(root);
-      });
+      runStablePrintV230(printRoot || root || document);
     }, 450);
   }
 
@@ -20965,12 +20928,10 @@ function isVisibleCaptureTarget(el){
    */
 
   function closePreview(){
-    restoreDiagramImagesAfterPrintV226();
     removePrintPagesV141();
     removeReportRoot();
     clearReportTabBodyClassesV1784();
     repairMainTabHandlersV1784();
-    releaseDiagramBlobCacheAfterPrintV226();
   }
 
   /**
@@ -21021,8 +20982,6 @@ function isVisibleCaptureTarget(el){
   }else{
     bindPrintButtons();
   }
-
-  bindAfterPrintCleanupV226();
 
   window.__openReportPrintV1773 = openPreview;
   window.__closeReportPrintV1773 = closePreview;
@@ -21113,7 +21072,10 @@ function isVisibleCaptureTarget(el){
         try{ window.__closeReportPrintV1773(); }catch(e){}
       }
       if(typeof window.__openReportPrintV1773 === 'function'){
-        window.__openReportPrintV1773(mode);
+        window.__openReportPrintV1773(mode, {
+          lightCustomerPrintV230: mode === 'customer',
+          source:'submit-pdf-v230'
+        });
         return;
       }
       alert('PDF 출력 모듈이 아직 준비되지 않았습니다. 페이지를 새로고침 후 다시 실행해 주세요.');

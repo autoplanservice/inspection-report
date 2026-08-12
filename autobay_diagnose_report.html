@@ -10298,23 +10298,6 @@ body.report-print-preview-v1773 #reportPrintRootV1773{
   -webkit-print-color-adjust:exact!important;
   print-color-adjust:exact!important;
 }
-
-/* v231 - PDF 출력 시 16 기타 특이사항, 19 코멘트의 textarea 높이를 내용 길이에 맞게 자동 확장한다.
-   목적: 화면에서는 정상이나 PDF에서는 스크롤 영역으로 잘리던 메모를 전체 노출한다.
-   영향 범위: 제출/인쇄 복제본의 interiorSpecialMemo, customerCommentMemo, inspectorCommentMemo만 대상이다.
-   주의: 화면 입력 레이아웃과 저장 key는 변경하지 않는다. */
-#reportPrintRootV1773 textarea[data-key="interiorSpecialMemo"],
-#reportPrintRootV1773 textarea[data-key="customerCommentMemo"],
-#reportPrintRootV1773 textarea[data-key="inspectorCommentMemo"],
-#reportPrintPagesV141 textarea[data-key="interiorSpecialMemo"],
-#reportPrintPagesV141 textarea[data-key="customerCommentMemo"],
-#reportPrintPagesV141 textarea[data-key="inspectorCommentMemo"]{
-  height:auto!important;
-  max-height:none!important;
-  overflow:hidden!important;
-  resize:none!important;
-  white-space:pre-wrap!important;
-}
 /* v17.96 - 정리 13차
    v17.81의 !important 최종 규칙에 완전히 덮이던 구형 버튼 시각 선언을 제거했다.
    실제 fixed 배치와 최상위 레이어, 클릭 커서는 유지한다.
@@ -12789,6 +12772,61 @@ body.report-print-preview-v1773 #reportPrintRootV1773 #secDiag .paint-v98-badge.
 #reportPrintPagesV141 #secDiag .paint-v98-badge.has-value{
   border:0!important;
   overflow:hidden!important;
+}
+
+
+/* v232 - 16 기타 특이사항 / 19 고객·검수자 코멘트 기본 높이 확대 및 PDF 잘림 방지
+   목적:
+   - 화면 입력 시 3개 textarea의 기본 표시 높이를 키우고, 내용이 많으면 textarea 내부 스크롤이 생기도록 한다.
+   - PDF 출력용 복제본에서는 textarea 브라우저 위젯 대신 일반 div 박스로 값을 표시해 인쇄 시 내부 내용이 잘리지 않게 한다.
+   영향 범위:
+   - data-key="interiorSpecialMemo"
+   - data-key="customerCommentMemo"
+   - data-key="inspectorCommentMemo"
+   주의: 저장 key, 입력값 수집/복원, Apps Script, 도면/마커, PDF 페이지 구조는 변경하지 않는다.
+*/
+#secCheck textarea[data-key="interiorSpecialMemo"],
+#secCheck textarea[data-key="customerCommentMemo"],
+#secCheck textarea[data-key="inspectorCommentMemo"]{
+  min-height:132px!important;
+  height:132px!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  resize:vertical!important;
+  line-height:1.5!important;
+}
+
+#reportPrintRootV1773 textarea[data-key="interiorSpecialMemo"],
+#reportPrintRootV1773 textarea[data-key="customerCommentMemo"],
+#reportPrintRootV1773 textarea[data-key="inspectorCommentMemo"],
+#reportPrintPagesV141 textarea[data-key="interiorSpecialMemo"],
+#reportPrintPagesV141 textarea[data-key="customerCommentMemo"],
+#reportPrintPagesV141 textarea[data-key="inspectorCommentMemo"]{
+  display:none!important;
+}
+
+#reportPrintRootV1773 .print-textarea-box-v232,
+#reportPrintPagesV141 .print-textarea-box-v232{
+  display:block!important;
+  width:100%!important;
+  min-height:132px!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  white-space:pre-wrap!important;
+  word-break:break-word!important;
+  overflow-wrap:anywhere!important;
+  border:1px solid #cfd6e1!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#111827!important;
+  padding:10px 9px!important;
+  font-size:14px!important;
+  font-weight:400!important;
+  line-height:1.5!important;
+  box-sizing:border-box!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
 }
 
 </style>
@@ -19110,54 +19148,57 @@ function isVisibleCaptureTarget(el){
 
   /**
 
-   * 함수: shouldAutoExpandPrintTextareaV231
+   * 함수: isPrintTextareaBoxTargetV232
 
-   * 담당: PDF 출력 시 자동 높이 확장이 필요한 textarea인지 판별한다.
+   * 담당: PDF 출력에서 textarea 위젯 대신 일반 박스로 표시할 메모 textarea를 판별한다.
 
-   * 주의: 현재는 점검 탭 16 기타 특이사항, 19 코멘트의 3개 textarea만 대상이다.
+   * 주의: 기타 특이사항, 고객 코멘트, 검수자 코멘트 3개 data-key만 대상으로 한다.
 
    */
 
-  function shouldAutoExpandPrintTextareaV231(textarea){
-    var key = textarea && textarea.getAttribute ? (textarea.getAttribute('data-key') || '') : '';
-    return key === 'interiorSpecialMemo' || key === 'customerCommentMemo' || key === 'inspectorCommentMemo';
+  function isPrintTextareaBoxTargetV232(element){
+    var key = element && element.getAttribute
+      ? (element.getAttribute('data-key') || '')
+      : '';
+
+    return key === 'interiorSpecialMemo' ||
+      key === 'customerCommentMemo' ||
+      key === 'inspectorCommentMemo';
   }
 
   /**
 
-   * 함수: measureTextareaPrintHeightV231
+   * 함수: applyPrintTextareaBoxV232
 
-   * 담당: 원본 textarea의 실제 내용 길이에 맞는 출력용 높이를 계산한다.
+   * 담당: PDF 복제본 textarea의 값을 div 박스로 미러링하여 출력 시 잘림을 방지한다.
 
-   * 주의: 화면 textarea의 현재 높이를 훼손하지 않도록 임시로만 auto 측정 후 복원한다.
+   * 주의: 원본 textarea와 저장 값은 유지하고, 복제본에서만 표시용 div를 추가한다.
 
    */
 
-  function measureTextareaPrintHeightV231(textarea){
-    if(!textarea) return 78;
+  function applyPrintTextareaBoxV232(cloneTextarea, value){
+    if(!cloneTextarea || !cloneTextarea.parentNode) return;
 
-    var previousHeight = textarea.style.height || '';
-    var previousOverflow = textarea.style.overflow || '';
+    var previous = cloneTextarea.nextElementSibling;
+    if(previous && previous.classList && previous.classList.contains('print-textarea-box-v232')){
+      previous.textContent = value || '';
+      return;
+    }
 
-    textarea.style.height = 'auto';
-    textarea.style.overflow = 'hidden';
+    var box = document.createElement('div');
+    box.className = 'print-textarea-box-v232';
+    box.setAttribute(
+      'data-print-textarea-key-v232',
+      cloneTextarea.getAttribute('data-key') || ''
+    );
+    box.textContent = value || '';
 
-    var computed = window.getComputedStyle ? window.getComputedStyle(textarea) : null;
-    var lineHeight = computed ? parseFloat(computed.lineHeight) || 21 : 21;
-    var paddingTop = computed ? parseFloat(computed.paddingTop) || 0 : 0;
-    var paddingBottom = computed ? parseFloat(computed.paddingBottom) || 0 : 0;
-    var borderTop = computed ? parseFloat(computed.borderTopWidth) || 0 : 0;
-    var borderBottom = computed ? parseFloat(computed.borderBottomWidth) || 0 : 0;
-    var minHeight = computed ? parseFloat(computed.minHeight) || 78 : 78;
-    var lineCount = Math.max(1, String(textarea.value || '').split(/\n/).length);
-    var contentHeight = Math.ceil(lineCount * lineHeight + paddingTop + paddingBottom + borderTop + borderBottom);
-    var scrollHeight = Math.ceil(textarea.scrollHeight || 0);
-    var finalHeight = Math.max(minHeight, contentHeight, scrollHeight);
+    cloneTextarea.style.setProperty('display', 'none', 'important');
+    cloneTextarea.style.setProperty('height', '132px', 'important');
+    cloneTextarea.style.setProperty('min-height', '132px', 'important');
+    cloneTextarea.style.setProperty('overflow', 'hidden', 'important');
 
-    textarea.style.height = previousHeight;
-    textarea.style.overflow = previousOverflow;
-
-    return finalHeight;
+    cloneTextarea.parentNode.insertBefore(box, cloneTextarea.nextSibling);
   }
 
   /**
@@ -19183,13 +19224,8 @@ function isVisibleCaptureTarget(el){
         c.textContent = o.value;
         c.setAttribute('data-print-value-v1773', o.value || '');
 
-        if(shouldAutoExpandPrintTextareaV231(o)){
-          var expandedHeightV231 = measureTextareaPrintHeightV231(o);
-          c.style.setProperty('height', expandedHeightV231 + 'px', 'important');
-          c.style.setProperty('min-height', expandedHeightV231 + 'px', 'important');
-          c.style.setProperty('max-height', 'none', 'important');
-          c.style.setProperty('overflow', 'hidden', 'important');
-          c.style.setProperty('resize', 'none', 'important');
+        if(isPrintTextareaBoxTargetV232(o)){
+          applyPrintTextareaBoxV232(c, o.value || '');
         }
         continue;
       }
